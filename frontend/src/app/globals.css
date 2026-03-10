@@ -125,10 +125,39 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-serif), "EB Garamond", Georgia, serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 }
 
 @layer utilities {
+  .tap-scale {
+    transition: transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tap-scale:active {
+    transform: scale(0.95);
+  }
+
+  .tap-scale-sm {
+    transition: transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tap-scale-sm:active {
+    transform: scale(0.97);
+  }
+
+  .tap-bright {
+    transition: filter 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tap-bright:active {
+    filter: brightness(1.2);
+  }
+
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--muted)) transparent;

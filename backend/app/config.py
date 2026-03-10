@@ -10,6 +10,7 @@ class Settings(BaseSettings):
 
     data_dir: Path = Path(__file__).resolve().parent.parent / "data"
     books_dir: Path = data_dir / "books"
+    covers_dir: Path = data_dir / "covers"
 
     llm_model: str = "gpt-4o-mini"
     llm_api_key: str = ""

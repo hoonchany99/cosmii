@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function GlassPanel({
@@ -27,7 +30,7 @@ export function PrimaryButton({
   onClick?: () => void;
   variant?: "indigo" | "emerald" | "ghost";
 }) {
-  const base = "w-full min-h-[48px] rounded-2xl font-semibold transition-all";
+  const base = "w-full min-h-[48px] rounded-2xl font-semibold transition-all select-none";
   const variants = {
     indigo: disabled
       ? "bg-white/10 text-white/30 cursor-not-allowed"
@@ -37,12 +40,14 @@ export function PrimaryButton({
   };
 
   return (
-    <button
+    <motion.button
+      whileTap={disabled ? undefined : { scale: 0.96 }}
+      transition={{ type: "spring", stiffness: 500, damping: 30 }}
       className={cn(base, variants[variant], className)}
       disabled={disabled}
       onClick={onClick}
     >
       {children}
-    </button>
+    </motion.button>
   );
 }

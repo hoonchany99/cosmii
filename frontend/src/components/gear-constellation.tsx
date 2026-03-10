@@ -202,11 +202,11 @@ function BackgroundStars() {
 /*  Scene                                                              */
 /* ------------------------------------------------------------------ */
 
-function GearScene({ layout }: { layout: GearLayout }) {
+function GearScene({ layout, animate = true }: { layout: GearLayout; animate?: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
-    if (groupRef.current) {
+    if (groupRef.current && animate) {
       groupRef.current.rotation.z += delta * 0.05;
     }
   });
@@ -217,7 +217,8 @@ function GearScene({ layout }: { layout: GearLayout }) {
         makeDefault
         enablePan={false}
         enableZoom={false}
-        autoRotate
+        enableRotate={animate}
+        autoRotate={animate}
         autoRotateSpeed={0.2}
         minDistance={5}
         maxDistance={25}
@@ -274,7 +275,7 @@ function GearScene({ layout }: { layout: GearLayout }) {
 /*  Exported component                                                 */
 /* ------------------------------------------------------------------ */
 
-export function GearConstellation() {
+export function GearConstellation({ animate = true }: { animate?: boolean } = {}) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -289,7 +290,7 @@ export function GearConstellation() {
         gl={{ antialias: true }}
         style={{ background: "#060612" }}
       >
-        <GearScene layout={layout} />
+        <GearScene layout={layout} animate={animate} />
       </Canvas>
     </div>
   );

@@ -20,6 +20,20 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+def _save_cover(parser: BookParser, content: bytes, filename: str, book_id: str) -> str | None:
+    """Extract cover from book file and save to covers dir. Returns URL path or None."""
+    cover_bytes, ext = parser.extract_cover(content=content, filename=filename)
+    if not cover_bytes:
+        return None
+
+    settings.covers_dir.mkdir(parents=True, exist_ok=True)
+    cover_filename = f"{book_id}.{ext}"
+    cover_path = settings.covers_dir / cover_filename
+    cover_path.write_bytes(cover_bytes)
+    logger.info("Saved cover for book %s: %s", book_id, cover_path)
+    return f"/covers/{cover_filename}"
+
+
 @router.post("/books/upload")
 async def upload_book(
     file: UploadFile = File(...),
@@ -47,6 +61,8 @@ async def upload_book(
             })}
 
             book_id = str(uuid.uuid4())[:8]
+            cover_url = _save_cover(parser, content, filename, book_id)
+
             chunks = smart_chunk(sections, book_id)
 
             yield {"event": "status", "data": json.dumps({
@@ -58,7 +74,7 @@ async def upload_book(
                 "id": book_id,
                 "title": inferred_title,
                 "author": author,
-                "cover_url": None,
+                "cover_url": cover_url,
                 "color": color,
             }
             sb.table("books").upsert(book_row).execute()

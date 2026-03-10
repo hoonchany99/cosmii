@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 
@@ -12,6 +13,7 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings.books_dir.mkdir(parents=True, exist_ok=True)
+    settings.covers_dir.mkdir(parents=True, exist_ok=True)
     logger.info("Cosmii backend started")
     yield
     logger.info("Cosmii backend shutting down")
@@ -39,6 +41,8 @@ from app.api.chat import router as chat_router
 app.include_router(admin_router, prefix="/admin", tags=["admin"])
 app.include_router(learning_router, prefix="/api", tags=["learning"])
 app.include_router(chat_router, prefix="/api/chat", tags=["chat"])
+
+app.mount("/covers", StaticFiles(directory=str(settings.covers_dir)), name="covers")
 
 
 @app.get("/api/health")

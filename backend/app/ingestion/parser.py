@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -8,6 +9,8 @@ import ebooklib
 import fitz
 from bs4 import BeautifulSoup
 from ebooklib import epub
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -20,6 +23,82 @@ class ParsedSection:
 
 class BookParser:
     """Parses PDF, EPUB, and plain text files into structured sections."""
+
+    def extract_cover(
+        self,
+        file_path: Path | None = None,
+        content: bytes | None = None,
+        filename: str = "",
+    ) -> tuple[bytes | None, str]:
+        """Extract cover image from a book file.
+
+        Returns (image_bytes, extension) or (None, "") if no cover found.
+        """
+        name = filename or (file_path.name if file_path else "")
+        suffix = Path(name).suffix.lower()
+
+        if suffix == ".epub":
+            return self._extract_epub_cover(file_path, content)
+        elif suffix == ".pdf":
+            return self._extract_pdf_cover(file_path, content)
+        return None, ""
+
+    def _extract_epub_cover(
+        self, file_path: Path | None, content: bytes | None,
+    ) -> tuple[bytes | None, str]:
+        try:
+            if content:
+                book = epub.read_epub(io.BytesIO(content))
+            else:
+                book = epub.read_epub(str(file_path))
+
+            cover_id = None
+            for meta in book.get_metadata("OPF", "cover"):
+                cover_id = meta[1].get("content")
+                if cover_id:
+                    break
+
+            if cover_id:
+                item = book.get_item_with_id(cover_id)
+                if item:
+                    ext = Path(item.get_name()).suffix.lower().lstrip(".")
+                    return item.get_content(), ext or "jpg"
+
+            for item in book.get_items_of_type(ebooklib.ITEM_IMAGE):
+                name_lower = item.get_name().lower()
+                if "cover" in name_lower:
+                    ext = Path(item.get_name()).suffix.lower().lstrip(".")
+                    return item.get_content(), ext or "jpg"
+
+            images = list(book.get_items_of_type(ebooklib.ITEM_IMAGE))
+            if images:
+                first = images[0]
+                ext = Path(first.get_name()).suffix.lower().lstrip(".")
+                return first.get_content(), ext or "jpg"
+
+        except Exception as e:
+            logger.warning("Failed to extract EPUB cover: %s", e)
+        return None, ""
+
+    def _extract_pdf_cover(
+        self, file_path: Path | None, content: bytes | None,
+    ) -> tuple[bytes | None, str]:
+        try:
+            if content:
+                doc = fitz.open(stream=content, filetype="pdf")
+            else:
+                doc = fitz.open(str(file_path))
+
+            if doc.page_count > 0:
+                page = doc[0]
+                pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))
+                data = pix.tobytes("png")
+                doc.close()
+                return data, "png"
+            doc.close()
+        except Exception as e:
+            logger.warning("Failed to extract PDF cover: %s", e)
+        return None, ""
 
     def parse(self, file_path: Path | None = None, content: bytes | None = None,
               filename: str = "") -> list[ParsedSection]:

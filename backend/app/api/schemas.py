@@ -97,6 +97,7 @@ class ChatRequest(BaseModel):
     book_id: str
     lesson_context: str | None = None
     history: list[ChatHistoryItem] = Field(default_factory=list)
+    language: str = "ko"
 
 
 class SourceReference(BaseModel):

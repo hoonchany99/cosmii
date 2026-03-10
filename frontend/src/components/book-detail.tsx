@@ -1,0 +1,229 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  ChevronLeft,
+  BookOpen,
+  Sparkles,
+  Play,
+  Clock,
+  Layers,
+} from "lucide-react";
+import { PrimaryButton } from "@/components/ui/glass-panel";
+import { CosmicBg } from "@/components/cosmic-bg";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const serif = "font-[var(--font-serif)]";
+
+interface ChapterSummary {
+  chapter: string;
+  lessonCount: number;
+  completedCount: number;
+}
+
+interface BookDetailProps {
+  book: { id: string; title: string; author: string; color: string; cover_url?: string | null };
+  chapters: ChapterSummary[];
+  completedLessons: number;
+  totalLessons: number;
+  onBack: () => void;
+  onStartLearning: () => void;
+}
+
+export function BookDetail({
+  book,
+  chapters,
+  completedLessons,
+  totalLessons,
+  onBack,
+  onStartLearning,
+}: BookDetailProps) {
+  const pct = useMemo(
+    () => (totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0),
+    [completedLessons, totalLessons],
+  );
+
+  const isStarted = completedLessons > 0;
+  const estimatedMinutes = (totalLessons - completedLessons) * 5;
+  const [imgError, setImgError] = useState(false);
+
+  const coverSrc = book.cover_url
+    ? book.cover_url.startsWith("http")
+      ? book.cover_url
+      : `${API}${book.cover_url}`
+    : null;
+  const showCover = !!coverSrc && !imgError;
+
+  return (
+    <div className="w-full h-full relative overflow-hidden text-white">
+      <CosmicBg accent="indigo" />
+
+      {/* Header */}
+      <div className="absolute top-14 w-full px-5 flex items-center z-20">
+        <motion.button
+          whileTap={{ scale: 0.88 }}
+          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          onClick={onBack}
+          className="text-white/60 hover:text-white transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+        >
+          <ChevronLeft size={22} />
+        </motion.button>
+      </div>
+
+      <div className="absolute inset-0 overflow-y-auto pt-24 pb-36 px-6 z-10">
+        {/* Book Hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col items-center gap-5 mb-8"
+        >
+          {/* Book cover */}
+          <div className="relative">
+            <div
+              className="absolute inset-0 rounded-2xl blur-[40px] scale-150 opacity-30"
+              style={{ background: book.color }}
+            />
+            {showCover ? (
+              <motion.div
+                className="relative w-32 h-48 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={coverSrc}
+                  alt={book.title}
+                  className="w-full h-full object-cover"
+                  onError={() => setImgError(true)}
+                />
+              </motion.div>
+            ) : (
+              <div
+                className="relative w-28 h-40 rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl"
+                style={{
+                  background: `linear-gradient(135deg, ${book.color}40, ${book.color}15)`,
+                }}
+              >
+                <BookOpen size={36} className="text-white/60" />
+              </div>
+            )}
+          </div>
+
+          <div className="text-center">
+            <h1 className={`${serif} text-[26px] font-bold text-white tracking-tight leading-tight`}>
+              {book.title}
+            </h1>
+            <p className="text-white/40 text-[14px] mt-1.5">{book.author}</p>
+          </div>
+
+          {/* Progress ring */}
+          <div className="flex items-center gap-4">
+            <div className="relative w-14 h-14">
+              <svg viewBox="0 0 56 56" className="w-full h-full -rotate-90">
+                <circle
+                  cx="28" cy="28" r="24"
+                  fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4"
+                />
+                <motion.circle
+                  cx="28" cy="28" r="24"
+                  fill="none"
+                  stroke={pct >= 100 ? "#34d399" : "#818cf8"}
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeDasharray={`${2 * Math.PI * 24}`}
+                  initial={{ strokeDashoffset: 2 * Math.PI * 24 }}
+                  animate={{ strokeDashoffset: 2 * Math.PI * 24 * (1 - pct / 100) }}
+                  transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                />
+              </svg>
+              <span className={`absolute inset-0 flex items-center justify-center ${serif} text-[14px] font-bold text-white/80`}>
+                {pct}%
+              </span>
+            </div>
+            <div>
+              <p className="text-white/70 text-[14px] font-semibold">
+                {completedLessons}/{totalLessons} 탐험 완료
+              </p>
+              {estimatedMinutes > 0 && (
+                <p className="text-white/30 text-[12px] flex items-center gap-1 mt-0.5">
+                  <Clock size={11} />
+                  남은 학습 약 {estimatedMinutes}분
+                </p>
+              )}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Chapter List */}
+        {chapters.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <Layers size={15} className="text-indigo-400" />
+              <span className="text-white/50 text-[12px] uppercase tracking-[0.12em] font-bold">
+                챕터 구성
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {chapters.map((ch, i) => {
+                const chPct = ch.lessonCount > 0 ? Math.round((ch.completedCount / ch.lessonCount) * 100) : 0;
+                const done = chPct >= 100;
+                return (
+                  <motion.div
+                    key={ch.chapter}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.25 + i * 0.04, duration: 0.35 }}
+                    className="bg-white/[0.03] border border-white/[0.06] rounded-2xl px-4 py-3.5 flex items-center gap-3.5"
+                  >
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                      done ? "bg-emerald-500/15" : "bg-white/[0.05]"
+                    }`}>
+                      {done ? (
+                        <Sparkles size={16} className="text-emerald-400" />
+                      ) : (
+                        <span className="text-white/25 text-[13px] font-bold">{i + 1}</span>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className={`text-[14px] font-semibold block truncate ${done ? "text-white/50" : "text-white/75"}`}>
+                        {ch.chapter}
+                      </span>
+                      <span className="text-white/25 text-[11px]">
+                        {ch.completedCount}/{ch.lessonCount} 탐험
+                      </span>
+                    </div>
+                    <div className="w-10 h-1.5 bg-white/[0.06] rounded-full overflow-hidden flex-shrink-0">
+                      <motion.div
+                        className={`h-full rounded-full ${done ? "bg-emerald-500" : "bg-indigo-500/70"}`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${chPct}%` }}
+                        transition={{ duration: 0.6, delay: 0.3 + i * 0.05 }}
+                      />
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-12 pb-10 px-6 z-20">
+        <PrimaryButton onClick={onStartLearning} className="py-4 text-[16px] flex items-center justify-center gap-2">
+          <Play size={18} className="fill-white" />
+          {isStarted ? "이어서 학습하기" : "학습 시작하기"}
+        </PrimaryButton>
+      </div>
+    </div>
+  );
+}

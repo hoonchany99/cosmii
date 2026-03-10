@@ -30,6 +30,7 @@
     "react-syntax-highlighter": "^16.1.0",
     "tailwind-merge": "^3.5.0",
     "three": "^0.183.1",
+    "use-sync-external-store": "^1.6.0",
     "zustand": "^5.0.11"
   },
   "optionalDependencies": {

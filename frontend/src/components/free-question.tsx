@@ -1,12 +1,18 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Send } from "lucide-react";
-import { GlassPanel } from "@/components/ui/glass-panel";
-import { useChatStore } from "@/lib/store";
+import { CosmicBg } from "@/components/cosmic-bg";
+import { useIsMobile } from "@/lib/utils";
+import { useSettingsStore } from "@/lib/store";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
 
 interface FreeQuestionProps {
   bookId: string;
@@ -14,21 +20,75 @@ interface FreeQuestionProps {
   onBack: () => void;
 }
 
+function splitIntoBubbles(text: string): string[] {
+  return text
+    .split(/\n\n+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function AssistantBubbles({ text }: { text: string }) {
+  const bubbles = splitIntoBubbles(text);
+  const [visibleCount, setVisibleCount] = useState(1);
+
+  useEffect(() => {
+    if (visibleCount < bubbles.length) {
+      const timer = setTimeout(() => setVisibleCount((p) => p + 1), 350);
+      return () => clearTimeout(timer);
+    }
+  }, [visibleCount, bubbles.length]);
+
+  return (
+    <div className="flex flex-col gap-2">
+      {bubbles.slice(0, visibleCount).map((bubble, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl rounded-tl-md px-4 py-3 shadow-lg max-w-full"
+        >
+          <p className="text-white/85 text-[15px] leading-[1.7] font-medium">{bubble}</p>
+        </motion.div>
+      ))}
+      {visibleCount < bubbles.length && (
+        <div className="flex gap-1.5 py-1 pl-1">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full bg-white/20"
+              animate={{ opacity: [0.3, 0.8, 0.3] }}
+              transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProps) {
-  const { messages, isLoading, addMessage, setLoading, clearMessages } = useChatStore();
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [input, setInput] = useState("");
+  const mobile = useIsMobile();
+  const language = useSettingsStore((s) => s.language);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, isLoading]);
+
+  const addMessage = useCallback((msg: ChatMessage) => {
+    setMessages((prev) => [...prev, msg]);
+  }, []);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
     const question = input.trim();
     setInput("");
     addMessage({ role: "user", content: question });
-    setLoading(true);
+    setIsLoading(true);
 
     try {
       const res = await fetch(`${API}/api/chat/ask`, {
@@ -39,6 +99,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
           book_id: bookId,
           lesson_context: lessonContext,
           history: messages.slice(-6),
+          language,
         }),
       });
 
@@ -65,74 +126,94 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
       if (fullAnswer) {
         addMessage({ role: "assistant", content: fullAnswer });
       }
-    } catch (e) {
-      console.error("Chat failed:", e);
-      addMessage({ role: "assistant", content: "죄송해요, 답변을 가져오는 데 실패했어요." });
+    } catch {
+      addMessage({ role: "assistant", content: "미안, 답변을 가져오는 데 실패했어" });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-full h-full bg-[#050510] relative overflow-hidden text-white flex flex-col">
+    <div className="w-full h-full relative overflow-hidden text-white flex flex-col">
+      <CosmicBg accent="indigo" />
+
       {/* Header */}
-      <div className="pt-12 px-6 flex items-center z-20">
-        <button onClick={onBack} className="text-white/70 hover:text-white flex items-center gap-2 transition-colors">
-          <ChevronLeft size={24} />
-          <span className="font-semibold text-lg">돌아가기</span>
-        </button>
+      <div className="pt-14 px-5 flex items-center z-20 relative">
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          onClick={onBack}
+          className="text-white/60 hover:text-white flex items-center gap-2 transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+        >
+          <ChevronLeft size={22} />
+          <span className="font-semibold text-[15px]">돌아가기</span>
+        </motion.button>
       </div>
 
       {/* Chat area */}
-      <div className="flex-1 pt-6 pb-32 px-6 overflow-y-auto z-10 flex flex-col gap-6">
-        {/* Lesson context (dimmed) */}
-        {lessonContext && (
-          <div className="flex gap-3 items-end opacity-40">
-            <img src="/cosmii/standing.webp" alt="Cosmii" className="w-10 h-10 rounded-full object-cover" />
-            <GlassPanel className="p-4 max-w-[80%] text-sm leading-relaxed rounded-bl-none">
-              {lessonContext}
-            </GlassPanel>
-          </div>
+      <div className="flex-1 pt-4 pb-32 px-5 overflow-y-auto z-10 flex flex-col gap-5 relative">
+        {messages.length === 0 && !isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center gap-3 mt-16"
+          >
+            <motion.img
+              src={mobile ? "/cosmii/standing-mobile.webp" : "/cosmii/standing-desktop.webp"}
+              alt="Cosmii"
+              className="w-16 h-16 object-contain"
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              draggable={false}
+            />
+            <p className="text-white/40 text-[14px] font-medium text-center">
+              궁금한 거 있으면 편하게 물어봐!
+            </p>
+          </motion.div>
         )}
 
         {messages.map((msg, i) => (
-          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "gap-3 items-end"}`}>
+          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "items-start gap-2.5"}`}>
             {msg.role === "assistant" && (
-              <motion.div
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <img src="/cosmii/talking.webp" alt="Cosmii" className="w-10 h-10 rounded-full object-cover" />
-              </motion.div>
+              <div className="flex-shrink-0 w-8 h-8 mt-1 rounded-full bg-gradient-to-br from-teal-400/20 to-indigo-500/20 border border-white/10 flex items-center justify-center overflow-hidden">
+                <img
+                  src={mobile ? "/cosmii/talking-mobile.webp" : "/cosmii/talking-desktop.webp"}
+                  alt=""
+                  className="w-6 h-6 object-contain"
+                  draggable={false}
+                />
+              </div>
             )}
+
             {msg.role === "user" ? (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-indigo-500/30 border border-indigo-400/30 text-white p-4 rounded-2xl rounded-br-none max-w-[80%] text-[15px] leading-relaxed backdrop-blur-md shadow-[0_0_15px_rgba(99,102,241,0.15)]"
+                className="bg-indigo-500/25 border border-indigo-400/25 text-white px-4 py-3 rounded-2xl rounded-br-md max-w-[80%] text-[15px] leading-relaxed backdrop-blur-md"
               >
                 {msg.content}
               </motion.div>
             ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col gap-2 max-w-[80%]"
-              >
-                <GlassPanel className="p-4 text-[15px] leading-relaxed rounded-bl-none shadow-lg border-indigo-500/20">
-                  {msg.content}
-                </GlassPanel>
-              </motion.div>
+              <div className="max-w-[85%]">
+                <AssistantBubbles text={msg.content} />
+              </div>
             )}
           </div>
         ))}
 
         {isLoading && (
-          <div className="flex gap-3 items-end">
-            <img src="/cosmii/standing.webp" alt="Cosmii" className="w-10 h-10 rounded-full object-cover" />
-            <GlassPanel className="p-4 rounded-bl-none">
-              <div className="flex gap-1">
-                {[0, 1, 2].map(i => (
+          <div className="flex items-start gap-2.5">
+            <div className="flex-shrink-0 w-8 h-8 mt-1 rounded-full bg-gradient-to-br from-teal-400/20 to-indigo-500/20 border border-white/10 flex items-center justify-center overflow-hidden">
+              <img
+                src={mobile ? "/cosmii/standing-mobile.webp" : "/cosmii/standing-desktop.webp"}
+                alt=""
+                className="w-6 h-6 object-contain"
+                draggable={false}
+              />
+            </div>
+            <div className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl rounded-tl-md px-4 py-3">
+              <div className="flex gap-1.5">
+                {[0, 1, 2].map((i) => (
                   <motion.div
                     key={i}
                     className="w-2 h-2 rounded-full bg-indigo-400/60"
@@ -141,37 +222,42 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
                   />
                 ))}
               </div>
-            </GlassPanel>
+            </div>
           </div>
         )}
+
         <div ref={bottomRef} />
       </div>
 
       {/* Bottom input */}
-      <div className="absolute bottom-0 w-full bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-12 pb-8 px-6 z-20 flex flex-col gap-4">
-        <button
+      <div className="absolute bottom-0 w-full bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-10 pb-8 px-5 z-20 flex flex-col gap-3">
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
           onClick={onBack}
-          className="text-white/50 hover:text-white/80 text-sm font-semibold mx-auto transition-colors"
+          className="text-white/40 hover:text-white/70 text-[13px] font-semibold mx-auto transition-colors active:text-white/90"
         >
-          레슨으로 돌아가기
-        </button>
+          탐험으로 돌아가기
+        </motion.button>
 
-        <div className="relative w-full shadow-lg">
+        <div className="relative w-full">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="질문하기..."
-            className="w-full h-14 bg-white/10 border border-white/20 rounded-full pl-6 pr-14 text-white placeholder-white/30 backdrop-blur-md outline-none focus:border-indigo-400/50 focus:bg-white/15 transition-all"
+            placeholder="궁금한 거 있으면 물어봐!"
+            className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-12 text-white text-[14px] placeholder-white/25 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
           />
-          <button
+          <motion.button
+            whileTap={{ scale: 0.88 }}
+            transition={{ type: "spring", stiffness: 500, damping: 25 }}
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-500/20 hover:bg-indigo-500/40 rounded-full flex items-center justify-center transition-colors disabled:opacity-30"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
           >
-            <Send size={18} className="text-indigo-300 ml-0.5" />
-          </button>
+            <Send size={16} className="text-indigo-300 ml-0.5" />
+          </motion.button>
         </div>
       </div>
     </div>
