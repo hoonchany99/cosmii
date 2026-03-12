@@ -19,14 +19,14 @@ import { BookNotes } from "@/components/book-notes";
 import { WarpOverlay } from "@/components/warp-overlay";
 import { Onboarding } from "@/components/onboarding";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API = "";
 
 interface Book {
   id: string;
   title: string;
   author: string;
   color: string;
-  cover_url: string | null;
+  cover_url?: string | null;
 }
 
 interface LessonListItem {
@@ -280,14 +280,14 @@ export default function UniversePage() {
     initial: { opacity: 0, scale: 0.96, filter: "blur(6px)" },
     animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
     exit: { opacity: 0, scale: 0.96, filter: "blur(4px)" },
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
   };
 
   const slideRight = {
     initial: { opacity: 0, x: 40, filter: "blur(4px)" },
     animate: { opacity: 1, x: 0, filter: "blur(0px)" },
     exit: { opacity: 0, x: -30, filter: "blur(4px)" },
-    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
   };
 
   if (showOnboarding) {

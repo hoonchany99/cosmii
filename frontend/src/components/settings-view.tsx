@@ -94,7 +94,7 @@ function SettingRow({
         {label}
       </span>
       {comingSoon && (
-        <span className="text-[10px] font-bold uppercase tracking-wider text-white/30 bg-white/[0.06] px-2 py-0.5 rounded-full mr-1">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-white/30 bg-white/[0.06] px-2.5 py-1 rounded-full mr-1">
           Soon
         </span>
       )}
@@ -143,7 +143,7 @@ function ToggleRow({
         {sublabel && !comingSoon && <span className="text-white/30 text-[12px]">{sublabel}</span>}
       </div>
       {comingSoon ? (
-        <span className="text-[10px] font-bold uppercase tracking-wider text-white/30 bg-white/[0.06] px-2 py-0.5 rounded-full flex-shrink-0">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-white/30 bg-white/[0.06] px-2.5 py-1 rounded-full flex-shrink-0">
           Soon
         </span>
       ) : (
@@ -171,7 +171,7 @@ function SectionLabel({ text, delay }: { text: string; delay: number }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.3 }}
-      className="text-white/30 text-[11px] uppercase tracking-[0.15em] font-bold px-1 mb-2.5 block"
+      className="text-white/30 text-[12px] uppercase tracking-[0.15em] font-bold px-1 mb-2.5 block"
     >
       {text}
     </motion.span>
@@ -204,16 +204,17 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
       <CosmicBg accent="indigo" />
 
       {/* Header */}
-      <div className="absolute top-0 w-full pt-14 pb-3 px-5 flex items-center z-30 bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
+      <div className="absolute top-0 w-full pt-safe pb-3 px-5 flex items-center z-30 bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <motion.button
-          whileTap={{ scale: 0.88 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={onBack}
-          className="text-white/60 hover:text-white transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          aria-label="Back"
+          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
         >
           <ChevronLeft size={22} />
         </motion.button>
-        <h2 className={`${serif} text-white/80 font-bold text-[18px] tracking-wide ml-2`}>
+        <h2 className={`${serif} text-white/80 font-bold text-[18px] tracking-wide ml-1`}>
           {t("settings.title")}
         </h2>
       </div>
@@ -237,8 +238,9 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
             <SettingRow
               icon={<Target size={17} className="text-emerald-400" />}
               label={t("settings.dailyGoal")}
+              value={t(DAILY_GOALS.find((g) => g.value === settings.dailyGoal)?.labelKey as any) ?? ""}
+              onClick={() => setActiveSheet("dailyGoal")}
               delay={0.11}
-              comingSoon
             />
             <SettingRow
               icon={<Gauge size={17} className="text-amber-400" />}
@@ -342,7 +344,7 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.55 }}
-          className="text-center text-white/15 text-[11px] mt-8 mb-4 font-medium"
+          className="text-center text-white/15 text-[12px] mt-8 mb-4 font-medium"
         >
           Made with ✦ by Cosmii
         </motion.p>
@@ -534,7 +536,7 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
 
               {/* ── Reset Confirm ── */}
               {activeSheet === "resetConfirm" && (
-                <div className="px-6 pt-7 pb-10">
+                  <div className="px-6 pt-7 pb-safe-lg">
                   <h3 className={`${serif} text-white/90 font-bold text-[18px] mb-2`}>{t("settings.resetConfirmTitle")}</h3>
                   <p className="text-white/40 text-[14px] leading-relaxed mb-7">
                     {t("settings.resetConfirmDesc")}

@@ -165,20 +165,26 @@ export function ChatMessage({ message }: ChatMessageProps) {
           </div>
       </motion.div>
 
-      {/* Source badges */}
-      {message.sources && message.sources.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-wrap gap-1.5 items-center pl-1 mt-1.5"
-        >
-          <span className="text-[11px] text-white/25 mr-0.5">Sources</span>
-          {message.sources.map((source, idx) => (
-            <SourceBadge key={idx} source={source} index={idx} />
-          ))}
-        </motion.div>
-      )}
+      {/* Source badges — only show when RAG returned meaningful references */}
+      {(() => {
+        const meaningful = message.sources?.filter(
+          (s) => s.page && s.page !== "0" && s.page.trim() !== "" && s.snippet?.trim(),
+        );
+        if (!meaningful || meaningful.length === 0) return null;
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-wrap gap-1.5 items-center pl-1 mt-1.5"
+          >
+            <span className="text-[12px] text-white/25 mr-0.5">Sources</span>
+            {meaningful.map((source, idx) => (
+              <SourceBadge key={idx} source={source} index={idx} />
+            ))}
+          </motion.div>
+        );
+      })()}
     </div>
   );
 }

@@ -131,7 +131,7 @@ export function SessionComplete({
             className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl p-5 flex flex-col items-center gap-2"
           >
             <Trophy size={22} className="text-emerald-400" />
-            <span className="text-white/35 text-[10px] uppercase tracking-[0.15em] font-bold">{t("complete.accuracy")}</span>
+            <span className="text-white/35 text-[11px] uppercase tracking-[0.15em] font-bold">{t("complete.accuracy")}</span>
             <span className={`${serif} text-[28px] font-bold ${
               correctRate >= 80 ? "text-emerald-300" : correctRate >= 50 ? "text-amber-300" : "text-red-300"
             }`}>
@@ -147,7 +147,7 @@ export function SessionComplete({
             className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl p-5 flex flex-col items-center gap-2"
           >
             <Award size={22} className="text-amber-400 fill-amber-400" />
-            <span className="text-white/35 text-[10px] uppercase tracking-[0.15em] font-bold">{t("complete.xpEarned")}</span>
+            <span className="text-white/35 text-[11px] uppercase tracking-[0.15em] font-bold">{t("complete.xpEarned")}</span>
             <span className={`${serif} text-[28px] font-bold text-transparent bg-clip-text bg-gradient-to-br from-amber-300 to-amber-500`}>
               +{xpEarned}
             </span>
@@ -169,7 +169,7 @@ export function SessionComplete({
         )}
 
         {/* Actions */}
-        <div className="w-full flex flex-col gap-3 mt-5">
+        <div className="w-full flex flex-col gap-3 mt-5 pb-safe">
           {allWrong && onRetry ? (
             <>
               <PrimaryButton onClick={onRetry} className="py-4 text-[16px] flex items-center justify-center gap-2">
@@ -179,20 +179,20 @@ export function SessionComplete({
               <div className="flex items-center gap-3 w-full">
                 {onGoToList && (
                   <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    whileTap={{ scale: 0.93 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
                     onClick={onGoToList}
-                    className="flex-1 flex items-center justify-center gap-1.5 text-white/40 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
+                    className="flex-1 flex items-center justify-center gap-1.5 text-white/40 hover:text-white/70 font-semibold py-3 transition-colors text-[14px] active:text-white/90 min-h-[44px]"
                   >
-                    <Map size={14} />
+                    <Map size={15} />
                     {t("complete.lessonList")}
                   </motion.button>
                 )}
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  whileTap={{ scale: 0.93 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   onClick={onGoHome}
-                  className="flex-1 text-white/35 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
+                  className="flex-1 text-white/35 hover:text-white/70 font-semibold py-3 transition-colors text-[14px] active:text-white/90 min-h-[44px]"
                 >
                   {t("complete.goHome")}
                 </motion.button>
@@ -206,20 +206,20 @@ export function SessionComplete({
               <div className="flex items-center gap-3 w-full">
                 {onGoToList && (
                   <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    whileTap={{ scale: 0.93 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
                     onClick={onGoToList}
-                    className="flex-1 flex items-center justify-center gap-1.5 text-white/40 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
+                    className="flex-1 flex items-center justify-center gap-1.5 text-white/40 hover:text-white/70 font-semibold py-3 transition-colors text-[14px] active:text-white/90 min-h-[44px]"
                   >
-                    <Map size={14} />
+                    <Map size={15} />
                     {t("complete.lessonList")}
                   </motion.button>
                 )}
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  whileTap={{ scale: 0.93 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   onClick={onGoHome}
-                  className="flex-1 text-white/35 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
+                  className="flex-1 text-white/35 hover:text-white/70 font-semibold py-3 transition-colors text-[14px] active:text-white/90 min-h-[44px]"
                 >
                   {t("complete.goHome")}
                 </motion.button>

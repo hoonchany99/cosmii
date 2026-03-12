@@ -2,7 +2,7 @@
 
 import { useState, useCallback, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, BookOpen, MessageCircle, Trophy, ChevronRight, Rocket } from "lucide-react";
+import { Sparkles, MessageCircle, Trophy, ChevronRight, Rocket } from "lucide-react";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useAppStore, useSettingsStore, type DailyGoal } from "@/lib/store";
 import { useIsMobile } from "@/lib/utils";
@@ -24,7 +24,6 @@ const DAILY_GOALS: { value: DailyGoal; labelKey: string; descKey: string; minute
 ];
 
 const HOW_STEPS = [
-  { icon: BookOpen, labelKey: "onboarding.step1", descKey: "onboarding.step1Desc", color: "text-indigo-400", bg: "bg-indigo-500/15" },
   { icon: MessageCircle, labelKey: "onboarding.step2", descKey: "onboarding.step2Desc", color: "text-teal-400", bg: "bg-teal-500/15" },
   { icon: Sparkles, labelKey: "onboarding.step3", descKey: "onboarding.step3Desc", color: "text-amber-400", bg: "bg-amber-500/15" },
   { icon: Trophy, labelKey: "onboarding.step4", descKey: "onboarding.step4Desc", color: "text-emerald-400", bg: "bg-emerald-500/15" },
@@ -77,11 +76,11 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       <CosmicBg accent="indigo" />
 
       {/* Progress dots */}
-      <div className="absolute top-14 left-0 right-0 z-30 flex justify-center gap-2">
+      <div className="absolute pt-safe top-0 left-0 right-0 z-30 flex justify-center gap-2">
         {Array.from({ length: totalSteps }).map((_, i) => (
           <motion.div
             key={i}
-            className="h-[3px] rounded-full"
+            className="h-1 rounded-full"
             animate={{
               width: i === step ? 24 : 8,
               backgroundColor: i <= step ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.12)",
@@ -98,7 +97,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
           onClick={handleFinish}
-          className="absolute top-12 right-5 z-30 text-white/25 text-[13px] font-medium hover:text-white/50 transition-colors px-3 py-2"
+          className="absolute top-14 right-5 z-30 text-white/25 text-[13px] font-medium hover:text-white/50 transition-colors px-3 py-3 min-h-[44px] min-w-[44px] flex items-center justify-center"
         >
           {t("onboarding.skip")}
         </motion.button>
@@ -280,9 +279,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                     </div>
                     <div className="text-left flex-1 min-w-0">
                       <p className="text-white/80 text-[14px] font-semibold">{t(s.labelKey as any)}</p>
-                      <p className="text-white/35 text-[12px] mt-0.5">{t(s.descKey as any)}</p>
+                      <p className="text-white/35 text-[13px] mt-0.5">{t(s.descKey as any)}</p>
                     </div>
-                    <span className="text-white/15 text-[11px] font-bold flex-shrink-0">
+                    <span className="text-white/15 text-[12px] font-bold flex-shrink-0">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                   </motion.div>
@@ -357,7 +356,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                       </div>
                       <div className="text-left flex-1">
                         <p className={`text-[15px] font-semibold ${active ? "text-white/90" : "text-white/60"}`}>{t(g.labelKey as any)}</p>
-                        <p className={`text-[12px] mt-0.5 ${active ? "text-white/40" : "text-white/25"}`}>{t(g.descKey as any)}</p>
+                        <p className={`text-[13px] mt-0.5 ${active ? "text-white/40" : "text-white/25"}`}>{t(g.descKey as any)}</p>
                       </div>
                       <span className={`text-[12px] font-medium ${active ? "text-indigo-300/60" : "text-white/20"}`}>
                         {g.minutes}

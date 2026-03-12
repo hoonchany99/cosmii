@@ -96,7 +96,7 @@
   --secondary: oklch(0.22 0.03 270);
   --secondary-foreground: oklch(0.95 0.005 270);
   --muted: oklch(0.22 0.02 270);
-  --muted-foreground: oklch(0.65 0.03 270);
+  --muted-foreground: oklch(0.70 0.03 270);
   --accent: oklch(0.25 0.04 270);
   --accent-foreground: oklch(0.95 0.005 270);
   --destructive: oklch(0.704 0.191 22.216);
@@ -135,27 +135,37 @@
 
 @layer utilities {
   .tap-scale {
-    transition: transform 0.1s ease;
+    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
     -webkit-tap-highlight-color: transparent;
   }
   .tap-scale:active {
-    transform: scale(0.95);
+    transform: scale(0.93);
   }
 
   .tap-scale-sm {
-    transition: transform 0.1s ease;
+    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
     -webkit-tap-highlight-color: transparent;
   }
   .tap-scale-sm:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
   }
 
   .tap-bright {
-    transition: filter 0.1s ease;
+    transition: filter 0.15s cubic-bezier(0.22, 1, 0.36, 1);
     -webkit-tap-highlight-color: transparent;
   }
   .tap-bright:active {
     filter: brightness(1.2);
+  }
+
+  .pt-safe {
+    padding-top: max(3.5rem, calc(env(safe-area-inset-top, 0px) + 0.75rem));
+  }
+  .pb-safe {
+    padding-bottom: max(2rem, calc(env(safe-area-inset-bottom, 0px) + 0.5rem));
+  }
+  .pb-safe-lg {
+    padding-bottom: max(2.5rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
   }
 
   .scrollbar-thin {

@@ -15,7 +15,7 @@ import { PrimaryButton } from "@/components/ui/glass-panel";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useT } from "@/lib/i18n";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API = "";
 const serif = "font-[var(--font-serif)]";
 
 interface ChapterSummary {
@@ -63,12 +63,13 @@ export function BookDetail({
       <CosmicBg accent="indigo" />
 
       {/* Header */}
-      <div className="absolute top-14 w-full px-5 flex items-center z-20">
+      <div className="absolute pt-safe top-0 w-full px-5 flex items-center z-20">
         <motion.button
-          whileTap={{ scale: 0.88 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={onBack}
-          className="text-white/60 hover:text-white transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          aria-label="Back"
+          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
         >
           <ChevronLeft size={22} />
         </motion.button>
@@ -199,7 +200,7 @@ export function BookDetail({
                       <span className={`text-[15px] font-semibold block truncate ${done ? "text-white/50" : "text-white/75"}`}>
                         {ch.chapter}
                       </span>
-                      <span className="text-white/30 text-[12px]">
+                      <span className="text-white/30 text-[13px]">
                         {t("bookDetail.chapterSessions", { done: ch.completedCount, total: ch.lessonCount })}
                       </span>
                     </div>
@@ -220,7 +221,7 @@ export function BookDetail({
       </div>
 
       {/* Bottom CTA */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-12 pb-10 px-6 z-20">
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-12 pb-safe-lg px-6 z-20">
         <PrimaryButton onClick={onStartLearning} className="py-4 text-[16px] flex items-center justify-center gap-2">
           <Play size={18} className="fill-white" />
           {isStarted ? t("bookDetail.continue") : t("bookDetail.startLearning")}

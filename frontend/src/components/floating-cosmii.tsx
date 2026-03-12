@@ -316,12 +316,12 @@ export function FloatingCosmii3D({
                     </div>
                     {bubbleInfo && (
                       <div className="px-5 pb-3 pt-1 flex items-center justify-between">
-                        <span className="text-[11px] text-white/30 font-mono">
+                        <span className="text-[12px] text-white/30 font-mono">
                           {bubbleInfo.current + 1} / {bubbleInfo.total}
                         </span>
                         {hasMore && (
                           <motion.span
-                            className="text-[11px] text-indigo-400/70 flex items-center gap-1"
+                            className="text-[12px] text-indigo-400/70 flex items-center gap-1"
                             animate={{ opacity: [0.5, 1, 0.5] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                           >
@@ -368,7 +368,7 @@ export function FloatingCosmii3D({
                 background: "rgba(255,255,255,0.1)",
                 backdropFilter: "blur(12px)",
                 border: "1px solid rgba(255,255,255,0.15)",
-                fontSize: 11,
+                fontSize: 12,
                 color: "rgba(255,255,255,0.85)",
               }}
             >
@@ -395,7 +395,7 @@ export function FloatingCosmii3D({
             <div className="flex flex-col gap-1.5 p-2 rounded-xl bg-black/70 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/40 min-w-[120px]">
               <button
                 onClick={handleSettingsClick}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-[13px] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all duration-200 cursor-pointer min-h-[40px]"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="3" />
@@ -405,7 +405,7 @@ export function FloatingCosmii3D({
               </button>
               <button
                 onClick={handleAboutClick}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-[13px] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all duration-200 cursor-pointer min-h-[40px]"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
@@ -416,7 +416,7 @@ export function FloatingCosmii3D({
               </button>
               <button
                 onClick={handleDemoClick}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all duration-200 cursor-pointer"
+                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-[13px] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all duration-200 cursor-pointer min-h-[40px]"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />

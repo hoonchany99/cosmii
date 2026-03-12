@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ChevronLeft,
@@ -55,7 +56,7 @@ function StatCard({
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${color}`}>
         {icon}
       </div>
-      <span className="text-white/35 text-[10px] uppercase tracking-[0.15em] font-bold">
+      <span className="text-white/35 text-[11px] uppercase tracking-[0.15em] font-bold">
         {label}
       </span>
       <span className={`${serif} text-[22px] font-bold text-white/90`}>{value}</span>
@@ -88,7 +89,7 @@ function WeekStreak({ streakDays }: { streakDays: number }) {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.4 + i * 0.05, type: "spring", stiffness: 400, damping: 20 }}
-                className={`w-9 h-9 rounded-full flex items-center justify-center border ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center border ${
                   i === todayIdx
                     ? "bg-orange-500/25 border-orange-400/50 shadow-[0_0_16px_rgba(245,158,11,0.3)]"
                     : isActive
@@ -110,7 +111,7 @@ function WeekStreak({ streakDays }: { streakDays: number }) {
                 )}
               </motion.div>
               <span
-                className={`text-[10px] font-semibold ${
+                className={`text-[11px] font-semibold ${
                   i === todayIdx ? "text-orange-400" : "text-white/25"
                 }`}
               >
@@ -151,25 +152,27 @@ export function ProfileView({
       <CosmicBg accent="indigo" />
 
       {/* Header */}
-      <div className="absolute top-0 w-full pt-14 pb-3 px-5 flex items-center justify-between z-30 bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
+      <div className="absolute top-0 w-full pt-safe pb-3 px-5 flex items-center justify-between z-30 bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <div className="flex items-center">
           <motion.button
-            whileTap={{ scale: 0.88 }}
-            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            whileTap={{ scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
             onClick={onBack}
-            className="text-white/60 hover:text-white transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+            aria-label="Back"
+            className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
           >
             <ChevronLeft size={22} />
           </motion.button>
-          <h2 className={`${serif} text-white/80 font-bold text-[18px] tracking-wide ml-2`}>
+          <h2 className={`${serif} text-white/80 font-bold text-[18px] tracking-wide ml-1`}>
             {t("profile.title")}
           </h2>
         </div>
         <motion.button
-          whileTap={{ scale: 0.88 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={onOpenSettings}
-          className="text-white/50 hover:text-white/80 p-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10] transition-colors"
+          aria-label="Settings"
+          className="text-white/50 hover:text-white/80 p-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10] transition-colors"
         >
           <Settings size={20} />
         </motion.button>
@@ -188,11 +191,14 @@ export function ProfileView({
           <div className="relative">
             <div className="w-24 h-24 rounded-full border-[3px] border-[#0a0a1a] shadow-[0_0_40px_rgba(99,102,241,0.25)] overflow-hidden">
               {profile.avatarUrl ? (
-                <img
+                <Image
                   src={profile.avatarUrl}
                   alt="Profile"
+                  width={96}
+                  height={96}
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
+                  unoptimized
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-indigo-500/20 to-violet-500/20 flex items-center justify-center">
@@ -219,7 +225,7 @@ export function ProfileView({
             {profile.email && (
               <p className="text-white/25 text-[12px] mt-0.5">{profile.email}</p>
             )}
-            <p className="text-indigo-300/50 text-[12px] mt-1 font-medium">
+            <p className="text-indigo-300/50 text-[13px] mt-1 font-medium">
               {stats.level <= 3 ? t("profile.levelTitle1") : stats.level <= 7 ? t("profile.levelTitle2") : stats.level <= 15 ? t("profile.levelTitle3") : t("profile.levelTitle4")}
             </p>
           </div>
@@ -345,7 +351,7 @@ export function ProfileView({
                     <span className="text-[22px]" style={{ filter: unlocked ? "none" : "grayscale(1)" }}>
                       {badge.icon}
                     </span>
-                    <span className={`text-[9px] font-bold leading-tight text-center px-1 ${unlocked ? "text-white/60" : "text-white/20"}`}>
+                    <span className={`text-[10px] font-bold leading-tight text-center px-1 ${unlocked ? "text-white/60" : "text-white/20"}`}>
                       {badge.name}
                     </span>
                   </motion.div>

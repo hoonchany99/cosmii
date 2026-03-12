@@ -907,7 +907,7 @@ export function MainContent({
   );
 
   const saved = getChatState(bookIds);
-  const [messages, setMessages] = useState<ChatMessageType[]>(saved.messages);
+  const [messages, setMessages] = useState<ChatMessageType[]>(saved.messages as ChatMessageType[]);
   const [conversationId, setConversationId] = useState<string | null>(
     saved.conversationId,
   );
@@ -939,7 +939,7 @@ export function MainContent({
     setShowHistory(false);
     setConfirmDelete(false);
     const s = getChatState(bookIds);
-    setMessages(s.messages);
+    setMessages(s.messages as ChatMessageType[]);
     setConversationId(s.conversationId);
   }, [bookIds, mobile]);
 

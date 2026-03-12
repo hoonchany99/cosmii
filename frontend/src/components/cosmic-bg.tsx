@@ -10,7 +10,7 @@ export function CosmicBg({ accent = "indigo" }: { accent?: "indigo" | "amber" | 
   };
 
   const stars = useMemo(() => {
-    return Array.from({ length: 60 }, (_, i) => ({
+    return Array.from({ length: 35 }, (_, i) => ({
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 1.5 + 0.5,

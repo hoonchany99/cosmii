@@ -113,23 +113,24 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
       <CosmicBg accent={feedback === "correct" ? "emerald" : feedback === "wrong" ? "amber" : "indigo"} />
 
       {/* Header */}
-      <div className="pt-14 px-5 flex items-center gap-3 z-20 relative">
+      <div className="pt-safe px-5 flex items-center gap-3 z-20 relative">
         <motion.button
-          whileTap={{ scale: 0.88 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={onBack}
-          className="text-white/60 hover:text-white transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          aria-label="Back"
+          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
         >
           <ChevronLeft size={22} />
         </motion.button>
-        <div className="flex-1 h-[4px] bg-white/[0.08] rounded-full overflow-hidden">
+        <div className="flex-1 h-1.5 bg-white/[0.08] rounded-full overflow-hidden">
           <motion.div
             className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 rounded-full"
             animate={{ width: `${quizPct}%` }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           />
         </div>
-        <span className="text-white/40 text-[12px] font-semibold min-w-[36px] text-right">
+        <span className="text-white/40 text-[13px] font-semibold min-w-[36px] text-right">
           {currentQuiz + 1}/{quizzes.length}
         </span>
       </div>
@@ -156,14 +157,14 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
               key={i}
               onClick={() => handleSelect(i)}
               disabled={!!feedback}
-              whileTap={!feedback ? { scale: 0.97, transition: { type: "spring", stiffness: 500, damping: 25 } } : undefined}
+              whileTap={!feedback ? { scale: 0.95, transition: { type: "spring", stiffness: 400, damping: 22 } } : undefined}
               animate={
                 feedback && i === selectedOption
                   ? { scale: [1, 1.03, 1] }
                   : {}
               }
               transition={{ duration: 0.2 }}
-              className={`w-full min-h-[56px] rounded-2xl flex items-center px-4 gap-3 backdrop-blur-md text-left transition-all select-none ${getOptionStyle(i)}`}
+              className={`w-full min-h-[58px] rounded-2xl flex items-center px-4 gap-3.5 backdrop-blur-md text-left transition-all select-none ${getOptionStyle(i)}`}
             >
               <span className={`w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold border flex-shrink-0 transition-all ${getBadgeStyle(i)}`}>
                 {feedback && i === quiz.correctIndex ? (
@@ -204,7 +205,7 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className={`p-6 pt-7 pb-10 z-20 rounded-t-3xl border-t backdrop-blur-xl relative ${
+            className={`p-6 pt-7 pb-safe-lg z-20 rounded-t-3xl border-t backdrop-blur-xl relative ${
               feedback === "correct"
                 ? "bg-emerald-950/80 border-emerald-500/25"
                 : "bg-red-950/70 border-red-500/20"
@@ -264,7 +265,7 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
           </motion.div>
         ) : (
           <motion.div
-            className="px-6 pb-10 z-20 relative"
+            className="px-6 pb-safe-lg z-20 relative"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >

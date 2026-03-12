@@ -8,7 +8,7 @@ import { useIsMobile } from "@/lib/utils";
 import { useSettingsStore } from "@/lib/store";
 import { useT } from "@/lib/i18n";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API = "";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -140,12 +140,13 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
       <CosmicBg accent="indigo" />
 
       {/* Header */}
-      <div className="pt-14 px-5 flex items-center z-20 relative">
+      <div className="pt-safe px-5 flex items-center z-20 relative">
         <motion.button
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          whileTap={{ scale: 0.93 }}
+          transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={onBack}
-          className="text-white/60 hover:text-white flex items-center gap-2 transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          aria-label="Back"
+          className="text-white/60 hover:text-white flex items-center gap-2 transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
         >
           <ChevronLeft size={22} />
           <span className="font-semibold text-[15px]">{t("freeQ.goBack")}</span>
@@ -232,12 +233,12 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
       </div>
 
       {/* Bottom input */}
-      <div className="absolute bottom-0 w-full bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-10 pb-8 px-5 z-20 flex flex-col gap-3">
+      <div className="absolute bottom-0 w-full bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-10 pb-safe-lg px-5 z-20 flex flex-col gap-3">
         <motion.button
           whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
           onClick={onBack}
-          className="text-white/40 hover:text-white/70 text-[13px] font-semibold mx-auto transition-colors active:text-white/90"
+          className="text-white/40 hover:text-white/70 text-[14px] font-semibold mx-auto py-1 transition-colors active:text-white/90"
         >
           {t("freeQ.backToExplore")}
         </motion.button>
@@ -249,14 +250,15 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder={t("freeQ.placeholder")}
-            className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-12 text-white text-[14px] placeholder-white/25 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
+            className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-13 text-white text-[15px] placeholder-white/30 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
           />
           <motion.button
-            whileTap={{ scale: 0.88 }}
-            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            whileTap={{ scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
             onClick={handleSend}
             disabled={!input.trim() || isLoading}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
+            aria-label="Send"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
           >
             <Send size={16} className="text-indigo-300 ml-0.5" />
           </motion.button>

@@ -92,12 +92,13 @@ export function LessonConstellation({
     <div className="w-full h-full relative overflow-hidden text-white">
       <CosmicBg accent="indigo" />
 
-      <div className="absolute top-0 left-0 right-0 z-20 pt-12 pb-2 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
+      <div className="absolute top-0 left-0 right-0 z-20 pt-safe pb-2 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <motion.button
-          whileTap={{ scale: 0.88 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={onBack}
-          className="text-white/60 hover:text-white transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          aria-label="Back"
+          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
         >
           <ChevronLeft size={22} />
         </motion.button>
@@ -105,7 +106,7 @@ export function LessonConstellation({
           <h2 className={`${serif} text-white/90 font-bold text-[20px] tracking-wide`}>{bookTitle}</h2>
           {bookAuthor && <p className="text-white/35 text-[13px] -mt-0.5">{bookAuthor}</p>}
           <div className="flex items-center gap-2.5 mt-0.5">
-            <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden">
+            <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 rounded-full"
                 initial={{ width: 0 }}
@@ -118,15 +119,16 @@ export function LessonConstellation({
         </div>
         {onOpenNotes ? (
           <motion.button
-            whileTap={{ scale: 0.88 }}
-            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            whileTap={{ scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
             onClick={onOpenNotes}
-            className="text-white/50 hover:text-white/80 p-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10] transition-colors"
+            aria-label="Notes"
+            className="text-white/50 hover:text-white/80 p-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10] transition-colors"
           >
             <BookMarked size={19} />
           </motion.button>
         ) : (
-          <div className="w-8" />
+          <div className="w-10" />
         )}
       </div>
 
@@ -146,7 +148,7 @@ export function LessonConstellation({
                 ref={lesson.isCurrent ? currentRef : undefined}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: i * 0.025, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className="relative flex flex-col items-center gap-3"
                 style={{ marginLeft: `${offsetX}px` }}
               >
@@ -158,14 +160,14 @@ export function LessonConstellation({
 
                 {lesson.isCurrent ? (
                   <>
-                    <div className="absolute -inset-3 bg-amber-500/20 rounded-full animate-pulse blur-xl" />
+                    <div className="absolute -inset-4 bg-amber-500/20 rounded-full animate-pulse blur-xl" />
                     <motion.button
-                      whileTap={{ scale: 0.88 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                      whileTap={{ scale: 0.85 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 22 }}
                       onClick={() => onSelectLesson(lesson.id)}
-                      className="w-[60px] h-[60px] rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-[3px] border-amber-300/70 flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.45)] z-10 relative select-none"
+                      className="w-[64px] h-[64px] rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-[3px] border-amber-300/70 flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.45)] z-10 relative select-none"
                     >
-                      <Star size={26} className="text-white fill-white drop-shadow-md" />
+                      <Star size={28} className="text-white fill-white drop-shadow-md" />
                     </motion.button>
                     <span className="text-amber-200/70 text-[14px] font-medium max-w-[220px] text-center leading-snug line-clamp-2">
                       {lesson.title}
@@ -174,12 +176,12 @@ export function LessonConstellation({
                 ) : lesson.completed && !lesson.reviewNeeded ? (
                   <>
                     <motion.button
-                      whileTap={{ scale: 0.88 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                      whileTap={{ scale: 0.85 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 22 }}
                       onClick={() => onSelectLesson(lesson.id)}
-                      className="w-12 h-12 rounded-full bg-emerald-500/15 border-2 border-emerald-400/50 flex items-center justify-center shadow-[0_0_14px_rgba(16,185,129,0.2)] hover:bg-emerald-500/25 transition-colors select-none"
+                      className="w-13 h-13 rounded-full bg-emerald-500/15 border-2 border-emerald-400/50 flex items-center justify-center shadow-[0_0_14px_rgba(16,185,129,0.2)] hover:bg-emerald-500/25 transition-colors select-none"
                     >
-                      <Check size={20} className="text-emerald-400" strokeWidth={3} />
+                      <Check size={22} className="text-emerald-400" strokeWidth={3} />
                     </motion.button>
                     <span className="text-emerald-300/40 text-[14px] font-medium max-w-[220px] text-center leading-snug line-clamp-2">
                       {lesson.title}
@@ -189,24 +191,24 @@ export function LessonConstellation({
                   <>
                     <div className="absolute -inset-2 rounded-full border border-violet-400/30 border-dashed animate-[spin_8s_linear_infinite]" />
                     <motion.button
-                      whileTap={{ scale: 0.88 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                      whileTap={{ scale: 0.85 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 22 }}
                       onClick={() => onSelectLesson(lesson.id)}
-                      className="w-12 h-12 rounded-full bg-violet-500/12 border-2 border-violet-400/40 flex items-center justify-center hover:bg-violet-500/20 transition-colors select-none"
+                      className="w-13 h-13 rounded-full bg-violet-500/12 border-2 border-violet-400/40 flex items-center justify-center hover:bg-violet-500/20 transition-colors select-none"
                     >
-                      <RotateCcw size={16} className="text-violet-400" />
+                      <RotateCcw size={18} className="text-violet-400" />
                     </motion.button>
                   </>
                 ) : lesson.locked ? (
-                  <div className="w-10 h-10 rounded-full bg-white/[0.03] border border-white/[0.08] flex items-center justify-center">
-                    <Lock size={13} className="text-white/15" />
+                  <div className="w-12 h-12 rounded-full bg-white/[0.03] border border-white/[0.08] flex items-center justify-center">
+                    <Lock size={14} className="text-white/15" />
                   </div>
                 ) : (
                   <motion.button
-                    whileTap={{ scale: 0.88 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    whileTap={{ scale: 0.85 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 22 }}
                     onClick={() => onSelectLesson(lesson.id)}
-                    className="w-11 h-11 rounded-full bg-white/[0.04] border-2 border-white/20 flex items-center justify-center hover:border-white/40 hover:bg-white/[0.08] transition-all select-none"
+                    className="w-12 h-12 rounded-full bg-white/[0.04] border-2 border-white/20 flex items-center justify-center hover:border-white/40 hover:bg-white/[0.08] transition-all select-none"
                   >
                     <Circle size={14} className="text-white/25" />
                   </motion.button>

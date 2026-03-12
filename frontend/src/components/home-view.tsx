@@ -395,12 +395,12 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
 
       {/* Top: Date + Greeting */}
       <motion.div
-        className="absolute top-[100px] left-0 right-0 z-20 px-7"
+        className="absolute top-[108px] left-0 right-0 z-20 px-7"
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
-        <p className="text-white/25 text-[11px] font-semibold tracking-[0.15em] uppercase">
+        <p className="text-white/25 text-[12px] font-semibold tracking-[0.15em] uppercase">
           {dateStr}
         </p>
         <h1 className={`${serif} text-white/90 text-[28px] font-bold mt-1.5 leading-tight`}>
@@ -421,7 +421,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
       />
 
       {/* Bottom content */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 px-5 pb-10 flex flex-col items-center">
+      <div className="absolute bottom-0 left-0 right-0 z-20 px-5 pb-safe-lg flex flex-col items-center">
         {/* Cosmii + Speech bubble — horizontal chat style */}
         <motion.div
           className="flex items-end gap-2.5 mb-5 w-full max-w-[340px]"
@@ -461,7 +461,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
             transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="w-full max-w-[340px] mb-3.5"
           >
-            <p className="text-white/25 text-[10px] font-bold tracking-[0.14em] uppercase mb-2 pl-1">
+            <p className="text-white/25 text-[11px] font-bold tracking-[0.14em] uppercase mb-2 pl-1">
               {t("home.recentBooks")}
             </p>
             <motion.button
@@ -486,7 +486,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
               </div>
               <div className="px-4 pb-3.5">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-white/30 text-[10px] font-semibold">{t("home.progress")}</span>
+                  <span className="text-white/30 text-[11px] font-semibold">{t("home.progress")}</span>
                   <span className="text-white/40 text-[11px] font-bold tabular-nums">{progress}%</span>
                 </div>
                 <div className="w-full h-[4px] bg-white/[0.06] rounded-full overflow-hidden">
@@ -498,7 +498,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
                     transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
                   />
                 </div>
-                <p className="text-white/20 text-[10px] mt-1.5 tabular-nums">
+                <p className="text-white/20 text-[11px] mt-1.5 tabular-nums">
                   {t("home.sessionsComplete", { done: activeSession.completedLessons, total: activeSession.totalLessons })}
                 </p>
               </div>
@@ -515,7 +515,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
             className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] backdrop-blur-md rounded-full px-4 py-2 mb-3.5"
           >
             <BookOpen size={14} className="text-indigo-300/60" />
-            <span className="text-white/30 text-[12px] font-medium">{t("home.tapToSelect")}</span>
+            <span className="text-white/30 text-[13px] font-medium">{t("home.tapToSelect")}</span>
           </motion.div>
         )}
 

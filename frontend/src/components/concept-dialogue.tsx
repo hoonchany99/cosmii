@@ -9,7 +9,7 @@ import { useSettingsStore } from "@/lib/store";
 import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API = "";
 
 interface DialoguePart {
   speaker: string;
@@ -293,30 +293,29 @@ export function ConceptDialogue({
     >
       <CosmicBg accent="indigo" />
 
-      {/* Chapter intro overlay */}
+      {/* Chapter intro overlay — solid background hides lesson content */}
       <AnimatePresence>
         {showChapterIntro && chapter && (
           <motion.div
             key="chapter-intro"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-none"
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="absolute inset-0 z-50 flex flex-col items-center justify-center"
+            style={{ background: "#050510" }}
           >
             <motion.span
               initial={{ opacity: 0, letterSpacing: "0.5em" }}
-              animate={{ opacity: 0.35, letterSpacing: "0.3em" }}
-              exit={{ opacity: 0, letterSpacing: "0.5em" }}
+              animate={{ opacity: 0.4, letterSpacing: "0.3em" }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="text-white text-[11px] font-bold uppercase tracking-[0.3em]"
+              className="text-white text-[12px] font-bold uppercase tracking-[0.3em]"
             >
               Chapter
             </motion.span>
             <motion.span
               initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 0.25, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 0.3, scale: 1 }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.15 }}
               className={`${serif} text-white text-[72px] font-bold leading-none mt-1`}
             >
@@ -324,10 +323,9 @@ export function ConceptDialogue({
             </motion.span>
             <motion.span
               initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 0.3, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 0.35, y: 0 }}
               transition={{ duration: 1.0, ease: "easeOut", delay: 0.4 }}
-              className={`${serif} text-white/40 text-[16px] font-medium tracking-wider mt-3`}
+              className={`${serif} text-white/40 text-[17px] font-medium tracking-wider mt-3`}
             >
               {chapter}
             </motion.span>
@@ -336,26 +334,27 @@ export function ConceptDialogue({
       </AnimatePresence>
 
       {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 pt-14 pb-3 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
+      <div className="absolute top-0 left-0 right-0 z-20 pt-safe pb-3 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <motion.button
-          whileTap={{ scale: 0.88 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={(e) => { e.stopPropagation(); onBack(); }}
-          className="text-white/60 hover:text-white transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          aria-label="Back"
+          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
         >
           <ChevronLeft size={22} />
         </motion.button>
         <div className="flex flex-col items-center gap-0.5">
-          <span className="text-white/40 text-[11px] font-medium max-w-[220px] text-center truncate">
+          <span className="text-white/40 text-[12px] font-medium max-w-[220px] text-center truncate">
             {[chapter, bookTitle].filter(Boolean).join(" · ") || `${t("dialogue.explore")} ${currentLesson}/${totalLessons}`}
           </span>
-          <h2 className={`${serif} text-white/80 font-semibold text-[15px] tracking-wide max-w-[200px] text-center truncate`}>{lessonTitle}</h2>
+          <h2 className={`${serif} text-white/80 font-semibold text-[16px] tracking-wide max-w-[200px] text-center truncate`}>{lessonTitle}</h2>
         </div>
-        <div className="w-8" />
+        <div className="w-10" />
       </div>
 
       {/* Progress bar */}
-      <div className="absolute top-[108px] w-[calc(100%-40px)] left-5 h-[3px] bg-white/[0.08] rounded-full overflow-hidden z-20">
+      <div className="absolute top-[112px] w-[calc(100%-40px)] left-5 h-1.5 bg-white/[0.08] rounded-full overflow-hidden z-20">
         <motion.div
           className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 rounded-full"
           initial={false}
@@ -368,7 +367,7 @@ export function ConceptDialogue({
       <div
         ref={dialogueScrollRef}
         className="absolute inset-0 z-10 overflow-y-auto"
-        style={{ paddingTop: "120px", paddingBottom: `${160 + kbHeight}px` }}
+        style={{ paddingTop: "124px", paddingBottom: `${160 + kbHeight}px` }}
       >
         <div className="flex flex-col gap-4 px-5" style={{ minHeight: "100%" }}>
           <div className="flex-1 shrink-0" />
@@ -430,7 +429,7 @@ export function ConceptDialogue({
               >
                 <ChevronUp size={18} className="text-white/30" />
               </motion.div>
-              <span className="text-white/25 text-[11px] tracking-[0.2em] uppercase">
+              <span className="text-white/25 text-[12px] tracking-[0.2em] uppercase">
                 {isLast ? t("dialogue.tapFinish") : t("dialogue.tapContinue")}
               </span>
             </motion.div>
@@ -440,7 +439,7 @@ export function ConceptDialogue({
 
       {/* Bottom question input bar */}
       <div
-        className="absolute left-0 right-0 z-30 px-5 pb-8 transition-[bottom] duration-200"
+        className="absolute left-0 right-0 z-30 px-5 pb-safe-lg transition-[bottom] duration-200"
         style={{ bottom: kbHeight }}
       >
         <div
@@ -460,14 +459,15 @@ export function ConceptDialogue({
               }
             }}
             placeholder={t("dialogue.askPlaceholder")}
-            className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-12 text-white text-[14px] placeholder-white/25 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
+                    className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-13 text-white text-[15px] placeholder-white/30 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
           />
           <motion.button
-            whileTap={{ scale: 0.88 }}
-            transition={{ type: "spring", stiffness: 500, damping: 25 }}
+            whileTap={{ scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
             onClick={handleAskInline}
             disabled={!questionInput.trim() || isAnswering}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
+            aria-label="Send"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
           >
             <Send size={16} className="text-indigo-300 ml-0.5" />
           </motion.button>
@@ -573,7 +573,7 @@ export function ConceptDialogue({
               </div>
 
               {/* Bottom: input + back to lesson */}
-              <div className="px-5 pb-8 pt-3 border-t border-white/[0.06] flex flex-col gap-3">
+              <div className="px-5 pb-safe-lg pt-3 border-t border-white/[0.06] flex flex-col gap-3">
                 <div className="relative w-full">
                   <input
                     ref={sheetInputRef}
@@ -583,24 +583,25 @@ export function ConceptDialogue({
                     onKeyDown={(e) => e.key === "Enter" && handleSheetAsk()}
                     placeholder={t("dialogue.sheetPlaceholder")}
                     disabled={isAnswering}
-                    className="w-full h-11 bg-white/[0.07] border border-white/[0.12] rounded-full pl-5 pr-11 text-white text-[14px] placeholder-white/25 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all disabled:opacity-40"
+                    className="w-full h-12 bg-white/[0.07] border border-white/[0.12] rounded-full pl-5 pr-12 text-white text-[15px] placeholder-white/30 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all disabled:opacity-40"
                   />
                   <motion.button
-                    whileTap={{ scale: 0.88 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    whileTap={{ scale: 0.85 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 22 }}
                     onClick={handleSheetAsk}
                     disabled={!sheetInput.trim() || isAnswering}
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
+                    aria-label="Send"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
                   >
-                    <Send size={15} className="text-indigo-300 ml-0.5" />
+                    <Send size={16} className="text-indigo-300 ml-0.5" />
                   </motion.button>
                 </div>
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   onClick={handleCloseAnswer}
                   disabled={isAnswering}
-                  className="text-white/35 hover:text-white/60 text-[13px] font-semibold mx-auto transition-colors disabled:opacity-30 active:text-white/90"
+                  className="text-white/35 hover:text-white/60 text-[14px] font-semibold mx-auto py-1 transition-colors disabled:opacity-30 active:text-white/90"
                 >
                   {t("dialogue.backToExplore")}
                 </motion.button>

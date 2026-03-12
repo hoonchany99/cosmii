@@ -30,7 +30,7 @@ export function PrimaryButton({
   onClick?: () => void;
   variant?: "indigo" | "emerald" | "ghost";
 }) {
-  const base = "w-full min-h-[48px] rounded-2xl font-semibold transition-all select-none";
+  const base = "w-full min-h-[52px] rounded-2xl font-semibold transition-all select-none";
   const variants = {
     indigo: disabled
       ? "bg-white/10 text-white/30 cursor-not-allowed"
@@ -41,8 +41,8 @@ export function PrimaryButton({
 
   return (
     <motion.button
-      whileTap={disabled ? undefined : { scale: 0.96 }}
-      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+      whileTap={disabled ? undefined : { scale: 0.92 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
       className={cn(base, variants[variant], className)}
       disabled={disabled}
       onClick={onClick}

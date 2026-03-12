@@ -33,7 +33,7 @@ export function ChatView({
 }: ChatViewProps) {
   const mobile = useIsMobile();
   const saved = getChatState(bookIds);
-  const [messages, setMessages] = useState<ChatMessageType[]>(saved.messages);
+  const [messages, setMessages] = useState<ChatMessageType[]>(saved.messages as ChatMessageType[]);
   const [conversationId, setConversationId] = useState<string | null>(
     saved.conversationId,
   );

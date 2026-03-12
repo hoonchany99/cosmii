@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, EB_Garamond } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -19,6 +19,15 @@ const ebGaramond = EB_Garamond({
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.app";
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: {
@@ -95,7 +104,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <meta name="theme-color" content="#0f172a" />
+        {/* Preload Cosmii character WebP sprites to avoid pop-in */}
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/standing-mobile.webp" />
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/talking-mobile.webp" />
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/giggling-mobile.webp" />
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/dancing-mobile.webp" />
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/standing-desktop.webp" />
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/talking-desktop.webp" />
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/giggling-desktop.webp" />
+        <link rel="preload" as="image" type="image/webp" href="/cosmii/dancing-desktop.webp" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} antialiased`}
