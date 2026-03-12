@@ -79,10 +79,7 @@ export default function UniversePage() {
   const [quizResults, setQuizResults] = useState({ score: 0, total: 0, correct: 0 });
   const [completeData, setCompleteData] = useState({ xpEarned: 0, streakDays: 0, levelUp: false });
 
-  const [showOnboarding, setShowOnboarding] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !localStorage.getItem("cosmii-onboarded");
-  });
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const t = useT();
   const language = useSettingsStore((s) => s.language);
@@ -100,14 +97,17 @@ export default function UniversePage() {
 
     fetch(`${API}/api/user/stats`)
       .then((r) => r.json())
-      .then((data) =>
+      .then((data) => {
         setStats({
           xp: data.xp ?? 0,
           streakDays: data.streak_days ?? 0,
           lastStudyDate: data.last_study_date ?? null,
           level: data.level ?? 1,
-        })
-      )
+        });
+        if ((data.xp ?? 0) === 0 && !localStorage.getItem("cosmii-onboarded")) {
+          setShowOnboarding(true);
+        }
+      })
       .catch(() => {});
 
     const supabase = createClient();
