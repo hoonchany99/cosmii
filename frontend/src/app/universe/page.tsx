@@ -18,6 +18,13 @@ import { BookDetail } from "@/components/book-detail";
 import { BookNotes } from "@/components/book-notes";
 import { WarpOverlay } from "@/components/warp-overlay";
 import { Onboarding } from "@/components/onboarding";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+
+const CosmiiConstellation = dynamic(
+  () => import("@/components/cosmii-constellation").then((m) => m.CosmiiConstellation),
+  { ssr: false },
+);
 
 const API = "";
 
@@ -80,6 +87,7 @@ export default function UniversePage() {
   const [completeData, setCompleteData] = useState({ xpEarned: 0, streakDays: 0, levelUp: false });
 
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [statsLoaded, setStatsLoaded] = useState(false);
 
   const t = useT();
   const language = useSettingsStore((s) => s.language);
@@ -107,8 +115,9 @@ export default function UniversePage() {
         if ((data.xp ?? 0) === 0) {
           setShowOnboarding(true);
         }
+        setStatsLoaded(true);
       })
-      .catch(() => {});
+      .catch(() => { setStatsLoaded(true); });
 
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
@@ -289,6 +298,18 @@ export default function UniversePage() {
     exit: { opacity: 0, x: -30, filter: "blur(4px)" },
     transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as const },
   };
+
+  if (!statsLoaded) {
+    return (
+      <div className="h-screen w-screen bg-[#050510] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <Suspense fallback={null}>
+            <CosmiiConstellation animate={false} />
+          </Suspense>
+        </div>
+      </div>
+    );
+  }
 
   if (showOnboarding) {
     return (
