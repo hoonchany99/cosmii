@@ -5,9 +5,11 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
-import { ChevronRight, Play, BookOpen } from "lucide-react";
+import { ChevronRight, BookOpen } from "lucide-react";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useIsMobile } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
+import { useSettingsStore } from "@/lib/store";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -30,19 +32,6 @@ interface HomeViewProps {
   onSelectBook: (book: Book) => void;
   activeSession?: ActiveSession | null;
   onContinueLearning?: () => void;
-}
-
-function getGreeting(): { title: string; sub: string } {
-  const h = new Date().getHours();
-  if (h < 6) return { title: "고요한 밤,", sub: "조용히 읽어볼까?" };
-  if (h < 12) return { title: "좋은 아침!", sub: "오늘의 탐험을 시작해볼까?" };
-  if (h < 18) return { title: "좋은 오후!", sub: "한 걸음 더 나아가볼까?" };
-  return { title: "좋은 저녁!", sub: "오늘의 마지막 탐험은?" };
-}
-
-function getDateString(): string {
-  const d = new Date();
-  return d.toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "short" });
 }
 
 /* ── Texture generators (singleton) ── */
@@ -368,9 +357,23 @@ function Scene({ books, onSelectBook }: HomeViewProps) {
 
 export function HomeView({ books, onSelectBook, activeSession, onContinueLearning }: HomeViewProps) {
   const mobile = useIsMobile();
+  const t = useT();
+  const language = useSettingsStore((s) => s.language);
 
-  const greeting = getGreeting();
-  const dateStr = getDateString();
+  const greeting = useMemo(() => {
+    const h = new Date().getHours();
+    if (h < 6) return { title: t("home.greetNight"), sub: t("home.greetNightSub") };
+    if (h < 12) return { title: t("home.greetMorning"), sub: t("home.greetMorningSub") };
+    if (h < 18) return { title: t("home.greetAfternoon"), sub: t("home.greetAfternoonSub") };
+    return { title: t("home.greetEvening"), sub: t("home.greetEveningSub") };
+  }, [t]);
+
+  const dateStr = useMemo(() => {
+    const d = new Date();
+    const locale = language === "ko" ? "ko-KR" : "en-US";
+    return d.toLocaleDateString(locale, { month: "long", day: "numeric", weekday: "short" });
+  }, [language]);
+
   const progress = activeSession
     ? Math.round((activeSession.completedLessons / Math.max(activeSession.totalLessons, 1)) * 100)
     : 0;
@@ -438,14 +441,13 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
             />
           </motion.div>
           <div className="relative flex-1 min-w-0">
-            <div className="absolute bottom-[10px] -left-[6px] w-3 h-3 rotate-45 bg-white/[0.07] border-l border-b border-white/[0.12]" />
-            <div className="bg-white/[0.07] border border-white/[0.12] backdrop-blur-xl rounded-2xl rounded-bl-md px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+            <div className="bg-white/[0.07] border border-white/[0.12] backdrop-blur-xl rounded-2xl px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
               <p className="text-white/65 text-[13px] font-medium leading-relaxed">
                 {books.length === 0
-                  ? "책을 업로드하면 탐험이 시작돼!"
+                  ? t("home.uploadHint")
                   : activeSession
-                    ? "이어서 탐험해볼까?"
-                    : "별을 눌러 탐험을 시작해봐!"}
+                    ? t("home.continueHint")
+                    : t("home.startHint")}
               </p>
             </div>
           </div>
@@ -460,7 +462,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
             className="w-full max-w-[340px] mb-3.5"
           >
             <p className="text-white/25 text-[10px] font-bold tracking-[0.14em] uppercase mb-2 pl-1">
-              최근 읽은 책
+              {t("home.recentBooks")}
             </p>
             <motion.button
               whileTap={{ scale: 0.95 }}
@@ -472,7 +474,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
                   className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner"
                   style={{ background: `linear-gradient(145deg, ${activeSession.book.color}50, ${activeSession.book.color}18)` }}
                 >
-                  <Play size={18} className="text-white/90 fill-white/90 ml-0.5 drop-shadow-sm" />
+                  <BookOpen size={18} className="text-white/90 drop-shadow-sm" />
                 </div>
                 <div className="flex-1 min-w-0 text-left">
                   <p className={`${serif} text-white/90 text-[15px] font-bold truncate`}>{activeSession.book.title}</p>
@@ -484,7 +486,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
               </div>
               <div className="px-4 pb-3.5">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-white/30 text-[10px] font-semibold">진행률</span>
+                  <span className="text-white/30 text-[10px] font-semibold">{t("home.progress")}</span>
                   <span className="text-white/40 text-[11px] font-bold tabular-nums">{progress}%</span>
                 </div>
                 <div className="w-full h-[4px] bg-white/[0.06] rounded-full overflow-hidden">
@@ -497,7 +499,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
                   />
                 </div>
                 <p className="text-white/20 text-[10px] mt-1.5 tabular-nums">
-                  {activeSession.completedLessons}/{activeSession.totalLessons} 탐험 완료
+                  {t("home.sessionsComplete", { done: activeSession.completedLessons, total: activeSession.totalLessons })}
                 </p>
               </div>
             </motion.button>
@@ -513,7 +515,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
             className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] backdrop-blur-md rounded-full px-4 py-2 mb-3.5"
           >
             <BookOpen size={14} className="text-indigo-300/60" />
-            <span className="text-white/30 text-[12px] font-medium">별을 탭해서 책을 선택하세요</span>
+            <span className="text-white/30 text-[12px] font-medium">{t("home.tapToSelect")}</span>
           </motion.div>
         )}
 

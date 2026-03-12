@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import logging
+import random
 import uuid
 from typing import Any
 
@@ -19,6 +20,21 @@ from app.config import settings
 from app.db import get_supabase
 
 logger = logging.getLogger(__name__)
+
+
+def _shuffle_quiz_options(quiz: dict) -> dict:
+    """Shuffle quiz options so the correct answer isn't always at the same index."""
+    options = quiz.get("options", [])
+    correct_idx = quiz.get("correct_index", 0)
+    if not options or correct_idx >= len(options):
+        return quiz
+    correct_answer = options[correct_idx]
+    indices = list(range(len(options)))
+    random.shuffle(indices)
+    quiz["options"] = [options[i] for i in indices]
+    quiz["correct_index"] = quiz["options"].index(correct_answer)
+    return quiz
+
 
 LESSON_SYSTEM_PROMPT = """You are Cosmii, a playful and brilliant learning companion who makes books come alive.
 You speak in Korean with a warm, casual tone — like a best friend who just finished reading this book and can't wait to tell you about it.
@@ -54,7 +70,7 @@ Output JSON with this exact structure:
     {
       "question": "이 장면에서 실제로 무슨 일이 일어났는지 묻는 질문",
       "options": ["구체적 선택지A", "구체적 선택지B", "구체적 선택지C", "구체적 선택지D"],
-      "correct_index": 0,
+      "correct_index": 0 ~ 3 중 랜덤 (정답 위치를 매번 다르게!),
       "explanation": "왜 이것이 정답인지 — 원문 근거 포함 (2-3문장)"
     }
   ],
@@ -152,6 +168,23 @@ async def generate_lessons_for_book(
                 logger.error(f"Failed to generate lesson for {chapter_name} part {session_num + 1}: {e}")
                 continue
 
+            en_data = _translate_lesson_to_english(client, lesson_data)
+
+            bilingual = {**lesson_data}
+            bilingual["title_ko"] = lesson_data.get("title", "")
+            bilingual["spark_ko"] = lesson_data.get("spark", "")
+            bilingual["cliffhanger_ko"] = lesson_data.get("cliffhanger", "")
+            bilingual["dialogue_ko"] = lesson_data.get("dialogue", [])
+            bilingual["quizzes_ko"] = [_shuffle_quiz_options(q) for q in lesson_data.get("quizzes", [])]
+            bilingual["chapter_title_ko"] = lesson_data.get("chapter_title", "")
+            if en_data:
+                bilingual["title_en"] = en_data.get("title", "")
+                bilingual["spark_en"] = en_data.get("spark", "")
+                bilingual["cliffhanger_en"] = en_data.get("cliffhanger", "")
+                bilingual["dialogue_en"] = en_data.get("dialogue", [])
+                bilingual["quizzes_en"] = [_shuffle_quiz_options(q) for q in en_data.get("quizzes", [])]
+                bilingual["chapter_title_en"] = en_data.get("chapter_title", "")
+
             lesson_id = str(uuid.uuid4())
             lesson_row = {
                 "id": lesson_id,
@@ -159,7 +192,7 @@ async def generate_lessons_for_book(
                 "order_index": lesson_idx,
                 "title": lesson_data.get("title", f"{chapter_name} Part {session_num + 1}"),
                 "lesson_type": "dialogue",
-                "content_json": json.dumps(lesson_data, ensure_ascii=False),
+                "content_json": json.dumps(bilingual, ensure_ascii=False),
             }
             sb.table("lessons").upsert(lesson_row).execute()
 
@@ -171,8 +204,22 @@ async def generate_lessons_for_book(
                     "options_json": json.dumps(quiz["options"], ensure_ascii=False),
                     "correct_index": quiz["correct_index"],
                     "explanation": quiz.get("explanation", ""),
+                    "language": "ko",
                 }
                 sb.table("quizzes").upsert(quiz_row).execute()
+
+            if en_data:
+                for quiz in en_data.get("quizzes", []):
+                    quiz_row = {
+                        "id": str(uuid.uuid4()),
+                        "lesson_id": lesson_id,
+                        "question": quiz["question"],
+                        "options_json": json.dumps(quiz["options"], ensure_ascii=False),
+                        "correct_index": quiz["correct_index"],
+                        "explanation": quiz.get("explanation", ""),
+                        "language": "en",
+                    }
+                    sb.table("quizzes").upsert(quiz_row).execute()
 
             lesson_idx += 1
             if on_progress:
@@ -229,3 +276,36 @@ def _generate_single_lesson(
     data["total_parts"] = total_parts
 
     return data
+
+
+TRANSLATE_SYSTEM_PROMPT = """You are a translator. You will receive a JSON object containing a lesson in Korean.
+Translate ALL text fields to English while preserving the JSON structure exactly.
+
+Rules:
+- Keep the same casual, excited, friendly tone as the original (Cosmii personality)
+- Translate Korean quotation marks 「」 to English quotes
+- Keep the same JSON keys — only translate the string values
+- For "highlight" fields, translate the keyword to English
+- For quiz options and explanations, ensure they make sense in English
+- Output valid JSON only, no extra text"""
+
+
+def _translate_lesson_to_english(client: OpenAI, lesson_data_ko: dict) -> dict | None:
+    """Translate a Korean lesson to English via LLM."""
+    ko_json = json.dumps(lesson_data_ko, ensure_ascii=False)
+    try:
+        response = client.chat.completions.create(
+            model=settings.llm_model,
+            messages=[
+                {"role": "system", "content": TRANSLATE_SYSTEM_PROMPT},
+                {"role": "user", "content": f"Translate this lesson JSON to English:\n\n{ko_json}"},
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.5,
+            max_tokens=4000,
+        )
+        raw = response.choices[0].message.content
+        return json.loads(raw)
+    except Exception as e:
+        logger.error(f"Failed to translate lesson to English: {e}")
+        return None

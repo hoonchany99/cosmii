@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/glass-panel";
 import { CosmicBg } from "@/components/cosmic-bg";
+import { useT } from "@/lib/i18n";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const serif = "font-[var(--font-serif)]";
@@ -40,6 +41,7 @@ export function BookDetail({
   onBack,
   onStartLearning,
 }: BookDetailProps) {
+  const t = useT();
   const pct = useMemo(
     () => (totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0),
     [completedLessons, totalLessons],
@@ -145,13 +147,13 @@ export function BookDetail({
               </span>
             </div>
             <div>
-              <p className="text-white/70 text-[14px] font-semibold">
-                {completedLessons}/{totalLessons} 탐험 완료
+              <p className="text-white/70 text-[15px] font-semibold">
+                {t("bookDetail.sessionsComplete", { done: completedLessons, total: totalLessons })}
               </p>
               {estimatedMinutes > 0 && (
-                <p className="text-white/30 text-[12px] flex items-center gap-1 mt-0.5">
-                  <Clock size={11} />
-                  남은 학습 약 {estimatedMinutes}분
+                <p className="text-white/30 text-[13px] flex items-center gap-1 mt-0.5">
+                  <Clock size={12} />
+                  {t("bookDetail.estMinutes", { min: estimatedMinutes })}
                 </p>
               )}
             </div>
@@ -166,9 +168,9 @@ export function BookDetail({
             transition={{ delay: 0.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Layers size={15} className="text-indigo-400" />
-              <span className="text-white/50 text-[12px] uppercase tracking-[0.12em] font-bold">
-                챕터 구성
+              <Layers size={16} className="text-indigo-400" />
+              <span className="text-white/50 text-[13px] uppercase tracking-[0.12em] font-bold">
+                {t("bookDetail.chapters")}
               </span>
             </div>
 
@@ -184,24 +186,24 @@ export function BookDetail({
                     transition={{ delay: 0.25 + i * 0.04, duration: 0.35 }}
                     className="bg-white/[0.03] border border-white/[0.06] rounded-2xl px-4 py-3.5 flex items-center gap-3.5"
                   >
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                       done ? "bg-emerald-500/15" : "bg-white/[0.05]"
                     }`}>
                       {done ? (
-                        <Sparkles size={16} className="text-emerald-400" />
+                        <Sparkles size={17} className="text-emerald-400" />
                       ) : (
-                        <span className="text-white/25 text-[13px] font-bold">{i + 1}</span>
+                        <span className="text-white/25 text-[14px] font-bold">{i + 1}</span>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <span className={`text-[14px] font-semibold block truncate ${done ? "text-white/50" : "text-white/75"}`}>
+                      <span className={`text-[15px] font-semibold block truncate ${done ? "text-white/50" : "text-white/75"}`}>
                         {ch.chapter}
                       </span>
-                      <span className="text-white/25 text-[11px]">
-                        {ch.completedCount}/{ch.lessonCount} 탐험
+                      <span className="text-white/30 text-[12px]">
+                        {t("bookDetail.chapterSessions", { done: ch.completedCount, total: ch.lessonCount })}
                       </span>
                     </div>
-                    <div className="w-10 h-1.5 bg-white/[0.06] rounded-full overflow-hidden flex-shrink-0">
+                    <div className="w-11 h-1.5 bg-white/[0.06] rounded-full overflow-hidden flex-shrink-0">
                       <motion.div
                         className={`h-full rounded-full ${done ? "bg-emerald-500" : "bg-indigo-500/70"}`}
                         initial={{ width: 0 }}
@@ -221,7 +223,7 @@ export function BookDetail({
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-12 pb-10 px-6 z-20">
         <PrimaryButton onClick={onStartLearning} className="py-4 text-[16px] flex items-center justify-center gap-2">
           <Play size={18} className="fill-white" />
-          {isStarted ? "이어서 학습하기" : "학습 시작하기"}
+          {isStarted ? t("bookDetail.continue") : t("bookDetail.startLearning")}
         </PrimaryButton>
       </div>
     </div>

@@ -23,17 +23,45 @@ def _get_user_id(authorization: str | None) -> str:
     return "demo-user"
 
 
+def _pick(content: dict, field: str, lang: str) -> str | list | dict:
+    """Pick a field from bilingual content_json with fallback: field_{lang} -> field_ko -> field."""
+    val = content.get(f"{field}_{lang}")
+    if val is not None:
+        return val
+    val = content.get(f"{field}_ko")
+    if val is not None:
+        return val
+    return content.get(field, "")
+
+
+BOOK_I18N: dict[str, dict[str, str]] = {
+    "bc977bab": {
+        "title_ko": "데미안",
+        "title_en": "Demian",
+        "author_ko": "헤르만 헤세",
+        "author_en": "Hermann Hesse",
+    },
+}
+
+
 @router.get("/books")
-async def list_books(authorization: str | None = Header(None)):
+async def list_books(language: str = "ko", authorization: str | None = Header(None)):
     """List available books for learning."""
     sb = get_supabase()
     result = sb.table("books").select("*").order("created_at", desc=True).execute()
-    return [BookOut(**row) for row in result.data]
+    books = []
+    for row in result.data:
+        i18n = BOOK_I18N.get(row["id"], {})
+        row["title"] = i18n.get(f"title_{language}", row["title"])
+        row["author"] = i18n.get(f"author_{language}", row["author"])
+        books.append(BookOut(**row))
+    return books
 
 
 @router.get("/books/{book_id}/lessons")
 async def get_book_lessons(
     book_id: str,
+    language: str = "ko",
     authorization: str | None = Header(None),
 ):
     """Get all lessons for a book with user progress (for skill tree)."""
@@ -66,10 +94,10 @@ async def get_book_lessons(
                 "id": lesson["id"],
                 "book_id": lesson["book_id"],
                 "order_index": lesson["order_index"],
-                "title": lesson.get("title", content.get("title", "")),
-                "chapter": content.get("chapter", ""),
-                "chapter_title": content.get("chapter_title", ""),
-                "spark": content.get("spark", ""),
+                "title": _pick(content, "title", language) or lesson.get("title", ""),
+                "chapter": _pick(content, "chapter", language) or content.get("chapter", ""),
+                "chapter_title": _pick(content, "chapter_title", language),
+                "spark": _pick(content, "spark", language),
             },
             "completed": p["completed"] if p else False,
             "score": p.get("score") if p else None,
@@ -80,45 +108,64 @@ async def get_book_lessons(
 
 
 @router.get("/lessons/{lesson_id}")
-async def get_lesson_detail(lesson_id: str):
+async def get_lesson_detail(lesson_id: str, language: str = "ko"):
     """Get full lesson detail including dialogue and quizzes."""
     sb = get_supabase()
 
     lesson = sb.table("lessons").select("*").eq("id", lesson_id).single().execute().data
     content = json.loads(lesson.get("content_json", "{}"))
 
-    quizzes = (
-        sb.table("quizzes")
-        .select("*")
-        .eq("lesson_id", lesson_id)
-        .execute()
-    ).data
+    content_quizzes = _pick(content, "quizzes", language)
+    if isinstance(content_quizzes, list) and content_quizzes:
+        quiz_list = [
+            QuizOut(
+                id=f"{lesson_id}-q{i}",
+                lesson_id=lesson_id,
+                question=q["question"],
+                options=q.get("options", []),
+                correct_index=q.get("correct_index", 0),
+                explanation=q.get("explanation", ""),
+            )
+            for i, q in enumerate(content_quizzes)
+        ]
+    else:
+        db_quizzes = (
+            sb.table("quizzes")
+            .select("*")
+            .eq("lesson_id", lesson_id)
+            .execute()
+        ).data
+        quiz_list = [
+            QuizOut(
+                id=q["id"],
+                lesson_id=q["lesson_id"],
+                question=q["question"],
+                options=json.loads(q["options_json"]) if isinstance(q["options_json"], str) else q["options_json"],
+                correct_index=q["correct_index"],
+                explanation=q.get("explanation", ""),
+            )
+            for q in db_quizzes
+        ]
+
+    dialogue = _pick(content, "dialogue", language)
+    if not isinstance(dialogue, list):
+        dialogue = content.get("dialogue", [])
 
     return LessonDetailOut(
         lesson=LessonOut(
             id=lesson["id"],
             book_id=lesson["book_id"],
             order_index=lesson["order_index"],
-            title=lesson.get("title", content.get("title", "")),
-            chapter=content.get("chapter", ""),
-            chapter_title=content.get("chapter_title", ""),
+            title=_pick(content, "title", language) or lesson.get("title", ""),
+            chapter=_pick(content, "chapter", language) or content.get("chapter", ""),
+            chapter_title=_pick(content, "chapter_title", language),
             part=content.get("part", 1),
             total_parts=content.get("total_parts", 1),
-            dialogue=[DialoguePart(**d) for d in content.get("dialogue", [])],
-            spark=content.get("spark", ""),
-            cliffhanger=content.get("cliffhanger", ""),
+            dialogue=[DialoguePart(**d) for d in dialogue],
+            spark=_pick(content, "spark", language),
+            cliffhanger=_pick(content, "cliffhanger", language),
         ),
-        quizzes=[
-            QuizOut(
-                id=q["id"],
-                lesson_id=q["lesson_id"],
-                question=q["question"],
-                options=json.loads(q["options_json"]),
-                correct_index=q["correct_index"],
-                explanation=q.get("explanation", ""),
-            )
-            for q in quizzes
-        ],
+        quizzes=quiz_list,
     )
 
 
@@ -207,6 +254,18 @@ async def get_user_stats(authorization: str | None = Header(None)):
             level=s.get("level", 1),
         )
     return UserStatsOut()
+
+
+@router.delete("/user/reset")
+async def reset_user_progress(authorization: str | None = Header(None)):
+    """Delete all progress and stats for the current user."""
+    user_id = _get_user_id(authorization)
+    sb = get_supabase()
+
+    sb.table("user_progress").delete().eq("user_id", user_id).execute()
+    sb.table("user_stats").delete().eq("user_id", user_id).execute()
+
+    return {"status": "ok", "message": "Progress reset"}
 
 
 def _calculate_level(xp: int) -> int:

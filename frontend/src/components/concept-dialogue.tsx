@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronUp, Send, X } from "lucide-react";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useIsMobile } from "@/lib/utils";
 import { useSettingsStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -18,13 +19,16 @@ interface DialoguePart {
 
 interface ConceptDialogueProps {
   bookId: string;
+  bookTitle?: string;
   bookAuthor?: string;
+  chapter?: string;
   lessonTitle: string;
   currentLesson: number;
   totalLessons: number;
   progressPercent: number;
   dialogue: DialoguePart[];
   spark: string;
+  isFirstInChapter?: boolean;
   onBack: () => void;
   onComplete: () => void;
   onAskQuestion: () => void;
@@ -45,24 +49,73 @@ function splitIntoBubbles(text: string): string[] {
     .filter(Boolean);
 }
 
+function parseChapterNumber(chapter: string | undefined): string {
+  if (!chapter) return "";
+  const m = chapter.match(/(?:Ch\.?\s*|(\d+)장\s*)(\d+)?/i);
+  if (m) return m[2] || m[1] || "";
+  return "";
+}
+
 export function ConceptDialogue({
   bookId,
+  bookTitle,
   bookAuthor,
+  chapter,
   lessonTitle,
   currentLesson,
   totalLessons,
   progressPercent,
   dialogue,
   spark,
+  isFirstInChapter,
   onBack,
   onComplete,
   onAskQuestion,
 }: ConceptDialogueProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const mobile = useIsMobile();
+  const t = useT();
   const language = useSettingsStore((s) => s.language);
-  const isLast = currentIndex >= dialogue.length - 1;
-  const current = dialogue[currentIndex];
+  const [showChapterIntro, setShowChapterIntro] = useState(!!isFirstInChapter);
+
+  useEffect(() => {
+    if (showChapterIntro) {
+      const timer = setTimeout(() => setShowChapterIntro(false), 2600);
+      return () => clearTimeout(timer);
+    }
+  }, [showChapterIntro]);
+
+  const splitDialogue = useMemo(() => {
+    const result: DialoguePart[] = [];
+    for (const part of dialogue) {
+      const placeholder: string[] = [];
+      const protected_ = part.text.replace(/[「'"\u201C\u300A](?:[^」'\u201D\u300B"]*)[」'\u201D\u300B"]/g, (m) => {
+        placeholder.push(m);
+        return `\x00${placeholder.length - 1}\x00`;
+      });
+
+      const raw = protected_.split(/(?<=[.!?~…])\s*/).filter(Boolean);
+      const sentences = raw.map(s =>
+        s.replace(/\x00(\d+)\x00/g, (_, idx) => placeholder[Number(idx)])
+      );
+
+      let buf = "";
+      for (const s of sentences) {
+        const next = buf ? buf + " " + s : s;
+        if (buf && next.length > 100) {
+          result.push({ ...part, text: buf });
+          buf = s;
+        } else {
+          buf = next;
+        }
+      }
+      if (buf) result.push({ ...part, text: buf });
+    }
+    return result;
+  }, [dialogue]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const isLast = currentIndex >= splitDialogue.length - 1;
+  const current = splitDialogue[currentIndex];
 
   const [questionOpen, setQuestionOpen] = useState(false);
   const [questionInput, setQuestionInput] = useState("");
@@ -72,10 +125,14 @@ export function ConceptDialogue({
   const [visibleBubbleIdx, setVisibleBubbleIdx] = useState(0);
   const chatHistoryRef = useRef<{ role: "user" | "assistant"; content: string }[]>([]);
   const answerBottomRef = useRef<HTMLDivElement>(null);
+  const dialogueScrollRef = useRef<HTMLDivElement>(null);
+  const lastMsgRef = useRef<HTMLDivElement>(null);
+  const sheetInputRef = useRef<HTMLInputElement>(null);
+  const [kbHeight, setKbHeight] = useState(0);
 
   const dialoguePct = useMemo(
-    () => Math.round(((currentIndex + 1) / Math.max(dialogue.length, 1)) * 100),
-    [currentIndex, dialogue.length],
+    () => Math.round(((currentIndex + 1) / Math.max(splitDialogue.length, 1)) * 100),
+    [currentIndex, splitDialogue.length],
   );
 
   const totalBubbles = useMemo(
@@ -84,24 +141,57 @@ export function ConceptDialogue({
   );
 
   useEffect(() => {
+    if (questionOpen) {
+      setTimeout(() => answerBottomRef.current?.scrollIntoView({ behavior: "smooth" }), 350);
+    }
+  }, [questionOpen]);
+
+  useEffect(() => {
     answerBottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [visibleBubbleIdx, sheetMessages]);
 
+  const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
+    setTimeout(() => {
+      if (dialogueScrollRef.current) {
+        dialogueScrollRef.current.scrollTo({
+          top: dialogueScrollRef.current.scrollHeight,
+          behavior,
+        });
+      }
+    }, 80);
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [currentIndex, scrollToBottom]);
+
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const onResize = () => {
+      const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      setKbHeight(kb);
+      if (kb > 0) scrollToBottom();
+    };
+    vv.addEventListener("resize", onResize);
+    return () => vv.removeEventListener("resize", onResize);
+  }, [scrollToBottom]);
+
   useEffect(() => {
     if (totalBubbles > 0 && visibleBubbleIdx < totalBubbles) {
-      const timer = setTimeout(() => setVisibleBubbleIdx((p) => p + 1), 350);
+      const timer = setTimeout(() => setVisibleBubbleIdx((p) => p + 1), 1000);
       return () => clearTimeout(timer);
     }
   }, [totalBubbles, visibleBubbleIdx]);
 
   const handleTap = useCallback(() => {
-    if (questionOpen) return;
+    if (questionOpen || showChapterIntro) return;
     if (isLast) {
       onComplete();
     } else {
       setCurrentIndex((prev) => prev + 1);
     }
-  }, [isLast, onComplete, questionOpen]);
+  }, [isLast, onComplete, questionOpen, showChapterIntro]);
 
   const askQuestion = useCallback(async (question: string) => {
     setSheetMessages((prev) => [...prev, { role: "user", bubbles: [question] }]);
@@ -155,7 +245,7 @@ export function ConceptDialogue({
         setSheetMessages((prev) => [...prev, { role: "cosmii", bubbles: bubbles.length > 0 ? bubbles : [fullAnswer] }]);
       }
     } catch {
-      setSheetMessages((prev) => [...prev, { role: "cosmii", bubbles: ["미안, 답변을 가져오는 데 실패했어"] }]);
+      setSheetMessages((prev) => [...prev, { role: "cosmii", bubbles: [t("dialogue.errorAnswer")] }]);
     } finally {
       setIsAnswering(false);
     }
@@ -166,9 +256,6 @@ export function ConceptDialogue({
     if (!q || isAnswering) return;
 
     setQuestionInput("");
-    setSheetMessages([]);
-    setVisibleBubbleIdx(0);
-    chatHistoryRef.current = [];
     setQuestionOpen(true);
 
     await askQuestion(q);
@@ -184,9 +271,8 @@ export function ConceptDialogue({
 
   const handleCloseAnswer = useCallback(() => {
     setQuestionOpen(false);
-    setAnswerBubbles([]);
-    setVisibleBubbleCount(0);
   }, []);
+
 
   const renderText = (text: string, highlight?: string | null) => {
     if (!highlight) return text;
@@ -207,8 +293,50 @@ export function ConceptDialogue({
     >
       <CosmicBg accent="indigo" />
 
+      {/* Chapter intro overlay */}
+      <AnimatePresence>
+        {showChapterIntro && chapter && (
+          <motion.div
+            key="chapter-intro"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="absolute inset-0 z-50 flex flex-col items-center justify-center pointer-events-none"
+          >
+            <motion.span
+              initial={{ opacity: 0, letterSpacing: "0.5em" }}
+              animate={{ opacity: 0.35, letterSpacing: "0.3em" }}
+              exit={{ opacity: 0, letterSpacing: "0.5em" }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="text-white text-[11px] font-bold uppercase tracking-[0.3em]"
+            >
+              Chapter
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 0.25, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: 0.15 }}
+              className={`${serif} text-white text-[72px] font-bold leading-none mt-1`}
+            >
+              {parseChapterNumber(chapter) || ""}
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 0.3, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 1.0, ease: "easeOut", delay: 0.4 }}
+              className={`${serif} text-white/40 text-[16px] font-medium tracking-wider mt-3`}
+            >
+              {chapter}
+            </motion.span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
-      <div className="absolute top-14 w-full px-5 flex items-center justify-between z-20">
+      <div className="absolute top-0 left-0 right-0 z-20 pt-14 pb-3 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <motion.button
           whileTap={{ scale: 0.88 }}
           transition={{ type: "spring", stiffness: 500, damping: 25 }}
@@ -218,8 +346,8 @@ export function ConceptDialogue({
           <ChevronLeft size={22} />
         </motion.button>
         <div className="flex flex-col items-center gap-0.5">
-          <span className="text-white/40 text-[11px] font-medium">
-            탐험 {currentLesson}/{totalLessons}{bookAuthor ? ` · ${bookAuthor}` : ""}
+          <span className="text-white/40 text-[11px] font-medium max-w-[220px] text-center truncate">
+            {[chapter, bookTitle].filter(Boolean).join(" · ") || `${t("dialogue.explore")} ${currentLesson}/${totalLessons}`}
           </span>
           <h2 className={`${serif} text-white/80 font-semibold text-[15px] tracking-wide max-w-[200px] text-center truncate`}>{lessonTitle}</h2>
         </div>
@@ -237,57 +365,84 @@ export function ConceptDialogue({
       </div>
 
       {/* Chat-style dialogue area */}
-      <div className="absolute inset-0 flex flex-col justify-end z-10 px-5 pb-44 pt-32">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, y: 24, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.97 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-start gap-3 w-full"
-          >
-            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-teal-400/20 to-indigo-500/20 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg">
-              <img src={mobile ? "/cosmii/standing-mobile.webp" : "/cosmii/standing-desktop.webp"} alt="" className="w-7 h-7 object-contain" draggable={false} />
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl rounded-tl-md px-5 py-4 shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-                <p className="text-white/90 text-[16px] leading-[1.7] font-medium text-left">
-                  {current ? renderText(current.text, current.highlight) : spark}
-                </p>
-                {current?.highlight && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    <HighlightPill keyword={current.highlight} />
+      <div
+        ref={dialogueScrollRef}
+        className="absolute inset-0 z-10 overflow-y-auto"
+        style={{ paddingTop: "120px", paddingBottom: `${160 + kbHeight}px` }}
+      >
+        <div className="flex flex-col gap-4 px-5" style={{ minHeight: "100%" }}>
+          <div className="flex-1 shrink-0" />
+          {splitDialogue.slice(0, currentIndex + 1).map((part, i) => {
+            const isCurrent = i === currentIndex;
+            return (
+              <motion.div
+                key={i}
+                ref={isCurrent ? lastMsgRef : undefined}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isCurrent ? 1 : 0.3 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                <div className="flex items-start gap-3 w-full">
+                  <div
+                    className="flex-shrink-0 w-10 h-10 flex items-center justify-center"
+                    style={{ opacity: isCurrent ? 1 : 0, visibility: isCurrent ? "visible" : "hidden" }}
+                  >
+                    <img
+                      src={mobile ? "/cosmii/talking-mobile.webp" : "/cosmii/talking-desktop.webp"}
+                      alt=""
+                      className="w-20 h-20 object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]"
+                      draggable={false}
+                    />
                   </div>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
 
-        {/* Tap indicator */}
-        {!questionOpen && (
-          <motion.div
-            className="flex flex-col items-center mt-6 gap-1"
-            animate={{ opacity: [0.25, 0.6, 0.25] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
-          >
+                  <div className="flex-1 min-w-0">
+                    <div
+                      className="rounded-2xl rounded-tl-md px-5 py-4"
+                      style={{
+                        backgroundColor: isCurrent ? "rgba(255,255,255,0.05)" : "transparent",
+                        border: `1px solid ${isCurrent ? "rgba(255,255,255,0.10)" : "transparent"}`,
+                        boxShadow: isCurrent ? "0 8px 32px rgba(0,0,0,0.25)" : "none",
+                      }}
+                    >
+                      <p
+                        className="text-[15px] leading-[1.7] font-medium text-left"
+                        style={{ color: isCurrent ? "rgba(255,255,255,0.90)" : "rgba(255,255,255,0.45)" }}
+                      >
+                        {renderText(part.text, part.highlight)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+
+          {/* Tap indicator */}
+          {!questionOpen && (
             <motion.div
-              animate={{ y: [0, -5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="flex flex-col items-center mt-4 gap-1"
+              animate={{ opacity: [0.25, 0.6, 0.25] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
             >
-              <ChevronUp size={18} className="text-white/30" />
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ChevronUp size={18} className="text-white/30" />
+              </motion.div>
+              <span className="text-white/25 text-[11px] tracking-[0.2em] uppercase">
+                {isLast ? t("dialogue.tapFinish") : t("dialogue.tapContinue")}
+              </span>
             </motion.div>
-            <span className="text-white/25 text-[11px] tracking-[0.2em] uppercase">
-              {isLast ? "tap to finish" : "tap to continue"}
-            </span>
-          </motion.div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Bottom question input bar */}
-      <div className="absolute bottom-0 w-full z-30 px-5 pb-8">
+      <div
+        className="absolute left-0 right-0 z-30 px-5 pb-8 transition-[bottom] duration-200"
+        style={{ bottom: kbHeight }}
+      >
         <div
           className="relative w-full"
           onClick={(e) => e.stopPropagation()}
@@ -297,8 +452,14 @@ export function ConceptDialogue({
             value={questionInput}
             onChange={(e) => setQuestionInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAskInline()}
-            onFocus={() => { /* keep keyboard visible */ }}
-            placeholder="궁금한 거 있으면 물어봐!"
+            onPointerDown={(e) => {
+              if (sheetMessages.length > 0) {
+                e.preventDefault();
+                setQuestionOpen(true);
+                setTimeout(() => sheetInputRef.current?.focus(), 400);
+              }
+            }}
+            placeholder={t("dialogue.askPlaceholder")}
             className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-12 text-white text-[14px] placeholder-white/25 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
           />
           <motion.button
@@ -336,11 +497,11 @@ export function ConceptDialogue({
             >
               {/* Sheet header */}
               <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-white/[0.06]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-teal-400/20 to-indigo-500/20 border border-white/10 flex items-center justify-center overflow-hidden">
-                    <img src={mobile ? "/cosmii/standing-mobile.webp" : "/cosmii/standing-desktop.webp"} alt="" className="w-5 h-5 object-contain" draggable={false} />
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 flex items-center justify-center">
+                    <img src={mobile ? "/cosmii/talking-mobile.webp" : "/cosmii/talking-desktop.webp"} alt="" className="w-11 h-11 object-contain drop-shadow-[0_0_6px_rgba(139,92,246,0.3)]" draggable={false} />
                   </div>
-                  <span className="text-white/70 text-[14px] font-semibold">Cosmii</span>
+                  <span className="text-white/80 text-[17px] font-bold">Cosmii</span>
                 </div>
                 {!isAnswering && (
                   <motion.button
@@ -415,11 +576,12 @@ export function ConceptDialogue({
               <div className="px-5 pb-8 pt-3 border-t border-white/[0.06] flex flex-col gap-3">
                 <div className="relative w-full">
                   <input
+                    ref={sheetInputRef}
                     type="text"
                     value={sheetInput}
                     onChange={(e) => setSheetInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSheetAsk()}
-                    placeholder="더 궁금한 거 있어?"
+                    placeholder={t("dialogue.sheetPlaceholder")}
                     disabled={isAnswering}
                     className="w-full h-11 bg-white/[0.07] border border-white/[0.12] rounded-full pl-5 pr-11 text-white text-[14px] placeholder-white/25 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all disabled:opacity-40"
                   />
@@ -440,7 +602,7 @@ export function ConceptDialogue({
                   disabled={isAnswering}
                   className="text-white/35 hover:text-white/60 text-[13px] font-semibold mx-auto transition-colors disabled:opacity-30 active:text-white/90"
                 >
-                  탐험으로 돌아가기
+                  {t("dialogue.backToExplore")}
                 </motion.button>
               </div>
             </motion.div>

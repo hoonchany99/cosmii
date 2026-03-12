@@ -7,7 +7,6 @@ import {
   Globe,
   Check,
   Bell,
-  Moon,
   Volume2,
   Info,
   ChevronRight,
@@ -27,34 +26,26 @@ import {
   type DailyGoal,
   type Difficulty,
 } from "@/lib/store";
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-
-const GearConstellation = dynamic(
-  () => import("@/components/gear-constellation").then((m) => m.GearConstellation),
-  { ssr: false },
-);
+import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
 
 const LANGUAGES: { code: Language; label: string; native: string; flag: string }[] = [
   { code: "ko", label: "한국어", native: "한국어", flag: "🇰🇷" },
   { code: "en", label: "English", native: "English", flag: "🇺🇸" },
-  { code: "ja", label: "日本語", native: "日本語", flag: "🇯🇵" },
-  { code: "zh", label: "中文", native: "中文", flag: "🇨🇳" },
 ];
 
-const DAILY_GOALS: { value: DailyGoal; label: string; desc: string; emoji: string }[] = [
-  { value: 1, label: "가볍게", desc: "하루 1탐험", emoji: "🌱" },
-  { value: 2, label: "꾸준히", desc: "하루 2탐험", emoji: "⭐" },
-  { value: 3, label: "열심히", desc: "하루 3탐험", emoji: "🔥" },
-  { value: 5, label: "몰입!", desc: "하루 5탐험", emoji: "🚀" },
+const DAILY_GOALS: { value: DailyGoal; labelKey: string; descKey: string; emoji: string }[] = [
+  { value: 1, labelKey: "goal.light", descKey: "goal.lightDesc", emoji: "🌱" },
+  { value: 2, labelKey: "goal.steady", descKey: "goal.steadyDesc", emoji: "⭐" },
+  { value: 3, labelKey: "goal.hard", descKey: "goal.hardDesc", emoji: "🔥" },
+  { value: 5, labelKey: "goal.immerse", descKey: "goal.immerseDesc", emoji: "🚀" },
 ];
 
-const DIFFICULTIES: { value: Difficulty; label: string; desc: string; color: string }[] = [
-  { value: "easy", label: "쉬움", desc: "핵심만 간단하게", color: "text-emerald-400" },
-  { value: "normal", label: "보통", desc: "적당한 깊이로", color: "text-indigo-400" },
-  { value: "hard", label: "심화", desc: "깊이 있는 학습", color: "text-amber-400" },
+const DIFFICULTIES: { value: Difficulty; labelKey: string; descKey: string; color: string }[] = [
+  { value: "easy", labelKey: "diff.easy", descKey: "diff.easyDesc", color: "text-emerald-400" },
+  { value: "normal", labelKey: "diff.normal", descKey: "diff.normalDesc", color: "text-indigo-400" },
+  { value: "hard", labelKey: "diff.hard", descKey: "diff.hardDesc", color: "text-amber-400" },
 ];
 
 const REMINDER_HOURS = [7, 8, 9, 10, 12, 14, 17, 18, 19, 20, 21, 22];
@@ -66,6 +57,7 @@ function SettingRow({
   onClick,
   delay,
   destructive,
+  comingSoon,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -73,19 +65,23 @@ function SettingRow({
   onClick?: () => void;
   delay: number;
   destructive?: boolean;
+  comingSoon?: boolean;
 }) {
   return (
     <motion.button
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      whileTap={{ scale: 0.95 }}
-      onClick={onClick}
+      whileTap={comingSoon ? undefined : { scale: 0.95 }}
+      onClick={comingSoon ? undefined : onClick}
       className={`w-full flex items-center gap-3.5 px-4 py-4 rounded-2xl border transition-colors select-none ${
-        destructive
-          ? "bg-red-500/[0.04] border-red-500/[0.10] hover:bg-red-500/[0.08] active:bg-red-500/[0.12]"
-          : "bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.06] active:bg-white/[0.08]"
+        comingSoon
+          ? "bg-white/[0.01] border-white/[0.04] cursor-default"
+          : destructive
+            ? "bg-red-500/[0.04] border-red-500/[0.10] hover:bg-red-500/[0.08] active:bg-red-500/[0.12]"
+            : "bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.06] active:bg-white/[0.08]"
       }`}
+      style={comingSoon ? { opacity: 0.4 } : undefined}
     >
       <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
         destructive ? "bg-red-500/10" : "bg-white/[0.06]"
@@ -97,10 +93,15 @@ function SettingRow({
       }`}>
         {label}
       </span>
-      {value && (
+      {comingSoon && (
+        <span className="text-[10px] font-bold uppercase tracking-wider text-white/30 bg-white/[0.06] px-2 py-0.5 rounded-full mr-1">
+          Soon
+        </span>
+      )}
+      {!comingSoon && value && (
         <span className="text-white/35 text-[13px] font-medium mr-1">{value}</span>
       )}
-      {!destructive && <ChevronRight size={16} className="text-white/20" />}
+      {!destructive && !comingSoon && <ChevronRight size={16} className="text-white/20" />}
     </motion.button>
   );
 }
@@ -112,6 +113,7 @@ function ToggleRow({
   enabled,
   onToggle,
   delay,
+  comingSoon,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -119,34 +121,46 @@ function ToggleRow({
   enabled: boolean;
   onToggle: () => void;
   delay: number;
+  comingSoon?: boolean;
 }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      className="w-full flex items-center gap-3.5 px-4 py-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]"
+      className={`w-full flex items-center gap-3.5 px-4 py-4 rounded-2xl border ${
+        comingSoon
+          ? "bg-white/[0.01] border-white/[0.04]"
+          : "bg-white/[0.03] border-white/[0.06]"
+      }`}
+      style={comingSoon ? { opacity: 0.4 } : undefined}
     >
       <div className="w-9 h-9 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <span className="text-white/80 text-[15px] font-medium block">{label}</span>
-        {sublabel && <span className="text-white/30 text-[12px]">{sublabel}</span>}
+        {sublabel && !comingSoon && <span className="text-white/30 text-[12px]">{sublabel}</span>}
       </div>
-      <motion.button
-        whileTap={{ scale: 0.95 }}
-        onClick={onToggle}
-        className={`w-[50px] h-[28px] rounded-full p-[3px] transition-colors flex-shrink-0 ${
-          enabled ? "bg-indigo-500" : "bg-white/10"
-        }`}
-      >
-        <motion.div
-          className="w-[22px] h-[22px] bg-white rounded-full shadow-md"
-          animate={{ x: enabled ? 22 : 0 }}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        />
-      </motion.button>
+      {comingSoon ? (
+        <span className="text-[10px] font-bold uppercase tracking-wider text-white/30 bg-white/[0.06] px-2 py-0.5 rounded-full flex-shrink-0">
+          Soon
+        </span>
+      ) : (
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          onClick={onToggle}
+          className={`w-[50px] h-[28px] rounded-full p-[3px] transition-colors flex-shrink-0 ${
+            enabled ? "bg-indigo-500" : "bg-white/10"
+          }`}
+        >
+          <motion.div
+            className="w-[22px] h-[22px] bg-white rounded-full shadow-md"
+            animate={{ x: enabled ? 22 : 0 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          />
+        </motion.button>
+      )}
     </motion.div>
   );
 }
@@ -168,25 +182,21 @@ type SheetType = "language" | "dailyGoal" | "difficulty" | "reminderTime" | "res
 
 interface SettingsViewProps {
   onBack: () => void;
+  onLogout: () => void;
+  onResetProgress: () => Promise<void>;
 }
 
-export function SettingsView({ onBack }: SettingsViewProps) {
+export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsViewProps) {
   const settings = useSettingsStore();
+  const t = useT();
   const [activeSheet, setActiveSheet] = useState<SheetType>(null);
 
   const currentLang = LANGUAGES.find((l) => l.code === settings.language) ?? LANGUAGES[0];
-  const currentGoal = DAILY_GOALS.find((g) => g.value === settings.dailyGoal) ?? DAILY_GOALS[1];
-  const currentDiff = DIFFICULTIES.find((d) => d.value === settings.difficulty) ?? DIFFICULTIES[1];
-
   const formatHour = (h: number) => {
-    if (h === 0) return "오전 12시";
-    if (h < 12) return `오전 ${h}시`;
-    if (h === 12) return "오후 12시";
-    return `오후 ${h - 12}시`;
-  };
-
-  const handleReset = () => {
-    setActiveSheet(null);
+    const period = h < 12 ? t("time.am") : t("time.pm");
+    const suffix = t("time.hourSuffix");
+    const displayH = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    return suffix ? `${period} ${displayH}${suffix}` : `${displayH} ${period}`;
   };
 
   return (
@@ -194,7 +204,7 @@ export function SettingsView({ onBack }: SettingsViewProps) {
       <CosmicBg accent="indigo" />
 
       {/* Header */}
-      <div className="absolute top-14 w-full px-5 flex items-center z-30">
+      <div className="absolute top-0 w-full pt-14 pb-3 px-5 flex items-center z-30 bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <motion.button
           whileTap={{ scale: 0.88 }}
           transition={{ type: "spring", stiffness: 500, damping: 25 }}
@@ -204,155 +214,124 @@ export function SettingsView({ onBack }: SettingsViewProps) {
           <ChevronLeft size={22} />
         </motion.button>
         <h2 className={`${serif} text-white/80 font-bold text-[18px] tracking-wide ml-2`}>
-          설정
+          {t("settings.title")}
         </h2>
       </div>
 
       <div className="absolute inset-0 overflow-y-auto pb-20 z-10">
-        {/* Gear Constellation Hero */}
-        <div className="relative w-full h-[180px] overflow-hidden">
-          <Suspense fallback={<div className="w-full h-full" />}>
-            <div className="absolute inset-0 opacity-30">
-              <GearConstellation animate={false} />
-            </div>
-          </Suspense>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050510]" />
-        </div>
+        <div className="w-full h-[180px]" />
 
         <div className="px-5 -mt-4">
 
         {/* ─── 학습 설정 ─── */}
         <div className="mb-6">
-          <SectionLabel text="학습 설정" delay={0.05} />
+          <SectionLabel text={t("settings.studySettings")} delay={0.05} />
           <div className="flex flex-col gap-2">
             <SettingRow
               icon={<Globe size={17} className="text-indigo-400" />}
-              label="학습 언어"
+              label={t("settings.studyLanguage")}
               value={`${currentLang.flag} ${currentLang.native}`}
               onClick={() => setActiveSheet("language")}
               delay={0.08}
             />
             <SettingRow
               icon={<Target size={17} className="text-emerald-400" />}
-              label="하루 학습 목표"
-              value={`${currentGoal.emoji} ${currentGoal.label}`}
-              onClick={() => setActiveSheet("dailyGoal")}
+              label={t("settings.dailyGoal")}
               delay={0.11}
+              comingSoon
             />
             <SettingRow
               icon={<Gauge size={17} className="text-amber-400" />}
-              label="학습 난이도"
-              value={currentDiff.label}
-              onClick={() => setActiveSheet("difficulty")}
+              label={t("settings.difficulty")}
               delay={0.14}
+              comingSoon
             />
           </div>
         </div>
 
         {/* ─── 알림 ─── */}
         <div className="mb-6">
-          <SectionLabel text="알림" delay={0.17} />
+          <SectionLabel text={t("settings.notifications")} delay={0.17} />
           <div className="flex flex-col gap-2">
             <ToggleRow
               icon={<Bell size={17} className="text-amber-400" />}
-              label="학습 리마인더"
-              sublabel={settings.notifications ? `매일 ${formatHour(settings.reminderHour)}에 알림` : undefined}
-              enabled={settings.notifications}
-              onToggle={() => settings.setNotifications(!settings.notifications)}
+              label={t("settings.studyReminder")}
+              enabled={false}
+              onToggle={() => {}}
               delay={0.19}
+              comingSoon
             />
-            <AnimatePresence>
-              {settings.notifications && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <SettingRow
-                    icon={<Clock size={17} className="text-orange-400" />}
-                    label="리마인더 시간"
-                    value={formatHour(settings.reminderHour)}
-                    onClick={() => setActiveSheet("reminderTime")}
-                    delay={0}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </div>
 
         {/* ─── 일반 ─── */}
         <div className="mb-6">
-          <SectionLabel text="일반" delay={0.22} />
+          <SectionLabel text={t("settings.general")} delay={0.22} />
           <div className="flex flex-col gap-2">
             <ToggleRow
               icon={<Volume2 size={17} className="text-emerald-400" />}
-              label="효과음"
-              enabled={settings.sound}
-              onToggle={() => settings.setSound(!settings.sound)}
-              delay={0.24}
-            />
-            <ToggleRow
-              icon={<Moon size={17} className="text-violet-400" />}
-              label="다크 모드"
-              sublabel="우주 테마 고정"
-              enabled={true}
+              label={t("settings.soundEffects")}
+              enabled={false}
               onToggle={() => {}}
-              delay={0.26}
+              delay={0.24}
+              comingSoon
             />
           </div>
         </div>
 
         {/* ─── 지원 ─── */}
         <div className="mb-6">
-          <SectionLabel text="지원" delay={0.28} />
+          <SectionLabel text={t("settings.support")} delay={0.28} />
           <div className="flex flex-col gap-2">
             <SettingRow
               icon={<MessageCircle size={17} className="text-teal-400" />}
-              label="의견 보내기"
+              label={t("settings.feedback")}
               delay={0.3}
+              comingSoon
             />
             <SettingRow
               icon={<FileText size={17} className="text-white/40" />}
-              label="이용약관"
+              label={t("settings.terms")}
               delay={0.32}
+              comingSoon
             />
             <SettingRow
               icon={<Shield size={17} className="text-white/40" />}
-              label="개인정보처리방침"
+              label={t("settings.privacy")}
               delay={0.34}
+              comingSoon
             />
           </div>
         </div>
 
         {/* ─── 계정 ─── */}
         <div className="mb-6">
-          <SectionLabel text="계정" delay={0.36} />
+          <SectionLabel text={t("settings.account")} delay={0.36} />
           <div className="flex flex-col gap-2">
             <SettingRow
               icon={<Trash2 size={17} className="text-red-400/70" />}
-              label="학습 기록 초기화"
+              label={t("settings.resetProgress")}
               delay={0.38}
               destructive
               onClick={() => setActiveSheet("resetConfirm")}
             />
             <SettingRow
               icon={<LogOut size={17} className="text-red-400/70" />}
-              label="로그아웃"
+              label={t("settings.logout")}
               delay={0.4}
               destructive
+              onClick={onLogout}
             />
           </div>
         </div>
 
         {/* ─── 정보 ─── */}
         <div className="mb-4">
-          <SectionLabel text="정보" delay={0.42} />
+          <SectionLabel text={t("settings.info")} delay={0.42} />
           <div className="flex flex-col gap-2">
             <SettingRow
               icon={<Info size={17} className="text-white/40" />}
-              label="앱 버전"
+              label={t("settings.appVersion")}
               value="1.0.0"
               delay={0.44}
             />
@@ -393,8 +372,8 @@ export function SettingsView({ onBack }: SettingsViewProps) {
               {activeSheet === "language" && (
                 <>
                   <div className="pt-6 pb-3 px-6">
-                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>학습 언어 선택</h3>
-                    <p className="text-white/35 text-[13px] mt-0.5">Cosmii가 이 언어로 설명해줄게!</p>
+                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>{t("settings.langPickerTitle")}</h3>
+                    <p className="text-white/35 text-[13px] mt-0.5">{t("settings.langPickerDesc")}</p>
                   </div>
                   <div className="px-5 pb-10 flex flex-col gap-2">
                     {LANGUAGES.map((lang) => {
@@ -437,8 +416,8 @@ export function SettingsView({ onBack }: SettingsViewProps) {
               {activeSheet === "dailyGoal" && (
                 <>
                   <div className="pt-6 pb-3 px-6">
-                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>하루 학습 목표</h3>
-                    <p className="text-white/35 text-[13px] mt-0.5">매일 얼마나 공부할까?</p>
+                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>{t("settings.goalPickerTitle")}</h3>
+                    <p className="text-white/35 text-[13px] mt-0.5">{t("settings.goalPickerDesc")}</p>
                   </div>
                   <div className="px-5 pb-10 grid grid-cols-2 gap-2.5">
                     {DAILY_GOALS.map((goal) => {
@@ -456,8 +435,8 @@ export function SettingsView({ onBack }: SettingsViewProps) {
                           }`}
                         >
                           <span className="text-[28px]">{goal.emoji}</span>
-                          <span className={`text-[15px] font-bold ${selected ? "text-white" : "text-white/70"}`}>{goal.label}</span>
-                          <span className="text-white/35 text-[12px]">{goal.desc}</span>
+                          <span className={`text-[15px] font-bold ${selected ? "text-white" : "text-white/70"}`}>{t(goal.labelKey as any)}</span>
+                          <span className="text-white/35 text-[12px]">{t(goal.descKey as any)}</span>
                           {selected && (
                             <motion.div
                               initial={{ scale: 0 }}
@@ -479,8 +458,8 @@ export function SettingsView({ onBack }: SettingsViewProps) {
               {activeSheet === "difficulty" && (
                 <>
                   <div className="pt-6 pb-3 px-6">
-                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>학습 난이도</h3>
-                    <p className="text-white/35 text-[13px] mt-0.5">Cosmii가 얼마나 깊이 설명해줄까?</p>
+                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>{t("settings.diffPickerTitle")}</h3>
+                    <p className="text-white/35 text-[13px] mt-0.5">{t("settings.diffPickerDesc")}</p>
                   </div>
                   <div className="px-5 pb-10 flex flex-col gap-2.5">
                     {DIFFICULTIES.map((diff) => {
@@ -503,8 +482,8 @@ export function SettingsView({ onBack }: SettingsViewProps) {
                             <Gauge size={18} className={selected ? "text-indigo-400" : "text-white/30"} />
                           </div>
                           <div className="flex-1 text-left">
-                            <span className={`text-[15px] font-bold ${selected ? diff.color : "text-white/70"}`}>{diff.label}</span>
-                            <span className="text-white/30 text-[12px] block mt-0.5">{diff.desc}</span>
+                            <span className={`text-[15px] font-bold ${selected ? diff.color : "text-white/70"}`}>{t(diff.labelKey as any)}</span>
+                            <span className="text-white/30 text-[12px] block mt-0.5">{t(diff.descKey as any)}</span>
                           </div>
                           {selected && (
                             <motion.div
@@ -527,8 +506,8 @@ export function SettingsView({ onBack }: SettingsViewProps) {
               {activeSheet === "reminderTime" && (
                 <>
                   <div className="pt-6 pb-3 px-6">
-                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>리마인더 시간</h3>
-                    <p className="text-white/35 text-[13px] mt-0.5">언제 알려줄까?</p>
+                    <h3 className={`${serif} text-white/90 font-bold text-[18px]`}>{t("settings.reminderPickerTitle")}</h3>
+                    <p className="text-white/35 text-[13px] mt-0.5">{t("settings.reminderPickerDesc")}</p>
                   </div>
                   <div className="px-5 pb-10 grid grid-cols-3 gap-2">
                     {REMINDER_HOURS.map((h) => {
@@ -556,24 +535,27 @@ export function SettingsView({ onBack }: SettingsViewProps) {
               {/* ── Reset Confirm ── */}
               {activeSheet === "resetConfirm" && (
                 <div className="px-6 pt-7 pb-10">
-                  <h3 className={`${serif} text-white/90 font-bold text-[18px] mb-2`}>정말 초기화할까요?</h3>
+                  <h3 className={`${serif} text-white/90 font-bold text-[18px] mb-2`}>{t("settings.resetConfirmTitle")}</h3>
                   <p className="text-white/40 text-[14px] leading-relaxed mb-7">
-                    모든 학습 기록, XP, 레벨, 스트릭이 초기화돼요. 이 작업은 되돌릴 수 없어요.
+                    {t("settings.resetConfirmDesc")}
                   </p>
                   <div className="flex flex-col gap-2.5">
                     <motion.button
                       whileTap={{ scale: 0.95 }}
-                      onClick={handleReset}
+                      onClick={async () => {
+                        await onResetProgress();
+                        setActiveSheet(null);
+                      }}
                       className="w-full py-3.5 rounded-2xl bg-red-500/20 border border-red-500/30 text-red-400 font-bold text-[15px] active:bg-red-500/30 transition-colors select-none"
                     >
-                      초기화하기
+                      {t("settings.resetBtn")}
                     </motion.button>
                     <motion.button
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setActiveSheet(null)}
                       className="w-full py-3.5 rounded-2xl bg-white/[0.05] border border-white/[0.08] text-white/60 font-bold text-[15px] active:bg-white/[0.10] transition-colors select-none"
                     >
-                      취소
+                      {t("settings.cancelBtn")}
                     </motion.button>
                   </div>
                 </div>

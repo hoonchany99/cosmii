@@ -88,7 +88,7 @@ export const useAppStore = create<AppState>((set) => ({
 
 // ── Settings Store ──
 
-export type Language = "ko" | "en" | "ja" | "zh";
+export type Language = "ko" | "en";
 export type DailyGoal = 1 | 2 | 3 | 5;
 export type Difficulty = "easy" | "normal" | "hard";
 
@@ -120,7 +120,13 @@ function saveSetting(key: string, value: unknown) {
 }
 
 export const useSettingsStore = create<SettingsState>((set) => ({
-  language: loadSetting<Language>("lang", "ko"),
+  language: (() => {
+    if (typeof window === "undefined") return "ko" as Language;
+    const saved = localStorage.getItem("cosmii-lang");
+    if (saved) try { return JSON.parse(saved) as Language; } catch {}
+    const browserLang = navigator.language?.slice(0, 2);
+    return (browserLang === "ko" ? "ko" : "en") as Language;
+  })(),
   dailyGoal: loadSetting<DailyGoal>("dailyGoal", 2),
   difficulty: loadSetting<Difficulty>("difficulty", "normal"),
   notifications: loadSetting<boolean>("notifications", true),

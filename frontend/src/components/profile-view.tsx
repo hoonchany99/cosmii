@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, Suspense } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   ChevronLeft,
@@ -16,12 +16,7 @@ import {
 } from "lucide-react";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useAppStore } from "@/lib/store";
-import dynamic from "next/dynamic";
-
-const CosmiiConstellation = dynamic(
-  () => import("@/components/cosmii-constellation").then((m) => m.CosmiiConstellation),
-  { ssr: false },
-);
+import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -69,7 +64,8 @@ function StatCard({
 }
 
 function WeekStreak({ streakDays }: { streakDays: number }) {
-  const days = ["월", "화", "수", "목", "금", "토", "일"];
+  const t = useT();
+  const days = [t("profile.dayMon"), t("profile.dayTue"), t("profile.dayWed"), t("profile.dayThu"), t("profile.dayFri"), t("profile.daySat"), t("profile.daySun")];
   const todayIdx = (new Date().getDay() + 6) % 7;
 
   return (
@@ -81,7 +77,7 @@ function WeekStreak({ streakDays }: { streakDays: number }) {
     >
       <div className="flex items-center gap-2 mb-4">
         <Calendar size={16} className="text-orange-400" />
-        <span className="text-white/60 text-[13px] font-semibold">이번 주 학습</span>
+        <span className="text-white/60 text-[13px] font-semibold">{t("profile.weekStudy")}</span>
       </div>
       <div className="flex justify-between">
         {days.map((day, i) => {
@@ -137,6 +133,7 @@ export function ProfileView({
 }: ProfileViewProps) {
   const stats = useAppStore((s) => s.stats);
   const profile = useAppStore((s) => s.profile);
+  const t = useT();
 
   const xpNeeded = xpForLevel(stats.level);
   const xpInLevel = stats.xp % xpNeeded;
@@ -147,14 +144,14 @@ export function ProfileView({
     [completedLessons, totalLessons],
   );
 
-  const displayName = profile.name || `Lv.${stats.level} 탐험가`;
+  const displayName = profile.name || `Lv.${stats.level} ${t("profile.explorer")}`;
 
   return (
     <div className="w-full h-full relative overflow-hidden text-white">
       <CosmicBg accent="indigo" />
 
       {/* Header */}
-      <div className="absolute top-14 w-full px-5 flex items-center justify-between z-30">
+      <div className="absolute top-0 w-full pt-14 pb-3 px-5 flex items-center justify-between z-30 bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <div className="flex items-center">
           <motion.button
             whileTap={{ scale: 0.88 }}
@@ -165,7 +162,7 @@ export function ProfileView({
             <ChevronLeft size={22} />
           </motion.button>
           <h2 className={`${serif} text-white/80 font-bold text-[18px] tracking-wide ml-2`}>
-            내 프로필
+            {t("profile.title")}
           </h2>
         </div>
         <motion.button
@@ -179,15 +176,7 @@ export function ProfileView({
       </div>
 
       <div className="absolute inset-0 overflow-y-auto pb-20 z-10">
-        {/* Constellation Hero */}
-        <div className="relative w-full h-[220px] overflow-hidden">
-          <Suspense fallback={<div className="w-full h-full" />}>
-            <div className="absolute inset-0 opacity-40">
-              <CosmiiConstellation animate={false} />
-            </div>
-          </Suspense>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050510]" />
-        </div>
+        <div className="w-full h-[220px]" />
 
         {/* Avatar + Name (overlapping hero) */}
         <motion.div
@@ -231,7 +220,7 @@ export function ProfileView({
               <p className="text-white/25 text-[12px] mt-0.5">{profile.email}</p>
             )}
             <p className="text-indigo-300/50 text-[12px] mt-1 font-medium">
-              {stats.level <= 3 ? "우주의 첫 발자국" : stats.level <= 7 ? "지식의 항해자" : stats.level <= 15 ? "별빛 수집가" : "코스믹 마스터"}
+              {stats.level <= 3 ? t("profile.levelTitle1") : stats.level <= 7 ? t("profile.levelTitle2") : stats.level <= 15 ? t("profile.levelTitle3") : t("profile.levelTitle4")}
             </p>
           </div>
 
@@ -262,28 +251,28 @@ export function ProfileView({
           <div className="grid grid-cols-2 gap-3 mt-4">
             <StatCard
               icon={<Zap size={18} className="text-amber-400 fill-amber-400" />}
-              label="총 XP"
+              label={t("profile.totalXP")}
               value={stats.xp >= 1000 ? `${(stats.xp / 1000).toFixed(1)}K` : `${stats.xp}`}
               color="bg-amber-500/15"
               delay={0.15}
             />
             <StatCard
               icon={<Flame size={18} className="text-orange-400 fill-orange-400" />}
-              label="연속 학습"
-              value={`${stats.streakDays}일`}
+              label={t("profile.streak")}
+              value={t("profile.streakDays", { days: stats.streakDays })}
               color="bg-orange-500/15"
               delay={0.2}
             />
             <StatCard
               icon={<BookOpen size={18} className="text-indigo-400" />}
-              label="학습 중인 책"
+              label={t("profile.booksStudying")}
               value={`${totalBooks}`}
               color="bg-indigo-500/15"
               delay={0.25}
             />
             <StatCard
               icon={<Target size={18} className="text-emerald-400" />}
-              label="완료한 탐험"
+              label={t("profile.completedExplore")}
               value={`${completedLessons}`}
               color="bg-emerald-500/15"
               delay={0.3}
@@ -300,7 +289,7 @@ export function ProfileView({
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <TrendingUp size={16} className="text-emerald-400" />
-                  <span className="text-white/60 text-[13px] font-semibold">전체 학습 진도</span>
+                  <span className="text-white/60 text-[13px] font-semibold">{t("profile.overallProgress")}</span>
                 </div>
                 <span className={`${serif} text-emerald-400 font-bold text-[15px]`}>
                   {lessonPct}%
@@ -315,8 +304,8 @@ export function ProfileView({
                 />
               </div>
               <div className="flex justify-between mt-2">
-                <span className="text-white/30 text-[11px] font-medium">{completedLessons}개 완료</span>
-                <span className="text-white/30 text-[11px] font-medium">{totalLessons}개 중</span>
+                <span className="text-white/30 text-[11px] font-medium">{t("profile.completed", { n: completedLessons })}</span>
+                <span className="text-white/30 text-[11px] font-medium">{t("profile.outOf", { n: totalLessons })}</span>
               </div>
             </motion.div>
           )}
@@ -329,18 +318,18 @@ export function ProfileView({
           >
             <div className="flex items-center gap-2 mb-4">
               <Award size={16} className="text-violet-400" />
-              <span className="text-white/60 text-[13px] font-semibold">달성 뱃지</span>
+              <span className="text-white/60 text-[13px] font-semibold">{t("profile.badges")}</span>
             </div>
             <div className="flex flex-wrap gap-2.5">
               {[
-                { name: "첫 발자국", icon: "🚀", unlockLevel: 1 },
-                { name: "열정의 불꽃", icon: "🔥", unlockLevel: 2 },
-                { name: "지식의 씨앗", icon: "🌱", unlockLevel: 3 },
-                { name: "별빛 수집가", icon: "⭐", unlockLevel: 5 },
-                { name: "우주 탐험가", icon: "🌌", unlockLevel: 7 },
-                { name: "지혜의 문", icon: "🏛️", unlockLevel: 10 },
-                { name: "코스믹 마스터", icon: "👑", unlockLevel: 15 },
-                { name: "전설의 독서가", icon: "📚", unlockLevel: 20 },
+                { name: t("profile.badge1"), icon: "🚀", unlockLevel: 1 },
+                { name: t("profile.badge2"), icon: "🔥", unlockLevel: 2 },
+                { name: t("profile.badge3"), icon: "🌱", unlockLevel: 3 },
+                { name: t("profile.badge4"), icon: "⭐", unlockLevel: 5 },
+                { name: t("profile.badge5"), icon: "🌌", unlockLevel: 7 },
+                { name: t("profile.badge6"), icon: "🏛️", unlockLevel: 10 },
+                { name: t("profile.badge7"), icon: "👑", unlockLevel: 15 },
+                { name: t("profile.badge8"), icon: "📚", unlockLevel: 20 },
               ].map((badge) => {
                 const unlocked = stats.level >= badge.unlockLevel;
                 return (

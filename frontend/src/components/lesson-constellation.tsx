@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Check, Lock, RotateCcw, ChevronLeft, Star, Circle, BookMarked } from "lucide-react";
 import { CosmicBg } from "@/components/cosmic-bg";
@@ -31,10 +31,16 @@ interface LessonConstellationProps {
 
 
 function ChapterDivider({ chapter }: { chapter: string }) {
+  const fontSize = chapter.length > 20 ? 11 : chapter.length > 12 ? 12 : 14;
   return (
-    <div className="flex items-center gap-3 w-[260px] my-1">
+    <div className="flex items-center gap-3 w-[280px] my-1">
       <div className="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-      <span className={`${serif} text-indigo-300/60 text-[11px] tracking-wider uppercase whitespace-nowrap`}>{chapter}</span>
+      <span
+        className={`${serif} text-indigo-300/60 tracking-wider uppercase text-center whitespace-nowrap`}
+        style={{ fontSize: `${fontSize}px` }}
+      >
+        {chapter}
+      </span>
       <div className="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
     </div>
   );
@@ -71,12 +77,22 @@ export function LessonConstellation({
   }, [lessons]);
 
   const pct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const currentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!currentRef.current || !scrollRef.current) return;
+    const timer = setTimeout(() => {
+      currentRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [lessons]);
 
   return (
     <div className="w-full h-full relative overflow-hidden text-white">
       <CosmicBg accent="indigo" />
 
-      <div className="absolute top-14 w-full px-6 flex items-center justify-between z-20">
+      <div className="absolute top-0 left-0 right-0 z-20 pt-12 pb-2 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
         <motion.button
           whileTap={{ scale: 0.88 }}
           transition={{ type: "spring", stiffness: 500, damping: 25 }}
@@ -85,11 +101,11 @@ export function LessonConstellation({
         >
           <ChevronLeft size={22} />
         </motion.button>
-        <div className="flex flex-col items-center gap-1">
-          <h2 className={`${serif} text-white/90 font-bold text-[18px] tracking-wide`}>{bookTitle}</h2>
-          {bookAuthor && <p className="text-white/35 text-[11px] -mt-0.5">{bookAuthor}</p>}
-          <div className="flex items-center gap-2.5">
-            <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
+        <div className="flex flex-col items-center gap-0.5">
+          <h2 className={`${serif} text-white/90 font-bold text-[20px] tracking-wide`}>{bookTitle}</h2>
+          {bookAuthor && <p className="text-white/35 text-[13px] -mt-0.5">{bookAuthor}</p>}
+          <div className="flex items-center gap-2.5 mt-0.5">
+            <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 rounded-full"
                 initial={{ width: 0 }}
@@ -97,7 +113,7 @@ export function LessonConstellation({
                 transition={{ duration: 0.8, ease: "easeOut" }}
               />
             </div>
-            <span className="text-white/40 text-[11px] font-medium">{completedCount}/{totalCount}</span>
+            <span className="text-white/40 text-[13px] font-medium">{completedCount}/{totalCount}</span>
           </div>
         </div>
         {onOpenNotes ? (
@@ -115,6 +131,7 @@ export function LessonConstellation({
       </div>
 
       <div
+        ref={scrollRef}
         className="absolute inset-0 overflow-y-auto pb-40 flex flex-col items-center z-10"
         style={{ paddingTop: "140px" }}
       >
@@ -126,13 +143,18 @@ export function LessonConstellation({
             return (
               <motion.div
                 key={lesson.id}
+                ref={lesson.isCurrent ? currentRef : undefined}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: i * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 className="relative flex flex-col items-center gap-3"
                 style={{ marginLeft: `${offsetX}px` }}
               >
-                {chapterLabel && <ChapterDivider chapter={chapterLabel} />}
+                {chapterLabel && (
+                  <div style={{ marginLeft: `${-offsetX}px` }}>
+                    <ChapterDivider chapter={chapterLabel} />
+                  </div>
+                )}
 
                 {lesson.isCurrent ? (
                   <>
@@ -145,7 +167,7 @@ export function LessonConstellation({
                     >
                       <Star size={26} className="text-white fill-white drop-shadow-md" />
                     </motion.button>
-                    <span className="text-amber-200/70 text-[11px] font-medium max-w-[180px] text-center leading-snug line-clamp-2">
+                    <span className="text-amber-200/70 text-[14px] font-medium max-w-[220px] text-center leading-snug line-clamp-2">
                       {lesson.title}
                     </span>
                   </>
@@ -159,7 +181,7 @@ export function LessonConstellation({
                     >
                       <Check size={20} className="text-emerald-400" strokeWidth={3} />
                     </motion.button>
-                    <span className="text-emerald-300/40 text-[11px] font-medium max-w-[180px] text-center leading-snug line-clamp-2">
+                    <span className="text-emerald-300/40 text-[14px] font-medium max-w-[220px] text-center leading-snug line-clamp-2">
                       {lesson.title}
                     </span>
                   </>

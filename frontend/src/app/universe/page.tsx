@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAppStore } from "@/lib/store";
+import { useAppStore, useSettingsStore } from "@/lib/store";
 import { createClient } from "@/lib/supabase";
+import { useT } from "@/lib/i18n";
 import { HudOverlay } from "@/components/hud-overlay";
 import { HomeView } from "@/components/home-view";
 import { LessonConstellation } from "@/components/lesson-constellation";
@@ -83,6 +84,8 @@ export default function UniversePage() {
     return !localStorage.getItem("cosmii-onboarded");
   });
 
+  const t = useT();
+  const language = useSettingsStore((s) => s.language);
   const [warpActive, setWarpActive] = useState(false);
   const pendingViewRef = useRef<View | null>(null);
   const pendingActionRef = useRef<(() => void) | null>(null);
@@ -90,7 +93,7 @@ export default function UniversePage() {
   const { stats, setStats, setProfile } = useAppStore();
 
   useEffect(() => {
-    fetch(`${API}/api/books`)
+    fetch(`${API}/api/books?language=${language}`)
       .then((r) => r.json())
       .then((data) => setBooks(data))
       .catch(() => {});
@@ -118,7 +121,7 @@ export default function UniversePage() {
         });
       }
     });
-  }, [setStats, setProfile]);
+  }, [setStats, setProfile, language]);
 
   const warpTo = useCallback((targetView: View, beforeSwitch?: () => void) => {
     pendingViewRef.current = targetView;
@@ -142,14 +145,14 @@ export default function UniversePage() {
   const handleSelectBook = useCallback(async (book: Book) => {
     setSelectedBook(book);
     try {
-      const res = await fetch(`${API}/api/books/${book.id}/lessons`);
+      const res = await fetch(`${API}/api/books/${book.id}/lessons?language=${language}`);
       const data = await res.json();
       setLessons(data);
     } catch {
       setLessons([]);
     }
     setView("bookDetail");
-  }, []);
+  }, [language]);
 
   const handleStartLearning = useCallback(() => {
     warpTo("constellation");
@@ -157,7 +160,7 @@ export default function UniversePage() {
 
   const handleSelectLesson = useCallback(async (lessonId: string) => {
     try {
-      const res = await fetch(`${API}/api/lessons/${lessonId}`);
+      const res = await fetch(`${API}/api/lessons/${lessonId}?language=${language}`);
       const data: LessonDetail = await res.json();
       const idx = lessons.findIndex((l) => l.lesson.id === lessonId);
       setCurrentLesson(data);
@@ -166,7 +169,7 @@ export default function UniversePage() {
     } catch (e) {
       console.error("Failed to load lesson:", e);
     }
-  }, [lessons]);
+  }, [lessons, language]);
 
   const handleDialogueComplete = useCallback(() => {
     if (currentLesson && currentLesson.quizzes.length > 0) {
@@ -212,14 +215,24 @@ export default function UniversePage() {
     [currentLesson, stats, setStats],
   );
 
-  const handleNextLesson = useCallback(() => {
+  const refreshLessons = useCallback(async () => {
+    if (!selectedBook) return;
+    try {
+      const r = await fetch(`${API}/api/books/${selectedBook.id}/lessons?language=${language}`);
+      const data = await r.json();
+      setLessons(data);
+    } catch { /* ignore */ }
+  }, [selectedBook, language]);
+
+  const handleNextLesson = useCallback(async () => {
     const nextIdx = currentLessonIndex + 1;
     if (nextIdx < lessons.length) {
       handleSelectLesson(lessons[nextIdx].lesson.id);
     } else {
+      await refreshLessons();
       setView("constellation");
     }
-  }, [currentLessonIndex, lessons, handleSelectLesson]);
+  }, [currentLessonIndex, lessons, handleSelectLesson, refreshLessons]);
 
   const handleRetryLesson = useCallback(() => {
     if (currentLesson) {
@@ -228,26 +241,14 @@ export default function UniversePage() {
   }, [currentLesson]);
 
   const handleGoToList = useCallback(async () => {
-    if (selectedBook) {
-      try {
-        const r = await fetch(`${API}/api/books/${selectedBook.id}/lessons`);
-        const data = await r.json();
-        setLessons(data);
-      } catch { /* ignore */ }
-    }
+    await refreshLessons();
     setView("constellation");
-  }, [selectedBook]);
+  }, [refreshLessons]);
 
   const handleGoHome = useCallback(async () => {
-    if (selectedBook) {
-      try {
-        const r = await fetch(`${API}/api/books/${selectedBook.id}/lessons`);
-        const data = await r.json();
-        setLessons(data);
-      } catch { /* ignore */ }
-    }
+    await refreshLessons();
     warpTo("home");
-  }, [warpTo, selectedBook]);
+  }, [warpTo, refreshLessons]);
 
   const handleBackToHome = useCallback(() => {
     warpTo("home");
@@ -266,7 +267,7 @@ export default function UniversePage() {
   const chapterSummaries = useMemo(() => {
     const map = new Map<string, { chapter: string; lessonCount: number; completedCount: number }>();
     lessons.forEach((l) => {
-      const ch = l.lesson.chapter || "기타";
+      const ch = l.lesson.chapter || t("universe.other");
       if (!map.has(ch)) map.set(ch, { chapter: ch, lessonCount: 0, completedCount: 0 });
       const entry = map.get(ch)!;
       entry.lessonCount++;
@@ -370,13 +371,19 @@ export default function UniversePage() {
           <motion.div key="dialogue" {...slideRight} className="absolute inset-0">
             <ConceptDialogue
               bookId={selectedBook?.id ?? ""}
+              bookTitle={selectedBook?.title ?? ""}
               bookAuthor={selectedBook?.author ?? ""}
+              chapter={currentLesson.lesson.chapter}
               lessonTitle={currentLesson.lesson.title}
               currentLesson={currentLessonIndex + 1}
               totalLessons={lessons.length}
               progressPercent={progressPercent}
               dialogue={currentLesson.lesson.dialogue}
               spark={currentLesson.lesson.spark}
+              isFirstInChapter={
+                currentLessonIndex === 0 ||
+                lessons[currentLessonIndex - 1]?.lesson.chapter !== currentLesson.lesson.chapter
+              }
               onBack={() => setView("constellation")}
               onComplete={handleDialogueComplete}
               onAskQuestion={() => setView("chat")}
@@ -456,7 +463,21 @@ export default function UniversePage() {
 
         {view === "settings" && (
           <motion.div key="settings" {...slideRight} className="absolute inset-0">
-            <SettingsView onBack={() => setView("profile")} />
+            <SettingsView
+              onBack={() => setView("profile")}
+              onLogout={async () => {
+                const supabase = createClient();
+                await supabase.auth.signOut();
+                window.location.href = "/login";
+              }}
+              onResetProgress={async () => {
+                await fetch(`${API}/api/user/reset`, { method: "DELETE" });
+                setStats({ xp: 0, streakDays: 0, lastStudyDate: null, level: 1 });
+                setLessons((prev) =>
+                  prev.map((l) => ({ ...l, completed: false, score: null, review_needed: false })),
+                );
+              }}
+            />
           </motion.div>
         )}
 

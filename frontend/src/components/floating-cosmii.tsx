@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { useIsMobile } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 type CosmiiGifState = "standing" | "talking" | "giggling" | "dancing";
 
@@ -41,20 +42,7 @@ const IDLE_QUOTES = [
 const AUTO_TALK_MIN = 15_000;
 const AUTO_TALK_MAX = 25_000;
 
-const THINKING_MUMBLES = [
-  "음... 🤔",
-  "잠깐만~",
-  "찾고있어!",
-  "어디보자...",
-  "이거 재밌는데?",
-  "생각 중... 💭",
-  "기억을 뒤져보는 중~",
-  "거의 다 됐어!",
-  "이 부분이구나!",
-  "오, 찾았다!",
-  "읽는 중~ 📖",
-  "흠흠...",
-];
+const THINKING_MUMBLES_COUNT = 12;
 
 const SPARKLE_CONFIGS = [
   { x: -10, y: -15, delay: 0, size: 6 },
@@ -99,6 +87,8 @@ export function FloatingCosmii3D({
   hidden = false,
 }: FloatingCosmii3DProps) {
   const mobile = useIsMobile();
+  const t = useT();
+  const thinkingMumbles = Array.from({ length: THINKING_MUMBLES_COUNT }, (_, i) => t(`thinking.${i}` as any));
   const [gifState, setGifState] = useState<CosmiiGifState>("standing");
   const [quote, setQuote] = useState<string | null>(null);
   const [showMenu, setShowMenu] = useState(false);
@@ -115,19 +105,19 @@ export function FloatingCosmii3D({
   useEffect(() => {
     if (!chatMode || !chatLoading) {
       setThinkingText("");
-      mumbleIdx.current = Math.floor(Math.random() * THINKING_MUMBLES.length);
+      mumbleIdx.current = Math.floor(Math.random() * thinkingMumbles.length);
       charIdx.current = 0;
       return;
     }
 
-    const target = THINKING_MUMBLES[mumbleIdx.current % THINKING_MUMBLES.length];
+    const target = thinkingMumbles[mumbleIdx.current % thinkingMumbles.length];
 
     const typeInterval = setInterval(() => {
       charIdx.current++;
       if (charIdx.current <= target.length) {
         setThinkingText(target.slice(0, charIdx.current));
       } else if (charIdx.current > target.length + 12) {
-        mumbleIdx.current = (mumbleIdx.current + 1 + Math.floor(Math.random() * (THINKING_MUMBLES.length - 1))) % THINKING_MUMBLES.length;
+        mumbleIdx.current = (mumbleIdx.current + 1 + Math.floor(Math.random() * (thinkingMumbles.length - 1))) % thinkingMumbles.length;
         charIdx.current = 0;
         setThinkingText("");
       }
@@ -271,36 +261,16 @@ export function FloatingCosmii3D({
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           style={{
               position: "absolute",
-              ...(mobile
-                ? { top: 0, left: chatCosmiiSize + 8 }
-                : { bottom: chatCosmiiSize + 12, left: 20 }),
+              top: 0,
+              left: chatCosmiiSize + 8,
               maxWidth: mobile ? "calc(100vw - " + (chatCosmiiSize + 8 + 24) + "px)" : 420,
               pointerEvents: "auto",
             }}
           >
             <div
-              className={`w-fit rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/40 ${mobile ? "rounded-tl-md" : "rounded-bl-md"}`}
+              className="w-fit rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/40"
               style={{ position: "relative" }}
             >
-              {mobile ? (
-                <svg
-                  className="absolute top-[14px] -left-[6px] w-[8px] h-[14px]"
-                  viewBox="0 0 8 14"
-                  fill="none"
-                >
-                  <path d="M8 0V14L0 9C3 7.5 6 4 8 0Z" fill="rgba(0,0,0,0.6)" />
-                  <path d="M8 14L0 9C3 7.5 6 4 8 0" stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="none" />
-                </svg>
-              ) : (
-                <svg
-                  className="absolute -bottom-[6px] left-[20px] w-[14px] h-[8px]"
-                  viewBox="0 0 14 8"
-                  fill="none"
-                >
-                  <path d="M0 0H14L9 8C7.5 5 4 2 0 0Z" fill="rgba(0,0,0,0.6)" />
-                  <path d="M14 0L9 8C7.5 5 4 2 0 0" stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="none" />
-                </svg>
-              )}
 
               <AnimatePresence mode="wait">
                 {chatLoading ? (

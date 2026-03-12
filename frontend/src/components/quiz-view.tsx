@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Check, X, Award, Sparkles } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/glass-panel";
 import { CosmicBg } from "@/components/cosmic-bg";
+import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -45,6 +46,7 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
   const [feedback, setFeedback] = useState<FeedbackState>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const t = useT();
 
   const quiz = quizzes[currentQuiz];
   const isLast = currentQuiz >= quizzes.length - 1;
@@ -221,12 +223,12 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
                     >
                       <Sparkles size={24} className="text-emerald-400 fill-emerald-400" />
                     </motion.div>
-                    정답이에요!
+                    {t("quiz.correct")}
                   </>
                 ) : (
                   <>
                     <X size={24} className="text-red-400 stroke-[3]" />
-                    아쉬워요
+                    {t("quiz.wrong")}
                   </>
                 )}
               </h3>
@@ -245,7 +247,7 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
 
             {feedback === "wrong" && (
               <div className="mb-2 flex items-center gap-2">
-                <span className="text-white/45 font-bold text-[13px]">정답:</span>
+                <span className="text-white/45 font-bold text-[13px]">{t("quiz.correctAnswer")}</span>
                 <span className="text-white/85 font-medium text-[14px]">{quiz.options[quiz.correctIndex]}</span>
               </div>
             )}
@@ -257,7 +259,7 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
               onClick={handleNext}
               className="text-[16px] tracking-wide"
             >
-              {isLast ? "결과 보기" : "다음"}
+              {isLast ? t("quiz.seeResults") : t("quiz.next")}
             </PrimaryButton>
           </motion.div>
         ) : (
@@ -267,7 +269,7 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
             animate={{ opacity: 1 }}
           >
             <PrimaryButton disabled={selectedOption === null} onClick={handleCheck}>
-              확인하기
+              {t("quiz.check")}
             </PrimaryButton>
           </motion.div>
         )}

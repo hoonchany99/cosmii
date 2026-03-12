@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw, Loader2, BookOpen, Eye, EyeOff } from "lucide-react";
 import { getGraph } from "@/lib/api";
 import type { BookInfo, GraphData } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 import dynamic from "next/dynamic";
 
 const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), { ssr: false });
@@ -32,6 +33,7 @@ interface GraphViewProps {
 }
 
 export function GraphView({ books, enabledBooks, onToggleBook }: GraphViewProps) {
+  const t = useT();
   const [graphData, setGraphData] = useState<GraphData | null>(null);
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -134,12 +136,12 @@ export function GraphView({ books, enabledBooks, onToggleBook }: GraphViewProps)
         <div>
           <h2 className="text-xl font-bold">Knowledge Graph</h2>
           <p className="text-sm text-muted-foreground">
-            책에서 추출된 개념과 관계의 시각화
+            {t("graph.description")}
           </p>
         </div>
         <Button variant="outline" onClick={loadData} disabled={loading}>
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-          <span className="ml-2">새로고침</span>
+          <span className="ml-2">{t("graph.refresh")}</span>
         </Button>
       </div>
 
@@ -149,10 +151,10 @@ export function GraphView({ books, enabledBooks, onToggleBook }: GraphViewProps)
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <BookOpen className="h-4 w-4" />
-                책 필터
+                {t("graph.bookFilter")}
               </div>
               <Button variant="ghost" size="sm" onClick={toggleAll} className="text-xs h-7">
-                {enabledBooks.size === books.length ? "전체 끄기" : "전체 켜기"}
+                {enabledBooks.size === books.length ? t("graph.disableAll") : t("graph.enableAll")}
               </Button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -187,7 +189,7 @@ export function GraphView({ books, enabledBooks, onToggleBook }: GraphViewProps)
           </Badge>
         ))}
         <Badge variant="outline" className="border-white text-foreground">
-          ● 크로스북
+          ● {t("graph.crossBook")}
         </Badge>
       </div>
 
@@ -247,10 +249,10 @@ export function GraphView({ books, enabledBooks, onToggleBook }: GraphViewProps)
           ) : (
             <div className="flex items-center justify-center h-64 text-muted-foreground">
               {loading
-                ? "그래프 로딩 중..."
+                ? t("graph.loading")
                 : enabledBooks.size === 0
-                  ? "책을 선택하세요"
-                  : "아직 그래프 데이터가 없습니다"}
+                  ? t("graph.selectBook")
+                  : t("graph.noData")}
             </div>
           )}
         </CardContent>
@@ -262,7 +264,7 @@ export function GraphView({ books, enabledBooks, onToggleBook }: GraphViewProps)
             <div className="flex items-center justify-between">
               <CardTitle className="text-base">{selectedNode.label}</CardTitle>
               <Button variant="ghost" size="sm" onClick={() => setSelectedNode(null)}>
-                닫기
+                {t("graph.close")}
               </Button>
             </div>
           </CardHeader>
@@ -283,7 +285,7 @@ export function GraphView({ books, enabledBooks, onToggleBook }: GraphViewProps)
             </div>
             {selectedNode.book_ids.length > 1 && (
               <p className="text-muted-foreground">
-                이 개념은 {selectedNode.book_ids.length}개 책에 걸쳐 등장합니다 (크로스북 연결)
+                {t("graph.crossBookInfo", { n: selectedNode.book_ids.length })}
               </p>
             )}
           </CardContent>

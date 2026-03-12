@@ -6,6 +6,7 @@ import { Flame, Award, Trophy, Zap, RotateCcw, Map } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/glass-panel";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useIsMobile } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -55,6 +56,7 @@ export function SessionComplete({
 }: SessionCompleteProps) {
   const mobile = useIsMobile();
   const allWrong = totalQuestions > 0 && correctCount === 0;
+  const t = useT();
   const particles = useMemo(
     () => Array.from({ length: 18 }, (_, i) => ({ delay: Math.random() * 2, x: 20 + Math.random() * 60 })),
     [],
@@ -87,7 +89,7 @@ export function SessionComplete({
             src={
               allWrong
                 ? (mobile ? "/cosmii/talking-mobile.webp" : "/cosmii/talking-desktop.webp")
-                : (mobile ? "/cosmii/standing-mobile.webp" : "/cosmii/standing-desktop.webp")
+                : (mobile ? "/cosmii/dancing-mobile.webp" : "/cosmii/dancing-desktop.webp")
             }
             alt="Cosmii"
             className={`w-[110px] h-auto relative z-10 ${allWrong ? "drop-shadow-[0_0_30px_rgba(251,191,36,0.4)]" : "drop-shadow-[0_0_30px_rgba(45,212,191,0.4)]"}`}
@@ -96,11 +98,11 @@ export function SessionComplete({
         </motion.div>
 
         <h1 className={`${serif} text-[30px] font-bold tracking-tight text-white drop-shadow-lg`}>
-          {allWrong ? "다시 복습해볼까?" : "탐험 완료!"}
+          {allWrong ? t("complete.reviewAgain") : t("complete.done")}
         </h1>
         {allWrong && (
           <p className="text-white/45 text-[14px] -mt-2 text-center">
-            아쉽지만 괜찮아! 한 번 더 들으면 훨씬 잘 이해될 거야
+            {t("complete.encouragement")}
           </p>
         )}
 
@@ -115,7 +117,7 @@ export function SessionComplete({
               className="flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-amber-600/20 border border-amber-400/40 px-5 py-2.5 rounded-full shadow-[0_0_30px_rgba(245,158,11,0.3)]"
             >
               <Zap size={18} className="text-amber-400 fill-amber-400" />
-              <span className={`${serif} text-amber-300 font-bold text-[15px] tracking-wide`}>레벨 업!</span>
+              <span className={`${serif} text-amber-300 font-bold text-[15px] tracking-wide`}>{t("complete.levelUp")}</span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -129,7 +131,7 @@ export function SessionComplete({
             className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl p-5 flex flex-col items-center gap-2"
           >
             <Trophy size={22} className="text-emerald-400" />
-            <span className="text-white/35 text-[10px] uppercase tracking-[0.15em] font-bold">정답률</span>
+            <span className="text-white/35 text-[10px] uppercase tracking-[0.15em] font-bold">{t("complete.accuracy")}</span>
             <span className={`${serif} text-[28px] font-bold ${
               correctRate >= 80 ? "text-emerald-300" : correctRate >= 50 ? "text-amber-300" : "text-red-300"
             }`}>
@@ -145,11 +147,11 @@ export function SessionComplete({
             className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl p-5 flex flex-col items-center gap-2"
           >
             <Award size={22} className="text-amber-400 fill-amber-400" />
-            <span className="text-white/35 text-[10px] uppercase tracking-[0.15em] font-bold">획득 XP</span>
+            <span className="text-white/35 text-[10px] uppercase tracking-[0.15em] font-bold">{t("complete.xpEarned")}</span>
             <span className={`${serif} text-[28px] font-bold text-transparent bg-clip-text bg-gradient-to-br from-amber-300 to-amber-500`}>
               +{xpEarned}
             </span>
-            <span className="text-white/40 text-[12px]">경험치</span>
+            <span className="text-white/40 text-[12px]">{t("complete.xpUnit")}</span>
           </motion.div>
         </div>
 
@@ -162,7 +164,7 @@ export function SessionComplete({
             className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/25 px-5 py-2.5 rounded-full backdrop-blur-md shadow-lg mt-1"
           >
             <Flame size={17} className="text-orange-400 fill-orange-400" />
-            <span className="text-orange-300/90 font-bold text-[13px]">{streakDays}일 연속 학습 달성!</span>
+            <span className="text-orange-300/90 font-bold text-[13px]">{t("complete.streakMsg", { days: streakDays })}</span>
           </motion.div>
         )}
 
@@ -172,7 +174,7 @@ export function SessionComplete({
             <>
               <PrimaryButton onClick={onRetry} className="py-4 text-[16px] flex items-center justify-center gap-2">
                 <RotateCcw size={18} />
-                다시 학습하기
+                {t("complete.retry")}
               </PrimaryButton>
               <div className="flex items-center gap-3 w-full">
                 {onGoToList && (
@@ -183,7 +185,7 @@ export function SessionComplete({
                     className="flex-1 flex items-center justify-center gap-1.5 text-white/40 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
                   >
                     <Map size={14} />
-                    탐험 목록
+                    {t("complete.lessonList")}
                   </motion.button>
                 )}
                 <motion.button
@@ -192,14 +194,14 @@ export function SessionComplete({
                   onClick={onGoHome}
                   className="flex-1 text-white/35 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
                 >
-                  홈으로
+                  {t("complete.goHome")}
                 </motion.button>
               </div>
             </>
           ) : (
             <>
               <PrimaryButton onClick={onNextLesson} className="py-4 text-[16px]">
-                다음 탐험
+                {t("complete.nextLesson")}
               </PrimaryButton>
               <div className="flex items-center gap-3 w-full">
                 {onGoToList && (
@@ -210,7 +212,7 @@ export function SessionComplete({
                     className="flex-1 flex items-center justify-center gap-1.5 text-white/40 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
                   >
                     <Map size={14} />
-                    탐험 목록
+                    {t("complete.lessonList")}
                   </motion.button>
                 )}
                 <motion.button
@@ -219,7 +221,7 @@ export function SessionComplete({
                   onClick={onGoHome}
                   className="flex-1 text-white/35 hover:text-white/70 font-semibold py-2.5 transition-colors text-[14px] active:text-white/90"
                 >
-                  홈으로
+                  {t("complete.goHome")}
                 </motion.button>
               </div>
             </>

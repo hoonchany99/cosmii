@@ -6,6 +6,7 @@ import { Sparkles, BookOpen, MessageCircle, Trophy, ChevronRight, Rocket } from 
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useAppStore, useSettingsStore, type DailyGoal } from "@/lib/store";
 import { useIsMobile } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 import dynamic from "next/dynamic";
 
 const CosmiiConstellation = dynamic(
@@ -15,18 +16,18 @@ const CosmiiConstellation = dynamic(
 
 const serif = "font-[var(--font-serif)]";
 
-const DAILY_GOALS: { value: DailyGoal; label: string; desc: string; minutes: string; icon: typeof Sparkles }[] = [
-  { value: 1, label: "가볍게", desc: "하루 1탐험", minutes: "~5분", icon: Sparkles },
-  { value: 2, label: "꾸준히", desc: "하루 2탐험", minutes: "~10분", icon: Sparkles },
-  { value: 3, label: "열심히", desc: "하루 3탐험", minutes: "~15분", icon: Sparkles },
-  { value: 5, label: "몰입!", desc: "하루 5탐험", minutes: "~25분", icon: Sparkles },
+const DAILY_GOALS: { value: DailyGoal; labelKey: string; descKey: string; minutes: string; icon: typeof Sparkles }[] = [
+  { value: 1, labelKey: "goal.light", descKey: "goal.lightDesc", minutes: "~5min", icon: Sparkles },
+  { value: 2, labelKey: "goal.steady", descKey: "goal.steadyDesc", minutes: "~10min", icon: Sparkles },
+  { value: 3, labelKey: "goal.hard", descKey: "goal.hardDesc", minutes: "~15min", icon: Sparkles },
+  { value: 5, labelKey: "goal.immerse", descKey: "goal.immerseDesc", minutes: "~25min", icon: Sparkles },
 ];
 
 const HOW_STEPS = [
-  { icon: BookOpen, label: "책 업로드", desc: "PDF, EPUB 파일을 올려주세요", color: "text-indigo-400", bg: "bg-indigo-500/15" },
-  { icon: MessageCircle, label: "대화 학습", desc: "Cosmii와 대화하며 배워요", color: "text-teal-400", bg: "bg-teal-500/15" },
-  { icon: Sparkles, label: "퀴즈 풀기", desc: "배운 내용을 확인해요", color: "text-amber-400", bg: "bg-amber-500/15" },
-  { icon: Trophy, label: "마스터!", desc: "XP를 모으고 레벨업!", color: "text-emerald-400", bg: "bg-emerald-500/15" },
+  { icon: BookOpen, labelKey: "onboarding.step1", descKey: "onboarding.step1Desc", color: "text-indigo-400", bg: "bg-indigo-500/15" },
+  { icon: MessageCircle, labelKey: "onboarding.step2", descKey: "onboarding.step2Desc", color: "text-teal-400", bg: "bg-teal-500/15" },
+  { icon: Sparkles, labelKey: "onboarding.step3", descKey: "onboarding.step3Desc", color: "text-amber-400", bg: "bg-amber-500/15" },
+  { icon: Trophy, labelKey: "onboarding.step4", descKey: "onboarding.step4Desc", color: "text-emerald-400", bg: "bg-emerald-500/15" },
 ];
 
 interface OnboardingProps {
@@ -40,6 +41,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   const profile = useAppStore((s) => s.profile);
   const setDailyGoal = useSettingsStore((s) => s.setDailyGoal);
   const mobile = useIsMobile();
+  const t = useT();
 
   const totalSteps = 5;
 
@@ -98,7 +100,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           onClick={handleFinish}
           className="absolute top-12 right-5 z-30 text-white/25 text-[13px] font-medium hover:text-white/50 transition-colors px-3 py-2"
         >
-          건너뛰기
+          {t("onboarding.skip")}
         </motion.button>
       )}
 
@@ -145,11 +147,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.4, duration: 0.6 }}
                 className={`${serif} text-[32px] font-bold tracking-tight mb-3`}
               >
-                {firstName ? (
-                  <>반가워, <span className="text-teal-300">{firstName}</span>!</>
-                ) : (
-                  "반가워!"
-                )}
+                {firstName ? t("onboarding.welcomeName", { name: firstName }) : t("onboarding.welcome")}
               </motion.h1>
 
               <motion.p
@@ -158,7 +156,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.55, duration: 0.5 }}
                 className="text-white/45 text-[15px] leading-relaxed max-w-[280px]"
               >
-                나는 <span className="text-white/70 font-semibold">Cosmii</span>, 너의 독서 탐험 친구야
+                <span className="text-white/70 font-semibold">Cosmii</span>, {t("onboarding.intro")}
               </motion.p>
 
               <motion.button
@@ -169,7 +167,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 onClick={handleNext}
                 className="mt-10 flex items-center gap-2 px-8 py-3.5 rounded-full bg-white/[0.08] border border-white/[0.14] backdrop-blur-xl text-white/80 text-[15px] font-semibold hover:bg-white/[0.12] active:bg-white/[0.16] transition-colors select-none"
               >
-                시작하기
+                {t("onboarding.start")}
                 <ChevronRight size={16} className="text-white/50" />
               </motion.button>
             </div>
@@ -208,9 +206,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               {/* Chat bubbles */}
               <div className="flex flex-col gap-2.5 w-full">
                 {[
-                  { text: "책을 읽는 건 좋은데, 금방 잊어버리지 않아?", delay: 0.3 },
-                  { text: "내가 책 내용을 재밌는 대화로 알려줄게!", delay: 0.6 },
-                  { text: "퀴즈도 풀면서 확실히 기억하자!", delay: 0.9 },
+                  { text: t("onboarding.bubble1"), delay: 0.3 },
+                  { text: t("onboarding.bubble2"), delay: 0.6 },
+                  { text: t("onboarding.bubble3"), delay: 0.9 },
                 ].map((bubble, i) => (
                   <motion.div
                     key={i}
@@ -232,7 +230,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 onClick={handleNext}
                 className="mt-8 flex items-center gap-2 px-8 py-3.5 rounded-full bg-white/[0.08] border border-white/[0.14] backdrop-blur-xl text-white/80 text-[15px] font-semibold hover:bg-white/[0.12] active:bg-white/[0.16] transition-colors select-none"
               >
-                오 재밌겠다!
+                {t("onboarding.soundsFun")}
                 <ChevronRight size={16} className="text-white/50" />
               </motion.button>
             </div>
@@ -257,7 +255,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.1, duration: 0.5 }}
                 className={`${serif} text-[24px] font-bold tracking-tight mb-2`}
               >
-                이렇게 학습해요
+                {t("onboarding.howTitle")}
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -265,13 +263,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.2, duration: 0.4 }}
                 className="text-white/35 text-[13px] mb-8"
               >
-                4단계로 책을 완전히 내 것으로
+                {t("onboarding.howSub")}
               </motion.p>
 
               <div className="flex flex-col gap-3 w-full">
                 {HOW_STEPS.map((s, i) => (
                   <motion.div
-                    key={s.label}
+                    key={s.labelKey}
                     initial={{ opacity: 0, x: 24 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 + i * 0.12, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
@@ -281,8 +279,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                       <s.icon size={20} className={s.color} />
                     </div>
                     <div className="text-left flex-1 min-w-0">
-                      <p className="text-white/80 text-[14px] font-semibold">{s.label}</p>
-                      <p className="text-white/35 text-[12px] mt-0.5">{s.desc}</p>
+                      <p className="text-white/80 text-[14px] font-semibold">{t(s.labelKey as any)}</p>
+                      <p className="text-white/35 text-[12px] mt-0.5">{t(s.descKey as any)}</p>
                     </div>
                     <span className="text-white/15 text-[11px] font-bold flex-shrink-0">
                       {String(i + 1).padStart(2, "0")}
@@ -299,7 +297,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 onClick={handleNext}
                 className="mt-8 flex items-center gap-2 px-8 py-3.5 rounded-full bg-white/[0.08] border border-white/[0.14] backdrop-blur-xl text-white/80 text-[15px] font-semibold hover:bg-white/[0.12] active:bg-white/[0.16] transition-colors select-none"
               >
-                다음
+                {t("onboarding.nextBtn")}
                 <ChevronRight size={16} className="text-white/50" />
               </motion.button>
             </div>
@@ -324,7 +322,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.1, duration: 0.5 }}
                 className={`${serif} text-[24px] font-bold tracking-tight mb-2`}
               >
-                하루 학습 목표는?
+                {t("onboarding.goalTitle")}
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -332,7 +330,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.2, duration: 0.4 }}
                 className="text-white/35 text-[13px] mb-8"
               >
-                언제든 설정에서 바꿀 수 있어요
+                {t("onboarding.goalSub")}
               </motion.p>
 
               <div className="flex flex-col gap-2.5 w-full">
@@ -358,8 +356,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                         <Sparkles size={18} className={active ? "text-indigo-400" : "text-white/30"} />
                       </div>
                       <div className="text-left flex-1">
-                        <p className={`text-[15px] font-semibold ${active ? "text-white/90" : "text-white/60"}`}>{g.label}</p>
-                        <p className={`text-[12px] mt-0.5 ${active ? "text-white/40" : "text-white/25"}`}>{g.desc}</p>
+                        <p className={`text-[15px] font-semibold ${active ? "text-white/90" : "text-white/60"}`}>{t(g.labelKey as any)}</p>
+                        <p className={`text-[12px] mt-0.5 ${active ? "text-white/40" : "text-white/25"}`}>{t(g.descKey as any)}</p>
                       </div>
                       <span className={`text-[12px] font-medium ${active ? "text-indigo-300/60" : "text-white/20"}`}>
                         {g.minutes}
@@ -389,7 +387,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 onClick={handleNext}
                 className="mt-8 flex items-center gap-2 px-8 py-3.5 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-white/90 text-[15px] font-semibold hover:bg-indigo-500/30 active:bg-indigo-500/40 transition-colors select-none"
               >
-                목표 설정 완료!
+                {t("onboarding.goalDone")}
                 <ChevronRight size={16} className="text-white/60" />
               </motion.button>
             </div>
@@ -429,7 +427,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.35, duration: 0.6 }}
                 className={`${serif} text-[36px] font-bold tracking-tight mb-3`}
               >
-                준비 완료!
+                {t("onboarding.ready")}
               </motion.h1>
 
               <motion.p
@@ -438,7 +436,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="text-white/40 text-[15px] leading-relaxed max-w-[260px] mb-10"
               >
-                {firstName ? `${firstName}, ` : ""}이제 우주를 탐험할 시간이야!
+                {firstName ? t("onboarding.letsGoName", { name: firstName }) : t("onboarding.letsGo")}
               </motion.p>
 
               {/* Floating particles */}
@@ -475,7 +473,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 className="flex items-center gap-2.5 px-10 py-4 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 text-white text-[16px] font-bold shadow-[0_0_40px_rgba(99,102,241,0.3)] hover:shadow-[0_0_60px_rgba(99,102,241,0.4)] active:shadow-[0_0_20px_rgba(99,102,241,0.2)] transition-shadow select-none"
               >
                 <Rocket size={18} />
-                탐험 시작!
+                {t("onboarding.startExplore")}
               </motion.button>
             </div>
           </motion.div>

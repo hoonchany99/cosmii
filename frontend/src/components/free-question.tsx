@@ -6,6 +6,7 @@ import { ChevronLeft, Send } from "lucide-react";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useIsMobile } from "@/lib/utils";
 import { useSettingsStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -73,6 +74,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
   const [input, setInput] = useState("");
   const mobile = useIsMobile();
   const language = useSettingsStore((s) => s.language);
+  const t = useT();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -127,7 +129,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
         addMessage({ role: "assistant", content: fullAnswer });
       }
     } catch {
-      addMessage({ role: "assistant", content: "미안, 답변을 가져오는 데 실패했어" });
+      addMessage({ role: "assistant", content: t("dialogue.errorAnswer") });
     } finally {
       setIsLoading(false);
     }
@@ -146,7 +148,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
           className="text-white/60 hover:text-white flex items-center gap-2 transition-colors p-2 -ml-2 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
         >
           <ChevronLeft size={22} />
-          <span className="font-semibold text-[15px]">돌아가기</span>
+          <span className="font-semibold text-[15px]">{t("freeQ.goBack")}</span>
         </motion.button>
       </div>
 
@@ -167,7 +169,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
               draggable={false}
             />
             <p className="text-white/40 text-[14px] font-medium text-center">
-              궁금한 거 있으면 편하게 물어봐!
+              {t("freeQ.emptyHint")}
             </p>
           </motion.div>
         )}
@@ -237,7 +239,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
           onClick={onBack}
           className="text-white/40 hover:text-white/70 text-[13px] font-semibold mx-auto transition-colors active:text-white/90"
         >
-          탐험으로 돌아가기
+          {t("freeQ.backToExplore")}
         </motion.button>
 
         <div className="relative w-full">
@@ -246,7 +248,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="궁금한 거 있으면 물어봐!"
+            placeholder={t("freeQ.placeholder")}
             className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-12 text-white text-[14px] placeholder-white/25 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
           />
           <motion.button

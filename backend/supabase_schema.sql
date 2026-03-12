@@ -57,10 +57,12 @@ CREATE TABLE IF NOT EXISTS quizzes (
   question TEXT NOT NULL,
   options_json JSONB NOT NULL DEFAULT '[]'::jsonb,
   correct_index INT NOT NULL DEFAULT 0,
-  explanation TEXT DEFAULT ''
+  explanation TEXT DEFAULT '',
+  language TEXT DEFAULT 'ko'
 );
 
 CREATE INDEX IF NOT EXISTS idx_quizzes_lesson ON quizzes(lesson_id);
+CREATE INDEX IF NOT EXISTS idx_quizzes_language ON quizzes(lesson_id, language);
 
 -- ══════════════════════════════════════════
 -- User Progress
