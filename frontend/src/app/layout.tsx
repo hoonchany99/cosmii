@@ -113,6 +113,7 @@ export default function RootLayout({
         <link rel="preload" as="image" type="image/webp" href="/cosmii/talking-desktop.webp" />
         <link rel="preload" as="image" type="image/webp" href="/cosmii/giggling-desktop.webp" />
         <link rel="preload" as="image" type="image/webp" href="/cosmii/dancing-desktop.webp" />
+        <link rel="preload" as="image" type="image/png" href="/cosmii-constellation.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} antialiased`}

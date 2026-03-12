@@ -203,7 +203,7 @@ function CosmiiStar({ position, coreScale, glowScale, color, delay, twinkleSpeed
     if (animate) {
       groupRef.current.scale.setScalar(1);
       const t = Math.max(0, elapsed.current - delay);
-      const fadeIn = Math.min(1, t / 0.9);
+      const fadeIn = Math.min(1, t / 0.4);
       fade = fadeIn * fadeIn;
       if (!appeared.current && fadeIn >= 1) appeared.current = true;
     }
@@ -267,7 +267,7 @@ function EyeStar({ position, delay = 0.6, animate = true }: { position: P3; dela
     let fade = 1;
     if (animate) {
       const t = Math.max(0, elapsed.current - delay);
-      const fadeIn = Math.min(1, t / 0.9);
+      const fadeIn = Math.min(1, t / 0.4);
       fade = fadeIn * fadeIn;
     }
     const breathe = 0.92 + 0.08 * Math.sin(elapsed.current * 1.2);
@@ -371,9 +371,6 @@ function CosmiiScene({ layout, animate = true }: { layout: SampledLayout; animat
 
 export function CosmiiConstellation({ animate = true }: { animate?: boolean } = {}) {
   const [layout, setLayout] = useState<SampledLayout | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const img = new Image();
@@ -397,7 +394,7 @@ export function CosmiiConstellation({ animate = true }: { animate?: boolean } = 
     img.src = "/cosmii-constellation.png";
   }, []);
 
-  if (!mounted || !layout) {
+  if (!layout) {
     return <div className="w-full h-full bg-[#060612]" />;
   }
 

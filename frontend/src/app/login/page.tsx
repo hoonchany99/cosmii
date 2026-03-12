@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,6 +10,10 @@ import { createClient } from "@/lib/supabase";
 const serif = "font-[var(--font-serif)]";
 
 export default function AuthPage() {
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+    return () => { document.body.classList.remove("no-scroll"); };
+  }, []);
   const router = useRouter();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [loading, setLoading] = useState(false);
