@@ -127,7 +127,7 @@ const ko = {
   // ── Dialogue ──
   "dialogue.explore": "탐험",
   "dialogue.askPlaceholder": "궁금한 거 있으면 물어봐!",
-  "dialogue.sheetPlaceholder": "더 궁한 거 있어?",
+  "dialogue.sheetPlaceholder": "더 궁금한 거 있어?",
   "dialogue.backToExplore": "탐험으로 돌아가기",
   "dialogue.errorAnswer": "미안, 답변을 가져오는 데 실패했어",
   "dialogue.tapFinish": "tap to finish",

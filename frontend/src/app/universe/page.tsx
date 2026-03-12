@@ -98,6 +98,11 @@ export default function UniversePage() {
   const { stats, setStats, setProfile } = useAppStore();
 
   useEffect(() => {
+    document.body.classList.add("no-scroll");
+    return () => { document.body.classList.remove("no-scroll"); };
+  }, []);
+
+  useEffect(() => {
     fetch(`${API}/api/books?language=${language}`)
       .then((r) => r.json())
       .then((data) => setBooks(data))
