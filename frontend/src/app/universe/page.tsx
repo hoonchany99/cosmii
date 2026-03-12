@@ -104,7 +104,7 @@ export default function UniversePage() {
           lastStudyDate: data.last_study_date ?? null,
           level: data.level ?? 1,
         });
-        if ((data.xp ?? 0) === 0 && !localStorage.getItem("cosmii-onboarded")) {
+        if ((data.xp ?? 0) === 0) {
           setShowOnboarding(true);
         }
       })
