@@ -440,8 +440,8 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
               draggable={false}
             />
           </motion.div>
-          <div className="relative flex-1 min-w-0">
-            <div className="bg-white/[0.07] border border-white/[0.12] backdrop-blur-xl rounded-2xl px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+          <div className="relative max-w-[75%]">
+            <div className="bg-white/[0.07] border border-white/[0.12] backdrop-blur-xl rounded-2xl px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.2)] w-fit">
               <p className="text-white/65 text-[13px] font-medium leading-relaxed">
                 {books.length === 0
                   ? t("home.uploadHint")
@@ -454,7 +454,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
         </motion.div>
 
         {/* Recently Read Book Card */}
-        {activeSession && onContinueLearning && activeSession.totalLessons > 0 && (
+        {activeSession && onContinueLearning && activeSession.totalLessons > 0 && activeSession.completedLessons > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -506,18 +506,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
           </motion.div>
         )}
 
-        {/* Empty state hint */}
-        {books.length > 0 && !activeSession && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] backdrop-blur-md rounded-full px-4 py-2 mb-3.5"
-          >
-            <BookOpen size={14} className="text-indigo-300/60" />
-            <span className="text-white/30 text-[13px] font-medium">{t("home.tapToSelect")}</span>
-          </motion.div>
-        )}
+        {/* Empty state hint — hidden when no recent session */}
 
       </div>
     </div>

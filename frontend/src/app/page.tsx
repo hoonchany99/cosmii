@@ -369,7 +369,7 @@ function DemoSection() {
                 style={{ opacity: ctaProgress, transform: `translateY(${(1 - ctaProgress) * 12}px)` }}
               >
                 <Link
-                  href="/universe"
+                  href="/signup"
                   className="group inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-[#060612] text-[13px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Try with your own book
@@ -548,7 +548,7 @@ export default function LandingPage() {
               Cosmii reads entire books, builds episodic &amp; semantic memory, maps knowledge graphs, and converses with genuine comprehension.
             </motion.p>
             <motion.div custom={0.65} variants={fadeUp} initial="hidden" animate="visible">
-              <Link href="/universe"
+              <Link href="/signup"
                 className="group inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-[#060612] text-[13px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02]">
                 Upload your first book
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
@@ -621,7 +621,7 @@ export default function LandingPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="max-w-3xl mx-auto text-center">
           <h2 className={`${serif} text-3xl sm:text-4xl font-normal tracking-tight text-white/90 mb-5`}>Start building your book memory</h2>
           <p className="text-[15px] text-white/30 max-w-md mx-auto leading-relaxed mb-10">Upload a book. Cosmii will read it, remember it, and talk about it with you.</p>
-          <Link href="/universe"
+          <Link href="/signup"
             className="group inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-[#060612] text-[13px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02] active:scale-[0.98]">
             Get started <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
           </Link>

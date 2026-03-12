@@ -300,7 +300,7 @@ export function FloatingCosmii3D({
                     exit={{ opacity: 0 }}
                     className={hasMore ? "cursor-pointer select-none" : ""}
                     onClick={hasMore ? onBubbleNext : undefined}
-                    style={{ minWidth: mobile ? "60vw" : 360 }}
+                    style={{ minWidth: 0 }}
                   >
                     <div
                       ref={bubbleRef}
@@ -343,7 +343,7 @@ export function FloatingCosmii3D({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="px-5 py-4 text-[15px] text-white/70 font-semibold whitespace-nowrap"
+                    className="px-5 py-4 text-[15px] text-white/70 font-semibold"
                   >
                     {welcomeText}
                   </motion.div>

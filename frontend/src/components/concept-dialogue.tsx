@@ -201,11 +201,12 @@ export function ConceptDialogue({
     chatHistoryRef.current.push({ role: "user", content: question });
 
     try {
-      const lessonContext = dialogue
+      const lessonTexts = dialogue
         .slice(0, currentIndex + 1)
         .map((d) => d.text)
         .join(" ")
         .slice(0, 500);
+      const lessonContext = `[Book: ${bookTitle}${bookAuthor ? ` by ${bookAuthor}` : ""}] [Chapter: ${chapter}] [Lesson: ${lessonTitle}] [Progress: ${currentLesson}/${totalLessons}]\n${lessonTexts}`;
 
       const res = await fetch(`${API}/api/chat/ask`, {
         method: "POST",
@@ -394,9 +395,9 @@ export function ConceptDialogue({
                     />
                   </div>
 
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 max-w-[85%]">
                     <div
-                      className="rounded-2xl rounded-tl-md px-5 py-4"
+                      className="w-fit rounded-2xl rounded-tl-md px-5 py-4"
                       style={{
                         backgroundColor: isCurrent ? "rgba(255,255,255,0.05)" : "transparent",
                         border: `1px solid ${isCurrent ? "rgba(255,255,255,0.10)" : "transparent"}`,
@@ -532,8 +533,8 @@ export function ConceptDialogue({
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                           className={isUser
-                            ? "self-end bg-indigo-500/25 border border-indigo-400/25 rounded-2xl rounded-br-md px-4 py-3 max-w-[85%]"
-                            : "bg-white/[0.06] border border-white/[0.08] rounded-2xl rounded-tl-md px-4 py-3 max-w-[90%]"
+                            ? "self-end w-fit bg-indigo-500/25 border border-indigo-400/25 rounded-2xl rounded-br-md px-4 py-3 max-w-[85%]"
+                            : "w-fit bg-white/[0.06] border border-white/[0.08] rounded-2xl rounded-tl-md px-4 py-3 max-w-[90%]"
                           }
                         >
                           <p className={`text-[14px] leading-[1.7] font-medium ${isUser ? "text-white/90" : "text-white/85"}`}>{bubble}</p>

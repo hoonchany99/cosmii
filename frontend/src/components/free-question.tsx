@@ -47,7 +47,7 @@ function AssistantBubbles({ text }: { text: string }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl rounded-tl-md px-4 py-3 shadow-lg max-w-full"
+          className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl rounded-tl-md px-4 py-3 shadow-lg w-fit max-w-full"
         >
           <p className="text-white/85 text-[15px] leading-[1.7] font-medium">{bubble}</p>
         </motion.div>
@@ -192,7 +192,7 @@ export function FreeQuestion({ bookId, lessonContext, onBack }: FreeQuestionProp
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-indigo-500/25 border border-indigo-400/25 text-white px-4 py-3 rounded-2xl rounded-br-md max-w-[80%] text-[15px] leading-relaxed backdrop-blur-md"
+                className="bg-indigo-500/25 border border-indigo-400/25 text-white px-4 py-3 rounded-2xl rounded-br-md w-fit max-w-[80%] text-[15px] leading-relaxed backdrop-blur-md"
               >
                 {msg.content}
               </motion.div>
