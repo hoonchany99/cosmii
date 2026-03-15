@@ -55,6 +55,7 @@ export function BookDetail({
   const isStarted = completedLessons > 0;
   const estimatedMinutes = (totalLessons - completedLessons) * 5;
   const [imgError, setImgError] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const coverSrc = book.cover_url
     ? book.cover_url.startsWith("http")
@@ -97,20 +98,16 @@ export function BookDetail({
               style={{ background: "white" }}
             />
             {showCover ? (
-              <motion.div
-                className="relative w-32 h-48 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
+              <div className="relative w-32 h-48 rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-white/[0.04]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={coverSrc}
                   alt={book.title}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover transition-opacity duration-500 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
+                  onLoad={() => setImgLoaded(true)}
                   onError={() => setImgError(true)}
                 />
-              </motion.div>
+              </div>
             ) : (
               <div
                 className="relative w-28 h-40 rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl"

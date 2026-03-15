@@ -110,27 +110,29 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
   return (
     <div className="w-full h-full relative overflow-hidden text-white flex flex-col">
 
-      {/* Header */}
-      <div className="pt-safe px-5 flex items-center gap-3 z-20 relative">
-        <motion.button
-          whileTap={{ scale: 0.85 }}
-          transition={{ type: "spring", stiffness: 400, damping: 22 }}
-          onClick={onBack}
-          aria-label="Back"
-          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
-        >
-          <ChevronLeft size={22} />
-        </motion.button>
-        <div className="flex-1 h-1.5 bg-white/[0.08] rounded-full overflow-hidden">
+      {/* Header + Progress line */}
+      <div className="z-20 relative">
+        <div className="pt-safe px-5 pb-3 flex items-center gap-3">
+          <motion.button
+            whileTap={{ scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            onClick={onBack}
+            aria-label="Back"
+            className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          >
+            <ChevronLeft size={22} />
+          </motion.button>
+          <span className="text-white/40 text-[13px] font-semibold ml-auto">
+            {currentQuiz + 1}/{quizzes.length}
+          </span>
+        </div>
+        <div className="w-full h-[1px] bg-white/[0.06]">
           <motion.div
-            className="h-full bg-white/60 rounded-full"
+            className="h-full bg-white/40"
             animate={{ width: `${quizPct}%` }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           />
         </div>
-        <span className="text-white/40 text-[13px] font-semibold min-w-[36px] text-right">
-          {currentQuiz + 1}/{quizzes.length}
-        </span>
       </div>
 
       {/* Question */}

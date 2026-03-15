@@ -488,15 +488,21 @@ export function ImageConstellation({
 export function CosmiiConstellation({
   animate = true,
   dim = false,
+  dimOpacity,
+  dimZoom,
 }: {
   animate?: boolean;
   dim?: boolean;
+  dimOpacity?: number;
+  dimZoom?: number;
 } = {}) {
   return (
     <ImageConstellation
       imageSrc="/cosmii-constellation.png"
       animate={animate}
       dim={dim}
+      dimOpacity={dimOpacity}
+      dimZoom={dimZoom}
       color="#6BC5A0"
     />
   );

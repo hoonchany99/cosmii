@@ -360,34 +360,34 @@ export function ConceptDialogue({
         )}
       </AnimatePresence>
 
-      {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 pt-safe pb-3 px-5 flex items-center justify-between bg-[rgba(6,6,18,0.6)] border-b border-white/[0.04]">
-        <motion.button
-          whileTap={{ scale: 0.85 }}
-          transition={{ type: "spring", stiffness: 400, damping: 22 }}
-          onClick={(e) => { e.stopPropagation(); onBack(); }}
-          aria-label="Back"
-          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
-        >
-          <ChevronLeft size={22} />
-        </motion.button>
-        <div className="flex flex-col items-center gap-0.5">
-          <span className="text-white/40 text-[12px] font-medium max-w-[220px] text-center truncate">
-            {[chapter, bookTitle].filter(Boolean).join(" · ") || `${t("dialogue.explore")} ${currentLesson}/${totalLessons}`}
-          </span>
-          <h2 className={`${serif} text-white/80 font-semibold text-[16px] tracking-wide max-w-[200px] text-center truncate`}>{lessonTitle}</h2>
+      {/* Header + Progress line */}
+      <div className="absolute top-0 left-0 right-0 z-20 bg-[rgba(6,6,18,0.6)]">
+        <div className="pt-safe pb-3 px-5 flex items-center justify-between">
+          <motion.button
+            whileTap={{ scale: 0.85 }}
+            transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            onClick={(e) => { e.stopPropagation(); onBack(); }}
+            aria-label="Back"
+            className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          >
+            <ChevronLeft size={22} />
+          </motion.button>
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-white/40 text-[12px] font-medium max-w-[220px] text-center truncate">
+              {[chapter, bookTitle].filter(Boolean).join(" · ") || `${t("dialogue.explore")} ${currentLesson}/${totalLessons}`}
+            </span>
+            <h2 className={`${serif} text-white/80 font-semibold text-[16px] tracking-wide max-w-[200px] text-center truncate`}>{lessonTitle}</h2>
+          </div>
+          <div className="w-10" />
         </div>
-        <div className="w-10" />
-      </div>
-
-      {/* Progress bar */}
-      <div className="absolute top-[112px] w-[calc(100%-40px)] left-5 h-1.5 bg-white/[0.08] rounded-full overflow-hidden z-20">
-        <motion.div
-          className="h-full bg-white/60 rounded-full"
-          initial={false}
-          animate={{ width: `${dialoguePct}%` }}
-          transition={{ duration: 0.3 }}
-        />
+        <div className="w-full h-[1px] bg-white/[0.06]">
+          <motion.div
+            className="h-full bg-white/40"
+            initial={false}
+            animate={{ width: `${dialoguePct}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
       </div>
 
       {/* Centered dialogue area */}

@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, Fragment } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CosmiiConstellation } from "@/components/cosmii-constellation";
 import { createClient } from "@/lib/supabase";
+import { useT } from "@/lib/i18n";
+import { useSettingsStore } from "@/lib/store";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -15,6 +17,9 @@ export default function AuthPage() {
     return () => { document.body.classList.remove("no-scroll"); };
   }, []);
   const router = useRouter();
+  const t = useT();
+  const language = useSettingsStore((s) => s.language);
+  const setLanguage = useSettingsStore((s) => s.setLanguage);
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [loading, setLoading] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -82,10 +87,10 @@ export default function AuthPage() {
               >
                 <div className="mb-10">
                   <h1 className={`${serif} text-[28px] text-white tracking-tight`}>
-                    {isLogin ? "Welcome back" : "Create your universe"}
+                    {isLogin ? t("auth.loginTitle") : t("auth.signupTitle")}
                   </h1>
                   <p className="text-[14px] text-white/50 mt-2">
-                    {isLogin ? "Sign in to your universe" : "Start building your book memory"}
+                    {isLogin ? t("auth.loginSub") : t("auth.signupSub")}
                   </p>
                 </div>
 
@@ -109,42 +114,58 @@ export default function AuthPage() {
                         <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
                         <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                       </svg>
-                      {isLogin ? "Continue with Google" : "Sign up with Google"}
+                      {isLogin ? t("auth.googleLogin") : t("auth.googleSignup")}
                     </>
                   )}
                 </button>
 
                 {!isLogin && (
                   <p className="text-center mt-8 text-[12px] text-white/30 leading-relaxed">
-                    By creating an account, you agree to our{" "}
-                    <Link href="/terms" className="text-white/50 hover:text-white/70 underline underline-offset-2 decoration-white/20 transition-colors duration-300">Terms</Link>
-                    {" "}and{" "}
-                    <Link href="/privacy" className="text-white/50 hover:text-white/70 underline underline-offset-2 decoration-white/20 transition-colors duration-300">Privacy Policy</Link>.
+                    {t("auth.termsNotice")
+                      .split(/(\{terms\}|\{privacy\})/)
+                      .map((seg, i) =>
+                        seg === "{terms}" ? (
+                          <Link key={i} href="/terms" className="text-white/50 hover:text-white/70 underline underline-offset-2 decoration-white/20 transition-colors duration-300">{t("auth.terms")}</Link>
+                        ) : seg === "{privacy}" ? (
+                          <Link key={i} href="/privacy" className="text-white/50 hover:text-white/70 underline underline-offset-2 decoration-white/20 transition-colors duration-300">{t("auth.privacy")}</Link>
+                        ) : (
+                          <Fragment key={i}>{seg}</Fragment>
+                        )
+                      )}
                   </p>
                 )}
 
                 <p className="text-center mt-8 text-[14px] text-white/40">
-                  {isLogin ? "Don\u2019t have an account?" : "Already have an account?"}{" "}
+                  {isLogin ? t("auth.noAccount") : t("auth.hasAccount")}{" "}
                   <button
                     onClick={() => setMode(isLogin ? "signup" : "login")}
                     className="text-white/70 hover:text-white transition-colors duration-300"
                   >
-                    {isLogin ? "Sign up" : "Sign in"}
+                    {isLogin ? t("auth.signUp") : t("auth.signIn")}
                   </button>
                 </p>
+
+                <div className="text-center mt-10">
+                  <button
+                    onClick={() => setLanguage(language === "ko" ? "en" : "ko")}
+                    className="text-[12px] text-white/20 hover:text-white/45 transition-colors duration-300"
+                  >
+                    {language === "ko" ? "English" : "한국어"}
+                  </button>
+                </div>
               </motion.div>
             </AnimatePresence>
           </motion.div>
       </div>
 
       {/* Mobile — subtle background constellation */}
-      <div className="absolute inset-0 lg:hidden opacity-20 pointer-events-none">
-        <CosmiiConstellation />
+      <div className="absolute inset-0 lg:hidden opacity-35 pointer-events-none">
+        <CosmiiConstellation dim dimOpacity={1} dimZoom={11} />
       </div>
 
       {/* Desktop — right half */}
       <div className="hidden lg:block lg:w-1/2 relative">
-        <CosmiiConstellation />
+        <CosmiiConstellation dim dimOpacity={1} dimZoom={11} />
       </div>
     </motion.div>
   );

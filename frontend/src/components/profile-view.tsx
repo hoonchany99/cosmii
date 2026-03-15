@@ -237,7 +237,7 @@ export function ProfileView({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 400, damping: 15 }}
-              className="absolute -bottom-1 -right-1 bg-white/60 text-[#060612] text-[12px] font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-[#0a0a1a]"
+              className="absolute -bottom-1 -right-1 bg-emerald-400 text-[#060612] text-[12px] font-bold w-8 h-8 rounded-full flex items-center justify-center border-2 border-[#0a0a1a]"
             >
               {stats.level}
             </motion.div>
@@ -266,7 +266,7 @@ export function ProfileView({
             </div>
             <div className="w-full h-2.5 bg-white/[0.06] rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-white/50 rounded-full"
+                className="h-full bg-gradient-to-r from-indigo-400/60 to-emerald-400/60 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${xpPct}%` }}
                 transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
@@ -328,7 +328,7 @@ export function ProfileView({
               </div>
               <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-white/50 rounded-full"
+                  className="h-full bg-gradient-to-r from-violet-400/50 to-indigo-400/50 rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: `${lessonPct}%` }}
                   transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}

@@ -16,15 +16,10 @@ import { SettingsView } from "@/components/settings-view";
 import { BookDetail } from "@/components/book-detail";
 import { BookNotes } from "@/components/book-notes";
 import { WarpOverlay } from "@/components/warp-overlay";
-import { GoalToast } from "@/components/goal-toast";
+import { GoalToast, LevelUpToast } from "@/components/goal-toast";
 import { Onboarding } from "@/components/onboarding";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
 
-const CosmiiConstellation = dynamic(
-  () => import("@/components/cosmii-constellation").then((m) => m.CosmiiConstellation),
-  { ssr: false },
-);
 const ImageConstellation = dynamic(
   () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
   { ssr: false },
@@ -104,6 +99,8 @@ export default function UniversePage() {
   const { stats, setStats, setProfile, incrementTodayCompleted, todayCompleted } = useAppStore();
   const dailyGoal = useSettingsStore((s) => s.dailyGoal);
   const [showGoalToast, setShowGoalToast] = useState(false);
+  const [showLevelUpToast, setShowLevelUpToast] = useState(false);
+  const [levelUpLevel, setLevelUpLevel] = useState(0);
 
   useEffect(() => {
     document.body.classList.add("no-scroll");
@@ -227,10 +224,15 @@ export default function UniversePage() {
             level: data.level ?? stats.level,
           });
 
+          if (data.level_up) {
+            setLevelUpLevel(data.level ?? stats.level + 1);
+            setTimeout(() => setShowLevelUpToast(true), 800);
+          }
+
           incrementTodayCompleted();
           const newCount = todayCompleted + 1;
           if (newCount === dailyGoal) {
-            setTimeout(() => setShowGoalToast(true), 1200);
+            setTimeout(() => setShowGoalToast(true), data.level_up ? 4800 : 1200);
           }
         } catch {
           setCompleteData({ xpEarned: 50, streakDays: stats.streakDays, levelUp: false });
@@ -321,10 +323,15 @@ export default function UniversePage() {
   if (!statsLoaded) {
     return (
       <div className="h-screen w-screen bg-[#050510] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <Suspense fallback={null}>
-            <CosmiiConstellation animate={false} />
-          </Suspense>
+        <div className="absolute inset-0 pointer-events-none">
+          <ImageConstellation
+            imageSrc="/cosmii-constellation.png"
+            color="#6BC5A0"
+            animate={false}
+            dim
+            dimOpacity={0.15}
+            dimZoom={10}
+          />
         </div>
       </div>
     );
@@ -345,6 +352,7 @@ export default function UniversePage() {
         onMidpoint={handleWarpMidpoint}
         onComplete={handleWarpComplete}
       />
+      <LevelUpToast show={showLevelUpToast} newLevel={levelUpLevel} onDone={() => setShowLevelUpToast(false)} />
       <GoalToast show={showGoalToast} goal={dailyGoal} onDone={() => setShowGoalToast(false)} />
 
       {(view === "constellation" || view === "dialogue" || view === "quiz") && selectedBook && (
