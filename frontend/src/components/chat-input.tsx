@@ -36,7 +36,7 @@ export function ChatInput({ onSend, disabled, placeholder }: ChatInputProps) {
     <motion.div
       className={`relative flex items-end gap-2.5 rounded-2xl transition-all duration-300 px-4 py-2.5 ${
         focused
-          ? "bg-white/[0.06] ring-1 ring-indigo-400/20 shadow-[0_0_20px_rgba(99,102,241,0.08)]"
+          ? "bg-white/[0.06] ring-1 ring-white/[0.12]"
           : "bg-white/[0.03]"
       }`}
       animate={{ scale: focused ? 1.005 : 1 }}
@@ -66,7 +66,7 @@ export function ChatInput({ onSend, disabled, placeholder }: ChatInputProps) {
         transition={{ type: "spring", stiffness: 400, damping: 20 }}
         className={`flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-colors duration-200 ${
           canSend
-            ? "bg-indigo-500 hover:bg-indigo-400 text-white shadow-lg shadow-indigo-500/25"
+            ? "bg-white/20 hover:bg-white/25 text-white shadow-lg shadow-black/20"
             : "bg-white/10 text-white/30"
         }`}
       >

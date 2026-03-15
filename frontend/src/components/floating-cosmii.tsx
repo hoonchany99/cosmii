@@ -268,7 +268,7 @@ export function FloatingCosmii3D({
             }}
           >
             <div
-              className="w-fit rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/40"
+              className="w-fit rounded-2xl bg-white/[0.03] border border-white/[0.06] shadow-2xl shadow-black/40"
               style={{ position: "relative" }}
             >
 
@@ -286,7 +286,7 @@ export function FloatingCosmii3D({
                         {thinkingText}
                       </span>
                       <motion.span
-                        className="inline-block w-[2px] h-[16px] bg-indigo-400/70 ml-0.5"
+                        className="inline-block w-[2px] h-[16px] bg-white/30 ml-0.5"
                         animate={{ opacity: [1, 0, 1] }}
                         transition={{ duration: 0.8, repeat: Infinity }}
                       />
@@ -308,8 +308,8 @@ export function FloatingCosmii3D({
                         prose-p:my-1.5 prose-headings:my-2 prose-headings:font-semibold
                         prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5
                         prose-code:text-[13px] prose-code:bg-white/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-                        prose-blockquote:border-indigo-400/30 prose-blockquote:text-white/50
-                        prose-strong:text-white prose-a:text-indigo-400"
+                        prose-blockquote:border-white/[0.10] prose-blockquote:text-white/50
+                        prose-strong:text-white prose-a:text-white/70"
                       style={{ maxHeight: mobile ? "40vh" : 320 }}
                     >
                       <ReactMarkdown>{chatResponse}</ReactMarkdown>
@@ -321,7 +321,7 @@ export function FloatingCosmii3D({
                         </span>
                         {hasMore && (
                           <motion.span
-                            className="text-[12px] text-indigo-400/70 flex items-center gap-1"
+                            className="text-[12px] text-white/40 flex items-center gap-1"
                             animate={{ opacity: [0.5, 1, 0.5] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
                           >
@@ -365,9 +365,8 @@ export function FloatingCosmii3D({
                 whiteSpace: "nowrap",
                 padding: "4px 12px",
                 borderRadius: 12,
-                background: "rgba(255,255,255,0.1)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(255,255,255,0.15)",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.06)",
                 fontSize: 12,
                 color: "rgba(255,255,255,0.85)",
               }}
@@ -392,7 +391,7 @@ export function FloatingCosmii3D({
               transform: mobile ? "none" : "translateX(-50%)",
             }}
           >
-            <div className="flex flex-col gap-1.5 p-2 rounded-xl bg-black/70 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/40 min-w-[120px]">
+            <div className="flex flex-col gap-1.5 p-2 rounded-xl bg-white/[0.03] border border-white/[0.06] shadow-2xl shadow-black/40 min-w-[120px]">
               <button
                 onClick={handleSettingsClick}
                 className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-[13px] text-white/70 hover:text-white hover:bg-white/[0.08] transition-all duration-200 cursor-pointer min-h-[40px]"
@@ -469,8 +468,8 @@ export function FloatingCosmii3D({
                 width: sp.size,
                 height: sp.size,
                 borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(167,139,250,0.9) 0%, rgba(129,140,248,0.4) 70%, transparent 100%)",
-                boxShadow: `0 0 ${sp.size * 2}px rgba(167,139,250,0.6)`,
+                background: "radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 70%, transparent 100%)",
+                boxShadow: "none",
                 pointerEvents: "none",
               }}
             />
@@ -487,9 +486,6 @@ export function FloatingCosmii3D({
             draggable={false}
             style={{
               objectFit: "contain",
-              filter: chatLoading
-                ? "drop-shadow(0 0 12px rgba(167,139,250,0.6)) drop-shadow(0 0 30px rgba(139,92,246,0.3))"
-                : "drop-shadow(0 0 8px rgba(139,92,246,0.5)) drop-shadow(0 0 24px rgba(139,92,246,0.2))",
               transition: "filter 0.5s ease",
             }}
           />
@@ -503,8 +499,6 @@ export function FloatingCosmii3D({
             draggable={false}
             style={{
               objectFit: "contain",
-              filter:
-                "drop-shadow(0 0 6px rgba(139,92,246,0.4)) drop-shadow(0 0 18px rgba(139,92,246,0.15))",
             }}
           />
         )}

@@ -16,8 +16,8 @@ interface Star {
 }
 
 const STAR_COUNT = 200;
-const DURATION_MS = 1400;
-const MIDPOINT = 0.42;
+const DURATION_MS = 1000;
+const MIDPOINT = 0.4;
 
 export function WarpOverlay({ active, onMidpoint, onComplete }: WarpOverlayProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -80,16 +80,14 @@ export function WarpOverlay({ active, onMidpoint, onComplete }: WarpOverlayProps
         return;
       }
 
-      /* ── Phase-based speed ── */
-      // 0-0.4: accelerate,  0.4-0.6: peak,  0.6-1.0: decelerate to 0
       let speed: number;
-      if (t < 0.4) {
-        speed = 20 + 140 * (t / 0.4);
-      } else if (t < 0.6) {
-        speed = 160;
+      if (t < 0.35) {
+        speed = 5 + 45 * (t / 0.35);
+      } else if (t < 0.55) {
+        speed = 50;
       } else {
-        const decel = (t - 0.6) / 0.4;
-        speed = 160 * (1 - decel * decel);
+        const decel = (t - 0.55) / 0.45;
+        speed = 50 * (1 - decel * decel);
       }
 
       /* ── Background opacity ── */
@@ -136,41 +134,28 @@ export function WarpOverlay({ active, onMidpoint, onComplete }: WarpOverlayProps
         const px = (star.x / star.prevZ) * 400 + cx;
         const py = (star.y / star.prevZ) * 400 + cy;
 
-        const brightness = Math.min(1, (1500 - star.z) / 1200);
+        const brightness = Math.min(0.6, (1500 - star.z) / 1200);
         const alpha = brightness * streakAlpha;
-        const lineWidth = Math.max(0.5, (1 - star.z / 1500) * 2.5);
+        const lineWidth = Math.max(0.4, (1 - star.z / 1500) * 1.8);
 
         ctx.beginPath();
         ctx.moveTo(px, py);
         ctx.lineTo(sx, sy);
-        ctx.strokeStyle = `rgba(200,210,255,${alpha})`;
+        ctx.strokeStyle = `rgba(180,190,220,${alpha})`;
         ctx.lineWidth = lineWidth;
         ctx.stroke();
 
-        const dotR = Math.max(0.8, (1 - star.z / 1500) * 2);
+        const dotR = Math.max(0.6, (1 - star.z / 1500) * 1.5);
         ctx.beginPath();
         ctx.arc(sx, sy, dotR, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(220,225,255,${alpha * 0.9})`;
+        ctx.fillStyle = `rgba(180,190,220,${alpha * 0.7})`;
         ctx.fill();
       }
 
-      /* ── Arrival flash: full-screen bloom at t > 0.75 ── */
-      if (t > 0.75) {
-        const flashT = (t - 0.75) / 0.25;
-        const flashIntensity = flashT < 0.2
-          ? flashT / 0.2
-          : 1 - (flashT - 0.2) / 0.8;
-        const maxAlpha = flashIntensity;
-
-        const diag = Math.sqrt(cx * cx + cy * cy);
-        const radius = diag * (1.2 + flashT * 0.6);
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        grad.addColorStop(0, `rgba(220,230,255,${maxAlpha})`);
-        grad.addColorStop(0.3, `rgba(190,205,255,${maxAlpha * 0.8})`);
-        grad.addColorStop(0.6, `rgba(150,170,245,${maxAlpha * 0.45})`);
-        grad.addColorStop(0.85, `rgba(120,140,230,${maxAlpha * 0.15})`);
-        grad.addColorStop(1, `rgba(100,120,220,${maxAlpha * 0.05})`);
-        ctx.fillStyle = grad;
+      if (t > 0.8) {
+        const flashT = (t - 0.8) / 0.2;
+        const flashAlpha = Math.sin(flashT * Math.PI) * 0.15;
+        ctx.fillStyle = `rgba(200,210,230,${flashAlpha})`;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 

@@ -482,7 +482,7 @@ export default function LandingPage() {
       >
         <div className="mx-auto flex items-center justify-between px-8 sm:px-12 py-4">
           <Link href="/" className="group flex items-center gap-2.5">
-            <span className={`${serif} text-[22px] font-bold tracking-tight text-white/70 group-hover:text-white/90 transition-colors duration-500`}>
+            <span className={`${serif} font-brand text-[22px] font-bold tracking-tight text-white/70 group-hover:text-white/90 transition-colors duration-500`}>
               Cosmii
             </span>
           </Link>
@@ -633,7 +633,7 @@ export default function LandingPage() {
         <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-14" />
         <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-10">
           <div>
-            <span className={`${serif} text-[18px] font-bold tracking-tight text-white/70`}>Cosmii</span>
+            <span className={`${serif} font-brand text-[18px] font-bold tracking-tight text-white/70`}>Cosmii</span>
             <p className="text-[12px] text-white/25 mt-3 leading-relaxed">AI that reads books<br />and remembers them.</p>
           </div>
           <div>

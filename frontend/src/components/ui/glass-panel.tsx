@@ -11,7 +11,7 @@ export function GlassPanel({
   className?: string;
 }) {
   return (
-    <div className={cn("bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl", className)}>
+    <div className={cn("bg-white/[0.02] border border-white/[0.06] rounded-2xl", className)}>
       {children}
     </div>
   );
@@ -30,19 +30,21 @@ export function PrimaryButton({
   onClick?: () => void;
   variant?: "indigo" | "emerald" | "ghost";
 }) {
-  const base = "w-full min-h-[52px] rounded-2xl font-semibold transition-all select-none";
+  const base = "w-full min-h-[52px] rounded-full font-semibold transition-all select-none";
   const variants = {
     indigo: disabled
-      ? "bg-white/10 text-white/30 cursor-not-allowed"
-      : "bg-gradient-to-r from-indigo-500 to-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:shadow-[0_0_20px_rgba(99,102,241,0.5)]",
-    emerald: "bg-emerald-500 hover:bg-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]",
-    ghost: "bg-white/10 hover:bg-white/20 text-white border border-white/20",
+      ? "bg-white/[0.06] text-white/25 cursor-not-allowed"
+      : "bg-white text-[#060612] hover:bg-white/90",
+    emerald: disabled
+      ? "bg-white/[0.06] text-white/25 cursor-not-allowed"
+      : "bg-white text-[#060612] hover:bg-white/90",
+    ghost: "bg-white/[0.05] hover:bg-white/[0.10] text-white/70 border border-white/[0.12]",
   };
 
   return (
     <motion.button
-      whileTap={disabled ? undefined : { scale: 0.92 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      whileTap={disabled ? undefined : { scale: 0.97 }}
+      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
       className={cn(base, variants[variant], className)}
       disabled={disabled}
       onClick={onClick}

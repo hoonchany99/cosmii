@@ -165,7 +165,7 @@ function BrainSphere({ absorbing }: { absorbing: boolean }) {
       <Billboard position={[0, 4.8, 0]}>
         <Html center style={{ pointerEvents: "none" }}>
           <div className="text-center whitespace-nowrap">
-            <div className="text-sm font-bold text-indigo-300 drop-shadow-[0_0_8px_rgba(99,102,241,0.7)]">Book-Mind</div>
+            <div className="text-sm font-bold text-white/60">Book-Mind</div>
           </div>
         </Html>
       </Billboard>
@@ -458,7 +458,7 @@ export function BrainCanvas3D({
       </Canvas>
 
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 10 }}>
-        <button className="pointer-events-auto absolute bottom-24 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-black/40 backdrop-blur text-sm font-medium text-white/70 hover:text-white hover:border-indigo-400/40 transition-colors shadow-lg"
+        <button className="pointer-events-auto absolute bottom-24 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-[#060612]/90 text-sm font-medium text-white/70 hover:text-white hover:border-white/25 transition-colors shadow-lg"
           onClick={onUploadClick}>
           <Plus className="w-4 h-4" /> Add Book
         </button>

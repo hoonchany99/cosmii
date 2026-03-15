@@ -3,7 +3,6 @@
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronUp, Send, X } from "lucide-react";
-import { CosmicBg } from "@/components/cosmic-bg";
 import { useIsMobile } from "@/lib/utils";
 import { useSettingsStore } from "@/lib/store";
 import { useT } from "@/lib/i18n";
@@ -31,12 +30,11 @@ interface ConceptDialogueProps {
   isFirstInChapter?: boolean;
   onBack: () => void;
   onComplete: () => void;
-  onAskQuestion: () => void;
 }
 
 function HighlightPill({ keyword }: { keyword: string }) {
   return (
-    <span className="inline-flex items-center gap-1 bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-[12px] font-semibold px-2.5 py-0.5 rounded-full">
+    <span className="inline-flex items-center gap-1 bg-white/[0.08] border border-white/[0.15] text-white/70 text-[12px] font-semibold px-2.5 py-0.5 rounded-full">
       {keyword}
     </span>
   );
@@ -70,7 +68,6 @@ export function ConceptDialogue({
   isFirstInChapter,
   onBack,
   onComplete,
-  onAskQuestion,
 }: ConceptDialogueProps) {
   const mobile = useIsMobile();
   const t = useT();
@@ -114,8 +111,8 @@ export function ConceptDialogue({
   }, [dialogue]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [focusedIndex, setFocusedIndex] = useState(0);
   const isLast = currentIndex >= splitDialogue.length - 1;
-  const current = splitDialogue[currentIndex];
 
   const [questionOpen, setQuestionOpen] = useState(false);
   const [questionInput, setQuestionInput] = useState("");
@@ -126,7 +123,8 @@ export function ConceptDialogue({
   const chatHistoryRef = useRef<{ role: "user" | "assistant"; content: string }[]>([]);
   const answerBottomRef = useRef<HTMLDivElement>(null);
   const dialogueScrollRef = useRef<HTMLDivElement>(null);
-  const lastMsgRef = useRef<HTMLDivElement>(null);
+  const bubbleRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const currentIndexRef = useRef(0);
   const sheetInputRef = useRef<HTMLInputElement>(null);
   const [kbHeight, setKbHeight] = useState(0);
 
@@ -150,20 +148,50 @@ export function ConceptDialogue({
     answerBottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [visibleBubbleIdx, sheetMessages]);
 
-  const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
+  const scrollToCenter = useCallback((index: number, behavior: ScrollBehavior = "smooth") => {
     setTimeout(() => {
-      if (dialogueScrollRef.current) {
-        dialogueScrollRef.current.scrollTo({
-          top: dialogueScrollRef.current.scrollHeight,
-          behavior,
-        });
-      }
-    }, 80);
+      bubbleRefs.current[index]?.scrollIntoView({ block: "center", behavior });
+    }, 50);
   }, []);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [currentIndex, scrollToBottom]);
+    currentIndexRef.current = currentIndex;
+    setFocusedIndex(currentIndex);
+    scrollToCenter(currentIndex);
+  }, [currentIndex, scrollToCenter]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      bubbleRefs.current[0]?.scrollIntoView({ block: "center", behavior: "auto" });
+    }, 200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const container = dialogueScrollRef.current;
+    if (!container) return;
+    let rafId = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const rect = container.getBoundingClientRect();
+        const centerY = rect.top + rect.height / 2;
+        let closest = currentIndexRef.current;
+        let minDist = Infinity;
+        const limit = currentIndexRef.current;
+        for (let i = 0; i <= limit; i++) {
+          const el = bubbleRefs.current[i];
+          if (!el) continue;
+          const r = el.getBoundingClientRect();
+          const dist = Math.abs(r.top + r.height / 2 - centerY);
+          if (dist < minDist) { minDist = dist; closest = i; }
+        }
+        setFocusedIndex(closest);
+      });
+    };
+    container.addEventListener("scroll", onScroll, { passive: true });
+    return () => { container.removeEventListener("scroll", onScroll); cancelAnimationFrame(rafId); };
+  }, []);
 
   useEffect(() => {
     const vv = window.visualViewport;
@@ -171,11 +199,11 @@ export function ConceptDialogue({
     const onResize = () => {
       const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
       setKbHeight(kb);
-      if (kb > 0) scrollToBottom();
+      if (kb > 0) scrollToCenter(currentIndexRef.current);
     };
     vv.addEventListener("resize", onResize);
     return () => vv.removeEventListener("resize", onResize);
-  }, [scrollToBottom]);
+  }, [scrollToCenter]);
 
   useEffect(() => {
     if (totalBubbles > 0 && visibleBubbleIdx < totalBubbles) {
@@ -205,7 +233,7 @@ export function ConceptDialogue({
         .slice(0, currentIndex + 1)
         .map((d) => d.text)
         .join(" ")
-        .slice(0, 500);
+        .slice(0, 1500);
       const lessonContext = `[Book: ${bookTitle}${bookAuthor ? ` by ${bookAuthor}` : ""}] [Chapter: ${chapter}] [Lesson: ${lessonTitle}] [Progress: ${currentLesson}/${totalLessons}]\n${lessonTexts}`;
 
       const res = await fetch(`${API}/api/chat/ask`, {
@@ -281,7 +309,7 @@ export function ConceptDialogue({
     return parts.map((part, i) => (
       <span key={i}>
         {part}
-        {i < parts.length - 1 && <span className="text-indigo-300 font-bold">{highlight}</span>}
+        {i < parts.length - 1 && <span className="text-white/95 font-bold">{highlight}</span>}
       </span>
     ));
   };
@@ -292,8 +320,6 @@ export function ConceptDialogue({
       onClick={!questionOpen ? handleTap : undefined}
       style={{ cursor: questionOpen ? "default" : "pointer" }}
     >
-      <CosmicBg accent="indigo" />
-
       {/* Chapter intro overlay — solid background hides lesson content */}
       <AnimatePresence>
         {showChapterIntro && chapter && (
@@ -304,7 +330,7 @@ export function ConceptDialogue({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="absolute inset-0 z-50 flex flex-col items-center justify-center"
-            style={{ background: "#050510" }}
+            style={{ background: "#060612" }}
           >
             <motion.span
               initial={{ opacity: 0, letterSpacing: "0.5em" }}
@@ -335,7 +361,7 @@ export function ConceptDialogue({
       </AnimatePresence>
 
       {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 pt-safe pb-3 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
+      <div className="absolute top-0 left-0 right-0 z-20 pt-safe pb-3 px-5 flex items-center justify-between bg-[rgba(6,6,18,0.6)] border-b border-white/[0.04]">
         <motion.button
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 22 }}
@@ -357,86 +383,87 @@ export function ConceptDialogue({
       {/* Progress bar */}
       <div className="absolute top-[112px] w-[calc(100%-40px)] left-5 h-1.5 bg-white/[0.08] rounded-full overflow-hidden z-20">
         <motion.div
-          className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 rounded-full"
+          className="h-full bg-white/60 rounded-full"
           initial={false}
           animate={{ width: `${dialoguePct}%` }}
           transition={{ duration: 0.3 }}
         />
       </div>
 
-      {/* Chat-style dialogue area */}
+      {/* Centered dialogue area */}
       <div
         ref={dialogueScrollRef}
         className="absolute inset-0 z-10 overflow-y-auto"
-        style={{ paddingTop: "124px", paddingBottom: `${160 + kbHeight}px` }}
+        style={{
+          paddingTop: "124px",
+          paddingBottom: `${160 + kbHeight}px`,
+          scrollSnapType: "y proximity",
+          scrollPaddingTop: "124px",
+          scrollPaddingBottom: `${160 + kbHeight}px`,
+        }}
       >
-        <div className="flex flex-col gap-4 px-5" style={{ minHeight: "100%" }}>
-          <div className="flex-1 shrink-0" />
+        <div
+          className="flex flex-col gap-4 px-5"
+          style={{ paddingTop: "40vh", paddingBottom: "40vh" }}
+        >
           {splitDialogue.slice(0, currentIndex + 1).map((part, i) => {
-            const isCurrent = i === currentIndex;
+            const dist = Math.abs(i - focusedIndex);
+            const bubbleOpacity = Math.max(0.12, 1 - dist * 0.3);
+            const bgAlpha = dist === 0 ? 0.12 : Math.max(0.04, 0.08 - dist * 0.02);
+            const borderAlpha = dist === 0 ? 0.18 : Math.max(0.04, 0.10 - dist * 0.03);
+
             return (
               <motion.div
                 key={i}
-                ref={isCurrent ? lastMsgRef : undefined}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isCurrent ? 1 : 0.3 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                ref={(el) => { bubbleRefs.current[i] = el; }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: bubbleOpacity, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                style={{ scrollSnapAlign: "center" }}
+                className={dist > 0 ? "cursor-pointer" : ""}
+                onClick={dist > 0 ? (e) => {
+                  e.stopPropagation();
+                  bubbleRefs.current[i]?.scrollIntoView({ block: "center", behavior: "smooth" });
+                } : undefined}
               >
-                <div className="flex items-start gap-3 w-full">
-                  <div
-                    className="flex-shrink-0 w-10 h-10 flex items-center justify-center"
-                    style={{ opacity: isCurrent ? 1 : 0, visibility: isCurrent ? "visible" : "hidden" }}
-                  >
-                    <img
-                      src={mobile ? "/cosmii/talking-mobile.webp" : "/cosmii/talking-desktop.webp"}
-                      alt=""
-                      className="w-20 h-20 object-contain drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]"
-                      draggable={false}
-                    />
-                  </div>
-
-                  <div className="min-w-0 max-w-[85%]">
-                    <div
-                      className="w-fit rounded-2xl rounded-tl-md px-5 py-4"
-                      style={{
-                        backgroundColor: isCurrent ? "rgba(255,255,255,0.05)" : "transparent",
-                        border: `1px solid ${isCurrent ? "rgba(255,255,255,0.10)" : "transparent"}`,
-                        boxShadow: isCurrent ? "0 8px 32px rgba(0,0,0,0.25)" : "none",
-                      }}
-                    >
-                      <p
-                        className="text-[15px] leading-[1.7] font-medium text-left"
-                        style={{ color: isCurrent ? "rgba(255,255,255,0.90)" : "rgba(255,255,255,0.45)" }}
-                      >
-                        {renderText(part.text, part.highlight)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <motion.div
+                  className="w-fit max-w-full rounded-2xl px-5 py-4"
+                  animate={{
+                    backgroundColor: `rgba(255,255,255,${bgAlpha})`,
+                    borderColor: `rgba(255,255,255,${borderAlpha})`,
+                    boxShadow: dist === 0 ? "0 8px 32px rgba(0,0,0,0.25)" : "0 0 0 rgba(0,0,0,0)",
+                  }}
+                  transition={{ duration: 0.5 }}
+                  style={{ border: "1px solid transparent" }}
+                >
+                  <p className="text-[15px] leading-[1.7] font-medium text-left text-white/90">
+                    {renderText(part.text, part.highlight)}
+                  </p>
+                </motion.div>
               </motion.div>
             );
           })}
-
-          {/* Tap indicator */}
-          {!questionOpen && (
-            <motion.div
-              className="flex flex-col items-center mt-4 gap-1"
-              animate={{ opacity: [0.25, 0.6, 0.25] }}
-              transition={{ duration: 2.5, repeat: Infinity }}
-            >
-              <motion.div
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <ChevronUp size={18} className="text-white/30" />
-              </motion.div>
-              <span className="text-white/25 text-[12px] tracking-[0.2em] uppercase">
-                {isLast ? t("dialogue.tapFinish") : t("dialogue.tapContinue")}
-              </span>
-            </motion.div>
-          )}
         </div>
       </div>
+
+      {/* Tap indicator — fixed overlay */}
+      {!questionOpen && (
+        <div
+          className="absolute left-0 right-0 flex flex-col items-center gap-1 pointer-events-none"
+          style={{ bottom: `${80 + kbHeight}px`, zIndex: 15 }}
+        >
+          <motion.div
+            animate={{ opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 2.5, repeat: Infinity }}
+            className="flex flex-col items-center gap-1"
+          >
+            <ChevronUp size={16} className="text-white/25" />
+            <span className="text-white/20 text-[11px] tracking-[0.2em] uppercase">
+              {isLast ? t("dialogue.tapFinish") : t("dialogue.tapContinue")}
+            </span>
+          </motion.div>
+        </div>
+      )}
 
       {/* Bottom question input bar */}
       <div
@@ -460,17 +487,17 @@ export function ConceptDialogue({
               }
             }}
             placeholder={t("dialogue.askPlaceholder")}
-                    className="w-full h-12 bg-white/[0.07] border border-white/[0.15] rounded-full pl-5 pr-13 text-white text-[15px] placeholder-white/30 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all"
+                    className="w-full h-12 bg-white/[0.04] border border-white/[0.10] rounded-full pl-5 pr-13 text-white text-[15px] placeholder-white/25 outline-none focus:border-white/[0.25] focus:bg-white/[0.06] transition-all"
           />
           <motion.button
-            whileTap={{ scale: 0.85 }}
-            transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             onClick={handleAskInline}
             disabled={!questionInput.trim() || isAnswering}
             aria-label="Send"
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/[0.08] hover:bg-white/[0.15] rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-white/[0.20]"
           >
-            <Send size={16} className="text-indigo-300 ml-0.5" />
+            <Send size={16} className="text-white/50 ml-0.5" />
           </motion.button>
         </div>
       </div>
@@ -492,26 +519,21 @@ export function ConceptDialogue({
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute bottom-0 left-0 right-0 max-h-[70vh] bg-[#0a0a1a]/95 border-t border-white/[0.10] backdrop-blur-2xl rounded-t-3xl overflow-hidden flex flex-col"
+              className="absolute bottom-0 left-0 right-0 max-h-[70vh] bg-[#060612] border-t border-white/[0.06] rounded-t-3xl overflow-hidden flex flex-col"
               style={{ zIndex: 40 }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Sheet header */}
-              <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-white/[0.06]">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 flex items-center justify-center">
-                    <img src={mobile ? "/cosmii/talking-mobile.webp" : "/cosmii/talking-desktop.webp"} alt="" className="w-11 h-11 object-contain drop-shadow-[0_0_6px_rgba(139,92,246,0.3)]" draggable={false} />
-                  </div>
-                  <span className="text-white/80 text-[17px] font-bold">Cosmii</span>
-                </div>
+              <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/[0.06]">
+                <span className={`${serif} font-brand text-white/50 text-[15px] font-medium tracking-wide`}>Cosmii</span>
                 {!isAnswering && (
                   <motion.button
-                    whileTap={{ scale: 0.88 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 25 }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
                     onClick={handleCloseAnswer}
-                    className="text-white/40 hover:text-white/80 p-2 rounded-lg hover:bg-white/[0.06] active:bg-white/[0.10] transition-colors"
+                    className="text-white/30 hover:text-white/60 p-2 -mr-2 rounded-lg hover:bg-white/[0.04] transition-colors"
                   >
-                    <X size={18} />
+                    <X size={16} />
                   </motion.button>
                 )}
               </div>
@@ -533,8 +555,8 @@ export function ConceptDialogue({
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                           className={isUser
-                            ? "self-end w-fit bg-indigo-500/25 border border-indigo-400/25 rounded-2xl rounded-br-md px-4 py-3 max-w-[85%]"
-                            : "w-fit bg-white/[0.06] border border-white/[0.08] rounded-2xl rounded-tl-md px-4 py-3 max-w-[90%]"
+                            ? "self-end w-fit bg-white/[0.06] border border-white/[0.10] rounded-2xl rounded-br-md px-4 py-3 max-w-[85%]"
+                            : "w-fit bg-white/[0.025] border border-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[90%]"
                           }
                         >
                           <p className={`text-[14px] leading-[1.7] font-medium ${isUser ? "text-white/90" : "text-white/85"}`}>{bubble}</p>
@@ -549,7 +571,7 @@ export function ConceptDialogue({
                     {[0, 1, 2].map((i) => (
                       <motion.div
                         key={i}
-                        className="w-2 h-2 rounded-full bg-indigo-400/60"
+                        className="w-2 h-2 rounded-full bg-white/30"
                         animate={{ opacity: [0.3, 1, 0.3] }}
                         transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
                       />
@@ -584,17 +606,17 @@ export function ConceptDialogue({
                     onKeyDown={(e) => e.key === "Enter" && handleSheetAsk()}
                     placeholder={t("dialogue.sheetPlaceholder")}
                     disabled={isAnswering}
-                    className="w-full h-12 bg-white/[0.07] border border-white/[0.12] rounded-full pl-5 pr-12 text-white text-[15px] placeholder-white/30 backdrop-blur-xl outline-none focus:border-indigo-400/50 focus:bg-white/[0.10] transition-all disabled:opacity-40"
+                    className="w-full h-12 bg-white/[0.04] border border-white/[0.10] rounded-full pl-5 pr-12 text-white text-[15px] placeholder-white/25 outline-none focus:border-white/[0.25] focus:bg-white/[0.06] transition-all disabled:opacity-40"
                   />
                   <motion.button
-                    whileTap={{ scale: 0.85 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                     onClick={handleSheetAsk}
                     disabled={!sheetInput.trim() || isAnswering}
                     aria-label="Send"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-500/25 hover:bg-indigo-500/45 rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-indigo-500/60"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/[0.08] hover:bg-white/[0.15] rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-white/[0.20]"
                   >
-                    <Send size={16} className="text-indigo-300 ml-0.5" />
+                    <Send size={16} className="text-white/50 ml-0.5" />
                   </motion.button>
                 </div>
                 <motion.button

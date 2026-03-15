@@ -63,7 +63,7 @@ export default function AuthPage() {
             onClick={() => navigateTo("/")}
             className="absolute top-6 left-8 z-20 group flex items-center gap-2"
           >
-            <span className={`${serif} text-[22px] font-bold tracking-tight text-white/70 group-hover:text-white/90 transition-colors duration-500`}>Cosmii</span>
+            <span className={`${serif} font-brand text-[22px] font-bold tracking-tight text-white/70 group-hover:text-white/90 transition-colors duration-500`}>Cosmii</span>
           </motion.button>
 
           <motion.div

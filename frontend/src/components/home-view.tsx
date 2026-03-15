@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
-import { ChevronRight, BookOpen } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { CosmicBg } from "@/components/cosmic-bg";
 import { useIsMobile } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
@@ -251,7 +251,7 @@ function BookStar({
             className={`${serif} text-[14px] font-semibold`}
             style={{
               color: "rgba(255,255,255,0.88)",
-              textShadow: `0 0 14px ${color}60, 0 0 5px rgba(0,0,0,0.9)`,
+              textShadow: "0 2px 8px rgba(0,0,0,0.8)",
               letterSpacing: "0.02em",
             }}
           >
@@ -362,11 +362,14 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
 
   const greeting = useMemo(() => {
     const h = new Date().getHours();
-    if (h < 6) return { title: t("home.greetNight"), sub: t("home.greetNightSub") };
-    if (h < 12) return { title: t("home.greetMorning"), sub: t("home.greetMorningSub") };
-    if (h < 18) return { title: t("home.greetAfternoon"), sub: t("home.greetAfternoonSub") };
-    return { title: t("home.greetEvening"), sub: t("home.greetEveningSub") };
-  }, [t]);
+    const n = Math.floor(Math.random() * 5) + 1;
+    const period = h < 6 ? "Night" : h < 12 ? "Morning" : h < 18 ? "Afternoon" : "Evening";
+    return {
+      title: t(`home.greet${period}${n}` as any),
+      sub: t(`home.greet${period}Sub${n}` as any),
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const dateStr = useMemo(() => {
     const d = new Date();
@@ -416,43 +419,12 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
         className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
         style={{
           height: "50%",
-          background: "linear-gradient(to top, rgba(5,5,16,0.92) 0%, rgba(5,5,16,0.6) 40%, transparent 100%)",
+          background: "linear-gradient(to top, rgba(6,6,18,0.95) 0%, rgba(6,6,18,0.6) 40%, transparent 100%)",
         }}
       />
 
       {/* Bottom content */}
       <div className="absolute bottom-0 left-0 right-0 z-20 px-5 pb-safe-lg flex flex-col items-center">
-        {/* Cosmii + Speech bubble — horizontal chat style */}
-        <motion.div
-          className="flex items-end gap-2.5 mb-5 w-full max-w-[340px]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <motion.div className="relative flex-shrink-0">
-            <div className="absolute -inset-3 bg-teal-400/[0.06] rounded-full blur-2xl" />
-            <motion.img
-              src={mobile ? "/cosmii/standing-mobile.webp" : "/cosmii/standing-desktop.webp"}
-              alt="Cosmii"
-              className="w-[52px] h-auto relative z-10 drop-shadow-[0_0_16px_rgba(45,212,191,0.2)]"
-              animate={{ y: [0, -4, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              draggable={false}
-            />
-          </motion.div>
-          <div className="relative max-w-[75%]">
-            <div className="bg-white/[0.07] border border-white/[0.12] backdrop-blur-xl rounded-2xl px-4 py-2.5 shadow-[0_4px_20px_rgba(0,0,0,0.2)] w-fit">
-              <p className="text-white/65 text-[13px] font-medium leading-relaxed">
-                {books.length === 0
-                  ? t("home.uploadHint")
-                  : activeSession
-                    ? t("home.continueHint")
-                    : t("home.startHint")}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Recently Read Book Card */}
         {activeSession && onContinueLearning && activeSession.totalLessons > 0 && activeSession.completedLessons > 0 && (
           <motion.div
@@ -467,15 +439,9 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={onContinueLearning}
-              className="w-full bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.35)] active:bg-white/[0.10] active:border-white/[0.16] transition-colors select-none"
+              className="w-full bg-white/[0.02] border border-white/[0.06] rounded-2xl overflow-hidden active:bg-white/[0.05] transition-colors select-none"
             >
-              <div className="p-4 flex items-center gap-3.5">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner"
-                  style={{ background: `linear-gradient(145deg, ${activeSession.book.color}50, ${activeSession.book.color}18)` }}
-                >
-                  <BookOpen size={18} className="text-white/90 drop-shadow-sm" />
-                </div>
+              <div className="p-4 flex items-center gap-3">
                 <div className="flex-1 min-w-0 text-left">
                   <p className={`${serif} text-white/90 text-[15px] font-bold truncate`}>{activeSession.book.title}</p>
                   {activeSession.book.author && (
@@ -491,8 +457,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
                 </div>
                 <div className="w-full h-[4px] bg-white/[0.06] rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full rounded-full"
-                    style={{ background: `linear-gradient(90deg, ${activeSession.book.color}cc, ${activeSession.book.color}60)` }}
+                    className="h-full rounded-full bg-white/50"
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
                     transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}

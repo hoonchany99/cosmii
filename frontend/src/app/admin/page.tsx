@@ -170,7 +170,7 @@ export default function AdminPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Cosmii Admin</h1>
+            <h1 className="text-3xl font-bold tracking-tight"><span className="font-brand">Cosmii</span> Admin</h1>
             <p className="text-white/40 mt-2">Manage books, generate lessons</p>
           </div>
           <div className="flex gap-3">

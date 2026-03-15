@@ -2,8 +2,8 @@
 
 import { useMemo, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Check, Lock, RotateCcw, ChevronLeft, Star, Circle, BookMarked } from "lucide-react";
-import { CosmicBg } from "@/components/cosmic-bg";
+import { Check, Lock, RotateCcw, ChevronLeft, BookMarked } from "lucide-react";
+import { getBookConstellation } from "@/lib/book-constellations";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -19,6 +19,7 @@ interface LessonNode {
 }
 
 interface LessonConstellationProps {
+  bookId: string;
   bookTitle: string;
   bookAuthor?: string;
   completedCount: number;
@@ -34,19 +35,20 @@ function ChapterDivider({ chapter }: { chapter: string }) {
   const fontSize = chapter.length > 20 ? 11 : chapter.length > 12 ? 12 : 14;
   return (
     <div className="flex items-center gap-3 w-[280px] my-1">
-      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/[0.20] to-transparent" />
       <span
-        className={`${serif} text-indigo-300/60 tracking-wider uppercase text-center whitespace-nowrap`}
+        className={`${serif} text-white/55 font-semibold tracking-wider uppercase text-center whitespace-nowrap`}
         style={{ fontSize: `${fontSize}px` }}
       >
         {chapter}
       </span>
-      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
+      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/[0.20] to-transparent" />
     </div>
   );
 }
 
 export function LessonConstellation({
+  bookId,
   bookTitle,
   bookAuthor,
   completedCount,
@@ -56,6 +58,7 @@ export function LessonConstellation({
   onSelectLesson,
   onOpenNotes,
 }: LessonConstellationProps) {
+  const bookConst = useMemo(() => getBookConstellation(bookId), [bookId]);
   const points = useMemo(() => {
     return lessons.map((_, i) => {
       const x = Math.sin(i * 0.8) * 55;
@@ -90,9 +93,9 @@ export function LessonConstellation({
 
   return (
     <div className="w-full h-full relative overflow-hidden text-white">
-      <CosmicBg accent="indigo" />
+      {/* background provided by parent */}
 
-      <div className="absolute top-0 left-0 right-0 z-20 pt-safe pb-2 px-5 flex items-center justify-between bg-[rgba(5,5,16,0.4)] backdrop-blur-xl border-b border-white/[0.04]">
+      <div className="absolute top-0 left-0 right-0 z-20 pt-safe pb-2 px-5 flex items-center justify-between bg-[rgba(6,6,18,0.75)] border-b border-white/[0.04]">
         <motion.button
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 22 }}
@@ -108,7 +111,7 @@ export function LessonConstellation({
           <div className="flex items-center gap-2.5 mt-0.5">
             <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 rounded-full"
+                className="h-full bg-white/50 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${pct}%` }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
@@ -160,16 +163,20 @@ export function LessonConstellation({
 
                 {lesson.isCurrent ? (
                   <>
-                    <div className="absolute -inset-4 bg-amber-500/20 rounded-full animate-pulse blur-xl" />
                     <motion.button
                       whileTap={{ scale: 0.85 }}
                       transition={{ type: "spring", stiffness: 400, damping: 22 }}
                       onClick={() => onSelectLesson(lesson.id)}
-                      className="w-[64px] h-[64px] rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-[3px] border-amber-300/70 flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.45)] z-10 relative select-none"
+                      className="relative w-[56px] h-[56px] rounded-full bg-white/[0.08] border-2 border-white/30 flex items-center justify-center z-10 select-none"
                     >
-                      <Star size={28} className="text-white fill-white drop-shadow-md" />
+                      <span className="w-[14px] h-[14px] rounded-full bg-white/90" />
+                      <motion.span
+                        className="absolute inset-0 rounded-full border border-white/10"
+                        animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0, 0.3] }}
+                        transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                      />
                     </motion.button>
-                    <span className="text-amber-200/70 text-[14px] font-medium max-w-[220px] text-center leading-snug line-clamp-2">
+                    <span className={`${serif} text-white/80 text-[14px] font-bold max-w-[220px] text-center leading-snug line-clamp-2`}>
                       {lesson.title}
                     </span>
                   </>
@@ -179,39 +186,30 @@ export function LessonConstellation({
                       whileTap={{ scale: 0.85 }}
                       transition={{ type: "spring", stiffness: 400, damping: 22 }}
                       onClick={() => onSelectLesson(lesson.id)}
-                      className="w-13 h-13 rounded-full bg-emerald-500/15 border-2 border-emerald-400/50 flex items-center justify-center shadow-[0_0_14px_rgba(16,185,129,0.2)] hover:bg-emerald-500/25 transition-colors select-none"
+                      className="w-13 h-13 rounded-full bg-white/[0.06] border-2 border-white/[0.20] flex items-center justify-center hover:bg-white/[0.10] transition-colors select-none"
                     >
-                      <Check size={22} className="text-emerald-400" strokeWidth={3} />
+                      <Check size={22} className="text-white/70" strokeWidth={3} />
                     </motion.button>
-                    <span className="text-emerald-300/40 text-[14px] font-medium max-w-[220px] text-center leading-snug line-clamp-2">
+                    <span className="text-white/50 text-[13px] font-semibold max-w-[220px] text-center leading-snug line-clamp-2">
                       {lesson.title}
                     </span>
                   </>
                 ) : lesson.reviewNeeded ? (
                   <>
-                    <div className="absolute -inset-2 rounded-full border border-violet-400/30 border-dashed animate-[spin_8s_linear_infinite]" />
+                    <div className="absolute -inset-2 rounded-full border border-white/[0.10] border-dashed animate-[spin_8s_linear_infinite]" />
                     <motion.button
                       whileTap={{ scale: 0.85 }}
                       transition={{ type: "spring", stiffness: 400, damping: 22 }}
                       onClick={() => onSelectLesson(lesson.id)}
-                      className="w-13 h-13 rounded-full bg-violet-500/12 border-2 border-violet-400/40 flex items-center justify-center hover:bg-violet-500/20 transition-colors select-none"
+                      className="w-13 h-13 rounded-full bg-white/[0.04] border-2 border-white/[0.15] flex items-center justify-center hover:bg-white/[0.08] transition-colors select-none"
                     >
-                      <RotateCcw size={18} className="text-violet-400" />
+                      <RotateCcw size={18} className="text-white/40" />
                     </motion.button>
                   </>
-                ) : lesson.locked ? (
-                  <div className="w-12 h-12 rounded-full bg-white/[0.03] border border-white/[0.08] flex items-center justify-center">
-                    <Lock size={14} className="text-white/15" />
-                  </div>
                 ) : (
-                  <motion.button
-                    whileTap={{ scale: 0.85 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 22 }}
-                    onClick={() => onSelectLesson(lesson.id)}
-                    className="w-12 h-12 rounded-full bg-white/[0.04] border-2 border-white/20 flex items-center justify-center hover:border-white/40 hover:bg-white/[0.08] transition-all select-none"
-                  >
-                    <Circle size={14} className="text-white/25" />
-                  </motion.button>
+                  <div className="w-10 h-10 rounded-full bg-white/[0.04] border border-white/[0.10] flex items-center justify-center">
+                    <Lock size={14} className="text-white/30" />
+                  </div>
                 )}
               </motion.div>
             );

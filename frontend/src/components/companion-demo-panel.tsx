@@ -200,7 +200,7 @@ export function CompanionDemoPanel({ onBack }: CompanionDemoPanelProps = {}) {
               <ChevronLeft className="w-4 h-4" />
             </button>
           )}
-          <Sparkles className="w-4 h-4 text-indigo-300" />
+          <Sparkles className="w-4 h-4 text-white/50" />
           <h2 className="text-[14px] font-semibold text-white/90">Companion Demo (Chat Mode)</h2>
         </div>
         <div className="mt-3 flex flex-wrap gap-2 text-[11px] text-white/55">
@@ -218,7 +218,7 @@ export function CompanionDemoPanel({ onBack }: CompanionDemoPanelProps = {}) {
             onClick={() => setTimeBudget(value as TimeBudget)}
             className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all ${
               timeBudget === value
-                ? "bg-indigo-500/25 border border-indigo-300/35 text-indigo-100"
+                ? "bg-white/[0.08] border border-white/[0.15] text-white/80"
                 : "bg-white/5 border border-white/10 text-white/60 hover:text-white/80"
             }`}
           >
@@ -238,7 +238,7 @@ export function CompanionDemoPanel({ onBack }: CompanionDemoPanelProps = {}) {
                   onClick={() => selectSession(item.id)}
                   className={`w-full text-left rounded-lg border px-3 py-2.5 transition-all ${
                     active
-                      ? "border-indigo-300/35 bg-indigo-500/15"
+                      ? "border-white/[0.15] bg-white/[0.06]"
                       : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
                   }`}
                 >
@@ -274,7 +274,7 @@ export function CompanionDemoPanel({ onBack }: CompanionDemoPanelProps = {}) {
             </div>
             <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-indigo-400/90 to-cyan-300/90"
+                className="h-full rounded-full bg-white/50"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
@@ -293,12 +293,12 @@ export function CompanionDemoPanel({ onBack }: CompanionDemoPanelProps = {}) {
             </div>
           </ScrollArea>
 
-          <div className="px-4 py-3 border-t border-white/[0.06] bg-black/40 backdrop-blur-md">
+          <div className="px-4 py-3 border-t border-white/[0.06] bg-white/[0.03]">
             {!stopped && stage === "reading" && (
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setStage("quiz")}
-                  className="px-3.5 py-2 rounded-lg text-[12px] font-medium bg-emerald-500/20 border border-emerald-300/30 text-emerald-100 hover:bg-emerald-500/30 transition-colors"
+                  className="px-3.5 py-2 rounded-lg text-[12px] font-medium bg-white/[0.08] border border-white/[0.15] text-white/80 hover:bg-white/[0.12] transition-colors"
                 >
                   I finished reading
                 </button>
@@ -341,7 +341,7 @@ export function CompanionDemoPanel({ onBack }: CompanionDemoPanelProps = {}) {
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setStopped(false)}
-                  className="px-3.5 py-2 rounded-lg text-[12px] font-medium bg-cyan-500/20 border border-cyan-300/30 text-cyan-100 hover:bg-cyan-500/30 transition-colors"
+                  className="px-3.5 py-2 rounded-lg text-[12px] font-medium bg-white/[0.08] border border-white/[0.15] text-white/80 hover:bg-white/[0.12] transition-colors"
                 >
                   Resume session
                 </button>
@@ -360,7 +360,7 @@ export function CompanionDemoPanel({ onBack }: CompanionDemoPanelProps = {}) {
                 <button
                   onClick={goToNextSession}
                   disabled={sessionIndex >= DEMIAN_SESSIONS.length - 1}
-                  className="px-3.5 py-2 rounded-lg text-[12px] font-medium bg-indigo-500/20 border border-indigo-300/30 text-indigo-100 hover:bg-indigo-500/30 transition-colors disabled:opacity-40"
+                  className="px-3.5 py-2 rounded-lg text-[12px] font-medium bg-white/[0.08] border border-white/[0.15] text-white/80 hover:bg-white/[0.12] transition-colors disabled:opacity-40"
                 >
                   Next session
                 </button>

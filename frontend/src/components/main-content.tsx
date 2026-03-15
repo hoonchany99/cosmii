@@ -1461,7 +1461,7 @@ export function MainContent({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10"
+            className="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2 rounded-2xl bg-[#060612]/90 border border-white/10"
           >
             <button
               onClick={exitChatMode}
@@ -1532,8 +1532,8 @@ export function MainContent({
               className="fixed z-50 right-4"
               style={{ top: mobile ? 76 : 70, width: mobile ? "calc(100% - 32px)" : 360 }}
             >
-              <div className="rounded-2xl bg-black/55 backdrop-blur-xl border border-white/15 shadow-xl px-4 py-3">
-                <div className="flex items-center gap-2 text-cyan-200/90">
+              <div className="rounded-2xl bg-[#060612]/90 border border-white/15 shadow-xl px-4 py-3">
+                <div className="flex items-center gap-2 text-white/70">
                   <BookOpen className="w-3.5 h-3.5" />
                   <p className="text-[12px] font-semibold tracking-wide">모듈 진행 상태</p>
                 </div>
@@ -1582,9 +1582,9 @@ export function MainContent({
                       void handleSend(label);
                     }}
                     disabled={isLoading}
-                    className="w-full text-left px-3.5 py-2.5 rounded-xl border border-white/15 bg-black/45 backdrop-blur-lg text-[12px] text-white/85 hover:bg-white/10 transition-colors disabled:opacity-50"
+                    className="w-full text-left px-3.5 py-2.5 rounded-xl border border-white/15 bg-white/[0.03] text-[12px] text-white/85 hover:bg-white/10 transition-colors disabled:opacity-50"
                   >
-                    <span className="text-cyan-200/90 font-semibold mr-2">{label}.</span>
+                    <span className="text-white/70 font-semibold mr-2">{label}.</span>
                     {option}
                   </button>
                 );
@@ -1619,7 +1619,7 @@ export function MainContent({
                   void handleSend("다음");
                 }}
                 disabled={isLoading}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-cyan-300/35 bg-cyan-500/15 text-[13px] text-cyan-100 hover:bg-cyan-500/25 transition-colors disabled:opacity-50"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-white/[0.15] bg-white/[0.08] text-[13px] text-white/80 hover:bg-white/[0.12] transition-colors disabled:opacity-50"
               >
                 다음으로 진행
               </button>
@@ -1642,7 +1642,7 @@ export function MainContent({
               maxWidth: mobile ? "calc(100% - 32px)" : 520,
             }}
           >
-            <div className="bg-white/[0.07] backdrop-blur-2xl rounded-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.4),0_0_0_1px_rgba(255,255,255,0.05)] px-1.5 py-1.5">
+            <div className="bg-white/[0.07] rounded-2xl border border-white/20 px-1.5 py-1.5">
               <ChatInput
                 onSend={handleSend}
                 disabled={isLoading}
@@ -1669,7 +1669,7 @@ export function MainContent({
               maxWidth: mobile ? "60vw" : 320,
             }}
           >
-            <div className="rounded-2xl rounded-br-md bg-indigo-500/20 backdrop-blur-xl border border-indigo-400/20 px-4 py-3 shadow-lg">
+            <div className="rounded-2xl rounded-br-md bg-white/[0.06] border border-white/[0.10] px-4 py-3 shadow-lg">
               <p className="text-[14px] text-white/80 leading-relaxed">{lastUserBubble}</p>
             </div>
           </motion.div>
@@ -1685,7 +1685,7 @@ export function MainContent({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed right-0 top-0 h-full z-50 flex flex-col bg-black/70 backdrop-blur-2xl border-l border-white/10"
+            className="fixed right-0 top-0 h-full z-50 flex flex-col bg-[#060612]/90 border-l border-white/10"
             style={{ width: mobile ? "85vw" : 420 }}
           >
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
@@ -1739,7 +1739,7 @@ export function MainContent({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed right-0 top-0 h-full z-50 flex flex-col bg-black/70 backdrop-blur-2xl border-l border-white/10"
+            className="fixed right-0 top-0 h-full z-50 flex flex-col bg-[#060612]/90 border-l border-white/10"
             style={{ width: mobile ? "88vw" : 420 }}
           >
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
@@ -1758,11 +1758,11 @@ export function MainContent({
             <div className="px-4 py-3 border-b border-white/10 space-y-2.5">
               <div className="flex items-center justify-between">
                 <p className="text-[11px] text-white/45">현재</p>
-                <p className="text-[11px] font-mono text-cyan-200/80">{currentDemoPct}%</p>
+                <p className="text-[11px] font-mono text-white/60">{currentDemoPct}%</p>
               </div>
               <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-cyan-300/90 to-indigo-300/90"
+                  className="h-full rounded-full bg-white/50"
                   initial={{ width: 0 }}
                   animate={{ width: `${currentDemoPct}%` }}
                   transition={{ duration: 0.35 }}
@@ -1771,7 +1771,7 @@ export function MainContent({
               <p className="text-[11px] text-white/50">
                 {currentDemoSession.id} · 챕터 {currentDemoSession.chapter} 파트 {currentDemoSession.part}/{currentDemoSession.parts} · {demoStepLabel(activeDemoRuntime.step)}
               </p>
-              <p className="text-[11px] text-amber-200/70">
+              <p className="text-[11px] text-white/40">
                 이해도 추정: {Math.round(activeDemoRuntime.mastery * 100)}%
               </p>
               <div className="flex items-center justify-between pt-1">
@@ -1787,7 +1787,7 @@ export function MainContent({
                   onClick={() => setDraftStep("diagnostic")}
                   className={`px-3 py-1.5 rounded-lg text-[12px] transition-colors ${
                     draftStep === "diagnostic"
-                      ? "bg-indigo-500/25 border border-indigo-300/35 text-indigo-100"
+                      ? "bg-white/[0.08] border border-white/[0.15] text-white/80"
                       : "bg-white/5 border border-white/10 text-white/60 hover:text-white/80"
                   }`}
                 >
@@ -1797,7 +1797,7 @@ export function MainContent({
                   onClick={() => setDraftStep("lecture")}
                   className={`px-3 py-1.5 rounded-lg text-[12px] transition-colors ${
                     draftStep === "lecture"
-                      ? "bg-indigo-500/25 border border-indigo-300/35 text-indigo-100"
+                      ? "bg-white/[0.08] border border-white/[0.15] text-white/80"
                       : "bg-white/5 border border-white/10 text-white/60 hover:text-white/80"
                   }`}
                 >
@@ -1807,7 +1807,7 @@ export function MainContent({
                   onClick={() => setDraftStep("check")}
                   className={`px-3 py-1.5 rounded-lg text-[12px] transition-colors ${
                     draftStep === "check"
-                      ? "bg-indigo-500/25 border border-indigo-300/35 text-indigo-100"
+                      ? "bg-white/[0.08] border border-white/[0.15] text-white/80"
                       : "bg-white/5 border border-white/10 text-white/60 hover:text-white/80"
                   }`}
                 >
@@ -1817,7 +1817,7 @@ export function MainContent({
                   onClick={() => setDraftStep("discussion")}
                   className={`px-3 py-1.5 rounded-lg text-[12px] transition-colors ${
                     draftStep === "discussion"
-                      ? "bg-indigo-500/25 border border-indigo-300/35 text-indigo-100"
+                      ? "bg-white/[0.08] border border-white/[0.15] text-white/80"
                       : "bg-white/5 border border-white/10 text-white/60 hover:text-white/80"
                   }`}
                 >
@@ -1836,7 +1836,7 @@ export function MainContent({
                       onClick={() => setDraftSessionIndex(idx)}
                       className={`w-full text-left rounded-lg border px-3 py-2 transition-all ${
                         active
-                          ? "border-indigo-300/35 bg-indigo-500/15"
+                          ? "border-white/[0.15] bg-white/[0.06]"
                           : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
                       }`}
                     >
@@ -1851,11 +1851,11 @@ export function MainContent({
               </div>
             </ScrollArea>
 
-            <div className="px-4 py-3 border-t border-white/10 bg-black/40">
+            <div className="px-4 py-3 border-t border-white/10 bg-white/[0.03]">
               <button
                 onClick={applyDemoProgress}
                 disabled={isLoading}
-                className="w-full px-3 py-2 rounded-lg text-[12px] font-medium bg-indigo-500/25 border border-indigo-300/35 text-indigo-100 hover:bg-indigo-500/35 transition-colors disabled:opacity-40"
+                className="w-full px-3 py-2 rounded-lg text-[12px] font-medium bg-white/[0.08] border border-white/[0.15] text-white/80 hover:bg-white/[0.12] transition-colors disabled:opacity-40"
               >
                 진도 적용
               </button>
@@ -1878,7 +1878,7 @@ export function MainContent({
               damping: 30,
               width: { duration: 0.3, ease: "easeInOut" },
             }}
-            className="absolute right-0 top-0 h-full z-20 flex flex-col bg-black/50 backdrop-blur-xl border-l border-white/10"
+            className="absolute right-0 top-0 h-full z-20 flex flex-col bg-[#060612]/90 border-l border-white/10"
           >
             {/* Book header */}
             <div className="px-4 pt-4 pb-3">
@@ -2102,7 +2102,7 @@ export function MainContent({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 z-[45] bg-black/40"
+              className="absolute inset-0 z-[45] bg-[#060612]/60"
               onClick={() => setView("graph")}
             />
             <motion.div
@@ -2111,7 +2111,7 @@ export function MainContent({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="absolute left-4 right-4 top-[12vh] z-[46] max-h-[70vh] rounded-2xl bg-black/70 backdrop-blur-2xl border border-white/10 shadow-2xl shadow-black/40 flex flex-col overflow-hidden"
+              className="absolute left-4 right-4 top-[12vh] z-[46] max-h-[70vh] rounded-2xl bg-[#060612]/90 border border-white/10 shadow-2xl shadow-black/40 flex flex-col overflow-hidden"
             >
               <div className="px-4 pt-4 pb-3 flex items-center justify-between border-b border-white/10">
                 <div className="flex items-center gap-2.5 min-w-0">
@@ -2182,7 +2182,7 @@ export function MainContent({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 20, opacity: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[50] flex gap-1 px-2 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 shadow-lg shadow-black/30"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[50] flex gap-1 px-2 py-1.5 rounded-full bg-[#060612]/90 border border-white/10 shadow-lg shadow-black/30"
           >
             <button
               onClick={() => { onSelectBook(null); setChatMode(false); setView("graph"); }}
@@ -2233,7 +2233,7 @@ export function MainContent({
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 320, opacity: 0 }}
             transition={{ type: "spring" as const, stiffness: 300, damping: 30 }}
-            className="absolute right-0 top-0 h-full w-[300px] z-20 flex flex-col bg-black/50 backdrop-blur-xl border-l border-white/10"
+            className="absolute right-0 top-0 h-full w-[300px] z-20 flex flex-col bg-[#060612]/90 border-l border-white/10"
           >
             {(() => {
               const p = selectedUploading.progress;
@@ -2288,13 +2288,12 @@ export function MainContent({
                         <ChevronLeft className="w-4 h-4" />
                       </button>
                       {isComplete ? (
-                        <div className="w-3 h-3 rounded-full flex-shrink-0 bg-emerald-400" style={{ boxShadow: "0 0 8px rgba(52,211,153,0.4)" }} />
+                        <div className="w-3 h-3 rounded-full flex-shrink-0 bg-emerald-400" />
                       ) : isError ? (
-                        <div className="w-3 h-3 rounded-full flex-shrink-0 bg-red-400" style={{ boxShadow: "0 0 8px rgba(248,113,113,0.4)" }} />
+                        <div className="w-3 h-3 rounded-full flex-shrink-0 bg-red-400" />
                       ) : (
                 <motion.div
                           className="w-3 h-3 rounded-full flex-shrink-0 bg-amber-400"
-                          style={{ boxShadow: "0 0 8px rgba(240,160,48,0.4)" }}
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
@@ -2334,7 +2333,7 @@ export function MainContent({
                           {formatTime(livePipelineElapsed)}
                         </span>
                         {pipelineEta > 0 && overallDone >= 2 && (
-                          <span className="text-[11px] font-mono text-amber-400/50">
+                          <span className="text-[11px] font-mono text-white/35">
                             ~{formatTime(pipelineEta)} left
                           </span>
                         )}
@@ -2343,7 +2342,7 @@ export function MainContent({
                     {isComplete && livePipelineElapsed > 0 && (
                       <div className="mt-2 flex items-center justify-between">
                         <span className="text-[11px] text-white/30">Total</span>
-                        <span className="text-[11px] font-mono text-emerald-400/60">
+                        <span className="text-[11px] font-mono text-white/50">
                           {formatTime(livePipelineElapsed)}
                         </span>
                       </div>
@@ -2376,14 +2375,13 @@ export function MainContent({
                           <div className="flex items-center gap-2.5">
                       <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center">
                               {stageDone ? (
-                          <div className="w-2 h-2 rounded-full bg-emerald-400" style={{ boxShadow: "0 0 6px rgba(52,211,153,0.5)" }} />
+                          <div className="w-2 h-2 rounded-full bg-emerald-400" />
                               ) : stageCurrent ? (
                                 stageError ? (
-                            <div className="w-2 h-2 rounded-full bg-red-400" style={{ boxShadow: "0 0 6px rgba(248,113,113,0.5)" }} />
+                            <div className="w-2 h-2 rounded-full bg-red-400" />
                           ) : (
                             <motion.div
                                     className="w-2 h-2 rounded-full bg-amber-400"
-                                    style={{ boxShadow: "0 0 6px rgba(240,160,48,0.5)" }}
                               animate={{ scale: [1, 1.4, 1] }}
                               transition={{ duration: 1.2, repeat: Infinity }}
                             />
@@ -2405,7 +2403,7 @@ export function MainContent({
                               </span>
                                 <div className="flex items-center gap-2">
                                   {hasItems && (
-                                    <span className="text-[11px] font-mono text-amber-400/60">
+                                    <span className="text-[11px] font-mono text-white/40">
                                       {p?.current}/{p?.total}
                               </span>
                                   )}
@@ -2448,7 +2446,7 @@ export function MainContent({
                                   </span>
                                 )}
                                 {(p.estimated_remaining_ms ?? 0) > 0 && (p.current ?? 0) > 0 && (
-                                  <span className="text-[10px] text-amber-400/50">
+                                  <span className="text-[10px] text-white/35">
                                     ~{formatTime(p.estimated_remaining_ms ?? 0)} left
                                   </span>
                         )}
@@ -2496,7 +2494,7 @@ export function MainContent({
               animate={!warping ? { x: 0, opacity: 1 } : { x: 420, opacity: 0 }}
               exit={{ x: 420, opacity: 0 }}
               transition={{ delay: !warping ? 0.3 : 0, type: "spring", stiffness: 260, damping: 28 }}
-              className="absolute right-0 top-0 h-full z-20 flex flex-col bg-black/50 backdrop-blur-xl border-l border-white/10"
+              className="absolute right-0 top-0 h-full z-20 flex flex-col bg-[#060612]/90 border-l border-white/10"
               style={{ width: mobile ? "100%" : panelWidth }}
             >
               <div className="px-4 pt-4 pb-3 border-b border-white/[0.06]">
@@ -2557,7 +2555,7 @@ export function MainContent({
               animate={!warping ? { x: 0, opacity: 1 } : { x: 420, opacity: 0 }}
               exit={{ x: 420, opacity: 0 }}
               transition={{ delay: !warping ? 0.3 : 0, type: "spring", stiffness: 260, damping: 28 }}
-              className="absolute right-0 top-0 h-full z-20 flex flex-col bg-black/50 backdrop-blur-xl border-l border-white/10"
+              className="absolute right-0 top-0 h-full z-20 flex flex-col bg-[#060612]/90 border-l border-white/10"
               style={{ width: mobile ? "100%" : panelWidth }}
             >
               <div className="px-4 pt-4 pb-3 border-b border-white/[0.06]">

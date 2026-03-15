@@ -24,7 +24,19 @@ interface UserProfile {
   name: string | null;
   email: string | null;
   avatarUrl: string | null;
+  presetAvatar: string | null;
 }
+
+export const PRESET_AVATARS = [
+  { id: "moon", src: "/avatars/moon.svg", label: "Moon" },
+  { id: "cat", src: "/avatars/cat.svg", label: "Cat" },
+  { id: "feather", src: "/avatars/feather.svg", label: "Feather" },
+  { id: "flower", src: "/avatars/flower.svg", label: "Flower" },
+  { id: "mountain", src: "/avatars/mountain.svg", label: "Mountain" },
+  { id: "eye", src: "/avatars/eye.svg", label: "Eye" },
+  { id: "star", src: "/avatars/star.svg", label: "Star" },
+  { id: "whale", src: "/avatars/whale.svg", label: "Whale" },
+] as const;
 
 // ── App Store ──
 
@@ -35,7 +47,8 @@ interface AppState {
 
   // Profile
   profile: UserProfile;
-  setProfile: (p: UserProfile) => void;
+  setProfile: (p: Partial<UserProfile>) => void;
+  setPresetAvatar: (avatarId: string | null) => void;
 
   // Stats
   stats: UserStats;
@@ -53,6 +66,11 @@ interface AppState {
   currentLessonId: string | null;
   setCurrentLessonId: (id: string | null) => void;
 
+  // Daily goal tracking
+  todayCompleted: number;
+  todayDate: string;
+  incrementTodayCompleted: () => void;
+
   // View state
   view: "universe" | "constellation" | "lesson" | "quiz" | "chat" | "complete";
   setView: (view: AppState["view"]) => void;
@@ -62,8 +80,12 @@ export const useAppStore = create<AppState>((set) => ({
   userId: null,
   setUserId: (id) => set({ userId: id }),
 
-  profile: { name: null, email: null, avatarUrl: null },
-  setProfile: (p) => set({ profile: p }),
+  profile: { name: null, email: null, avatarUrl: null, presetAvatar: loadSetting<string | null>("presetAvatar", null) },
+  setProfile: (p) => set((state) => ({ profile: { ...state.profile, ...p } })),
+  setPresetAvatar: (avatarId) => {
+    saveSetting("presetAvatar", avatarId);
+    set((state) => ({ profile: { ...state.profile, presetAvatar: avatarId } }));
+  },
 
   stats: { xp: 0, streakDays: 0, lastStudyDate: null, level: 1 },
   setStats: (stats) => set({ stats }),
@@ -81,6 +103,29 @@ export const useAppStore = create<AppState>((set) => ({
 
   currentLessonId: null,
   setCurrentLessonId: (id) => set({ currentLessonId: id }),
+
+  todayCompleted: (() => {
+    if (typeof window === "undefined") return 0;
+    const saved = localStorage.getItem("cosmii-todayCompleted");
+    const savedDate = localStorage.getItem("cosmii-todayDate");
+    const today = new Date().toISOString().slice(0, 10);
+    if (savedDate === today && saved) return parseInt(saved, 10) || 0;
+    return 0;
+  })(),
+  todayDate: (() => {
+    if (typeof window === "undefined") return new Date().toISOString().slice(0, 10);
+    return new Date().toISOString().slice(0, 10);
+  })(),
+  incrementTodayCompleted: () =>
+    set((state) => {
+      const today = new Date().toISOString().slice(0, 10);
+      const count = state.todayDate === today ? state.todayCompleted + 1 : 1;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("cosmii-todayCompleted", String(count));
+        localStorage.setItem("cosmii-todayDate", today);
+      }
+      return { todayCompleted: count, todayDate: today };
+    }),
 
   view: "universe",
   setView: (view) => set({ view }),

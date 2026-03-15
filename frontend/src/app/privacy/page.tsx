@@ -1,22 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-
 const serif = "font-[var(--font-serif)]";
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-[#060612] text-white">
       <div className="max-w-2xl mx-auto px-6 sm:px-12 py-24">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-[13px] text-white/30 hover:text-white/60 transition-colors duration-300 mb-12"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          Back
-        </Link>
-
         <h1 className={`${serif} text-3xl sm:text-4xl font-normal tracking-tight text-white/90 mb-3`}>
           Privacy Policy
         </h1>

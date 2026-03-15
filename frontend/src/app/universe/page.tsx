@@ -10,13 +10,13 @@ import { HomeView } from "@/components/home-view";
 import { LessonConstellation } from "@/components/lesson-constellation";
 import { ConceptDialogue } from "@/components/concept-dialogue";
 import { QuizView } from "@/components/quiz-view";
-import { FreeQuestion } from "@/components/free-question";
 import { SessionComplete } from "@/components/session-complete";
 import { ProfileView } from "@/components/profile-view";
 import { SettingsView } from "@/components/settings-view";
 import { BookDetail } from "@/components/book-detail";
 import { BookNotes } from "@/components/book-notes";
 import { WarpOverlay } from "@/components/warp-overlay";
+import { GoalToast } from "@/components/goal-toast";
 import { Onboarding } from "@/components/onboarding";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
@@ -25,6 +25,12 @@ const CosmiiConstellation = dynamic(
   () => import("@/components/cosmii-constellation").then((m) => m.CosmiiConstellation),
   { ssr: false },
 );
+const ImageConstellation = dynamic(
+  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
+  { ssr: false },
+);
+
+import { getBookConstellation } from "@/lib/book-constellations";
 
 const API = "";
 
@@ -73,7 +79,7 @@ interface LessonDetail {
   }[];
 }
 
-type View = "home" | "bookDetail" | "constellation" | "dialogue" | "quiz" | "chat" | "complete" | "profile" | "settings" | "notes";
+type View = "home" | "bookDetail" | "constellation" | "dialogue" | "quiz" | "complete" | "profile" | "settings" | "notes";
 
 export default function UniversePage() {
   const [view, setView] = useState<View>("home");
@@ -95,7 +101,9 @@ export default function UniversePage() {
   const pendingViewRef = useRef<View | null>(null);
   const pendingActionRef = useRef<(() => void) | null>(null);
 
-  const { stats, setStats, setProfile } = useAppStore();
+  const { stats, setStats, setProfile, incrementTodayCompleted, todayCompleted } = useAppStore();
+  const dailyGoal = useSettingsStore((s) => s.dailyGoal);
+  const [showGoalToast, setShowGoalToast] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("no-scroll");
@@ -218,6 +226,12 @@ export default function UniversePage() {
             streakDays: data.streak_days ?? stats.streakDays,
             level: data.level ?? stats.level,
           });
+
+          incrementTodayCompleted();
+          const newCount = todayCompleted + 1;
+          if (newCount === dailyGoal) {
+            setTimeout(() => setShowGoalToast(true), 1200);
+          }
         } catch {
           setCompleteData({ xpEarned: 50, streakDays: stats.streakDays, levelUp: false });
         }
@@ -226,7 +240,7 @@ export default function UniversePage() {
       }
       setView("complete");
     },
-    [currentLesson, stats, setStats],
+    [currentLesson, stats, setStats, incrementTodayCompleted, todayCompleted, dailyGoal],
   );
 
   const refreshLessons = useCallback(async () => {
@@ -331,6 +345,19 @@ export default function UniversePage() {
         onMidpoint={handleWarpMidpoint}
         onComplete={handleWarpComplete}
       />
+      <GoalToast show={showGoalToast} goal={dailyGoal} onDone={() => setShowGoalToast(false)} />
+
+      {(view === "constellation" || view === "dialogue" || view === "quiz") && selectedBook && (
+        <div className="absolute inset-0 z-0">
+          <ImageConstellation
+              imageSrc={getBookConstellation(selectedBook.id).image}
+              color={selectedBook.color}
+              animate={false}
+              dim
+              dimOpacity={view === "quiz" ? 0.25 : 0.35}
+            />
+        </div>
+      )}
 
       <AnimatePresence mode="wait">
         {view === "home" && (
@@ -367,8 +394,9 @@ export default function UniversePage() {
         )}
 
         {view === "constellation" && selectedBook && (
-          <motion.div key="constellation" {...fadeScale} className="absolute inset-0">
+          <motion.div key="constellation" {...fadeScale} className="absolute inset-0 z-10">
             <LessonConstellation
+              bookId={selectedBook.id}
               bookTitle={selectedBook.title}
               bookAuthor={selectedBook.author}
               completedCount={lessons.filter((l) => l.completed).length}
@@ -383,7 +411,7 @@ export default function UniversePage() {
                   completed: l.completed,
                   isCurrent: i === firstIncomplete,
                   reviewNeeded: l.review_needed,
-                  locked: i > firstIncomplete + 1 && !l.completed,
+                  locked: i > firstIncomplete && !l.completed,
                 };
               })}
               onBack={handleBackToHome}
@@ -412,7 +440,6 @@ export default function UniversePage() {
               }
               onBack={() => setView("constellation")}
               onComplete={handleDialogueComplete}
-              onAskQuestion={() => setView("chat")}
             />
           </motion.div>
         )}
@@ -430,23 +457,6 @@ export default function UniversePage() {
               progressPercent={progressPercent}
               onBack={() => setView("dialogue")}
               onComplete={handleQuizComplete}
-            />
-          </motion.div>
-        )}
-
-        {view === "chat" && selectedBook && (
-          <motion.div
-            key="chat"
-            initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0"
-          >
-            <FreeQuestion
-              bookId={selectedBook.id}
-              lessonContext={currentLesson?.lesson.dialogue.map((d) => d.text).join(" ").slice(0, 500)}
-              onBack={() => setView(currentLesson ? "dialogue" : "constellation")}
             />
           </motion.div>
         )}
@@ -510,7 +520,9 @@ export default function UniversePage() {
         {view === "notes" && selectedBook && (
           <motion.div key="notes" {...slideRight} className="absolute inset-0">
             <BookNotes
+              bookId={selectedBook.id}
               bookTitle={selectedBook.title}
+              bookColor={selectedBook.color}
               notes={lessons
                 .filter((l) => l.completed)
                 .map((l) => ({

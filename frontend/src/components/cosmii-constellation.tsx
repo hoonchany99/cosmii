@@ -4,6 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import { useMemo, useRef, useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -74,7 +75,7 @@ function getGlowTexture() {
 /*  Image → pixel analysis → star layout                               */
 /* ------------------------------------------------------------------ */
 
-function analyzeImage(imageData: ImageData, imgW: number, imgH: number): SampledLayout {
+function analyzeImage(imageData: ImageData, imgW: number, imgH: number, edgeN = 220, interiorN = 200): SampledLayout {
   const { data } = imageData;
   const filled: boolean[][] = [];
   const edgePx: [number, number][] = [];
@@ -91,26 +92,37 @@ function analyzeImage(imageData: ImageData, imgW: number, imgH: number): Sampled
     }
   }
 
+  const allFilled: [number, number][] = [];
   for (let y = 0; y < imgH; y++) {
     for (let x = 0; x < imgW; x++) {
-      if (!filled[y][x]) continue;
-      const i = (y * imgW + x) * 4;
-      const r = data[i], g = data[i + 1], b = data[i + 2];
-      const brightness = (r + g + b) / 3;
-
-      if (brightness < 100) {
-        eyePx.push([x, y]);
-        continue;
-      }
-
-      const isEdge =
-        x === 0 || x === imgW - 1 || y === 0 || y === imgH - 1 ||
-        !filled[y - 1]?.[x] || !filled[y + 1]?.[x] ||
-        !filled[y]?.[x - 1] || !filled[y]?.[x + 1];
-
-      if (isEdge) edgePx.push([x, y]);
-      else interiorPx.push([x, y]);
+      if (filled[y][x]) allFilled.push([x, y]);
     }
+  }
+
+  let darkCount = 0;
+  for (const [x, y] of allFilled) {
+    const i = (y * imgW + x) * 4;
+    if ((data[i] + data[i + 1] + data[i + 2]) / 3 < 100) darkCount++;
+  }
+  const mostlyDark = allFilled.length > 0 && darkCount / allFilled.length > 0.5;
+
+  for (const [x, y] of allFilled) {
+    const i = (y * imgW + x) * 4;
+    const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+
+    if (!mostlyDark && brightness < 100) {
+      eyePx.push([x, y]);
+      continue;
+    }
+
+    let neighbors = 0;
+    if (filled[y - 1]?.[x]) neighbors++;
+    if (filled[y + 1]?.[x]) neighbors++;
+    if (filled[y]?.[x - 1]) neighbors++;
+    if (filled[y]?.[x + 1]) neighbors++;
+
+    if (neighbors <= 1) edgePx.push([x, y]);
+    else interiorPx.push([x, y]);
   }
 
   const SCALE_X = 9;
@@ -136,8 +148,8 @@ function analyzeImage(imageData: ImageData, imgW: number, imgH: number): Sampled
     return copy.slice(0, n);
   };
 
-  const edgeStars = sampleRandom(edgePx, 220, 777).map(([x, y]) => toWorld(x, y, 0.3, 0.06));
-  const interiorStars = sampleRandom(interiorPx, 200, 314).map(([x, y]) => toWorld(x, y, 0.7, 0.08));
+  const edgeStars = sampleRandom(edgePx, edgeN, 777).map(([x, y]) => toWorld(x, y, 0.3, 0.06));
+  const interiorStars = sampleRandom(interiorPx, interiorN, 314).map(([x, y]) => toWorld(x, y, 0.7, 0.08));
 
   const eyes: P3[] = [];
   if (eyePx.length > 2) {
@@ -180,10 +192,10 @@ function BackgroundStars() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Cosmii star sprite (core + glow, same as dashboard EntityNode)     */
+/*  Star sprite (core + glow)                                          */
 /* ------------------------------------------------------------------ */
 
-function CosmiiStar({ position, coreScale, glowScale, color, delay, twinkleSpeed, animate = true }: {
+function ConstellationStar({ position, coreScale, glowScale, color, delay, twinkleSpeed, animate = true }: {
   position: P3; coreScale: number; glowScale: number; color: string;
   delay: number; twinkleSpeed: number; animate?: boolean;
 }) {
@@ -309,17 +321,33 @@ function EyeStar({ position, delay = 0.6, animate = true }: { position: P3; dela
 }
 
 /* ------------------------------------------------------------------ */
-/*  Scene                                                              */
+/*  Scene (shared by both ImageConstellation and CosmiiConstellation)   */
 /* ------------------------------------------------------------------ */
 
-function CosmiiScene({ layout, animate = true }: { layout: SampledLayout; animate?: boolean }) {
+function SpinGroup({ speed, children }: { speed: number; children: React.ReactNode }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame((_, delta) => {
+    if (ref.current) ref.current.rotation.z += delta * speed;
+  });
+  return <group ref={ref}>{children}</group>;
+}
+
+function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = false, spinZ = 0, edgeBold = false }: {
+  layout: SampledLayout; animate?: boolean; color?: string; dim?: boolean; spinZ?: number; edgeBold?: boolean;
+}) {
+  const eCoreScale = edgeBold ? 1.2 : 0.35;
+  const eGlowScale = edgeBold ? 3.2 : 0.9;
+  const iCoreMul = edgeBold ? 1.2 : 1;
+  const iGlowMul = edgeBold ? 1.2 : 1;
+
   return (
     <>
       <OrbitControls
         makeDefault
         enablePan={false}
         enableZoom={false}
-        autoRotate
+        enableRotate={!dim}
+        autoRotate={!spinZ}
         autoRotateSpeed={0.3}
         minDistance={5}
         maxDistance={25}
@@ -329,47 +357,49 @@ function CosmiiScene({ layout, animate = true }: { layout: SampledLayout; animat
 
       <BackgroundStars />
 
-      {layout.edgeStars.map((p, i) => (
-        <CosmiiStar
-          key={`e${i}`}
-          position={p}
-          coreScale={0.35}
-          glowScale={0.9}
-          color="#6BC5A0"
-          delay={i * 0.012}
-          twinkleSpeed={1.0 + (i % 5) * 0.2}
-          animate={animate}
-        />
-      ))}
-
-      {layout.interiorStars.map((p, i) => {
-        const h = Math.sin(i * 3.17) * 0.5 + 0.5;
-        return (
-          <CosmiiStar
-            key={`i${i}`}
+      <SpinGroup speed={spinZ}>
+        {layout.edgeStars.map((p, i) => (
+          <ConstellationStar
+            key={`e${i}`}
             position={p}
-            coreScale={0.15 + h * 0.15}
-            glowScale={0.4 + h * 0.35}
-            color="#6BC5A0"
-            delay={0.15 + h * 0.7}
-            twinkleSpeed={0.4 + h * 1.2}
+            coreScale={eCoreScale}
+            glowScale={eGlowScale}
+            color={color}
+            delay={i * 0.012}
+            twinkleSpeed={1.0 + (i % 5) * 0.2}
             animate={animate}
           />
-        );
-      })}
+        ))}
 
-      {layout.eyes.map((p, i) => (
-        <EyeStar key={`eye${i}`} position={p} animate={animate} />
-      ))}
+        {layout.interiorStars.map((p, i) => {
+          const h = Math.sin(i * 3.17) * 0.5 + 0.5;
+          return (
+            <ConstellationStar
+              key={`i${i}`}
+              position={p}
+              coreScale={(0.15 + h * 0.15) * iCoreMul}
+              glowScale={(0.4 + h * 0.35) * iGlowMul}
+              color={color}
+              delay={0.15 + h * 0.7}
+              twinkleSpeed={0.4 + h * 1.2}
+              animate={animate}
+            />
+          );
+        })}
+
+        {layout.eyes.map((p, i) => (
+          <EyeStar key={`eye${i}`} position={p} animate={animate} />
+        ))}
+      </SpinGroup>
     </>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Exported component                                                 */
+/*  Image loading hook (shared)                                        */
 /* ------------------------------------------------------------------ */
 
-export function CosmiiConstellation({ animate = true }: { animate?: boolean } = {}) {
+function useImageLayout(imageSrc: string, edgeN = 220, interiorN = 200) {
   const [layout, setLayout] = useState<SampledLayout | null>(null);
 
   useEffect(() => {
@@ -385,28 +415,89 @@ export function CosmiiConstellation({ animate = true }: { animate?: boolean } = 
         if (!ctx) return;
         ctx.drawImage(img, 0, 0, SAMPLE_W, SAMPLE_H);
         const data = ctx.getImageData(0, 0, SAMPLE_W, SAMPLE_H);
-        setLayout(analyzeImage(data, SAMPLE_W, SAMPLE_H));
+        setLayout(analyzeImage(data, SAMPLE_W, SAMPLE_H, edgeN, interiorN));
       } catch (e) {
-        console.error("Failed to analyze logo image:", e);
+        console.error("Failed to analyze constellation image:", e);
       }
     };
-    img.onerror = () => console.error("Failed to load cosmii-logo.png");
-    img.src = "/cosmii-constellation.png";
-  }, []);
+    img.onerror = () => console.error(`Failed to load constellation: ${imageSrc}`);
+    img.src = imageSrc;
+  }, [imageSrc, edgeN, interiorN]);
+
+  return layout;
+}
+
+/* ------------------------------------------------------------------ */
+/*  ImageConstellation — generic, accepts any silhouette PNG            */
+/* ------------------------------------------------------------------ */
+
+export function ImageConstellation({
+  imageSrc,
+  animate = true,
+  dim = false,
+  dimOpacity,
+  dimZoom,
+  color = "#6BC5A0",
+  spinZ = 0,
+  edgeBold = false,
+  starDensity,
+}: {
+  imageSrc: string;
+  animate?: boolean;
+  dim?: boolean;
+  dimOpacity?: number;
+  dimZoom?: number;
+  color?: string;
+  spinZ?: number;
+  edgeBold?: boolean;
+  starDensity?: { edge: number; interior: number };
+}) {
+  const layout = useImageLayout(imageSrc, starDensity?.edge, starDensity?.interior);
 
   if (!layout) {
     return <div className="w-full h-full bg-[#060612]" />;
   }
 
+  const cameraZ = dim ? (dimZoom ?? 16) : 7;
+
+  const finalOpacity = dim ? (dimOpacity ?? 0.4) : 1;
+
   return (
-    <div className="relative w-full h-full overflow-hidden" style={{ touchAction: "none" }}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: finalOpacity }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+      className={`relative w-full h-full overflow-hidden ${dim ? "pointer-events-none" : ""}`}
+      style={{ touchAction: dim ? "auto" : "none" }}
+    >
       <Canvas
-        camera={{ position: [0, 0, 9], fov: 50, near: 0.1, far: 200 }}
+        camera={{ position: [0, 0, cameraZ], fov: 50, near: 0.1, far: 200 }}
         gl={{ antialias: true }}
         style={{ background: "#060612" }}
       >
-        <CosmiiScene layout={layout} animate={animate} />
+        <ConstellationScene layout={layout} animate={animate} color={color} dim={dim} spinZ={spinZ} edgeBold={edgeBold} />
       </Canvas>
-    </div>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  CosmiiConstellation — wrapper with Cosmii logo                     */
+/* ------------------------------------------------------------------ */
+
+export function CosmiiConstellation({
+  animate = true,
+  dim = false,
+}: {
+  animate?: boolean;
+  dim?: boolean;
+} = {}) {
+  return (
+    <ImageConstellation
+      imageSrc="/cosmii-constellation.png"
+      animate={animate}
+      dim={dim}
+      color="#6BC5A0"
+    />
   );
 }

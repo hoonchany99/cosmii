@@ -96,7 +96,7 @@ export function BookSidebar({
             <img src="/cosmii-logo.png" alt="Cosmii" className="w-full h-auto" />
           </motion.div>
           <div>
-            <h1 className="text-[15px] font-bold tracking-tight text-white">Cosmii</h1>
+            <h1 className="text-[15px] font-bold tracking-tight text-white font-brand">Cosmii</h1>
             <p className="text-xs text-white/40">AI Reading Companion</p>
           </div>
         </div>
@@ -216,7 +216,7 @@ export function BookSidebar({
                     >
                       {isError
                         ? <AlertCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
-                        : <Loader2 className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />}
+                        : <Loader2 className="w-3.5 h-3.5 text-white/50 flex-shrink-0" />}
                     </motion.div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[13px] font-medium truncate text-white/50">
@@ -226,7 +226,7 @@ export function BookSidebar({
                         {p ? (isError ? p.message : UPLOAD_STAGE_LABELS[p.stage]) : "Preparing…"}
                       </div>
                     </div>
-                    {!isError && <span className="text-[11px] font-mono text-indigo-400/60">{pct}%</span>}
+                    {!isError && <span className="text-[11px] font-mono text-white/40">{pct}%</span>}
                   </div>
                   {!isError && (
                     <div className="mt-2">
@@ -267,7 +267,7 @@ export function BookSidebar({
         <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
           <Button
             variant="outline"
-            className="w-full gap-2 text-sm h-9 rounded-xl border-dashed border-white/15 hover:border-indigo-400/30 hover:bg-indigo-400/5 text-white/50 hover:text-white/70 transition-all duration-200"
+            className="w-full gap-2 text-sm h-9 rounded-xl border-dashed border-white/15 hover:border-white/25 hover:bg-white/[0.06] text-white/50 hover:text-white/70 transition-all duration-200"
             onClick={() => fileRef.current?.click()}
           >
             <Plus className="w-3.5 h-3.5" /> Add Book

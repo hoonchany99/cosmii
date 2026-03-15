@@ -9,8 +9,14 @@ import {
   BookMarked,
   Filter,
 } from "lucide-react";
-import { CosmicBg } from "@/components/cosmic-bg";
+import { getBookConstellation } from "@/lib/book-constellations";
+import dynamic from "next/dynamic";
 import { useT } from "@/lib/i18n";
+
+const ImageConstellation = dynamic(
+  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
+  { ssr: false },
+);
 
 const serif = "font-[var(--font-serif)]";
 
@@ -22,12 +28,14 @@ interface NoteItem {
 }
 
 interface BookNotesProps {
+  bookId: string;
   bookTitle: string;
+  bookColor?: string;
   notes: NoteItem[];
   onBack: () => void;
 }
 
-export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
+export function BookNotes({ bookId, bookTitle, bookColor, notes, onBack }: BookNotesProps) {
   const t = useT();
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
 
@@ -65,7 +73,9 @@ export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
 
   return (
     <div className="w-full h-full relative overflow-hidden text-white">
-      <CosmicBg accent="amber" />
+      <div className="absolute inset-0 z-0">
+        <ImageConstellation imageSrc={getBookConstellation(bookId).image} color={bookColor || getBookConstellation(bookId).color} animate={false} dim dimOpacity={0.35} />
+      </div>
 
       {/* Header */}
       <div className="absolute top-14 w-full px-5 flex items-center z-20">
@@ -118,7 +128,7 @@ export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
                     onClick={() => setSelectedChapter(null)}
                     className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold border transition-all select-none ${
                       !selectedChapter
-                        ? "bg-amber-500/15 border-amber-400/35 text-amber-300"
+                        ? "bg-amber-400/[0.08] border-amber-400/[0.18] text-amber-200/60"
                         : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:bg-white/[0.06]"
                     }`}
                   >
@@ -131,7 +141,7 @@ export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
                       onClick={() => setSelectedChapter(ch)}
                       className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold border transition-all select-none truncate max-w-[160px] ${
                         selectedChapter === ch
-                          ? "bg-amber-500/15 border-amber-400/35 text-amber-300"
+                          ? "bg-amber-400/[0.08] border-amber-400/[0.18] text-amber-200/60"
                           : "bg-white/[0.03] border-white/[0.06] text-white/40 hover:bg-white/[0.06]"
                       }`}
                     >
@@ -148,22 +158,22 @@ export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl p-4 mb-5"
+                className="bg-white/[0.05] border border-white/[0.10] rounded-2xl p-4 mb-5"
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <Hash size={15} className="text-indigo-400" />
-                  <span className="text-white/50 text-[13px] uppercase tracking-[0.12em] font-bold">{t("notes.keywords")}</span>
+                  <Hash size={15} className="text-amber-400/50" />
+                  <span className="text-amber-300/40 text-[13px] uppercase tracking-[0.12em] font-bold">{t("notes.keywords")}</span>
                   <span className="text-white/20 text-[12px] ml-auto">{t("notes.keywordCount", { n: filteredKeywords.length })}</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {filteredKeywords.map((kw) => (
                     <span
                       key={kw.keyword}
-                      className="inline-flex items-center gap-1 bg-indigo-500/15 border border-indigo-400/25 text-indigo-300 text-[13px] font-semibold px-2.5 py-1 rounded-full"
+                      className="inline-flex items-center gap-1 bg-amber-400/[0.06] border border-amber-400/[0.12] text-amber-200/60 text-[13px] font-semibold px-2.5 py-1 rounded-full"
                     >
                       {kw.keyword}
                       {kw.count > 1 && (
-                        <span className="text-indigo-400/50 text-[11px]">×{kw.count}</span>
+                        <span className="text-white/30 text-[11px]">×{kw.count}</span>
                       )}
                     </span>
                   ))}
@@ -173,8 +183,8 @@ export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
 
             {/* Spark notes */}
             <div className="flex items-center gap-2 mb-3">
-              <Lightbulb size={15} className="text-amber-400" />
-              <span className="text-white/50 text-[13px] uppercase tracking-[0.12em] font-bold">{t("notes.sparkNotes")}</span>
+              <Lightbulb size={15} className="text-amber-400/50" />
+              <span className="text-amber-300/40 text-[13px] uppercase tracking-[0.12em] font-bold">{t("notes.sparkNotes")}</span>
             </div>
 
             <AnimatePresence mode="popLayout">
@@ -186,11 +196,11 @@ export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: 0.15 + i * 0.03, duration: 0.35 }}
-                    className="bg-white/[0.05] border border-white/[0.10] backdrop-blur-xl rounded-2xl p-4"
+                    className="bg-white/[0.05] border border-white/[0.10] rounded-2xl p-4"
                   >
                     <div className="flex items-center gap-2 mb-2">
                       {note.chapter && (
-                        <span className="text-indigo-400/50 text-[11px] font-bold uppercase tracking-wider">
+                        <span className="text-white/30 text-[11px] font-bold uppercase tracking-wider">
                           {note.chapter}
                         </span>
                       )}
@@ -209,7 +219,7 @@ export function BookNotes({ bookTitle, notes, onBack }: BookNotesProps) {
                         {note.highlights.map((h, hi) => (
                           <span
                             key={hi}
-                            className="bg-amber-500/10 border border-amber-500/20 text-amber-300/80 text-[12px] font-semibold px-2.5 py-0.5 rounded-full"
+                            className="bg-amber-400/[0.05] border border-amber-400/[0.10] text-amber-200/50 text-[12px] font-semibold px-2.5 py-0.5 rounded-full"
                           >
                             {h}
                           </span>

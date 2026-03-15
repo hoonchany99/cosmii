@@ -6,14 +6,19 @@ import { motion } from "framer-motion";
 import {
   ChevronLeft,
   BookOpen,
-  Sparkles,
   Play,
   Clock,
   Layers,
 } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/glass-panel";
-import { CosmicBg } from "@/components/cosmic-bg";
+import { getBookConstellation } from "@/lib/book-constellations";
+import dynamic from "next/dynamic";
 import { useT } from "@/lib/i18n";
+
+const ImageConstellation = dynamic(
+  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
+  { ssr: false },
+);
 
 const API = "";
 const serif = "font-[var(--font-serif)]";
@@ -60,7 +65,9 @@ export function BookDetail({
 
   return (
     <div className="w-full h-full relative overflow-hidden text-white">
-      <CosmicBg accent="indigo" />
+      <div className="absolute inset-0 z-0">
+        <ImageConstellation imageSrc={getBookConstellation(book.id).image} color={book.color} animate={false} dim dimOpacity={0.25} />
+      </div>
 
       {/* Header */}
       <div className="absolute pt-safe top-0 w-full px-5 flex items-center z-20">
@@ -86,8 +93,8 @@ export function BookDetail({
           {/* Book cover */}
           <div className="relative">
             <div
-              className="absolute inset-0 rounded-2xl blur-[40px] scale-150 opacity-30"
-              style={{ background: book.color }}
+              className="absolute inset-0 rounded-2xl blur-[40px] scale-150 opacity-10"
+              style={{ background: "white" }}
             />
             {showCover ? (
               <motion.div
@@ -108,7 +115,7 @@ export function BookDetail({
               <div
                 className="relative w-28 h-40 rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl"
                 style={{
-                  background: `linear-gradient(135deg, ${book.color}40, ${book.color}15)`,
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
                 }}
               >
                 <BookOpen size={36} className="text-white/60" />
@@ -134,7 +141,7 @@ export function BookDetail({
                 <motion.circle
                   cx="28" cy="28" r="24"
                   fill="none"
-                  stroke={pct >= 100 ? "#34d399" : "#818cf8"}
+                  stroke="rgba(255,255,255,0.6)"
                   strokeWidth="4"
                   strokeLinecap="round"
                   strokeDasharray={`${2 * Math.PI * 24}`}
@@ -169,7 +176,7 @@ export function BookDetail({
             transition={{ delay: 0.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Layers size={16} className="text-indigo-400" />
+              <Layers size={16} className="text-white/40" />
               <span className="text-white/50 text-[13px] uppercase tracking-[0.12em] font-bold">
                 {t("bookDetail.chapters")}
               </span>
@@ -187,15 +194,6 @@ export function BookDetail({
                     transition={{ delay: 0.25 + i * 0.04, duration: 0.35 }}
                     className="bg-white/[0.03] border border-white/[0.06] rounded-2xl px-4 py-3.5 flex items-center gap-3.5"
                   >
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                      done ? "bg-emerald-500/15" : "bg-white/[0.05]"
-                    }`}>
-                      {done ? (
-                        <Sparkles size={17} className="text-emerald-400" />
-                      ) : (
-                        <span className="text-white/25 text-[14px] font-bold">{i + 1}</span>
-                      )}
-                    </div>
                     <div className="flex-1 min-w-0">
                       <span className={`text-[15px] font-semibold block truncate ${done ? "text-white/50" : "text-white/75"}`}>
                         {ch.chapter}
@@ -206,7 +204,7 @@ export function BookDetail({
                     </div>
                     <div className="w-11 h-1.5 bg-white/[0.06] rounded-full overflow-hidden flex-shrink-0">
                       <motion.div
-                        className={`h-full rounded-full ${done ? "bg-emerald-500" : "bg-indigo-500/70"}`}
+                        className={`h-full rounded-full ${done ? "bg-white/40" : "bg-white/50"}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${chPct}%` }}
                         transition={{ duration: 0.6, delay: 0.3 + i * 0.05 }}
@@ -221,7 +219,7 @@ export function BookDetail({
       </div>
 
       {/* Bottom CTA */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#050510] via-[#050510]/90 to-transparent pt-12 pb-safe-lg px-6 z-20">
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#060612] via-[#060612]/90 to-transparent pt-12 pb-safe-lg px-6 z-20">
         <PrimaryButton onClick={onStartLearning} className="py-4 text-[16px] flex items-center justify-center gap-2">
           <Play size={18} className="fill-white" />
           {isStarted ? t("bookDetail.continue") : t("bookDetail.startLearning")}
