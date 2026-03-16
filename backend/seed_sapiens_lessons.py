@@ -111,7 +111,7 @@ LESSONS = [
             {"speaker": "cosmii", "text": "자, 지난 레슨에서 사피엔스가 별볼일 없었다고 했잖아. 그럼 도대체 어떻게 지구의 주인이 됐을까? 흔히 생각하는 답은 — '인간은 지능이 높으니까, 도구를 잘 만드니까!' 이건데.", "highlight": None},
             {"speaker": "cosmii", "text": "재미있는 게, 조선후기의 정약용도 비슷한 말을 했어. '인간은 사자 같은 발톱도 없고, 뱀 같은 독도 없고, 독수리 같은 날개도 없는데 만물의 영장인 건 도구를 쓰기 때문이다.' 이게 지금까지의 상식이었어.", "highlight": "정약용의 답"},
             {"speaker": "cosmii", "text": "하라리는 이걸 뒤집어. '아니, 진짜 비밀은 뒷담화에 있다!' 뒷담화? 응, 뒷담화. 처음 듣고 나도 '뭐야 이게' 했는데, 듣다 보면 소름이 돋아.", "highlight": "뒷담화의 힘"},
-            {"speaker": "cosmii", "text": "비교를 해보자. 침팬지 한 마리와 인간 한 명을 무인도에 풀어놓으면 누가 생존 가능성이 높을까? 침팬지야. 신체적으로 인간은 침팬지한테 상대가 안 돼. 스튜디오에 암컷 침팬지 한 마리를 넣고 인간 여섯 명과 싸움을 붙이면? 인간이 뜯어 먹혀.", "highlight": "침팬지 vs 인간"},
+            {"speaker": "cosmii", "text": "비교를 해보자. 침팬지 한 마리와 인간 한 명을 무인도에 풀어놓으면 누가 생존 가능성이 높을까? 침팬지야. 신체적으로 인간은 침팬지한테 상대가 안 돼. 좁은 방에 암컷 침팬지 한 마리를 넣고 인간 여섯 명과 싸움을 붙이면? 인간이 뜯어 먹혀.", "highlight": "침팬지 vs 인간"},
             {"speaker": "cosmii", "text": "그런데! 침팬지 만 마리 vs 인간 만 명의 전쟁을 치르면? 이건 인간이 이겨. 압도적으로. 왜? 인간은 조직적으로 협력하는 동물이거든. 개개인은 별거 아닌데, 뭉치면 엄청난 유연한 협력을 만들어내.", "highlight": "협력의 동물"},
             {"speaker": "cosmii", "text": "그럼 그 '뭉치는 힘'은 어디서 오느냐? 여기서 뒷담화가 등장해. 뒷담화라는 건 — 직접 만나보지 않은 사람에 대해 '그 사람 믿을 만해', '그 사람은 조심해'라고 정보를 나누는 거야. 이게 인간만의 특기야.", "highlight": None}
         ],
@@ -168,7 +168,7 @@ LESSONS = [
     # 2부: 농업 혁명
     # ══════════════════════════════════════════
 
-    # ── Ch.2 농업 혁명 (Part 1/3) ──
+    # ── Ch.2 농업 혁명 (Part 1/4) ──
     {
         "title": "역사상 최대의 사기극 — 농업 혁명의 진실",
         "chapter": "Ch.2 The Agricultural Revolution",
@@ -200,7 +200,7 @@ LESSONS = [
         "cliffhanger": "노동만 늘어난 게 아니야. 농업은 인간의 몸과 건강까지 완전히 망가뜨렸어."
     },
 
-    # ── Ch.2 농업 혁명 (Part 2/3) ──
+    # ── Ch.2 농업 혁명 (Part 2/4) ──
     {
         "title": "몸이 망가진 인류 — 농업이 가져온 질병과 불평등",
         "chapter": "Ch.2 The Agricultural Revolution",
@@ -232,7 +232,7 @@ LESSONS = [
         "cliffhanger": "인간에게만 재앙이었을까? 하라리는 농업이 지구 전체에게 불행이었다고 말해."
     },
 
-    # ── Ch.2 농업 혁명 (Part 3/3) ──
+    # ── Ch.2 농업 혁명 (Part 3/4) ──
     {
         "title": "지구 전체의 불행 — 번식이 곧 성공일까?",
         "chapter": "Ch.2 The Agricultural Revolution",
@@ -309,8 +309,8 @@ LESSONS = [
         "spark": "전 세계 돈을 합치면 60조 달러인데, 실제 존재하는 건 6조뿐이다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "3부에서는 인류가 어떻게 통합됐는지를 다뤄. 기원전후 1~3세기, 전화기도 없고 인터넷도 없던 시절에 수백만 명이 어떻게 하나의 연합체를 만들 수 있었을까?", "highlight": None},
-            {"speaker": "cosmii", "text": "하라리는 3가지 방법을 제시해. 첫 번째 — 돈, 두 번째 — 제국, 세 번째 — 종교. 이 세 가지의 공통점이 뭔지 알아? 전부 '실체하지 않는다'는 거야.", "highlight": "세 가지 통합의 도구"},
-            {"speaker": "cosmii", "text": "먼저 돈 이야기부터 하자. 질문 하나 — 돈이 실체해? '당연하지, 지갑에 있잖아' 할 수 있는데, 잠깐. '돈'과 '화폐'는 달라. 돈은 사물의 가치를 뜻하고, 화폐는 그 가치를 담는 그릇이야.", "highlight": "돈 vs 화폐"},
+            {"speaker": "cosmii", "text": "하라리는 3가지 방법을 제시해. 첫 번째 — 돈, 두 번째 — 제국, 세 번째 — 종교. 이 세 가지의 공통점이 뭔지 알아? 전부 '실재하지 않는다'는 거야.", "highlight": "세 가지 통합의 도구"},
+            {"speaker": "cosmii", "text": "먼저 돈 이야기부터 하자. 질문 하나 — 돈이 실재해? '당연하지, 지갑에 있잖아' 할 수 있는데, 잠깐. '돈'과 '화폐'는 달라. 돈은 사물의 가치를 뜻하고, 화폐는 그 가치를 담는 그릇이야.", "highlight": "돈 vs 화폐"},
             {"speaker": "cosmii", "text": "화폐의 역사를 보면 재미있어. 선사시대에는 조개껍데기였고, 세월이 지나면서 금이 되고, 은이 되고, 지금은 종이에 색칠한 걸 화폐라고 부르지. 생각해보면 진짜 웃겨 — 우리가 목숨 걸고 벌고 있는 게 사실 색종이야!", "highlight": "색종이의 마법"},
             {"speaker": "cosmii", "text": "더 충격적인 건 이거야. 하라리에 따르면 전 세계에 유통되는 돈이 약 60조 달러인데, 실제로 지폐와 동전으로 존재하는 건 6조뿐이야. 나머지 54조 달러는? 은행 컴퓨터에 찍힌 숫자일 뿐이야. 실체가 없어!", "highlight": "54조 달러의 허구"},
             {"speaker": "cosmii", "text": "결국 돈이란 건 '신용'이야. 이 색종이가 이만큼의 가치가 있다는 걸 서로 믿어야만 돈이 작동하는 거야. 1부에서 배운 '허구를 집단적으로 믿는 능력'이 여기서 또 나오는 거지! 돈은 인류 역사상 가장 성공한 허구야.", "highlight": None}
@@ -382,7 +382,7 @@ LESSONS = [
         "quizzes": [
             {
                 "question": "돈, 제국, 종교의 공통점으로 하라리가 지적한 것은?",
-                "options": ["모두 유럽에서 시작됨", "모두 실체하지 않는 허구라는 것", "모두 평화를 가져왔다는 것", "모두 한 사람이 만들었다는 것"],
+                "options": ["모두 유럽에서 시작됨", "모두 실재하지 않는 허구라는 것", "모두 평화를 가져왔다는 것", "모두 한 사람이 만들었다는 것"],
                 "correct_index": 1,
                 "explanation": "돈, 제국, 종교 모두 물리적 실체가 없어. 사람들이 집단적으로 '믿기 때문에' 존재하는 허구야. 이것이 인류를 통합한 세 가지 도구의 공통점이야."
             },
@@ -538,9 +538,9 @@ LESSONS = [
         "dialogue": [
             {"speaker": "cosmii", "text": "사피엔스의 마지막 이야기야. 하라리는 지금까지의 여정을 이렇게 정리해 — 인지 혁명으로 뭉치고, 농업 혁명으로 번식하고, 돈과 제국과 종교로 통합하더니, 과학으로 중무장하게 된 거야.", "highlight": None},
             {"speaker": "cosmii", "text": "그리고 하라리는 충격적인 표현을 써. '사피엔스가 아니라 이제는 호모 데우스다.' 데우스는 라틴어로 '신'이라는 뜻이야. 인간은 신이 되려 한다는 거야.", "highlight": "호모 데우스"},
-            {"speaker": "cosmii", "text": "과장이 아니야. 생각해봐. 2시간이면 미국에 갈 수 있어 (비행기). 달에 발자국을 찍었어. 신의 영역이라고 생각했던 '탄생'과 '죽음'까지 과학이 관장하기 시작했어. 시험관 아기, 유전자 편집, 수명 연장... 옛날 사람이 보면 완전히 신의 능력이지.", "highlight": "신의 능력을 가진 인간"},
+            {"speaker": "cosmii", "text": "과장이 아니야. 생각해봐. 십여 시간이면 지구 반대편에 갈 수 있어 (비행기). 달에 발자국을 찍었어. 신의 영역이라고 생각했던 '탄생'과 '죽음'까지 과학이 관장하기 시작했어. 시험관 아기, 유전자 편집, 수명 연장... 옛날 사람이 보면 완전히 신의 능력이지.", "highlight": "신의 능력을 가진 인간"},
             {"speaker": "cosmii", "text": "그런데 하라리가 여기서 경고를 해. '우리는 신의 능력을 가졌지만, 신의 지혜는 갖지 못했다.' 핵무기를 만들 능력은 있지만 그걸 현명하게 쓸 지혜가 있나? 기후변화를 일으킬 힘은 있지만 그걸 해결할 지혜가 있나?", "highlight": "능력은 있지만 지혜는 없다"},
-            {"speaker": "cosmii", "text": "사피엔스의 마지막 문장이 이거야 — '우리 인간은 천국과 지옥으로 나뉘는 갈림길에 서 있다. 역사는 우리의 종말에 대해서 아직 결정되지 않았고, 일련의 우연들은 우리를 어느 쪽으로도 이끌 수 있다.'", "highlight": "천국인가 지옥인가"},
+            {"speaker": "cosmii", "text": "사피엔스의 마지막 장에서 하라리는 이렇게 경고해 — '우리 인간은 천국과 지옥으로 나뉘는 갈림길에 서 있다. 역사는 우리의 종말에 대해서 아직 결정되지 않았고, 일련의 우연들은 우리를 어느 쪽으로도 이끌 수 있다.'", "highlight": "천국인가 지옥인가"},
             {"speaker": "cosmii", "text": "이게 사피엔스 전체의 결론이야. 별볼일 없었던 원시인이 인지 혁명으로 지구의 주인이 됐어. 농업 혁명으로 정착했고, 돈·제국·종교로 통합했고, 과학 혁명으로 신의 능력을 얻었어. 그런데 이 엄청난 힘을 어디로 쓸 건지는 아직 정해지지 않았어. 천국의 문을 열 수도, 지옥으로 가는 문을 열 수도 있어. 그 선택은 지금 살아있는 우리, 호모 사피엔스의 몫이야. 같이 읽느라 정말 수고했어!", "highlight": None}
         ],
         "quizzes": [
@@ -996,9 +996,9 @@ TRANSLATIONS_EN = {
         "dialogue": [
             {"speaker": "cosmii", "text": "This is the final chapter of Sapiens. Harari sums up the entire journey: the Cognitive Revolution united us, the Agricultural Revolution multiplied us, money-empire-religion unified us, and science armed us to the teeth.", "highlight": None},
             {"speaker": "cosmii", "text": "Then Harari drops a bombshell phrase: 'We're no longer Homo sapiens — we're becoming Homo Deus.' 'Deus' is Latin for 'god.' Humans are trying to become gods.", "highlight": "Homo Deus"},
-            {"speaker": "cosmii", "text": "This isn't hyperbole. Think about it. We can reach the other side of the world in hours (airplanes). We've left footprints on the moon. We're taking over domains once reserved for God — birth and death. Test-tube babies, gene editing, life extension... to someone from the past, these are literally divine powers.", "highlight": "Humans with godlike powers"},
+            {"speaker": "cosmii", "text": "This isn't hyperbole. Think about it. We can reach the other side of the world in half a day (airplanes). We've left footprints on the moon. We're taking over domains once reserved for God — birth and death. Test-tube babies, gene editing, life extension... to someone from the past, these are literally divine powers.", "highlight": "Humans with godlike powers"},
             {"speaker": "cosmii", "text": "But here's Harari's warning: 'We have the power of gods, but not the wisdom of gods.' We can build nuclear weapons, but do we have the wisdom to use them responsibly? We can cause climate change, but do we have the wisdom to fix it?", "highlight": "Power without wisdom"},
-            {"speaker": "cosmii", "text": "The very last line of Sapiens goes like this: 'We stand at a crossroads between heaven and hell. History has not yet decided our fate, and a string of coincidences could tip us in either direction.'", "highlight": "Heaven or hell"},
+            {"speaker": "cosmii", "text": "Near the end of Sapiens, Harari warns: 'We stand at a crossroads between heaven and hell. History has not yet decided our fate, and a string of coincidences could tip us in either direction.'", "highlight": "Heaven or hell"},
             {"speaker": "cosmii", "text": "That's the conclusion of the entire book. Unremarkable primates became rulers of Earth through the Cognitive Revolution. They settled down through the Agricultural Revolution, unified through money, empire, and religion, and gained godlike powers through the Scientific Revolution. But where we point that incredible power? That's still undecided. We could open the gates of heaven — or the gates of hell. The choice belongs to us, the living Homo sapiens. Thanks for reading this together — you crushed it!", "highlight": None},
         ],
         "quizzes": [

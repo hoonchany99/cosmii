@@ -79,7 +79,7 @@ LESSONS = [
             {"speaker": "cosmii", "text": "반가워! 오늘부터 단테의 '신곡'을 같이 읽어볼 거야. 이 작품은 700년 전에 쓰였는데, 읽다 보면 소름이 돋아 — 지금 우리 이야기 같거든.", "highlight": None},
             {"speaker": "cosmii", "text": "신곡의 첫 문장이 이거야. 「우리 인생길 한가운데에서, 올바른 길을 잃고서, 나는 어두운 숲에 처해 있었네.」 단테가 35세일 때의 이야기야. 왜 35세냐면 — 성경에서 인생은 70이라고 했거든. 딱 절반인 거야.", "highlight": "인생길 한가운데"},
             {"speaker": "cosmii", "text": "생각해봐. 앞만 보고 달려왔는데, 어느 날 퍽 하고 정신 차려보니 어두운 숲 속에서 길을 잃고 있는 거야. 나는 누구지? 여긴 어디지? 우리도 이런 순간 있잖아. 열심히 살아왔는데 갑자기 '이게 맞나?' 싶어지는 그 순간.", "highlight": "나는 누구, 여긴 어디"},
-            {"speaker": "cosmii", "text": "숲에서 빠져나가려고 하는데, 길을 가로막는 세 마리 짐승이 나타나. 첫 번째는 표범 — 탐욕을 상징해. 두 번째는 사자 — 권력욕이야. 세 번째는 이리 — 색욕. 내가 인생에서 길을 잃게 만든 것들이 딱 이 세 가지야.", "highlight": "세 마리 짐승"},
+            {"speaker": "cosmii", "text": "숲에서 빠져나가려고 하는데, 길을 가로막는 세 마리 짐승이 나타나. 첫 번째는 표범 — 색욕을 상징해. 두 번째는 사자 — 교만이야. 세 번째는 이리 — 탐욕. 내가 인생에서 길을 잃게 만든 것들이 딱 이 세 가지야.", "highlight": "세 마리 짐승"},
             {"speaker": "cosmii", "text": "단테의 인생에도 이유가 있었어. 실제로 단테는 피렌체의 정치가였는데, 정치 싸움에 휘말려서 고향에서 추방당해. 사랑했던 여자도 일찍 죽었고. 권력, 탐욕, 욕망에 둘러싸인 어두운 숲 속에 있었던 거야.", "highlight": "단테의 실제 인생"},
             {"speaker": "cosmii", "text": "그때! 어둠 속에서 그림자 하나가 나타나. 단테가 외쳐 — '사람이신가요? 좀 도와주세요!' 그 그림자가 이렇게 대답해. 「한때는 사람이었네. 지금은 아니지만.」 이탈리아에서는 모르는 사람이 없을 정도로 유명한 명대사야.", "highlight": "한때는 사람이었네"}
         ],
@@ -92,9 +92,9 @@ LESSONS = [
             },
             {
                 "question": "단테의 앞을 가로막는 세 짐승이 상징하는 것은?",
-                "options": ["용기, 지혜, 사랑", "탐욕, 권력욕, 색욕", "과거, 현재, 미래", "지옥, 연옥, 천국"],
+                "options": ["용기, 지혜, 사랑", "색욕, 교만, 탐욕", "과거, 현재, 미래", "지옥, 연옥, 천국"],
                 "correct_index": 1,
-                "explanation": "표범은 탐욕, 사자는 권력욕, 이리는 색욕을 상징해. 인간이 올바른 길에서 벗어나게 만드는 세 가지 유혹이야."
+                "explanation": "표범은 색욕, 사자는 교만, 이리는 탐욕을 상징해. 인간이 올바른 길에서 벗어나게 만드는 세 가지 유혹이야."
             }
         ],
         "cliffhanger": "어둠 속에서 나타난 그림자의 정체는? 단테보다 1200년 앞서 살았던 전설적인 인물이야."
@@ -238,13 +238,13 @@ LESSONS = [
 
     # ── 지옥 하층 (Part 2/2) ──
     {
-        "title": "교황도 지옥에 간다 — 6~7단계, 이교도와 폭력",
+        "title": "교황도 지옥에 간다 — 6~7단계, 이단자와 폭력",
         "chapter": "Inferno Middle",
         "chapter_title": "지옥 중층",
         "part": 2, "total_parts": 2,
         "spark": "교황, 추기경, 주교가 지옥에 있다 — 700년 전 단테의 폭로.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "6단계는 이교도의 지옥이야. 1단계 림보에도 이교도가 있었잖아? 거기는 덕을 쌓은 이교도였고, 여기는 덕을 쌓지 못한 이교도들이 고통받는 곳이야.", "highlight": None},
+            {"speaker": "cosmii", "text": "6단계는 이단자의 지옥이야. 1단계 림보에는 세례를 받지 못한 이교도들이 있었지? 여기 6단계는 달라 — 기독교인이면서 교리를 부정한 이단자들이 불타는 무덤에 갇혀 있어.", "highlight": None},
             {"speaker": "cosmii", "text": "근데 여기서 단테가 폭탄을 터뜨려. 교황이 여기 있어! 추기경도, 주교도! 성직자들이 지옥에 있는 거야. 700년 전에 현직 교황을 지옥에 넣는 소설을 쓴 거야 — 이 용기가 진짜 대단해.", "highlight": "교황이 지옥에"},
             {"speaker": "cosmii", "text": "이것이 단테가 그려낸 르네상스의 정신이야. 기존의 중세 기독교 권력, 부패한 교회를 정면으로 비판한 거야. 지금 우리 사회를 보는 것 같지 않아?", "highlight": "권력 비판"},
             {"speaker": "cosmii", "text": "7단계로 내려가면 폭력의 지옥이야. 여기는 세 종류로 나뉘어. 첫 번째 — 타인에게 폭력을 행사한 자들. 이 사람들은 펄펄 끓는 피의 강에 잠겨 있어. 머리를 내밀면 위에서 켄타우로스가 화살을 쏴. 다시 들어가면 뜨겁고, 나오면 화살이 날아오고 — 영원히.", "highlight": "피의 강"},
@@ -282,7 +282,7 @@ LESSONS = [
         "dialogue": [
             {"speaker": "cosmii", "text": "8단계 지옥은 구덩이가 열 개야. 사기꾼, 위조범, 연금술사, 성직매매자, 인신매매범... 지능을 이용해서 남을 속인 모든 자들이 여기 모여 있어.", "highlight": "열 개의 구덩이"},
             {"speaker": "cosmii", "text": "여기서 가장 충격적인 장면을 알려줄게. 분열을 조장한 자들의 구덩이야. 악마가 칼로 망자의 정수리부터 아래까지 쭉 갈라. 몸이 둘로 갈라지는 거야. 창자가 매달리고, 내장이 드러나고...", "highlight": "분열자의 형벌"},
-            {"speaker": "cosmii", "text": "단테의 묘사가 소름끼쳐. 「나는 터부터 방귀 끼는 곳까지 찢어진 어떤 자를 보았는데, 두 다리 사이에 창자가 매달려 있고, 내장이 드러났으며, 먹은 것을 똥으로 만드는 축 처진 주머니도 나타났다.」 잔인하지만 엄청나게 생생해.", "highlight": "단테의 생생한 묘사"},
+            {"speaker": "cosmii", "text": "단테의 묘사가 소름끼쳐. 「나는 턱부터 방귀 끼는 곳까지 찢어진 어떤 자를 보았는데, 두 다리 사이에 창자가 매달려 있고, 내장이 드러났으며, 먹은 것을 똥으로 만드는 축 처진 주머니도 나타났다.」 잔인하지만 엄청나게 생생해.", "highlight": "단테의 생생한 묘사"},
             {"speaker": "cosmii", "text": "가장 끔찍한 건 — 한 바퀴 돌아오는 동안 상처가 아물어. 그러면 또 갈라져. 이걸 영원히 반복하는 거야. 끝나지 않는 고통.", "highlight": "끝나지 않는 반복"},
             {"speaker": "cosmii", "text": "근데 이렇게 갈라지고 있는 사람이 누군지 아나? 무함마드야. 이슬람교의 창시자. 그리고 4대 칼리프 알리도 여기 있어. 단테의 시각에서는 — 기독교 세계를 분열시킨 장본인이니까.", "highlight": "무함마드"},
             {"speaker": "cosmii", "text": "성직매매 구덩이에는 교황이 또 나와. 6단계에서도 교황이 있었는데 여기도! 거꾸로 처박혀서 불에 타고 있어. 단테가 당시 사회의 부패를 얼마나 미워했는지 느껴지지?", "highlight": None}
@@ -416,7 +416,7 @@ LESSONS = [
         "part": 1, "total_parts": 2,
         "spark": "지옥은 '희망을 버려라'였다면 — 천국은 무수한 별빛, 끝없는 희망이다.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "드디어 천국이야! 베아트리체의 손을 잡고 올라가는 순간 — 모든 것이 빛이야. 무수한 별, 빛나는 별채, 끝없는 광채. 지옥의 어둠과 완전히 반대야.", "highlight": "무수한 별빛"},
+            {"speaker": "cosmii", "text": "드디어 천국이야! 베아트리체의 손을 잡고 올라가는 순간 — 모든 것이 빛이야. 무수한 별, 빛나는 별들, 끝없는 광채. 지옥의 어둠과 완전히 반대야.", "highlight": "무수한 별빛"},
             {"speaker": "cosmii", "text": "여기서 신곡의 구조가 완벽하게 대비돼. 지옥 입구 — '모든 희망을 버려라.' 지옥 탈출 — 별이 보인다. 천국 — 무수히 빛나는 별. 어둠 → 한 줄기 빛 → 무한한 빛. 이 여정이 바로 인간의 구원이야.", "highlight": "어둠에서 빛으로"},
             {"speaker": "cosmii", "text": "천국도 9단계로 나뉘어. 각 단계마다 점점 더 밝아져. 그런데 지옥처럼 고통이 있는 게 아니라, 올라갈수록 기쁨과 빛이 커지는 거야. 너무 밝아서 오히려 정신이 혼미해질 정도야.", "highlight": "9단계 천국"},
             {"speaker": "cosmii", "text": "재미있는 건 — 지옥에서는 사람들이 구체적인 형벌을 받고 있었잖아. 천국에서는 사람들이 점점 빛 자체가 돼. 개인의 형체가 사라지고 순수한 빛으로 변해가는 거야. 자아가 사라지고 더 큰 것과 하나가 되는 경험.", "highlight": "빛이 되는 사람들"},
@@ -452,7 +452,7 @@ LESSONS = [
             {"speaker": "cosmii", "text": "그때 베아트리체가 단테의 손을 잡고 말해. '단테, 이것을 꼭 기억해서, 뒤의 사람들에게 꼭 이야기를 남겨줘야 해.' 이게 신곡 전체의 존재 이유야. 단테가 이 여행을 한 건 — 기록해서 전하기 위해서.", "highlight": "기억해서 전해줘"},
             {"speaker": "cosmii", "text": "자, 신곡 전체를 돌아보자. 인생의 한가운데에서 길을 잃은 단테 — 어두운 숲, 세 마리 짐승, 베르길리우스의 손. 지옥의 9단계를 하나하나 내려가면서 인간의 죄를 직시하고.", "highlight": None},
             {"speaker": "cosmii", "text": "지옥을 빠져나와 별을 보고, 연옥에서 죄를 씻고, 스승과 이별하고. 베아트리체를 만나 사랑의 인도로 천국에 올라. 그리고 마침내 — 모든 것이 빛이 되는 곳에 도달해.", "highlight": "전체 여정 정리"},
-            {"speaker": "cosmii", "text": "그리고 신곡의 마지막 한 줄. 이탈리아 문학 역사상 가장 유명한 문장이야. 「태양과 별들을 움직이는 사랑」 — 이 거대한 우주를 움직이는 힘이 뭐냐면, 사랑이라는 거야. 어둠을 통과하면 빛이 있고, 그 빛의 정체는 결국 사랑이야. 이것이 신곡의 핵심이야.", "highlight": "태양과 별들을 움직이는 사랑"},
+            {"speaker": "cosmii", "text": "그리고 신곡의 마지막 한 줄. 이탈리아 문학 역사상 가장 유명한 문장이야. 「태양과 다른 별들을 움직이는 사랑」 — 이 거대한 우주를 움직이는 힘이 뭐냐면, 사랑이라는 거야. 어둠을 통과하면 빛이 있고, 그 빛의 정체는 결국 사랑이야. 이것이 신곡의 핵심이야.", "highlight": "태양과 다른 별들을 움직이는 사랑"},
             {"speaker": "cosmii", "text": "700년 전에 쓰인 이 작품이 아직도 읽히는 이유가 바로 이거야. 우리 모두 인생의 어두운 숲에서 길을 잃을 때가 있잖아. 그때 단테가 말해주는 거야 — 어둠을 피하지 마, 통과해. 그러면 별이 보일 거야. 같이 읽느라 정말 수고했어!", "highlight": None}
         ],
         "quizzes": [
@@ -636,7 +636,7 @@ TRANSLATIONS_EN = {
         "spark": "Popes, cardinals, bishops — all in Hell. Dante's exposé, 700 years ago.",
         "cliffhanger": "From Circle 8, it's no longer just brute force. Fraud, forgery, betrayal — the hell of those who used their intellect to deceive.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "Circle 6 is the heretics' zone. Remember Limbo in Circle 1? Those were the virtuous non-believers. Here in Circle 6, it's the non-believers who WEREN'T virtuous — and they're suffering for it.", "highlight": None},
+            {"speaker": "cosmii", "text": "Circle 6 is the heretics' zone. Remember Limbo had unbaptized pagans? Circle 6 is different — these are Christians who denied Church doctrine, trapped in burning tombs.", "highlight": None},
             {"speaker": "cosmii", "text": "But here's where Dante drops a bombshell. There's a POPE down here. Cardinals too! Bishops! Clergy — in Hell! 700 years ago, Dante literally wrote the sitting Pope into Hell. The sheer audacity? Absolutely legendary.", "highlight": "popes in Hell"},
             {"speaker": "cosmii", "text": "This is the Renaissance spirit Dante captured. He directly challenged medieval Church power and called out corruption head-on. Sound familiar? Kind of like calling out institutional corruption today, right?", "highlight": "speaking truth to power"},
             {"speaker": "cosmii", "text": "Circle 7 is the circle of violence, split into three zones. Zone one: those who were violent against others. They're submerged in a boiling river of blood. Stick your head up? Centaurs shoot you with arrows. Stay under? You're boiling alive. Head up — arrows. Head down — boiling. Forever.", "highlight": "the river of blood"},
