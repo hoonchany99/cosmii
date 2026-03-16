@@ -450,7 +450,7 @@ export function ConceptDialogue({
       {!questionOpen && (
         <div
           className="absolute left-0 right-0 flex flex-col items-center gap-1 pointer-events-none"
-          style={{ bottom: `${80 + kbHeight}px`, zIndex: 15 }}
+          style={{ bottom: `${140 + kbHeight}px`, zIndex: 15 }}
         >
           <motion.div
             animate={{ opacity: [0.2, 0.5, 0.2] }}

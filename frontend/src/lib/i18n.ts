@@ -527,8 +527,8 @@ const en: Record<TranslationKey, string> = {
   "toast.dailyGoalSub": "You completed {goal} explorations today",
   "toast.levelUp": "Level up!",
   "toast.levelUpSub": "You reached Lv.{level} — keep exploring",
-  "toast.appDownload": "Read more comfortably in the app",
-  "toast.appDownloadSub": "Offline learning available",
+  "toast.appDownload": "Try the Cosmii app",
+  "toast.appDownloadSub": "Read offline, anytime",
 
   // ── Session Complete ──
   "complete.reviewAgain": "Once more?",
@@ -549,11 +549,11 @@ const en: Record<TranslationKey, string> = {
   "complete.msgGreat.0": "You've come a little closer today.",
   "complete.msgGreat.1": "You read that deeply. I could tell.",
   "complete.msgGreat.2": "The book remembers you, too.",
-  "complete.msgGreat.3": "A quietly brilliant night.",
+  "complete.msgGreat.3": "A quiet, glowing kind of night.",
   "complete.msgGreat.4": "I like the way you read.",
   "complete.msgGreat.5": "On nights like this, even the stars seem brighter.",
   "complete.msgGreat.6": "The sentences you read today will stay with you.",
-  "complete.msgGreat.7": "To understand is to let your heart reach.",
+  "complete.msgGreat.7": "Real understanding isn\u2019t just in your head. You feel it.",
   "complete.msgGood.0": "That's enough for today.",
   "complete.msgGood.1": "Wanting to understand — that already means a lot.",
   "complete.msgGood.2": "It's okay. This path is meant to be walked slowly.",
@@ -613,16 +613,16 @@ const en: Record<TranslationKey, string> = {
 
   // ── Floating Cosmii ──
   "thinking.0": "Hmm... 🤔",
-  "thinking.1": "Hold on~",
+  "thinking.1": "Hold on...",
   "thinking.2": "Looking it up!",
   "thinking.3": "Let me see...",
   "thinking.4": "This is interesting!",
   "thinking.5": "Thinking... 💭",
-  "thinking.6": "Digging through memory~",
+  "thinking.6": "Searching my notes...",
   "thinking.7": "Almost there!",
   "thinking.8": "Found it!",
   "thinking.9": "Oh, got it!",
-  "thinking.10": "Reading~ 📖",
+  "thinking.10": "Reading... 📖",
   "thinking.11": "Hmm...",
 
 
@@ -662,7 +662,7 @@ const en: Record<TranslationKey, string> = {
   "graph.selectBook": "Select a book",
   "graph.noData": "No graph data yet",
   "graph.close": "Close",
-  "graph.crossBookInfo": "This concept appears across {n} books (cross-book connection)",
+  "graph.crossBookInfo": "This concept appears across {n} different books",
 
   // ── Universe ──
   "universe.other": "Other",

@@ -119,9 +119,3 @@ class AdminBookUploadResponse(BaseModel):
     author: str
     total_chunks: int
     status: str = "processed"
-
-
-class LessonGenerateRequest(BaseModel):
-    sessions_per_chapter: int = 3
-    dialogue_parts_per_session: int = 6
-    quizzes_per_session: int = 2

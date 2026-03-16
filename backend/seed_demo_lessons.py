@@ -1,5 +1,6 @@
 """Seed handcrafted demo lessons for Demian with cover image."""
 import json
+import random
 import ssl
 import uuid
 import os
@@ -612,6 +613,338 @@ LESSONS = [
 ]
 
 
+# ══════════════════════════════════════════════════════════════
+# TRANSLATIONS_EN — naturally written English versions
+# ══════════════════════════════════════════════════════════════
+
+TRANSLATIONS_EN = {
+    0: {
+        "title": "Sinclair's Two Worlds — Where It All Begins",
+        "chapter_title": "Two Worlds",
+        "spark": "A ten-year-old boy's world cracks open for the first time.",
+        "cliffhanger": "Next up: Kromer's bullying becomes a daily nightmare — and Sinclair starts to change.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Hey there! Starting today, we're diving into Hermann Hesse's novel Demian. It's a coming-of-age story — but not the usual kind. This one's about a boy learning who he really is, deep down.", "highlight": None},
+            {"speaker": "cosmii", "text": "Our main character is Emil Sinclair, a ten-year-old kid. The way he sees it, his world has two layers. The first is the 'bright world' — his father's evening prayers, his mother's warmth, a clean white tablecloth at dinner. In a word: safe, orderly, and pure.", "highlight": "the bright world"},
+            {"speaker": "cosmii", "text": "Then there's the 'dark world.' Servants whispering outside the house, kids fighting in alleyways, drunk adults stumbling around. Young Sinclair knows these things exist, but he figures they've got nothing to do with him. Bad stuff lives over there; he lives here, in the good place.", "highlight": "the dark world"},
+            {"speaker": "cosmii", "text": "But one day, a crack appears between those two worlds. Enter Franz Kromer — an older, rougher neighborhood kid. Here's what happens: Sinclair is showing off to his friends and brags, 'I stole apples from the orchard.' Total lie. He made the whole thing up!", "highlight": "Kromer"},
+            {"speaker": "cosmii", "text": "The problem? Kromer takes the lie seriously. He grabs hold of it like a weapon: 'That's a crime. I could tell the owner. You might end up with the police.' Just like that, Kromer starts blackmailing Sinclair. A ten-year-old, trapped by one stupid lie.", "highlight": "the blackmail begins"},
+            {"speaker": "cosmii", "text": "This is the novel's starting gun. Sinclair always thought he belonged safely in the bright world — the good kid in the good place. But his own lie just shoved him straight into the dark world. It's like the floor he trusted suddenly had a hole in it. And that feeling? It drives the entire novel.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What directly causes Sinclair to step into the 'dark world' for the first time?", "options": ["Meeting a transfer student named Demian", "Being blackmailed by Kromer after a lie is exposed", "Questioning his religious beliefs", "Having a major fight with his parents"], "correct_index": 1, "explanation": "Sinclair bragged about stealing apples — a total lie — and Kromer used it to blackmail him. That single event cracked open the safe 'bright world' for the first time."},
+            {"question": "Which of these best describes Sinclair's 'bright world'?", "options": ["Rough street fights", "His father's prayers and his mother's warmth", "Drunk adults in the neighborhood", "His encounters with Kromer"], "correct_index": 1, "explanation": "The bright world is all about the safety and order of home — his father's prayers, his mother's warmth, a clean white tablecloth. Everything tidy and protected."},
+        ],
+    },
+    1: {
+        "title": "A Boy Living in Fear — The Silent Double Life",
+        "chapter_title": "Two Worlds",
+        "spark": "How does terror become routine, and how does a lie become a way of life?",
+        "cliffhanger": "Next lesson: Kromer's grip suddenly vanishes. But what Sinclair finds isn't freedom — it's something else entirely.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Remember Sinclair getting caught by Kromer? Today we see what happens when that fear isn't just one bad day — it's every single day. Honestly, this part is heartbreaking.", "highlight": None},
+            {"speaker": "cosmii", "text": "Kromer summons Sinclair constantly. 'Bring me money.' 'Steal something for me.' A ten-year-old sneaking coins from home, piling lie on top of lie — day after day. Think of a kid being bullied at school who can't tell anyone. That helplessness? That's Sinclair's entire life now.", "highlight": "daily blackmail"},
+            {"speaker": "cosmii", "text": "Here's the thing that really matters: what Sinclair feels isn't just fear. It's shame. Deep, crushing shame. 'I'm dirty. I'm a bad kid.' He doesn't just feel threatened — he feels like he's been kicked out of the bright world for good, and it's all his own fault.", "highlight": "shame"},
+            {"speaker": "cosmii", "text": "So he starts living a double life. At the dinner table — the perfect son. During prayers — the devout believer. But inside he's thinking, 'I'm a fraud. I'm ruined.' Picture someone who smiles through the school day but is falling apart on the inside. That's Sinclair, age ten.", "highlight": "double life"},
+            {"speaker": "cosmii", "text": "There's one scene that really gets me. His father studies Sinclair's face and clearly senses something is wrong. But he doesn't ask. And Sinclair doesn't tell. They both stay silent. That silence builds an invisible wall between them that neither one can break.", "highlight": None},
+            {"speaker": "cosmii", "text": "By the end of it, Sinclair feels this: 'I don't belong to this family anymore.' His parents live in the bright world, and he's stranded somewhere in the dark. This sense of isolation — of being utterly alone inside a crowded room — runs through the entire novel.", "highlight": "isolation"},
+        ],
+        "quizzes": [
+            {"question": "What emotion does Kromer's blackmail leave deepest in Sinclair?", "options": ["Simple anger", "Shame and self-loathing", "A desire for revenge", "No emotion at all"], "correct_index": 1, "explanation": "More than fear, Sinclair feels shame — the belief that he's dirty, that he's a bad person who deserves what's happening. That self-hatred is what really eats at him."},
+            {"question": "How does Sinclair behave around his parents during this time?", "options": ["He confesses everything honestly", "He acts like nothing's wrong — the obedient son", "He rebels and talks back", "He asks them for help"], "correct_index": 1, "explanation": "Sinclair plays the role of the good son, hiding everything. This double life only deepens his isolation and builds an invisible wall between him and his family."},
+        ],
+    },
+    2: {
+        "title": "The Crisis Ends, But the Scar Remains — Innocence Doesn't Come Back",
+        "chapter_title": "Two Worlds",
+        "spark": "Even when the problem disappears, a broken heart doesn't just reset.",
+        "cliffhanger": "Next lesson: a mysterious new student arrives — and he's about to turn Sinclair's world upside down. His name? Max Demian.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Alright, today Sinclair finally escapes Kromer. But fair warning — this is not a happy ending. In fact, this is where the novel's real theme kicks in.", "highlight": None},
+            {"speaker": "cosmii", "text": "One day, Kromer just... stops. He stops coming around, stops making demands. We don't know why yet — that gets revealed later! — but the harassment is completely over. You'd think Sinclair would be thrilled, right?", "highlight": "sudden release"},
+            {"speaker": "cosmii", "text": "Except he's not. Instead of joy, Sinclair feels hollow. Because he realizes something: Kromer may be gone, but what happened to him on the inside hasn't gone anywhere. He lied. He stole. He lived in terror. You can't un-experience that.", "highlight": "the stain that won't wash out"},
+            {"speaker": "cosmii", "text": "Think of it this way: it's like a kid who sees the ugly side of the adult world for the first time and thinks, 'Oh. So that's how things really are.' Before that moment, the world was warm and kind. Once that belief shatters, it doesn't glue back together.", "highlight": None},
+            {"speaker": "cosmii", "text": "His parents are relieved — 'Oh good, our boy seems happy again!' But Sinclair knows better. He's back in the bright world on the outside, but inside, he's someone who's seen the dark world and can't unsee it. Same face, completely different person.", "highlight": "the gap between surface and truth"},
+            {"speaker": "cosmii", "text": "That's the core message of Chapter 1: once you've been through something, you can't undo it. Innocence, once cracked, doesn't heal. And in the very next chapter, a new transfer student walks in — someone who's going to blow Sinclair's entire worldview wide open. His name is Max Demian.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "After escaping Kromer, how does Sinclair actually feel?", "options": ["Completely happy and free", "A mix of relief and emptiness — the experience left its mark", "Burning with revenge", "Like he's forgotten everything"], "correct_index": 1, "explanation": "Kromer is gone, but the shame and fear left permanent marks on Sinclair. He returns to the bright world on the surface, but inside he's already changed."},
+            {"question": "What is the core message of Chapter 1?", "options": ["Don't make bad friends", "Once innocence is shattered, it can never be restored", "Always listen to your parents", "School grades matter most"], "correct_index": 1, "explanation": "Chapter 1 is really saying: experience can't be undone. Once the bright world's innocence cracks, even solving the external problem can't change what's already happened inside."},
+        ],
+    },
+    3: {
+        "title": "Demian Arrives — Rethinking Cain and Abel",
+        "chapter_title": "Cain",
+        "spark": "A new transfer student flips a Bible story completely on its head.",
+        "cliffhanger": "Demian's ideas aren't just talk. He's about to prove them with action.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Finally — the character the novel is named after shows up! Max Demian, the new transfer student. First impression: there's something different about him. He's not loud or flashy, but nobody can ignore him. Quiet confidence. The kind of person who fills a room without trying.", "highlight": "Max Demian"},
+            {"speaker": "cosmii", "text": "The defining scene happens in religion class. The teacher is going through the story of Cain and Abel. Quick recap if you need it: Cain and Abel are brothers. Cain gets jealous and kills Abel. God marks Cain's forehead. The standard reading? Cain equals villain, Abel equals good guy.", "highlight": "Cain and Abel"},
+            {"speaker": "cosmii", "text": "But Demian pulls Sinclair aside and offers a completely different take. 'You know,' he says, 'the mark on Cain's forehead wasn't a punishment. People feared Cain — not because he was evil, but because he was different. There was something about him that made everyone uneasy.'", "highlight": "the mark reinterpreted"},
+            {"speaker": "cosmii", "text": "Why does this matter so much? Until now, Sinclair has divided the world into neat boxes: good versus evil. Bright world equals good, dark world equals bad. Demian is basically saying, 'What if that whole framework is wrong? What if the things labeled \"bad\" aren't actually bad at all?'", "highlight": None},
+            {"speaker": "cosmii", "text": "Here's a simple way to think about it: imagine being taught your whole life that things work a certain way, and then someone asks, 'But why? Says who?' Most people never ask that question. Demian is the kid who asks it. He doesn't hand you answers — he hands you questions.", "highlight": "learning to question"},
+            {"speaker": "cosmii", "text": "For Sinclair, Demian is the first person who ever shows him how to think for himself. Not just accepting what teachers say, but actually questioning things everyone takes for granted. That single idea — think for yourself — is the thread that runs through the entire novel.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "How does Demian interpret the 'mark of Cain'?", "options": ["A terrifying curse from God", "A symbol of being different — special, not punished", "A meaningless decoration", "Evidence of a crime"], "correct_index": 1, "explanation": "Demian reads the mark not as punishment but as a sign of being set apart. People feared Cain not because he was wicked, but because he was fundamentally different."},
+            {"question": "What is Demian's biggest impact on Sinclair?", "options": ["Giving him money and protection", "Teaching him to question what he's always taken for granted", "Threatening him into obedience", "Introducing him to popular kids"], "correct_index": 1, "explanation": "Demian doesn't give answers — he gives questions. 'Why is Cain the bad guy?' That kind of question teaches Sinclair to think for himself for the first time."},
+        ],
+    },
+    4: {
+        "title": "Kromer Vanishes — Demian's Mysterious Power",
+        "chapter_title": "Cain",
+        "spark": "Demian solves the Kromer problem — but how he does it remains a total mystery.",
+        "cliffhanger": "Sinclair is grateful to Demian — so why does he start pulling away?",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Okay, something huge happens in this part. Remember how Kromer's blackmail just suddenly stopped back in Chapter 1? The reason is finally revealed — Demian did something.", "highlight": None},
+            {"speaker": "cosmii", "text": "But here's the fascinating part: neither Sinclair nor the reader ever finds out exactly what Demian did. The novel never spells it out. One day Kromer just starts avoiding Sinclair — crossing the street to dodge him, refusing to make eye contact.", "highlight": "a mysterious solution"},
+            {"speaker": "cosmii", "text": "The bully who terrorized Sinclair is now the one running scared! The power dynamic has completely flipped. Whatever Demian said or did to Kromer remains a total enigma.", "highlight": "the tables turn"},
+            {"speaker": "cosmii", "text": "Now, you'd expect Sinclair to be nothing but relieved. But his reaction is surprisingly complicated. There's gratitude, sure — 'Demian saved me.' But there's also this creeping unease: 'What kind of power does this guy have?'", "highlight": "gratitude and unease"},
+            {"speaker": "cosmii", "text": "If you think about it, that makes total sense. Someone does you a huge favor, but you have zero idea how. The person who rescued you clearly knows darker, deeper waters than you do. You're thankful — and a little freaked out at the same time.", "highlight": None},
+            {"speaker": "cosmii", "text": "This scene matters because it creates a kind of invisible debt between Sinclair and Demian — and it sparks Sinclair's fascination with this enigmatic figure. Rescue came, but it brought a whole new set of questions along with it.", "highlight": "new questions begin"},
+        ],
+        "quizzes": [
+            {"question": "Who is responsible for making the Kromer problem disappear?", "options": ["Sinclair's father", "Demian", "A school teacher", "Sinclair himself"], "correct_index": 1, "explanation": "Demian somehow got to Kromer and dismantled the blackmail. The exact method is never revealed, which only deepens Demian's mystique."},
+            {"question": "What does Sinclair feel toward Demian after being freed from Kromer?", "options": ["Pure joy and nothing else", "Gratitude mixed with unease", "Anger", "Complete indifference"], "correct_index": 1, "explanation": "Sinclair is grateful for the rescue but unsettled by Demian's unknowable power. This mix of emotions is what first draws Sinclair toward Demian."},
+        ],
+    },
+    5: {
+        "title": "Running from Demian — Retreating to Comfort",
+        "chapter_title": "Cain",
+        "spark": "Sometimes avoiding your mirror is easier than facing what it shows you.",
+        "cliffhanger": "Years pass, boarding school begins — and puberty hits Sinclair like a wrecking ball.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Here's where the story takes a surprising turn. Despite being grateful, Sinclair starts actively avoiding Demian!", "highlight": None},
+            {"speaker": "cosmii", "text": "Why would he do that? Because being around Demian is uncomfortable. Demian is the kind of person you can't fake anything around. Standing near him, Sinclair feels his 'good boy' mask slipping off. Imagine someone who can see right through you — every pretense, every act. Would you want to hang out with that person?", "highlight": "a mirror he can't face"},
+            {"speaker": "cosmii", "text": "So Sinclair retreats to the bright world. He throws himself into schoolwork, behaves perfectly at home, gets along with everyone. For a while, it works beautifully — good grades, peaceful days, parents happy.", "highlight": "back to the bright world"},
+            {"speaker": "cosmii", "text": "But the novel calls this a 'retreat,' not growth. Why? Because it's comfortable but dishonest. Sinclair already knows the world isn't all sunshine. He's seen the cracks. Pretending they don't exist isn't moving forward — it's hiding.", "highlight": "comfortable but false"},
+            {"speaker": "cosmii", "text": "Think of it like this: you catch a friend talking behind your back, but you decide, 'Forget it, let's just go back to normal.' Sure, it's easier in the moment. But deep down, you know. That knowledge doesn't just disappear because you ignore it.", "highlight": None},
+            {"speaker": "cosmii", "text": "That's the big takeaway from Chapter 2: once you've seen the truth, you can't pretend you haven't. Sinclair can play the good boy for a few more years, but eventually, everything he's been suppressing is going to come roaring back.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What is the real reason Sinclair avoids Demian?", "options": ["Demian is violent", "Demian forces him to confront his true self, and he's not ready for that", "His parents forbid the friendship", "Demian distracts him from studying"], "correct_index": 1, "explanation": "Demian acts like a mirror — he strips away Sinclair's masks. Since Sinclair isn't ready to face his own inner truth yet, he runs from the discomfort."},
+            {"question": "Why does Hesse call Sinclair's return to the bright world a 'retreat' rather than 'growth'?", "options": ["The bright world itself is bad", "He already knows the truth but is pretending he doesn't", "Demian is angry about it", "His grades are dropping"], "correct_index": 1, "explanation": "Hiding in a comfortable illusion after you've already glimpsed the truth isn't progress — it's retreat. Real growth means facing what you've seen, not running from it."},
+        ],
+    },
+    6: {
+        "title": "The Rebel at Boarding School — A Good Kid Falls Apart",
+        "chapter_title": "The Thief",
+        "spark": "Sinclair's puberty detonates — and he swings from one extreme to the other.",
+        "cliffhanger": "What finally pulls Sinclair out of this self-destructive spiral? Believe it or not — a girl's face.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Chapter 3 jumps ahead in time. Sinclair is at boarding school now, away from home for the first time. And then — puberty explodes.", "highlight": "boarding school"},
+            {"speaker": "cosmii", "text": "The model student Sinclair? Gone. He starts drinking, cutting class, mouthing off to teachers, becoming a regular at the village tavern. His parents would pass out if they knew.", "highlight": "rebellion"},
+            {"speaker": "cosmii", "text": "Why the sudden 180? It's not just teenage rebellion. Back in Chapter 2, Sinclair already figured out that the 'bright world' is a lie. So now he's thinking, 'If the good-boy life is fake, then fine — I'll be the bad kid instead!' He rockets to the opposite extreme.", "highlight": None},
+            {"speaker": "cosmii", "text": "You've probably seen this in real life. Someone who's been 'good' for too long finally snaps and goes all the way in the other direction. It's the pendulum swinging — from one extreme straight to the other.", "highlight": "swinging to the opposite extreme"},
+            {"speaker": "cosmii", "text": "But here's the catch: Sinclair isn't happy. Not even close. His grades are in the gutter, he's on the verge of expulsion, his parents are devastated. Even he's thinking, 'This isn't what I wanted either...' and yet he keeps spiraling deeper.", "highlight": "self-destruction"},
+            {"speaker": "cosmii", "text": "And that's the big insight of Chapter 3: just as the bright world wasn't the whole truth, diving headfirst into the dark world isn't the answer either. Neither extreme is the real Sinclair. So where is the real him? That question is the beating heart of this novel.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What's the deeper reason behind Sinclair's rebellion at boarding school?", "options": ["Peer pressure from friends", "He realized the bright world was a lie, so he swung to the opposite extreme", "Demian told him to rebel", "The school food was terrible"], "correct_index": 1, "explanation": "Sinclair already knew the 'good boy' world was hollow, so he rejected it entirely and ran to the other extreme. But that side turned out to be just as empty."},
+            {"question": "Why isn't Sinclair's rebellion real freedom?", "options": ["He doesn't have enough money", "He's miserable through it all — it's not his true self either", "His parents gave him permission", "His grades suffered"], "correct_index": 1, "explanation": "The bright world was a mask, but the dark world is just a different mask. Neither extreme is who Sinclair really is. True freedom means finding what's in between."},
+        ],
+    },
+    7: {
+        "title": "The Nameless Girl Called Beatrice — When a Face Changes Everything",
+        "chapter_title": "The Thief",
+        "spark": "A girl he never speaks to rewrites the direction of Sinclair's life.",
+        "cliffhanger": "Next up: one of the most famous lines in all of literature arrives in a letter. You've probably heard it before.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Okay, this next scene is genuinely beautiful. Sinclair is deep in his drinking phase when one day he's walking through a park and spots a girl. Just a glimpse from a distance. They don't speak. He doesn't even know her name.", "highlight": "a girl in the park"},
+            {"speaker": "cosmii", "text": "But that single moment changes everything. Something about her face makes him feel the existence of something clean and elevated — something he'd forgotten was possible. Like a person drowning in darkness who suddenly sees a point of light.", "highlight": None},
+            {"speaker": "cosmii", "text": "Sinclair gives this girl a private name: 'Beatrice.' It's not her real name! He borrows it from Dante, the Italian poet. In Dante's work, Beatrice is the woman whose mere presence purifies his soul — someone you don't need to touch or even talk to; just seeing her makes you want to be better.", "highlight": "the name Beatrice"},
+            {"speaker": "cosmii", "text": "And here's the crucial thing — Sinclair isn't falling in love with her. Not romantically. What she does is hold up a mirror to the better version of himself. Through her image, he discovers a hope: 'Maybe there's still something beautiful inside me. Maybe I can reach it.'", "highlight": "an image that transforms"},
+            {"speaker": "cosmii", "text": "And the change is real. Sinclair quits drinking. He starts taking long walks, and he begins to draw. He sketches Beatrice's face over and over — until he notices something eerie. The face in his drawings is slowly, unconsciously morphing... into Demian's face.", "highlight": "Demian in the drawings"},
+            {"speaker": "cosmii", "text": "Goosebumps, right? He sits down to draw the girl he idolizes, and Demian's face comes out. That's his unconscious speaking loud and clear: 'The thing you're really searching for isn't this girl — it's the person who once showed you the truth.' It's one of the most gorgeous twists in the entire novel.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "Whose face does Sinclair's drawing of Beatrice gradually start to resemble?", "options": ["Kromer", "Demian", "His father", "A teacher"], "correct_index": 1, "explanation": "Without even realizing it, Sinclair's drawings of Beatrice morph into Demian's face. His subconscious is revealing what he's truly been looking for all along."},
+            {"question": "What is Beatrice's real impact on Sinclair?", "options": ["She becomes his romantic partner", "She awakens a hope that there's a better version of himself", "She motivates him to study harder", "She reconciles him with his parents"], "correct_index": 1, "explanation": "Beatrice isn't a love interest — she's a catalyst. Through her image, Sinclair rediscovers the possibility that something beautiful and worthwhile still exists inside him."},
+        ],
+    },
+    8: {
+        "title": "The Bird Fights Its Way Out — The Novel's Most Famous Line",
+        "chapter_title": "The Thief",
+        "spark": "A single letter from Demian carries the sentence that defines the entire novel.",
+        "cliffhanger": "Sinclair is hooked — he needs to know more about Abraxas. The hunt begins.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Alright, this is the one. The passage everyone remembers from Demian — even people who've never read the book. Let's set it up.", "highlight": None},
+            {"speaker": "cosmii", "text": "Sinclair has a vivid dream: a massive bird struggling to break free from an egg. He's so shaken that he paints the image and — for the first time in years — sends it to Demian as a letter.", "highlight": "the bird dream"},
+            {"speaker": "cosmii", "text": "Demian writes back. And this is what his letter says: 'The bird fights its way out of the egg. The egg is the world. Whoever would be born must destroy a world. The bird flies to God. The god's name is Abraxas.'", "highlight": "the most famous line"},
+            {"speaker": "cosmii", "text": "So what does it mean? The egg is everything that feels safe right now — your parents' values, the rules you grew up with, the 'this is how life works' box you live in. Safe, yes. But also a cage.", "highlight": "what the egg means"},
+            {"speaker": "cosmii", "text": "The bird is your true self. And being born — really born, as who you actually are — means smashing through that shell. It's terrifying and painful, but the alternative is staying trapped forever. Growth means breaking what's comfortable.", "highlight": "what the bird means"},
+            {"speaker": "cosmii", "text": "One more thing: Demian introduces a name — Abraxas. A deity that holds both good AND evil inside itself. Light and dark aren't opposites — they're two halves of one whole. Remember how Sinclair's been torn between the bright world and the dark world? Abraxas is the first hint that the split itself was the problem.", "highlight": "Abraxas"},
+        ],
+        "quizzes": [
+            {"question": "In the famous quote, what does 'the egg' represent?", "options": ["An actual bird's egg", "The comfortable but confining world you currently live in", "Demian's letter", "The school building"], "correct_index": 1, "explanation": "The egg symbolizes the safe, familiar world — parents' values, social rules, inherited beliefs. To become who you really are, you have to break through it."},
+            {"question": "What kind of being is Abraxas?", "options": ["A purely benevolent god", "A deity that contains both good and evil", "A purely evil demon", "A historical figure"], "correct_index": 1, "explanation": "Abraxas holds light and darkness together in one being. It's the symbol that transcends the bright-world-vs-dark-world split that's been tormenting Sinclair."},
+        ],
+    },
+    9: {
+        "title": "Searching for Abraxas — The Self-Taught Student",
+        "chapter_title": "Beatrice",
+        "spark": "A name dropped in Latin class sends Sinclair on a solo quest through the library stacks.",
+        "cliffhanger": "Sinclair's been studying alone — but an unexpected conversation partner is about to walk in.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "After Demian's letter, Sinclair can't stop thinking about Abraxas. Who — or what — is this being? He's dying to find out. So he starts digging on his own.", "highlight": None},
+            {"speaker": "cosmii", "text": "Then one day in Latin class, the teacher casually mentions Abraxas while discussing ancient mythology. Just a passing reference — but Sinclair's heart nearly stops. There it is. The name, right there in a classroom lecture.", "highlight": "the Latin class moment"},
+            {"speaker": "cosmii", "text": "Let me explain what Abraxas actually is. In ancient times, some thinkers believed there isn't a 'good god' and a separate 'evil devil.' Instead, there's a greater being that contains both — light and shadow in one body. That being is Abraxas.", "highlight": "Abraxas explained"},
+            {"speaker": "cosmii", "text": "This is huge for Sinclair. Think about it — his entire life, he's been tortured by the split: 'Am I a bright-world person or a dark-world person?' Abraxas whispers the answer: that split is an illusion. Both sides are part of the same whole.", "highlight": "beyond the binary"},
+            {"speaker": "cosmii", "text": "So Sinclair hits the library. Night after night, pulling books off shelves, reading about Gnostic traditions and ancient theologies that his teachers never covered. Nobody assigned this. Nobody's grading him. He's doing it because he has to know.", "highlight": "self-directed learning"},
+            {"speaker": "cosmii", "text": "And that right there is real growth. Not studying for an exam, not following a syllabus — but chasing a question that burns inside you. The deepest learning doesn't start in a classroom. It starts with a question you can't let go of.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "Why is Abraxas so important to Sinclair?", "options": ["It's a school assignment", "It offers a way past the good-vs-evil split that's been tormenting him", "His parents told him to study it", "Demian said it'd be on a test"], "correct_index": 1, "explanation": "Sinclair has suffered for years caught between the 'bright world' and the 'dark world.' Abraxas suggests both are part of one whole — which is exactly the answer he's been looking for."},
+            {"question": "What does Sinclair's solo library research represent?", "options": ["Better test scores", "Self-directed learning driven by a genuine inner question", "Making friends", "Trying to impress the teacher"], "correct_index": 1, "explanation": "Nobody told Sinclair to research Abraxas — he did it because the question burned inside him. That kind of self-driven learning is the most powerful kind of growth."},
+        ],
+    },
+    10: {
+        "title": "Pistorius the Organist — A Second Mentor Appears",
+        "chapter_title": "Beatrice",
+        "spark": "Strange organ music drifting from a church leads Sinclair to a mentor who knows about Abraxas.",
+        "cliffhanger": "Pistorius is a brilliant guide — but even the best mentors have limits.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "One evening Sinclair is walking past a church when he hears organ music coming from inside — but it's not your typical hymn. It's dark, intense, almost wild. Like fire in sound. He's drawn in.", "highlight": "the organ music"},
+            {"speaker": "cosmii", "text": "The player is a man named Pistorius — a seminary dropout, a bit eccentric. Sinclair strikes up a conversation, and to his amazement, Pistorius already knows about Abraxas.", "highlight": "Pistorius"},
+            {"speaker": "cosmii", "text": "Pistorius teaches Sinclair something fascinating: 'flame gazing.' You stare into a fire — a candle, a fireplace — and simply watch whatever images rise up in your mind. It's basically meditation, ancient style.", "highlight": "flame gazing"},
+            {"speaker": "cosmii", "text": "Here's why it matters. The images that float up aren't things you consciously create — they bubble up from your unconscious, from parts of yourself you don't normally have access to. Through this practice, Sinclair starts meeting a version of himself he never knew existed.", "highlight": None},
+            {"speaker": "cosmii", "text": "Pistorius also drops a big idea: 'Every religion, at its deepest layer, touches the same truth. Christianity, ancient mythology, Eastern philosophy — they all point to the same place. Good and evil grow from the same root.' Sound familiar? It lines up perfectly with Abraxas.", "highlight": "one truth across all religions"},
+            {"speaker": "cosmii", "text": "So now Sinclair has had two mentors. Demian was pure intuition — 'feel the truth.' Pistorius is the intellectual — 'study the truth.' Different roads, same destination. Both matter. But here's the thing about mentors...", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What does Sinclair discover through 'flame gazing'?", "options": ["The ability to predict the future", "Images from his unconscious — parts of himself he didn't know", "Supernatural powers", "Pistorius's past"], "correct_index": 1, "explanation": "The images that rise during flame gazing come from the unconscious mind. Sinclair uses this practice to access parts of his inner world he'd never been aware of."},
+            {"question": "What's the key difference between Demian and Pistorius as mentors?", "options": ["Their age", "Demian works through intuition; Pistorius works through knowledge", "They disagree about good and evil", "Their appearance"], "correct_index": 1, "explanation": "Demian's approach is 'feel it.' Pistorius's approach is 'study it.' They take different paths but both guide Sinclair toward the same deeper understanding."},
+        ],
+    },
+    11: {
+        "title": "Outgrowing the Master — A Painful but Necessary Goodbye",
+        "chapter_title": "Beatrice",
+        "spark": "Discovering a mentor's limits is heartbreaking — but it's the only way forward.",
+        "cliffhanger": "Sinclair is alone again. And the novel's most mysterious figure is about to appear.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "This part honestly stings. Sinclair discovers the ceiling of Pistorius's wisdom. It's like realizing someone you deeply admired isn't quite who you thought they were.", "highlight": None},
+            {"speaker": "cosmii", "text": "During one of their conversations, Sinclair blurts it out: 'You only ever dig into the past. Old myths, old religions — you never create anything new.' The words land like a slap. Pistorius is visibly hurt.", "highlight": "the moment of truth"},
+            {"speaker": "cosmii", "text": "It sounds cruel, but it's an honest observation. Pistorius is brilliant at explaining ancient wisdom, but he can't generate something original from it. Think of a librarian who can recommend any great novel — but can't write one.", "highlight": None},
+            {"speaker": "cosmii", "text": "Sinclair is gutted by what he said. 'I just hurt the only friend I had.' But here's the thing — once you see a truth, you can't unsee it. Same lesson from Chapter 1: innocence, once broken, doesn't come back.", "highlight": "you can't unsee the truth"},
+            {"speaker": "cosmii", "text": "The relationship quietly fades. Pistorius was a wonderful teacher, but he couldn't walk Sinclair all the way to the finish line. Sinclair is alone again.", "highlight": "walking alone"},
+            {"speaker": "cosmii", "text": "And that's the big, bittersweet lesson here: no matter how great a teacher is, they're a guide — not a substitute for walking your own path. At some point, you have to let go and keep moving. Growth always demands a goodbye.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What limitation does Sinclair identify in Pistorius?", "options": ["He can't play music well", "He recycles ancient wisdom but never creates anything new", "He's unpopular", "He's not educated enough"], "correct_index": 1, "explanation": "Pistorius is a walking encyclopedia of ancient myths and religions — but that's where it stops. He transmits old knowledge without generating new insight from it."},
+            {"question": "What's the core lesson of this episode?", "options": ["Always be grateful to your teachers", "Ultimately, you must walk your own path — mentors are guides, not destinations", "Knowledge is the most important thing", "Never criticize a friend"], "correct_index": 1, "explanation": "Mentors show you the way, but they can't walk it for you. Finding your true self is a journey you have to complete on your own."},
+        ],
+    },
+    12: {
+        "title": "When Dreams Feel More Real Than Life",
+        "chapter_title": "The Bird Fights Its Way Out of the Egg",
+        "spark": "Sinclair's dreams grow so vivid that the boundary between inner and outer reality begins to dissolve.",
+        "cliffhanger": "The dream woman's identity is about to be revealed — and it will change everything.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Chapter 5 shifts the entire mood of the novel. Up to now it's been schools, friends, mentors — the real world. From here on, dreams and symbols take center stage. Things get mystical.", "highlight": None},
+            {"speaker": "cosmii", "text": "Sinclair's dreams are becoming incredibly vivid. One keeps coming back: a family crest with a bird breaking from an egg, and always — always — the face of a woman.", "highlight": "the recurring dream"},
+            {"speaker": "cosmii", "text": "But who is she? Not Beatrice from the park. Not his mother. Not Demian. She's something more fundamental — a figure who is mother and lover and goddess all at once. Every archetype layered into a single face.", "highlight": "the dream woman"},
+            {"speaker": "cosmii", "text": "In psychology, this is called the 'anima' — the idea that deep in every person's psyche lives a primal image that transcends gender. A fusion of nurturer, beloved, and wise spirit. That's what Sinclair is encountering in these dreams.", "highlight": "the anima archetype"},
+            {"speaker": "cosmii", "text": "And here's where it gets eerie: Sinclair starts experiencing what can only be called telepathy. He senses Demian's presence across vast distances. He 'calls out' to Demian with his mind. Rationally it makes no sense — but the novel treats it with dead seriousness.", "highlight": "telepathic connection"},
+            {"speaker": "cosmii", "text": "The point Hesse is making: the visible world isn't the only real one. Dreams, intuition, the unconscious — these inner experiences are just as 'real' as anything you can touch. You've probably had moments like that yourself — thinking of someone right before they call, a gut feeling that turned out to be right. This is the extreme version of that.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "Who is the woman who keeps appearing in Sinclair's dreams?", "options": ["A specific woman he met in real life", "A primal inner image — mother, lover, and divine wisdom fused into one", "A symbol of pure evil", "A childhood friend"], "correct_index": 1, "explanation": "The dream woman isn't a real person — she's the 'anima,' a deep psychological archetype combining the maternal, the romantic, and the spiritual into a single figure."},
+            {"question": "How does the novel's tone shift in Chapter 5?", "options": ["It becomes more realistic and everyday", "It moves toward dreams, symbols, and the inner world", "It gets comedic", "It focuses on historical events"], "correct_index": 1, "explanation": "Starting in Chapter 5, Hesse pivots from external events to the world inside Sinclair's mind — dreams, telepathy, archetypal imagery. Inner reality becomes as important as outer reality."},
+        ],
+    },
+    13: {
+        "title": "Walking Your Own Path — Trusting the Voice Within",
+        "chapter_title": "The Bird Fights Its Way Out of the Egg",
+        "spark": "Sinclair finally stops waiting for someone else to show him the way and starts following his own compass.",
+        "cliffhanger": "The name 'Eva' has surfaced — and she turns out to be Demian's mother.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Sinclair enters university. But unlike his boarding-school meltdown in Chapter 3, he's not spiraling this time. He knows what he's searching for. Every experience — Demian, Beatrice, Pistorius, Abraxas — has been pointing in the same direction.", "highlight": "a changed Sinclair"},
+            {"speaker": "cosmii", "text": "Here comes one of the novel's most important lines: 'What emerges from within me — that alone is my natural law.' Let that land for a second.", "highlight": "the inner law"},
+            {"speaker": "cosmii", "text": "It means: not what teachers taught me, not what my parents expected, not what society demands — but the voice that rises from the deepest part of me. THAT is my only compass. It's like saying 'Everyone tells me to take the safe job, but something inside me needs to paint.' Following that voice takes enormous courage.", "highlight": None},
+            {"speaker": "cosmii", "text": "Something else interesting happens. Sinclair develops an ability to spot 'marked' people in a crowd — people with a certain look in their eyes, people who've also broken out of their eggs. He recognizes them like members of an invisible tribe.", "highlight": "spotting the marked ones"},
+            {"speaker": "cosmii", "text": "And in his dreams, the mysterious woman finally gets a name: Eva. There's a hint that she's connected to Demian somehow. Who she really is will blow the doors open in the next chapter.", "highlight": "the name Eva"},
+            {"speaker": "cosmii", "text": "Here's the beautiful thing about where Sinclair is now: he no longer depends on any single mentor — not Demian, not Pistorius, not anyone. He walks his own road. But he trusts that if he follows his inner voice honestly, it will lead him back to Demian. Same destination, but this time he's arriving on his own two feet.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What does 'What emerges from within me — that alone is my natural law' mean?", "options": ["Live on pure impulse", "Your inner truth matters more than external expectations — a declaration of self-trust", "Ignore every rule in existence", "Rebel against teachers for the sake of it"], "correct_index": 1, "explanation": "This isn't about recklessness — it's the mature realization that the voice rising from deep inside you is a more authentic guide than anything imposed from outside. It's hard-earned self-trust."},
+            {"question": "Who are the 'marked' people Sinclair can now recognize?", "options": ["Criminals", "People who've awakened inwardly and walk their own path", "Religious leaders", "Wealthy elites"], "correct_index": 1, "explanation": "The 'mark of Cain' in this novel isn't about sin — it's about being different. The marked ones are people who've broken out of society's egg and follow their own inner truth."},
+        ],
+    },
+    14: {
+        "title": "Meeting Frau Eva — When the Dream Walks Into the Room",
+        "chapter_title": "Jacob's Wrestling",
+        "spark": "The face Sinclair has dreamed of for years is suddenly standing in front of him, alive and real.",
+        "cliffhanger": "A vast storm is gathering over this peaceful community — and it will sweep the whole world.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "This is it — the most beautiful, most mystical encounter in the entire novel. Sinclair visits Demian's home and meets his mother: Frau Eva.", "highlight": "Frau Eva"},
+            {"speaker": "cosmii", "text": "He knows her face instantly. It's the face from every dream. The one he's been painting for years. 'The face I've been dreaming about my entire life — it was her.' Imagine meeting someone you've seen a thousand times in your sleep. Sinclair is shaken to his core.", "highlight": "the dream made real"},
+            {"speaker": "cosmii", "text": "Eva is extraordinary. Warm like a mother, magnetic like a lover, wise like a sage — all at once. The first thing she says to Sinclair: 'You've come here to become yourself.' One sentence, and she's read his entire journey.", "highlight": None},
+            {"speaker": "cosmii", "text": "Notice the name. Eva — Eve — the first woman in the Bible. The origin of everything. Hesse chose this name very deliberately. Frau Eva represents the primal feminine, the source from which all life flows.", "highlight": "Eve, the archetype"},
+            {"speaker": "cosmii", "text": "Near her, Sinclair feels something he's never felt before: wholeness. For years he's been torn between the bright world and the dark world. But in Eva's presence, those halves finally click together. He's not split anymore.", "highlight": "feeling whole at last"},
+            {"speaker": "cosmii", "text": "And Sinclair isn't alone in being drawn to her. A small community of 'marked' people gathers around Eva — including Demian. People who've awakened, who see the world differently. For the first time in his life, Sinclair feels like he belongs.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What does Frau Eva represent to Sinclair?", "options": ["Just a romantic interest", "The inner archetype he's been dreaming of — now real, making him feel whole", "Just Demian's mother", "A school teacher figure"], "correct_index": 1, "explanation": "Eva is the living embodiment of the primal image Sinclair has seen in countless dreams. Near her, the split between his bright and dark selves finally heals into wholeness."},
+            {"question": "Why did Hesse name her 'Eva'?", "options": ["It's just a common German name", "It echoes Eve from the Bible — the origin, the primal feminine", "It's a reference to a Greek goddess", "No particular reason"], "correct_index": 1, "explanation": "Eva = Eve = the first woman, the source of all life. Hesse uses the name to signal that this character embodies the deepest, most primal layer of the feminine archetype."},
+        ],
+    },
+    15: {
+        "title": "The Shadow of War — The World Cracks Its Own Egg",
+        "chapter_title": "Jacob's Wrestling",
+        "spark": "The egg metaphor goes global: an entire civilization must break apart before a new one can be born.",
+        "cliffhanger": "War breaks out. Sinclair and Demian both head to the front lines.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "The peace around Eva's home doesn't last. Demian starts talking about something ominous: 'War is coming to Europe.'", "highlight": "the prophecy of war"},
+            {"speaker": "cosmii", "text": "And then he says this: 'This world wants to die. And dying isn't a bad thing.' Wait — doesn't that sound familiar? 'The bird fights its way out of the egg. Whoever would be born must destroy a world.' Same idea, but now it's not about one person. It's about the whole world.", "highlight": "the egg metaphor, world-scale"},
+            {"speaker": "cosmii", "text": "Up to now, it was Sinclair breaking out of his personal egg — his parents' values, his safe little world. But now Hesse zooms out: the entire old order — old values, old institutions, old ways of thinking — needs to shatter so something new can emerge.", "highlight": None},
+            {"speaker": "cosmii", "text": "Here's the real-world context. The novel is set in 1914, right before World War I. And Hesse wrote it in 1919, just after the war ended. Europe was in ruins. An entire way of life had collapsed. This isn't abstract philosophy — Hesse lived through the egg breaking.", "highlight": "World War I"},
+            {"speaker": "cosmii", "text": "The chapter title, 'Jacob's Wrestling,' comes from the Bible. Jacob wrestles an angel all night long. He's injured, but he refuses to let go — and in the end, he receives a blessing. The message: the struggle itself IS the blessing.", "highlight": "Jacob's wrestling explained"},
+            {"speaker": "cosmii", "text": "That's Sinclair's entire journey in miniature. Wrestling with destiny — torn between worlds, finding mentors and losing them, stumbling and getting back up. The wrestling never stops. But the wrestling IS the growth. Win or lose, the fight transforms you.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "When Demian predicts the world's 'destruction,' what does that really mean in the novel?", "options": ["The literal end of the planet", "The old order must collapse so a new world can be born — the egg metaphor at civilizational scale", "A specific country will disappear", "Religion will vanish"], "correct_index": 1, "explanation": "Just as the bird must destroy its egg to be born, an outdated civilization must break apart for something new to emerge. Personal growth and historical transformation follow the same pattern."},
+            {"question": "What does the chapter title 'Jacob's Wrestling' tell us?", "options": ["That a physical fight is important", "That struggling with your fate is itself a form of growth and blessing", "It introduces a character named Jacob", "It foreshadows a duel between Sinclair and Demian"], "correct_index": 1, "explanation": "Jacob wrestled an angel all night and received a blessing for it. Likewise, Sinclair's painful struggle with identity and destiny IS the blessing — the wrestling itself is what transforms him."},
+        ],
+    },
+    16: {
+        "title": "The Field Hospital — 'Listen Inside, and You'll Find Me There'",
+        "chapter_title": "The End Begins",
+        "spark": "In a wartime hospital, Sinclair and Demian meet for the last time — and everything merges into one.",
+        "cliffhanger": "Demian is gone. But the novel's final image will complete the puzzle.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "We're at the end now. War has broken out. Both Sinclair and Demian are sent to the front. Sinclair is wounded and ends up in a field hospital.", "highlight": "war"},
+            {"speaker": "cosmii", "text": "And lying in the bed right next to him — is Demian. Also wounded. After years apart, they're reunited in a hospital tent on a battlefield. It's joyful and heartbreaking at the same time.", "highlight": "the field hospital reunion"},
+            {"speaker": "cosmii", "text": "Demian speaks his final words to Sinclair. Remember these: 'You won't need to call for me anymore. Just listen inside yourself. You'll find me there.'", "highlight": "listen inside yourself"},
+            {"speaker": "cosmii", "text": "Think about what that means. Demian — the brave one, the free one, the one who dared to question everything — was never really a separate person. He was the version of Sinclair that Sinclair was trying to become. The courage, the honesty, the fearlessness — it was inside him all along.", "highlight": "Demian was always within"},
+            {"speaker": "cosmii", "text": "Then Demian kisses Sinclair's forehead. And Sinclair feels it: 'This kiss is the same as Eva's kiss.' Demian, Eva, Beatrice — every figure Sinclair has been searching for suddenly collapses into a single source. They were all reflections of his own complete self.", "highlight": "everything becomes one"},
+            {"speaker": "cosmii", "text": "Morning comes. Demian's bed is empty. He's gone — whether dead or simply vanished, we never learn. But Sinclair isn't grieving. Because he finally understands: Demian isn't out there somewhere. Demian is inside him.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "What does Demian's last message — 'Listen inside yourself and you'll find me there' — really mean?", "options": ["He'll haunt Sinclair as a ghost", "Demian was always a reflection of Sinclair's own inner self", "He'll write letters from somewhere", "He'll return in a different body"], "correct_index": 1, "explanation": "Demian embodied everything Sinclair wanted to become — courage, freedom, authenticity. Those qualities were never external. They lived inside Sinclair all along."},
+            {"question": "Why does Demian's kiss feel the same as Eva's kiss?", "options": ["Pure coincidence", "All the symbolic figures — Demian, Eva, Beatrice — merge into one source: Sinclair's own whole self", "They're family, so it's genetic", "It's a medical phenomenon"], "correct_index": 1, "explanation": "Every guiding figure in Sinclair's life — Demian, Eva, Beatrice — was ultimately a facet of one thing: his complete, integrated self. In this moment, all the fragments fuse into one."},
+        ],
+    },
+    17: {
+        "title": "Demian in the Mirror — Becoming Yourself at Last",
+        "chapter_title": "The End Begins",
+        "spark": "The novel's final sentence — and the completion of a journey from a fractured boy to a whole human being.",
+        "cliffhanger": "",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "This is the very last scene. Sinclair is alone now. He turns inward. And then he looks into a mirror.", "highlight": None},
+            {"speaker": "cosmii", "text": "Here's how the novel ends — the final sentence: 'When I bend down to look deep inside myself, I see a pair of dark eyes gazing back at me. It was Demian's face. And it was my own.'", "highlight": "Demian's face is my face"},
+            {"speaker": "cosmii", "text": "That's the entire novel in one image. Demian was always inside Sinclair. The courage, the honesty, the refusal to be caged, the willingness to embrace both light and shadow — Sinclair searched for these things in another person, but they were his own all along.", "highlight": "self-actualization complete"},
+            {"speaker": "cosmii", "text": "Let's zoom out and trace the whole arc. Sinclair starts in the bright world — safe, pure, innocent. He falls into the dark world — fear, shame, rebellion. And finally, he embraces both. Not good OR evil, but the full, undivided self that contains everything. That's Abraxas. That's wholeness.", "highlight": "the complete journey"},
+            {"speaker": "cosmii", "text": "Hesse published this in 1919, right after World War I gutted Europe. An entire generation was asking: 'The old world is gone — who are we now?' The novel's personal story and the era's collective crisis mirror each other perfectly. That's why Demian has stayed alive for over a century.", "highlight": "a novel that endures"},
+            {"speaker": "cosmii", "text": "So here's the question Hesse leaves with you — and it still hits just as hard today: Are you living the life others designed for you, or the life that's truly yours? Are you staying in the egg, or breaking through? That's what Demian asks. Thanks for reading this with me — it's been a journey.", "highlight": None},
+        ],
+        "quizzes": [
+            {"question": "In the final mirror scene, what does it mean that Sinclair sees Demian's face — and his own?", "options": ["Demian has become a ghost", "Demian was always Sinclair's own inner self — and now they've fully merged", "It's a hallucination from his injuries", "He's discovered he has a twin"], "correct_index": 1, "explanation": "Demian represented everything Sinclair aspired to be — courage, freedom, authenticity. Seeing Demian's face in his own reflection means: 'I've finally become who I was meant to be.' Self-actualization is complete."},
+            {"question": "How would you summarize Sinclair's entire journey in one line?", "options": ["A story about succeeding in the bright world", "Bright world → dark world → embracing both to become a complete self", "A tale of repentance for past sins", "A war hero's story"], "correct_index": 1, "explanation": "Sinclair begins in safety, passes through chaos and darkness, and ultimately integrates both halves into one whole person. Not good versus evil — but a self that holds everything. That's the heart of Demian."},
+        ],
+    },
+}
+
+
 def main():
     sb = get_supabase()
 
@@ -630,16 +963,54 @@ def main():
 
     for idx, lesson in enumerate(LESSONS):
         lesson_id = str(uuid.uuid4())
+        en = TRANSLATIONS_EN.get(idx, {})
+
+        ch = lesson["chapter"]
+        ch_parts = ch.split(" ", 1)
+        chapter_ko = f"{ch_parts[0]} {lesson['chapter_title']}" if len(ch_parts) > 1 else lesson["chapter_title"]
+        chapter_en = ch
+
+        def _shuffle(quiz, rng):
+            opts = list(quiz["options"])
+            answer = opts[quiz["correct_index"]]
+            perm = list(range(len(opts)))
+            rng.shuffle(perm)
+            new_opts = [opts[i] for i in perm]
+            return {**quiz, "options": new_opts, "correct_index": new_opts.index(answer)}
+
+        ko_quizzes = []
+        en_quizzes = []
+        for qi, q in enumerate(lesson["quizzes"]):
+            ko_quizzes.append(_shuffle(q, random.Random(idx * 100 + qi)))
+        for qi, q in enumerate(en.get("quizzes", [])):
+            en_quizzes.append(_shuffle(q, random.Random(idx * 100 + qi)))
+
         content = {
             "title": lesson["title"],
+            "title_ko": lesson["title"],
+            "title_en": en.get("title", ""),
             "chapter": lesson["chapter"],
+            "chapter_ko": chapter_ko,
+            "chapter_en": chapter_en,
             "chapter_title": lesson["chapter_title"],
+            "chapter_title_ko": lesson["chapter_title"],
+            "chapter_title_en": en.get("chapter_title", ""),
             "part": lesson["part"],
             "total_parts": lesson["total_parts"],
             "spark": lesson["spark"],
+            "spark_ko": lesson["spark"],
+            "spark_en": en.get("spark", ""),
             "dialogue": lesson["dialogue"],
+            "dialogue_ko": lesson["dialogue"],
+            "dialogue_en": en.get("dialogue", []),
+            "quizzes": ko_quizzes,
+            "quizzes_ko": ko_quizzes,
+            "quizzes_en": en_quizzes,
             "cliffhanger": lesson["cliffhanger"],
+            "cliffhanger_ko": lesson["cliffhanger"],
+            "cliffhanger_en": en.get("cliffhanger", ""),
         }
+
         sb.table("lessons").insert({
             "id": lesson_id,
             "book_id": BOOK_ID,
@@ -649,7 +1020,7 @@ def main():
             "content_json": json.dumps(content, ensure_ascii=False),
         }).execute()
 
-        for quiz in lesson["quizzes"]:
+        for quiz in ko_quizzes:
             sb.table("quizzes").insert({
                 "id": str(uuid.uuid4()),
                 "lesson_id": lesson_id,

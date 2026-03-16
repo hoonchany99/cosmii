@@ -66,7 +66,7 @@ LESSONS = [
 
     # ── Ch.1 우주의 바닷가 (Part 1/2) ──
     {
-        "title": "코스모스 달력 — 138억 년을 하루에 압축하면",
+        "title": "코스모스 달력 — 138억 년을 1년에 압축하면",
         "chapter": "Ch.1 The Shores of the Cosmic Ocean",
         "chapter_title": "우주의 바닷가",
         "part": 1, "total_parts": 2,
@@ -242,7 +242,7 @@ LESSONS = [
         "dialogue": [
             {"speaker": "cosmii", "text": "기원전 300년경, 이오니아의 과학이 꺼진 뒤 새로운 핫스팟이 나타나. 이집트의 알렉산드리아야. 알렉산더 대왕이 자기 이름을 붙인 도시지.", "highlight": "알렉산드리아"},
             {"speaker": "cosmii", "text": "알렉산더 대왕의 특징이 뭐냐면 — 개방적이야. 다종교, 다문화를 포용하는 오픈 마인드가 있었어. 징기스칸도 그렇고, 제국을 건설한 사람들의 공통점이 이거야.", "highlight": "개방적 제국"},
-            {"speaker": "cosmii", "text": "알렉산더는 알렉산드리아를 '지구의 지식 허브'로 만들고 싶었어. 엄청난 재정적, 행정적 지원을 쏟아붓지. 그래서 세워진 게 역사상 가장 위대한 도서관 — 알렉산드리아 도서관이야.", "highlight": "지식 허브"},
+            {"speaker": "cosmii", "text": "알렉산더가 죽은 뒤, 그의 장군이었던 프톨레마이오스 1세가 이집트를 물려받아. 프톨레마이오스는 이 도시를 '지구의 지식 허브'로 만들겠다는 야심을 품고 엄청난 지원을 쏟아부어. 그래서 세워진 게 역사상 가장 위대한 도서관 — 알렉산드리아 도서관이야.", "highlight": "지식 허브"},
             {"speaker": "cosmii", "text": "이 도서관이 지식을 모은 방법이 기가 막혀. 유럽, 아시아, 아프리카의 중심인 알렉산드리아 항구에 무역선이 들어오잖아? 검문검색할 때 무기가 아니라 '모든 기록물'을 회수해. 책이든, 두루마리든, 지도든!", "highlight": "책을 회수하다"},
             {"speaker": "cosmii", "text": "회수한 기록을 필사해서 사본은 돌려주고, 원본은 도서관에 보관했어. 이렇게 무려 50만 권의 데이터베이스가 쌓였어. 2,300년 전에 인류 최초의 지식 아카이브를 만든 거야.", "highlight": "50만 권"},
             {"speaker": "cosmii", "text": "여기서 에라토스테네스라는 천재가 막대기 두 개만으로 지구의 둘레를 계산해. 실제 값과 오차가 1% 이내야! 2,200년 전에! 실험과 관측의 힘이 바로 이거야.", "highlight": "에라토스테네스"}
@@ -533,6 +533,286 @@ LESSONS = [
                 "explanation": "우리는 별의 먼지로 만들어졌고, 코스모스의 자녀야. 그러므로 인류를 사랑하고 지구를 지켜야 한다 — 이게 칼 세이건이 평생 전한 메시지야."
             }
         ],
+        "cliffhanger": "별의 자녀인 인류 — 하지만 별의 원소가 어떻게 '살아 있는' 존재가 됐을까? 40억 년에 걸친 생명의 진화, DNA라는 우주적 언어의 이야기가 기다리고 있어."
+    },
+
+    # ══════════════════════════════════════════
+    # 8부: 생명의 진화
+    # ══════════════════════════════════════════
+
+    # ── Ch.8 하나의 우주적 푸가 (Part 1/1) ──
+    {
+        "title": "생명의 코스모스 — DNA에서 인간까지",
+        "chapter": "Ch.8 One Voice in the Cosmic Fugue",
+        "chapter_title": "하나의 우주적 푸가",
+        "part": 1, "total_parts": 1,
+        "spark": "40억 년 전, 원시 바다에서 분자 하나가 스스로를 복제했다. 그 하나의 사건이 오늘날 800만 종의 생명으로 이어졌다. 칼 세이건은 이걸 '우주적 푸가'라고 불렀다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "별이 죽으면서 뿌린 원소들이 지구를 만들었잖아. 그런데 그 원소들이 어떻게 '살아 있는 것'이 됐을까? 코스모스 8장 '하나의 우주적 푸가'는 이 질문으로 시작해.", "highlight": None},
+            {"speaker": "cosmii", "text": "약 40억 년 전, 원시 바다에서 기적이 일어나. 유기 분자들이 결합하면서 스스로를 복제할 수 있는 분자가 탄생해. DNA의 조상이야. 이 하나의 분자가 지구 위 모든 생명의 출발점이야.", "highlight": "DNA의 탄생"},
+            {"speaker": "cosmii", "text": "DNA는 네 가지 글자(A, T, G, C)로 쓰인 30억 글자짜리 설명서야. 네 몸의 모든 세포 안에 이 설명서가 들어 있어. 칼 세이건은 이걸 '우주의 언어'라고 불러. 세균부터 고래까지, 지구의 모든 생명이 같은 언어를 쓴다는 거야.", "highlight": "우주의 언어"},
+            {"speaker": "cosmii", "text": "다윈의 자연선택이 여기서 작동해. 환경에 더 잘 맞는 개체가 살아남고, 그 유전자가 다음 세대로 전달돼. 수십억 년 동안 이 과정이 반복되면서 단세포가 물고기가 되고, 물고기가 양서류가 되고, 결국 우리가 된 거야.", "highlight": "자연선택"},
+            {"speaker": "cosmii", "text": "생명의 나무를 그려봐. 뿌리는 40억 년 전 하나의 세포야. 거기서 가지가 갈라지면서 세균, 식물, 곤충, 공룡, 포유류... 800만 종이 넘는 생명이 뻗어나왔어. 그리고 그 나무의 가장 끝에 있는 가느다란 가지 하나 — 그게 우리 인간이야.", "highlight": "생명의 나무"},
+            {"speaker": "cosmii", "text": "칼 세이건은 이 모든 생명의 역사를 '우주적 푸가'라고 불러. 푸가는 하나의 멜로디가 시작되면 다른 악기들이 변주하면서 점점 풍성해지는 음악 형식이야. 40억 년 전 하나의 멜로디(DNA)가 시작되고, 800만 가지 변주가 생겨난 거야. 장엄하지 않아?", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "칼 세이건이 DNA를 '우주의 언어'라고 부른 이유는?",
+                "options": ["DNA가 외계에서 왔기 때문에", "지구의 모든 생명이 같은 DNA 코드 체계를 공유하기 때문에", "DNA가 별빛으로 만들어져서", "DNA가 4가지 외국어를 쓰기 때문에"],
+                "correct_index": 1,
+                "explanation": "지구의 모든 생명체 — 세균부터 인간까지 — 전부 같은 DNA 코드(A, T, G, C)를 사용해. 40억 년 전 하나의 공통 조상에서 시작됐다는 증거야."
+            },
+            {
+                "question": "'우주적 푸가'라는 비유가 의미하는 것은?",
+                "options": ["우주가 음악으로 이루어져 있다는 뜻", "하나의 DNA에서 시작된 생명이 수백만 종으로 변주됐다는 뜻", "외계인이 음악을 연주한다는 뜻", "별들이 진동한다는 뜻"],
+                "correct_index": 1,
+                "explanation": "푸가는 하나의 멜로디가 다양하게 변주되는 음악 형식이야. 40억 년 전 하나의 DNA 멜로디에서 시작해 800만 종의 생명으로 변주된 것이 '우주적 푸가'야."
+            }
+        ],
+        "cliffhanger": "DNA가 만든 생명 중에 '호기심'이라는 특성을 가진 종이 있어. 그 호기심이 결국 우주로 탐사선을 보내게 만들어. 그 이름은 보이저."
+    },
+
+    # ══════════════════════════════════════════
+    # 9부: 보이저의 여행
+    # ══════════════════════════════════════════
+
+    # ── Ch.9 여행자들의 이야기 (Part 1/1) ──
+    {
+        "title": "보이저의 여행 — 목성, 토성, 그 너머",
+        "chapter": "Ch.9 Travellers' Tales",
+        "chapter_title": "여행자들의 이야기",
+        "part": 1, "total_parts": 1,
+        "spark": "1977년, 두 대의 탐사선이 지구를 떠났다. 목성, 토성을 지나 태양계 밖으로 향하면서, 혹시 만날 외계인을 위해 '골든 레코드'를 싣고 갔다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "1977년, 인류는 역사상 가장 야심 찬 탐사 미션을 시작해. 보이저 1호와 2호. 목적지? 목성, 토성, 천왕성, 해왕성 — 그리고 그 너머 미지의 우주야.", "highlight": "보이저 미션"},
+            {"speaker": "cosmii", "text": "보이저가 목성에 도착해서 보내온 사진이 충격이야. 목성의 대적점(Great Red Spot)은 지구 2~3개가 들어갈 크기의 초거대 폭풍이야. 300년 넘게 멈추지 않고 돌고 있어. 그리고 목성의 위성 유로파 — 얼음 표면 아래 바다가 있을 수 있어. 외계 생명의 후보지야.", "highlight": "목성과 유로파"},
+            {"speaker": "cosmii", "text": "토성은 더 숨막혀. 보이저가 보내온 토성의 고리 사진은 인류 역사상 가장 아름다운 우주 사진 중 하나야. 수십억 개의 얼음과 바위 조각이 토성 주위를 돌면서 만든 거야. 그리고 토성의 위성 타이탄 — 짙은 대기를 가진 유일한 위성이야. 원시 지구와 비슷하다고.", "highlight": "토성의 고리와 타이탄"},
+            {"speaker": "cosmii", "text": "보이저에는 특별한 물건이 실려 있어. '골든 레코드'야. 금으로 된 LP판에 지구의 소리를 담았어 — 55개 언어의 인사말, 바흐와 베토벤의 음악, 파도 소리, 새소리, 아기 울음소리. 혹시 외계인이 주우면 '지구라는 행성이 있었다'는 걸 알 수 있도록.", "highlight": "골든 레코드"},
+            {"speaker": "cosmii", "text": "칼 세이건이 골든 레코드 프로젝트를 직접 기획했어. 우주라는 바다에 띄우는 병편지인 셈이지. 그리고 1990년, 보이저 1호가 64억 km 밖에서 뒤를 돌아봐. 거기서 찍은 사진 속 지구 — 먼지보다 작은 '창백한 푸른 점'. 세이건의 말이야: '여기가 우리의 집이다. 이것이 우리다.'", "highlight": "창백한 푸른 점"},
+            {"speaker": "cosmii", "text": "보이저 1호와 2호는 지금 이 순간에도 우주를 날아가고 있어. 이미 태양계를 벗어난, 인류가 만든 가장 먼 물체야. 수만 년 뒤, 어쩌면 수십만 년 뒤에도 골든 레코드를 싣고 성간 우주를 떠돌고 있을 거야. 인류가 사라진 뒤에도.", "highlight": "가장 먼 인공 물체"}
+        ],
+        "quizzes": [
+            {
+                "question": "보이저에 실린 '골든 레코드'에 담긴 것은?",
+                "options": ["인류의 무기 설계도", "55개 언어의 인사말, 음악, 자연의 소리 등 지구의 기록", "외계인에게 보내는 경고 메시지", "태양계의 지도만"],
+                "correct_index": 1,
+                "explanation": "골든 레코드에는 55개 언어의 인사말, 바흐·베토벤의 음악, 파도 소리, 아기 울음 등 지구의 다양한 소리와 이미지가 담겨 있어. 칼 세이건이 직접 기획했지."
+            },
+            {
+                "question": "보이저 1호가 64억 km 밖에서 찍은 '창백한 푸른 점'의 의미는?",
+                "options": ["달이 푸르게 보인다는 뜻", "우주에서 보면 지구는 먼지보다 작은 점이지만 그것이 우리의 전부라는 뜻", "금성이 푸르게 보인다는 뜻", "화성에 물이 있다는 뜻"],
+                "correct_index": 1,
+                "explanation": "64억 km 밖에서 본 지구는 먼지보다 작은 점이야. 칼 세이건은 이걸 보고 '여기가 우리의 집이다'라고 했어. 광활한 우주 속 지구의 소중함을 일깨워주는 사진이야."
+            }
+        ],
+        "cliffhanger": "보이저는 빛의 속도의 0.006%로 날아가고 있어. 가장 가까운 별까지 7만 년이 걸려. 그렇다면 우주여행은 가능하기는 한 걸까? 열쇠는 '빛의 속도'에 있어."
+    },
+
+    # ══════════════════════════════════════════
+    # 10부: 시공간 여행
+    # ══════════════════════════════════════════
+
+    # ── Ch.10 시공간 여행 (Part 1/2) ──
+    {
+        "title": "빛의 속도 — 시간여행은 가능할까",
+        "chapter": "Ch.10 Travels in Space and Time",
+        "chapter_title": "시공간 여행",
+        "part": 1, "total_parts": 2,
+        "spark": "밤하늘의 별빛은 과거에서 온 빛이다. 태양빛은 8분 전, 알파 센타우리는 4년 전, 안드로메다 은하는 250만 년 전에 출발했다. 우리는 항상 과거를 보고 있다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "칼 세이건이 코스모스 10장에서 물어. '시간여행은 가능할까?' SF 영화의 단골 소재잖아. 근데 세이건의 대답은 놀라워 — '우리는 이미 매일 시간여행을 하고 있다.'", "highlight": None},
+            {"speaker": "cosmii", "text": "빛의 속도는 초속 30만 km야. 1초에 지구를 7바퀴 반 돌 수 있는 속도지. 아인슈타인은 이것이 우주의 절대 속도 제한이라고 증명했어. 그 어떤 것도 빛보다 빠를 수 없어.", "highlight": "빛의 속도"},
+            {"speaker": "cosmii", "text": "이게 뭘 의미하냐면 — 우리가 보는 모든 것은 '과거'야. 태양빛이 지구에 도착하는 데 8분 20초 걸려. 지금 보는 태양은 8분 전의 태양이야. 만약 태양이 갑자기 사라져도, 우리는 8분 동안 모른다는 뜻이야.", "highlight": "8분 전의 태양"},
+            {"speaker": "cosmii", "text": "더 먼 곳을 봐. 가장 가까운 별 알파 센타우리의 빛은 4.3년 전에 출발했어. 안드로메다 은하의 빛은 250만 년 전에 출발한 거야. 허블 우주 망원경으로 130억 광년 밖을 보면? 130억 년 전의 우주를 보는 거야!", "highlight": "과거를 보는 망원경"},
+            {"speaker": "cosmii", "text": "아인슈타인의 특수 상대성이론에 따르면, 빛의 속도에 가까이 갈수록 시간이 느려져. 이걸 '시간 지연'이라고 해. 빛의 99% 속도로 날아가는 우주선 안에서는 1년이 지나도, 지구에서는 7년이 지나 있어.", "highlight": "시간 지연"},
+            {"speaker": "cosmii", "text": "여기서 유명한 '쌍둥이 역설'이 나와. 쌍둥이 중 한 명이 빛의 속도에 가까운 우주선을 타고 여행하면, 돌아왔을 때 지구에 남은 쌍둥이보다 젊어. 시간여행은 이론적으로 가능해 — 단, 미래로만. 과거로 돌아가는 건... 아직 모르겠어.", "highlight": "쌍둥이 역설"}
+        ],
+        "quizzes": [
+            {
+                "question": "우리가 보는 태양이 '지금'의 태양이 아닌 이유는?",
+                "options": ["태양이 너무 밝아서", "빛이 태양에서 지구까지 오는 데 약 8분이 걸리기 때문에", "대기가 빛을 왜곡해서", "지구가 회전하기 때문에"],
+                "correct_index": 1,
+                "explanation": "빛의 속도는 초속 30만 km지만 태양까지 거리는 1억 5천만 km야. 빛이 도착하는 데 약 8분 20초 걸려. 우리가 보는 태양은 항상 8분 전의 모습이야."
+            },
+            {
+                "question": "아인슈타인의 '시간 지연' 효과란?",
+                "options": ["시간이 멈추는 현상", "빛의 속도에 가까워질수록 시간이 느리게 흐르는 현상", "과거로 돌아가는 현상", "시계가 고장 나는 현상"],
+                "correct_index": 1,
+                "explanation": "특수 상대성이론에 따르면 속도가 빛에 가까워질수록 시간이 느리게 흘러. 빛의 99%로 날아가면 우주선 안의 1년이 지구의 7년이 되는 거야."
+            }
+        ],
+        "cliffhanger": "빛의 속도로도 가장 가까운 별까지 4년이 걸려. 은하 건너편은 10만 년. 이 어마어마한 거리를 인류는 어떻게 건널 수 있을까? 아니, 건널 수는 있는 걸까?"
+    },
+
+    # ── Ch.10 시공간 여행 (Part 2/2) ──
+    {
+        "title": "별 사이의 거리 — 성간여행의 꿈",
+        "chapter": "Ch.10 Travels in Space and Time",
+        "chapter_title": "시공간 여행",
+        "part": 2, "total_parts": 2,
+        "spark": "가장 가까운 별까지 빛의 속도로 4년, 현재 기술로는 약 7만 년이 걸린다. 이 외로운 거리가 우주가 침묵하는 이유일 수도 있다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "빛의 속도가 우주의 속도 제한이라는 걸 알았잖아. 그럼 실제로 별까지 가려면 얼마나 걸릴까? 숫자를 보면 입이 딱 벌어져.", "highlight": None},
+            {"speaker": "cosmii", "text": "가장 가까운 별 알파 센타우리까지 빛의 속도로 4.3년. 보이저 1호의 현재 속도로는 약 7만 년이야. 우리 은하를 가로지르려면 빛의 속도로도 10만 년이 걸려. 이 거리를 실감할 수 있어?", "highlight": "별까지의 거리"},
+            {"speaker": "cosmii", "text": "그래서 과학자들은 성간여행의 방법을 고민해왔어. 첫 번째 아이디어는 '세대 우주선'이야. 거대한 우주선 안에서 여러 세대가 태어나고 죽으면서 수천 년간 항해하는 거지. 네 증손자의 증손자가 목적지에 도착하는 셈이야.", "highlight": "세대 우주선"},
+            {"speaker": "cosmii", "text": "두 번째는 웜홀이야. 아인슈타인의 일반 상대성이론에 따르면 시공간을 '접을' 수 있어. 종이의 양쪽 끝에 구멍을 뚫어 직접 연결하는 것처럼, 수만 광년 거리를 순간 이동할 수도 있다는 거야. 다만 아직 이론상으로만 가능해.", "highlight": "웜홀"},
+            {"speaker": "cosmii", "text": "워프 드라이브라는 아이디어도 있어. 우주선이 빛보다 빨리 가는 게 아니라, 우주선 앞의 공간을 수축시키고 뒤의 공간을 팽창시켜서 '공간 자체를 움직이는' 방법이야. 빛의 속도 제한을 우회하는 셈이지. 물론 아직 완전히 이론적이야.", "highlight": "워프 드라이브"},
+            {"speaker": "cosmii", "text": "칼 세이건은 이 외로운 거리를 두고 이렇게 이야기해. 이 광활한 거리가 바로 우주가 침묵하는 이유일 수 있다고. 문명이 있어도 서로 만나기엔 너무 멀어. 페르미 역설의 가장 단순한 답이 '거리'인 거야. 우주는 우리가 생각하는 것보다 훨씬 외로운 곳이야.", "highlight": "우주의 외로움"}
+        ],
+        "quizzes": [
+            {
+                "question": "현재 기술(보이저 속도)로 가장 가까운 별까지 걸리는 시간은?",
+                "options": ["약 100년", "약 1,000년", "약 7만 년", "약 4년"],
+                "correct_index": 2,
+                "explanation": "보이저 1호의 속도로 알파 센타우리까지 약 7만 년이 걸려. 빛의 속도로도 4.3년이야. 성간 거리는 상상을 초월하게 멀어."
+            },
+            {
+                "question": "칼 세이건이 말한 '우주가 침묵하는 이유'로 가장 유력한 것은?",
+                "options": ["외계인이 존재하지 않아서", "별 사이의 거리가 너무 멀어서 문명이 있어도 만나기 어렵기 때문에", "외계인이 인간을 싫어해서", "우주가 너무 시끄러워서"],
+                "correct_index": 1,
+                "explanation": "칼 세이건은 문명이 존재해도 성간 거리가 너무 멀어 서로 만나거나 통신하기 극히 어렵다고 봤어. 페르미 역설의 가장 단순한 답이 바로 '거리'야."
+            }
+        ],
+        "cliffhanger": "별 사이의 거리가 이렇게나 멀다면, 이 우주는 어떻게 시작된 걸까? 138억 년 전, 시간도 공간도 없던 순간 — 모든 것이 시작된 빅뱅 이야기야."
+    },
+
+    # ══════════════════════════════════════════
+    # 11부: 영원의 가장자리
+    # ══════════════════════════════════════════
+
+    # ── Ch.11 영원의 가장자리 (Part 1/2) ──
+    {
+        "title": "빅뱅 — 모든 것의 시작",
+        "chapter": "Ch.11 The Edge of Forever",
+        "chapter_title": "영원의 가장자리",
+        "part": 1, "total_parts": 2,
+        "spark": "138억 년 전, 시간도 공간도 물질도 없었다. 그리고 '아무것도 없음'에서 '모든 것'이 태어났다. 증거? 지금 이 순간에도 빅뱅의 잔열이 우주를 가득 채우고 있다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "코스모스 11장 '영원의 가장자리'에서 칼 세이건이 가장 근본적인 질문을 던져 — 우주는 어떻게 시작됐을까? 시작이 있기는 한 걸까?", "highlight": None},
+            {"speaker": "cosmii", "text": "1929년, 천문학자 에드윈 허블이 놀라운 사실을 발견해. 모든 은하가 우리로부터 멀어지고 있다는 거야. 그것도 멀수록 더 빠르게! 우주가 팽창하고 있다는 뜻이야.", "highlight": "우주의 팽창"},
+            {"speaker": "cosmii", "text": "시간을 거꾸로 돌려봐. 모든 은하가 멀어지고 있다면, 과거에는 더 가까웠겠지. 계속 거꾸로 돌리면? 138억 년 전, 모든 물질과 에너지가 한 점에 모여 있었어. 이 초고밀도, 초고온 상태에서 대폭발이 일어난 거야 — 빅뱅.", "highlight": "빅뱅"},
+            {"speaker": "cosmii", "text": "증거가 있냐고? 있어. 1964년, 벨 연구소의 두 과학자가 안테나의 잡음을 없애려다 이상한 신호를 발견해. 어느 방향을 향해도 똑같이 들리는 전파. 이게 뭐냐면 — 빅뱅의 잔열이야! '우주 마이크로파 배경복사'라고 해. 138억 년 전 대폭발의 여운이 아직도 우주를 가득 채우고 있는 거야.", "highlight": "우주 배경복사"},
+            {"speaker": "cosmii", "text": "빅뱅 이전에는 뭐가 있었을까? 칼 세이건은 이 질문을 힌두교의 우주관과 연결해. 힌두교에서는 우주가 탄생과 소멸을 무한히 반복한다고 봐. '브라흐마의 하루'가 86억 4천만 년이고, 이 주기가 영원히 반복된다는 거야. 과학과 신화가 만나는 지점이야.", "highlight": "힌두교의 우주론"},
+            {"speaker": "cosmii", "text": "현대 과학은 빅뱅 '이전'에 무엇이 있었는지 아직 모르겠어. 시간 자체가 빅뱅과 함께 시작됐을 수도 있어. '이전'이라는 개념 자체가 의미 없을 수도 있지. 칼 세이건은 이 불확실성을 두려워하지 말라고 해. 모르는 것을 인정하는 게 과학의 출발점이니까.", "highlight": "모르는 것의 용기"}
+        ],
+        "quizzes": [
+            {
+                "question": "우주가 팽창하고 있다는 증거를 처음 발견한 사람은?",
+                "options": ["아인슈타인", "칼 세이건", "에드윈 허블", "갈릴레오"],
+                "correct_index": 2,
+                "explanation": "1929년 에드윈 허블이 모든 은하가 우리로부터 멀어지고 있다는 것을 관측으로 발견했어. 이것이 우주 팽창의 첫 번째 증거야."
+            },
+            {
+                "question": "'우주 마이크로파 배경복사'란 무엇인가?",
+                "options": ["별들이 내는 빛", "138억 년 전 빅뱅의 잔열이 우주에 남아 있는 전파", "블랙홀이 내는 에너지", "태양에서 나오는 전파"],
+                "correct_index": 1,
+                "explanation": "우주 마이크로파 배경복사는 빅뱅의 잔열이야. 138억 년 전 대폭발의 여운이 아직도 전파 형태로 우주 전체에 균일하게 퍼져 있어."
+            }
+        ],
+        "cliffhanger": "빅뱅으로 시작된 우주 — 그렇다면 끝은? 우주는 영원히 팽창할까, 다시 수축할까, 아니면 갈기갈기 찢어질까? 우주의 운명 이야기야."
+    },
+
+    # ── Ch.11 영원의 가장자리 (Part 2/2) ──
+    {
+        "title": "우주의 운명 — 팽창, 수축, 아니면 영원",
+        "chapter": "Ch.11 The Edge of Forever",
+        "chapter_title": "영원의 가장자리",
+        "part": 2, "total_parts": 2,
+        "spark": "우주의 결말은 세 가지 시나리오가 있다 — 영원히 얼어붙는 '빅 프리즈', 다시 한 점으로 수축하는 '빅 크런치', 그리고 모든 것이 찢어지는 '빅 립'.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "빅뱅으로 시작된 우주에 끝이 있을까? 칼 세이건은 코스모스 11장 후반부에서 우주의 운명을 이야기해. 결말은 세 가지 시나리오가 있어.", "highlight": None},
+            {"speaker": "cosmii", "text": "첫 번째, '빅 프리즈(Big Freeze)'. 우주가 영원히 팽창하면서 점점 차가워지는 거야. 별들이 하나둘 꺼지고, 은하는 서로 멀어지고, 결국 모든 것이 얼어붙어. 우주의 온도가 절대 0도에 수렴하는 차갑고 어두운 결말이야.", "highlight": "빅 프리즈"},
+            {"speaker": "cosmii", "text": "두 번째, '빅 크런치(Big Crunch)'. 우주의 팽창이 느려지다가 중력에 의해 다시 수축하기 시작해. 모든 은하가 다시 한 점으로 모여서 역빅뱅이 일어나는 거야. 그리고 어쩌면 다시 빅뱅이 일어날 수도 있지 — 힌두교의 순환 우주론처럼.", "highlight": "빅 크런치"},
+            {"speaker": "cosmii", "text": "세 번째, '빅 립(Big Rip)'. 우주의 팽창 속도가 점점 빨라져서, 결국 은하도, 별도, 행성도, 원자마저도 갈기갈기 찢어지는 시나리오야. 가장 무서운 결말이지.", "highlight": "빅 립"},
+            {"speaker": "cosmii", "text": "어떤 시나리오가 맞을까? 열쇠는 '암흑 에너지'야. 1998년, 과학자들이 놀라운 발견을 해. 우주의 팽창이 느려지는 게 아니라 가속되고 있다는 거야! 이 가속을 일으키는 미지의 힘을 '암흑 에너지'라고 불러. 우주의 68%를 차지하는데, 정체를 아직 모르겠어.", "highlight": "암흑 에너지"},
+            {"speaker": "cosmii", "text": "현재 증거로는 '빅 프리즈'가 가장 유력해. 하지만 칼 세이건은 이렇게 이야기해 — 우리가 관측할 수 있는 우주는 전체의 극히 일부일 뿐이야. 관측 가능한 우주 너머에 뭐가 있는지, 우주의 진짜 운명이 뭔지 — 아직 인류는 첫 장을 읽고 있을 뿐이야.", "highlight": "우주 시간 속의 우리"}
+        ],
+        "quizzes": [
+            {
+                "question": "우주의 세 가지 결말 시나리오가 아닌 것은?",
+                "options": ["빅 프리즈 — 영원히 팽창하며 얼어붙음", "빅 크런치 — 다시 한 점으로 수축", "빅 바운스 — 우주가 튀어 오름", "빅 립 — 모든 것이 찢어짐"],
+                "correct_index": 2,
+                "explanation": "칼 세이건이 소개하는 세 가지 시나리오는 빅 프리즈, 빅 크런치, 빅 립이야. '빅 바운스'는 빅 크런치의 확장 가설이지만 이 분류에는 포함되지 않아."
+            },
+            {
+                "question": "우주의 팽창이 '가속'되고 있다는 발견의 의미는?",
+                "options": ["우주가 곧 수축한다", "정체를 알 수 없는 '암흑 에너지'가 우주를 밀어내고 있다", "중력이 사라지고 있다", "별들이 더 빠르게 태어나고 있다"],
+                "correct_index": 1,
+                "explanation": "1998년 발견된 우주의 가속 팽창은 '암흑 에너지'라는 미지의 힘이 원인이야. 우주의 68%를 차지하지만 정체는 아직 밝혀지지 않았어."
+            }
+        ],
+        "cliffhanger": "우주의 운명은 아직 모르지만, 인류는 이미 놀라운 방법으로 지식을 보존해왔어. 유전자, 뇌, 그리고 도서관 — 세 가지 '기억'의 진화 이야기야."
+    },
+
+    # ══════════════════════════════════════════
+    # 12부: 기억의 지속
+    # ══════════════════════════════════════════
+
+    # ── Ch.12 기억의 지속 (Part 1/1) ──
+    {
+        "title": "기억의 지속 — 유전자, 뇌, 도서관",
+        "chapter": "Ch.12 The Persistence of Memory",
+        "chapter_title": "기억의 지속",
+        "part": 1, "total_parts": 1,
+        "spark": "유전자는 30억 년 동안 정보를 저장했고, 뇌는 수백만 년 동안 경험을 기억했고, 책은 5,000년 동안 지식을 보존했다. 인류의 다음 기억 장치는 무엇일까?",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "코스모스 12장 '기억의 지속'에서 칼 세이건은 완전히 새로운 질문을 던져 — 정보는 어떻게 살아남을까? 생명이 정보를 저장하는 방법의 진화 이야기야.", "highlight": None},
+            {"speaker": "cosmii", "text": "첫 번째 기억은 '유전적 기억'이야. DNA에 저장된 정보야. 30억 년 동안 생명은 DNA를 통해 '어떻게 살아남을 것인가'를 다음 세대에 전달해왔어. 네가 뜨거운 것에 반사적으로 손을 빼는 것도 DNA에 기록된 기억이야.", "highlight": "유전적 기억"},
+            {"speaker": "cosmii", "text": "두 번째는 '뇌의 기억'이야. 뇌가 발달하면서 생명체는 개인의 경험을 저장할 수 있게 됐어. DNA는 수백만 년에 걸쳐 천천히 바뀌지만, 뇌는 한 순간의 경험도 바로 기억해. 엄청난 속도 업그레이드지.", "highlight": "뇌의 기억"},
+            {"speaker": "cosmii", "text": "세 번째가 혁명이야 — '외부 기억(extrasomatic memory)'. 몸 밖에 정보를 저장하는 거야. 동굴 벽화에서 시작해, 점토판, 파피루스, 책, 그리고 도서관으로 진화했어. 한 사람이 죽어도 그 지식이 사라지지 않게 된 거야!", "highlight": "외부 기억"},
+            {"speaker": "cosmii", "text": "칼 세이건은 도서관을 '인류의 집단 뇌'라고 불러. 알렉산드리아 도서관의 50만 권, 지금의 국립도서관들, 그리고 인터넷까지 — 이건 인류가 개인의 뇌 한계를 넘어서 지식을 축적하는 시스템이야. 한 사람의 생각이 수천 년을 건너뛸 수 있는 마법이야.", "highlight": "인류의 집단 뇌"},
+            {"speaker": "cosmii", "text": "그리고 지금 우리는 새로운 진화의 한복판에 있어. 인터넷, 클라우드, AI — 인류의 모든 지식이 실시간으로 연결되고 있어. 칼 세이건이 1980년에 상상한 것보다 훨씬 빠르게 '외부 기억'이 폭발하고 있는 거야. 다음 단계는 뭘까?", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "칼 세이건이 말한 세 가지 기억의 종류는?",
+                "options": ["단기기억, 장기기억, 초장기기억", "유전적 기억(DNA), 뇌의 기억, 외부 기억(책·컴퓨터)", "과거기억, 현재기억, 미래기억", "시각기억, 청각기억, 촉각기억"],
+                "correct_index": 1,
+                "explanation": "칼 세이건은 정보 저장의 진화를 세 단계로 설명해. ①DNA에 기록된 유전적 기억, ②뇌에 저장되는 개인적 기억, ③책·컴퓨터 등 몸 밖의 외부 기억이야."
+            },
+            {
+                "question": "칼 세이건이 도서관을 '인류의 집단 뇌'라고 부른 이유는?",
+                "options": ["도서관 건물이 뇌처럼 생겨서", "한 사람이 죽어도 지식이 사라지지 않고 축적되는 시스템이기 때문에", "도서관에 뇌 연구 책이 많아서", "사서가 모든 것을 외우고 있어서"],
+                "correct_index": 1,
+                "explanation": "도서관은 개인의 뇌 한계를 넘어 지식을 축적하는 시스템이야. 한 사람이 사라져도 그 지식은 남아서 다음 세대가 이어받을 수 있지. 그래서 '인류의 집단 뇌'야."
+            }
+        ],
+        "cliffhanger": "유전자, 뇌, 도서관 — 정보를 지키려는 인류의 노력. 하지만 이 모든 것이 한순간에 사라질 수도 있어. 칼 세이건이 코스모스의 마지막에 남긴 간절한 메시지가 있어."
+    },
+
+    # ══════════════════════════════════════════
+    # 13부: 칼 세이건의 마지막 메시지
+    # ══════════════════════════════════════════
+
+    # ── Ch.13 누가 지구를 대변할 것인가 (Part 2/2) ──
+    {
+        "title": "정보는 살아남아야 한다 — 칼 세이건의 마지막 메시지",
+        "chapter": "Ch.13 Who Speaks for Earth?",
+        "chapter_title": "누가 지구를 대변할 것인가",
+        "part": 2, "total_parts": 2,
+        "spark": "'우리는 코스모스가 스스로를 알아가는 방법이다(We are a way for the cosmos to know itself).' 칼 세이건이 인류에게 남긴 마지막 문장.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "코스모스의 마지막 장 '누가 지구를 대변할 것인가' — 칼 세이건은 여기서 이 책 전체를 하나로 묶어. 왜 이 책을 썼는지, 무엇을 전하고 싶었는지.", "highlight": None},
+            {"speaker": "cosmii", "text": "세이건은 이렇게 시작해 — 과학은 어둠 속의 촛불이다. 미신, 편견, 무지의 어둠 속에서 인류를 비추는 유일한 빛이라고. 알렉산드리아 도서관이 불타고 1,000년 암흑기가 온 것처럼, 과학을 무시하면 문명은 퇴보한다고.", "highlight": "어둠 속의 촛불"},
+            {"speaker": "cosmii", "text": "문명은 얼마나 취약한가. 핵무기 하나면 수십억 년 동안 진화해온 생명이 끝날 수 있어. 기후변화를 무시하면 금성처럼 될 수 있어. 세이건은 이 위기를 1980년에 이미 외쳤어.", "highlight": "문명의 취약성"},
+            {"speaker": "cosmii", "text": "하지만 세이건은 절망하지 않아. 오히려 희망을 이야기해. 인류는 이오니아에서 과학을 발명하고, 알렉산드리아에서 지식을 모으고, 보이저를 우주로 보내고, 빅뱅의 잔열을 찾아냈어. 이 모든 게 작은 행성 위의 작은 종이 해낸 거야.", "highlight": "세이건의 희망"},
+            {"speaker": "cosmii", "text": "그리고 코스모스에서 가장 유명한 문장이 나와 — 'We are a way for the cosmos to know itself(우리는 코스모스가 스스로를 알아가는 방법이다).' 138억 년 동안 무의식적으로 존재하던 우주가, 인류라는 존재를 통해 비로소 자기 자신을 이해하기 시작한 거야.", "highlight": "코스모스가 스스로를 알다"},
+            {"speaker": "cosmii", "text": "이게 칼 세이건의 마지막 메시지야. 우리는 별의 먼지고, 코스모스의 자녀고, 우주가 자신을 알아가는 눈이야. 이 눈을 닫지 말자. 과학을 지키자. 지구를 사랑하자. 그리고 계속 질문하자 — 우리는 어디서 왔고, 어디로 가는가.", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "'We are a way for the cosmos to know itself'의 의미는?",
+                "options": ["인간이 우주를 지배한다는 뜻", "우주가 인간을 통해 비로소 자기 자신을 이해하기 시작했다는 뜻", "우주가 인간을 관찰하고 있다는 뜻", "인간이 우주의 중심이라는 뜻"],
+                "correct_index": 1,
+                "explanation": "138억 년간 무의식적으로 존재하던 우주가 인류라는 의식 있는 존재를 통해 자기 자신을 이해하기 시작했다는 거야. 인간의 과학과 호기심이 우주의 자기 인식 도구라는 뜻이야."
+            },
+            {
+                "question": "칼 세이건이 '과학은 어둠 속의 촛불'이라고 한 이유는?",
+                "options": ["과학 실험에 불이 필요해서", "미신과 무지의 어둠 속에서 인류를 비추는 유일한 빛이기 때문에", "과학자들이 밤에 일해서", "촛불이 과학적으로 중요해서"],
+                "correct_index": 1,
+                "explanation": "세이건은 과학이 미신, 편견, 무지의 어둠으로부터 인류를 지키는 빛이라고 봤어. 알렉산드리아 도서관의 파괴처럼, 과학을 잃으면 문명이 퇴보한다는 경고야."
+            }
+        ],
         "cliffhanger": ""
     },
 ]
@@ -544,7 +824,7 @@ LESSONS = [
 
 TRANSLATIONS_EN = {
     0: {
-        "title": "The Cosmic Calendar — 13.8 Billion Years in a Single Day",
+        "title": "The Cosmic Calendar — 13.8 Billion Years in a Single Year",
         "chapter_title": "The Shores of the Cosmic Ocean",
         "spark": "Compress the 13.8-billion-year history of the universe into one calendar year: all of human history begins at 11:59:59 PM on December 31st.",
         "cliffhanger": "If we're just specks of dust in this vast cosmos — why have so many nations drawn stars on their flags? Next: the story of 'star stuff.'",
@@ -577,8 +857,8 @@ TRANSLATIONS_EN = {
         "spark": "The US flag has 50 stars, China has 5, and Brazil has actual constellations on its flag. Why are humans so obsessed with stars?",
         "cliffhanger": "The children of stars first began studying the night sky scientifically about 2,500 years ago, on jewel-like islands in the Aegean Sea.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "Look at the world's flags. The US has 50 stars, Turkey and Israel each have 1, China has 5, and Brazil has actual constellations. South Korea's Taegeuk? It encodes the very principles of the cosmos.", "highlight": "Stars on flags"},
-            {"speaker": "cosmii", "text": "Humans have gazed at stars since prehistoric times. Korean dolmens have constellations carved into them. For tens of thousands of years, humanity has longed for the night sky.", "highlight": "Dolmen constellations"},
+            {"speaker": "cosmii", "text": "Look at the world's flags. The US has 50 stars, Turkey and Israel each have 1, China has 5, and Brazil has actual constellations drawn on it. Almost every civilization has put stars on its symbols. Why?", "highlight": "Stars on flags"},
+            {"speaker": "cosmii", "text": "Humans have gazed at stars since prehistoric times. Ancient cave paintings, Stonehenge, Egyptian pyramids aligned to Orion's Belt — for tens of thousands of years, we've been obsessed with the night sky.", "highlight": "Ancient stargazers"},
             {"speaker": "cosmii", "text": "But why? Carl Sagan's answer gives you goosebumps: 'Because we CAME from the stars.' This isn't poetic license. It's scientific fact.", "highlight": None},
             {"speaker": "cosmii", "text": "The carbon, nitrogen, oxygen, and iron in our bodies — ALL of it was forged inside stars through nuclear fusion. When stars die in supernova explosions, these elements scatter into space. They gathered to form Earth, life, and you and me.", "highlight": "Stellar elements"},
             {"speaker": "cosmii", "text": "Here's Sagan's legendary quote: 'We are made of star stuff.' The iron in your body was once inside the core of a star that died billions of years ago. The iron in your blood came from a star's heart.", "highlight": "We are star stuff"},
@@ -592,10 +872,10 @@ TRANSLATIONS_EN = {
                 "explanation": "Carbon, nitrogen, oxygen, iron — the elements in our bodies were forged inside stars. When stars explode, these scatter into space and eventually form planets and life."
             },
             {
-                "question": "What was found on Korean dolmens?",
-                "options": ["Ancient writing", "Star constellation carvings", "Animal drawings", "Maps"],
+                "question": "What evidence shows that ancient humans were already studying the night sky?",
+                "options": ["Ancient writing about astrology", "Prehistoric structures and carvings aligned to stars and constellations", "Animal drawings in caves", "Old maps of the world"],
                 "correct_index": 1,
-                "explanation": "Korean dolmens have constellation carvings, proving that humanity has been observing and recording the night sky since prehistoric times."
+                "explanation": "From cave paintings to Stonehenge to pyramid alignments, ancient civilizations left clear evidence that they were carefully observing and recording the stars thousands of years ago."
             }
         ],
     },
@@ -633,7 +913,7 @@ TRANSLATIONS_EN = {
         "spark": "Thales calculated a pyramid's height using nothing but the Sun and two sticks. Pythagoras coined the word 'Cosmos' — not Carl Sagan.",
         "cliffhanger": "This amazing scientific tradition suddenly vanished. The cause was surprisingly social. People who viewed experiments as 'beneath them' killed science.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "Ionia produces the first scientist-philosopher. Thales. What did he say? 'The origin of everything is water.' You learned this in ethics class, right? But the answer doesn't matter. The QUESTION was the revolution.", "highlight": "Thales"},
+            {"speaker": "cosmii", "text": "Ionia produces the first scientist-philosopher. Thales. What did he say? 'The origin of everything is water.' You may have heard this in philosophy class. But the answer doesn't matter. The QUESTION was the revolution.", "highlight": "Thales"},
             {"speaker": "cosmii", "text": "'What is the world made of?' — this question rejects 'God made it' and declares the intent to find material causes. Thales calculated pyramid heights using just sunlight and shadow. We still use the same principle to measure mountains on other planets.", "highlight": "Measuring pyramids with shadows"},
             {"speaker": "cosmii", "text": "Then another giant appears. Pythagoras. Mathematician, scientist, philosopher. He was the first to argue that Earth is spherical.", "highlight": "Pythagoras"},
             {"speaker": "cosmii", "text": "And Pythagoras coined a word: 'Cosmos.' The universe moves in order (cosmos), not chaos. That's where this book's title comes from. Not Carl Sagan — Pythagoras used the word first!", "highlight": "Origin of 'Cosmos'"},
@@ -691,7 +971,7 @@ TRANSLATIONS_EN = {
         "dialogue": [
             {"speaker": "cosmii", "text": "Around 300 BC, after Ionian science faded, a new hotspot emerged: Alexandria, Egypt. The city Alexander the Great named after himself.", "highlight": "Alexandria"},
             {"speaker": "cosmii", "text": "What set Alexander apart? He was open-minded. He embraced multiple religions and cultures. Genghis Khan was similar — empire builders share this trait of openness.", "highlight": "Open-minded empire"},
-            {"speaker": "cosmii", "text": "Alexander wanted Alexandria to be Earth's 'knowledge hub.' He poured in massive funding and support. The result: the greatest library in history — the Library of Alexandria.", "highlight": "Knowledge hub"},
+            {"speaker": "cosmii", "text": "After Alexander died, his general Ptolemy I inherited Egypt. Ptolemy had a grand ambition: turn Alexandria into Earth's 'knowledge hub.' He poured in massive funding and support. The result: the greatest library in history — the Library of Alexandria.", "highlight": "Knowledge hub"},
             {"speaker": "cosmii", "text": "The library's collection method was genius. Alexandria sat at the crossroads of Europe, Asia, and Africa. When trade ships entered the harbor, inspectors confiscated ALL written materials — books, scrolls, maps, everything!", "highlight": "Confiscating books"},
             {"speaker": "cosmii", "text": "They'd copy the confiscated texts, return the copies, and keep the originals. This built a database of 500,000 scrolls. 2,300 years ago, they created humanity's first knowledge archive.", "highlight": "500,000 scrolls"},
             {"speaker": "cosmii", "text": "Here, a genius named Eratosthenes calculated Earth's circumference using just two sticks. His answer was within 1% of the actual value! 2,200 years ago! That's the power of observation and experiment.", "highlight": "Eratosthenes"}
@@ -911,7 +1191,7 @@ TRANSLATIONS_EN = {
         "title": "Who Speaks for Earth? — Carl Sagan's Final Message",
         "chapter_title": "Carl Sagan's Legacy",
         "spark": "'We must love humanity as a species, and be loyal to our planet. If not us, who can speak for Earth?'",
-        "cliffhanger": "",
+        "cliffhanger": "Children of the stars — but how did stellar elements become 'living' things? The 4-billion-year story of life's evolution, and the cosmic language called DNA, awaits.",
         "dialogue": [
             {"speaker": "cosmii", "text": "The final chapter of Cosmos is titled: 'Who Speaks for Earth?' This is THE question running through the entire book.", "highlight": "The final question"},
             {"speaker": "cosmii", "text": "Sagan writes: 'We must love humanity as a species, and be loyal to our planet. If not us, who can speak for Earth?'", "highlight": "Love for humanity"},
@@ -932,6 +1212,230 @@ TRANSLATIONS_EN = {
                 "options": ["The universe is scary and dangerous", "Science is only for a few geniuses", "We are children of the cosmos, and we must love and protect humanity and Earth", "We need to find aliens quickly"],
                 "correct_index": 2,
                 "explanation": "We're made of star stuff, children of the cosmos. Therefore we must love humanity and protect Earth — that's Sagan's lifelong message."
+            }
+        ],
+    },
+    14: {
+        "title": "The Cosmos of Life — From DNA to Humans",
+        "chapter_title": "One Voice in the Cosmic Fugue",
+        "spark": "4 billion years ago, a single molecule in the primordial ocean copied itself. That one event led to the 8 million species alive today. Sagan called it a 'cosmic fugue.'",
+        "cliffhanger": "Among the creatures DNA created, one species developed a trait called 'curiosity.' That curiosity eventually launched probes into space. Their name: Voyager.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Stars die and scatter elements that formed Earth. But how did those elements become 'alive'? Chapter 8 of Cosmos, 'One Voice in the Cosmic Fugue,' opens with this question.", "highlight": None},
+            {"speaker": "cosmii", "text": "About 4 billion years ago, a miracle happened in the primordial ocean. Organic molecules combined to form a molecule that could copy itself. The ancestor of DNA. This single molecule was the starting point for ALL life on Earth.", "highlight": "Birth of DNA"},
+            {"speaker": "cosmii", "text": "DNA is a 3-billion-letter instruction manual written in just four letters: A, T, G, and C. Every cell in your body contains this manual. Sagan calls it 'the cosmic language' — from bacteria to blue whales, all life on Earth uses the same code.", "highlight": "The cosmic language"},
+            {"speaker": "cosmii", "text": "Darwin's natural selection kicks in here. Organisms better suited to their environment survive and pass on their genes. Over billions of years, this process repeated: single cells became fish, fish became amphibians, and eventually — us.", "highlight": "Natural selection"},
+            {"speaker": "cosmii", "text": "Picture the tree of life. The root is a single cell from 4 billion years ago. Branches split into bacteria, plants, insects, dinosaurs, mammals... over 8 million species radiating outward. And at the very tip of one thin, recent branch — that's us. Humans.", "highlight": "Tree of life"},
+            {"speaker": "cosmii", "text": "Sagan calls this entire history of life a 'cosmic fugue.' In music, a fugue starts with one melody, then other instruments join with variations, creating ever-richer layers. One DNA melody began 4 billion years ago and spawned 8 million variations. Isn't that magnificent?", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "Why did Carl Sagan call DNA 'the cosmic language'?",
+                "options": ["Because DNA came from outer space", "Because all life on Earth shares the same DNA code system", "Because DNA is made of starlight", "Because DNA uses 4 foreign languages"],
+                "correct_index": 1,
+                "explanation": "Every living thing on Earth — from bacteria to humans — uses the same DNA code (A, T, G, C). This is evidence that all life descended from one common ancestor 4 billion years ago."
+            },
+            {
+                "question": "What does the 'cosmic fugue' metaphor mean?",
+                "options": ["The universe is made of music", "Life that began from one DNA evolved into millions of species, like musical variations", "Aliens play music", "Stars vibrate"],
+                "correct_index": 1,
+                "explanation": "A fugue starts with one melody that branches into diverse variations. Similarly, one DNA melody from 4 billion years ago branched into over 8 million species of life — that's the 'cosmic fugue.'"
+            }
+        ],
+    },
+    15: {
+        "title": "Voyager's Journey — Jupiter, Saturn, and Beyond",
+        "chapter_title": "Travellers' Tales",
+        "spark": "In 1977, two probes left Earth. Heading past Jupiter and Saturn into the unknown, they carried a 'Golden Record' — just in case they met aliens.",
+        "cliffhanger": "Voyager is traveling at 0.006% the speed of light. It would take 70,000 years to reach the nearest star. So is space travel even possible? The key lies in the 'speed of light.'",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "In 1977, humanity launched its most ambitious exploration mission ever. Voyager 1 and 2. Destination? Jupiter, Saturn, Uranus, Neptune — and the unknown cosmos beyond.", "highlight": "Voyager mission"},
+            {"speaker": "cosmii", "text": "The photos Voyager sent back from Jupiter were stunning. Jupiter's Great Red Spot is a mega-storm 2-3 times the size of Earth that's been raging for over 300 years. And Jupiter's moon Europa — there might be an ocean beneath its icy surface. A candidate for alien life.", "highlight": "Jupiter and Europa"},
+            {"speaker": "cosmii", "text": "Saturn was even more breathtaking. Voyager's images of Saturn's rings rank among the most beautiful space photos in history. Billions of ice and rock fragments orbiting Saturn created them. And Saturn's moon Titan — the only moon with a thick atmosphere. Scientists say it resembles early Earth.", "highlight": "Saturn's rings and Titan"},
+            {"speaker": "cosmii", "text": "Voyager carried something special: the 'Golden Record.' A gold-plated LP containing Earth's sounds — greetings in 55 languages, music by Bach and Beethoven, ocean waves, birdsong, a baby's cry. In case aliens find it, they'd know: 'A planet called Earth existed.'", "highlight": "Golden Record"},
+            {"speaker": "cosmii", "text": "Carl Sagan personally designed the Golden Record project. It's a message in a bottle cast into the cosmic ocean. Then in 1990, Voyager 1 looked back from 6.4 billion km away. In that photo, Earth was a speck smaller than dust — the 'Pale Blue Dot.' Sagan's words: 'That's here. That's home. That's us.'", "highlight": "Pale Blue Dot"},
+            {"speaker": "cosmii", "text": "Voyager 1 and 2 are still flying through space right now. They've already left the solar system — the farthest human-made objects ever. Tens of thousands of years from now, maybe hundreds of thousands, they'll still be drifting through interstellar space carrying the Golden Record. Even after humanity is gone.", "highlight": "Farthest human-made objects"}
+        ],
+        "quizzes": [
+            {
+                "question": "What is on the 'Golden Record' aboard Voyager?",
+                "options": ["Human weapons blueprints", "Greetings in 55 languages, music, nature sounds, and other records of Earth", "A warning message to aliens", "Only a map of the solar system"],
+                "correct_index": 1,
+                "explanation": "The Golden Record contains greetings in 55 languages, music by Bach and Beethoven, sounds of waves, a baby's cry, and more. Carl Sagan personally designed the project."
+            },
+            {
+                "question": "What is the significance of the 'Pale Blue Dot' photo taken by Voyager 1 from 6.4 billion km away?",
+                "options": ["The Moon appears blue", "From space, Earth is a speck smaller than dust — yet it's everything we have", "Venus appears blue", "There is water on Mars"],
+                "correct_index": 1,
+                "explanation": "From 6.4 billion km away, Earth was just a tiny dot. Sagan said 'That's here. That's home. That's us.' — a powerful reminder of Earth's preciousness in the vast cosmos."
+            }
+        ],
+    },
+    16: {
+        "title": "The Speed of Light — Is Time Travel Possible?",
+        "chapter_title": "Travels in Space and Time",
+        "spark": "Starlight is light from the past. Sunlight left 8 minutes ago, Alpha Centauri's light left 4 years ago, Andromeda's light left 2.5 million years ago. We are always looking at the past.",
+        "cliffhanger": "Even at light speed, it takes 4 years to reach the nearest star. 100,000 years to cross the galaxy. Can humanity ever bridge these staggering distances? Or can we?",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "In Chapter 10 of Cosmos, Carl Sagan asks: 'Is time travel possible?' It's a sci-fi favorite. But Sagan's answer is surprising: 'We're already time-traveling every day.'", "highlight": None},
+            {"speaker": "cosmii", "text": "The speed of light is 300,000 km per second. Fast enough to circle Earth 7.5 times in one second. Einstein proved this is the universe's absolute speed limit. Nothing can go faster than light.", "highlight": "Speed of light"},
+            {"speaker": "cosmii", "text": "Here's what that means — everything we see is the PAST. Sunlight takes 8 minutes and 20 seconds to reach Earth. The Sun you're seeing right now is the Sun from 8 minutes ago. If the Sun vanished this instant, we wouldn't know for 8 minutes.", "highlight": "The Sun from 8 minutes ago"},
+            {"speaker": "cosmii", "text": "Look farther. Light from Alpha Centauri, the nearest star, left 4.3 years ago. Andromeda galaxy's light left 2.5 million years ago. When the Hubble telescope peers 13 billion light-years away, it's seeing the universe 13 billion years in the past!", "highlight": "A telescope into the past"},
+            {"speaker": "cosmii", "text": "Einstein's special relativity says: the closer you get to light speed, the slower time passes. This is 'time dilation.' In a spaceship traveling at 99% light speed, 1 year passes — but back on Earth, 7 years have gone by.", "highlight": "Time dilation"},
+            {"speaker": "cosmii", "text": "This leads to the famous 'twin paradox.' If one twin travels in a near-light-speed ship and returns, they'll be younger than the twin who stayed on Earth. Time travel is theoretically possible — but only to the future. Going back to the past? That's... still unknown.", "highlight": "Twin paradox"}
+        ],
+        "quizzes": [
+            {
+                "question": "Why is the Sun we see NOT the Sun 'right now'?",
+                "options": ["The Sun is too bright", "Light takes about 8 minutes to travel from the Sun to Earth", "The atmosphere distorts light", "Because Earth is rotating"],
+                "correct_index": 1,
+                "explanation": "Light speed is 300,000 km/s, but the Sun is 150 million km away. Light takes about 8 min 20 sec to arrive. We always see the Sun as it was 8 minutes ago."
+            },
+            {
+                "question": "What is Einstein's 'time dilation' effect?",
+                "options": ["Time stops completely", "The closer you approach light speed, the slower time passes for you", "You travel to the past", "Clocks malfunction"],
+                "correct_index": 1,
+                "explanation": "Special relativity says time slows as speed approaches light. At 99% light speed, 1 year aboard the ship equals 7 years on Earth."
+            }
+        ],
+    },
+    17: {
+        "title": "The Distances Between Stars — The Dream of Interstellar Travel",
+        "chapter_title": "Travels in Space and Time",
+        "spark": "The nearest star is 4 light-years away — roughly 70,000 years at current technology. This lonely distance may be why the universe is silent.",
+        "cliffhanger": "If the distances between stars are this vast, how did this universe begin in the first place? 13.8 billion years ago, when there was no time and no space — the story of the Big Bang.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "We've established that light speed is the cosmic speed limit. So how long would it actually take to reach another star? The numbers are jaw-dropping.", "highlight": None},
+            {"speaker": "cosmii", "text": "Alpha Centauri, the nearest star: 4.3 years at light speed. At Voyager 1's current velocity? About 70,000 years. To cross our galaxy at light speed: 100,000 years. Can you even wrap your head around that?", "highlight": "Distances to stars"},
+            {"speaker": "cosmii", "text": "So scientists have brainstormed ways to travel between stars. First idea: 'generation ships.' A massive vessel where multiple generations are born, live, and die during a voyage lasting thousands of years. Your great-great-grandchildren's great-great-grandchildren would arrive.", "highlight": "Generation ships"},
+            {"speaker": "cosmii", "text": "Second: wormholes. Einstein's general relativity allows space-time to be 'folded.' Like punching holes through both ends of a sheet of paper and connecting them directly — you could potentially teleport across tens of thousands of light-years. But it's still purely theoretical.", "highlight": "Wormholes"},
+            {"speaker": "cosmii", "text": "There's also the warp drive concept. Instead of the ship going faster than light, you compress space in front and expand it behind — moving 'space itself.' It sidesteps the light-speed limit. Of course, this is still entirely theoretical too.", "highlight": "Warp drive"},
+            {"speaker": "cosmii", "text": "Sagan reflects on these lonely distances: this vast gulf between stars may be exactly why the universe is silent. Even if civilizations exist, they're too far apart to meet. The simplest answer to the Fermi Paradox might just be 'distance.' The cosmos is a far lonelier place than we imagine.", "highlight": "The loneliness of space"}
+        ],
+        "quizzes": [
+            {
+                "question": "How long would it take to reach the nearest star at current technology (Voyager speed)?",
+                "options": ["About 100 years", "About 1,000 years", "About 70,000 years", "About 4 years"],
+                "correct_index": 2,
+                "explanation": "At Voyager 1's speed, reaching Alpha Centauri would take about 70,000 years. Even at light speed, it's 4.3 years. Interstellar distances are incomprehensibly vast."
+            },
+            {
+                "question": "What did Sagan consider the most likely reason for the universe's 'silence'?",
+                "options": ["Aliens don't exist", "The distances between stars are so vast that even existing civilizations can't reach each other", "Aliens dislike humans", "The universe is too noisy"],
+                "correct_index": 1,
+                "explanation": "Sagan believed that even if civilizations exist, interstellar distances make contact extremely difficult. The simplest answer to the Fermi Paradox is simply 'distance.'"
+            }
+        ],
+    },
+    18: {
+        "title": "The Big Bang — The Beginning of Everything",
+        "chapter_title": "The Edge of Forever",
+        "spark": "13.8 billion years ago, there was no time, no space, no matter. Then from 'nothing,' 'everything' was born. Proof? The afterglow of the Big Bang still fills the universe this very moment.",
+        "cliffhanger": "The universe began with the Big Bang — but how does it end? Will it expand forever, collapse back, or tear itself apart? The story of the cosmos's fate.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "In Chapter 11, 'The Edge of Forever,' Carl Sagan asks the most fundamental question of all — how did the universe begin? Did it even HAVE a beginning?", "highlight": None},
+            {"speaker": "cosmii", "text": "In 1929, astronomer Edwin Hubble made a stunning discovery: every galaxy is moving away from us. And the farther they are, the FASTER they're receding! The universe is expanding.", "highlight": "The expanding universe"},
+            {"speaker": "cosmii", "text": "Now rewind time. If everything is flying apart, it was closer together in the past. Keep rewinding and 13.8 billion years ago, ALL matter and energy were compressed into a single point. From this ultra-dense, ultra-hot state came an explosion — the Big Bang.", "highlight": "Big Bang"},
+            {"speaker": "cosmii", "text": "Is there evidence? Oh yes. In 1964, two scientists at Bell Labs tried to eliminate static from their antenna and stumbled upon a mysterious signal. It was the same in every direction. What was it? The afterglow of the Big Bang! Called the 'cosmic microwave background radiation' — the echo of a 13.8-billion-year-old explosion still filling the entire universe.", "highlight": "Cosmic background radiation"},
+            {"speaker": "cosmii", "text": "What existed before the Big Bang? Sagan connects this question to Hindu cosmology. In Hinduism, the universe endlessly cycles through creation and destruction. 'One day of Brahma' is 8.64 billion years, and this cycle repeats forever. Where science and mythology meet.", "highlight": "Hindu cosmology"},
+            {"speaker": "cosmii", "text": "Modern science still doesn't know what existed 'before' the Big Bang. Time itself may have begun with the Big Bang. The concept of 'before' might not even apply. Sagan says: don't fear this uncertainty. Admitting what we don't know is where science begins.", "highlight": "The courage of not knowing"}
+        ],
+        "quizzes": [
+            {
+                "question": "Who first discovered evidence that the universe is expanding?",
+                "options": ["Einstein", "Carl Sagan", "Edwin Hubble", "Galileo"],
+                "correct_index": 2,
+                "explanation": "In 1929, Edwin Hubble observed that all galaxies are moving away from us. This was the first evidence of the universe's expansion."
+            },
+            {
+                "question": "What is 'cosmic microwave background radiation'?",
+                "options": ["Light emitted by stars", "Radio waves left over from the Big Bang 13.8 billion years ago, still filling the universe", "Energy from black holes", "Radio waves from the Sun"],
+                "correct_index": 1,
+                "explanation": "The cosmic microwave background radiation is the afterglow of the Big Bang. The echo of a 13.8-billion-year-old explosion still uniformly fills the entire universe as radio waves."
+            }
+        ],
+    },
+    19: {
+        "title": "The Fate of the Universe — Expansion, Collapse, or Eternity",
+        "chapter_title": "The Edge of Forever",
+        "spark": "The universe has three possible endings: the 'Big Freeze' where everything freezes eternally, the 'Big Crunch' where it collapses back to a point, and the 'Big Rip' where everything is torn apart.",
+        "cliffhanger": "We don't yet know the universe's fate, but humanity has already developed remarkable ways to preserve knowledge. Genes, brains, and libraries — the story of three kinds of 'memory.'",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Does a universe that began with the Big Bang have an ending? In the second half of Chapter 11, Sagan explores the cosmos's fate. Three scenarios exist.", "highlight": None},
+            {"speaker": "cosmii", "text": "First: the 'Big Freeze.' The universe expands forever, growing colder. Stars wink out one by one, galaxies drift apart, and eventually everything freezes. A dark, cold ending where the universe's temperature approaches absolute zero.", "highlight": "Big Freeze"},
+            {"speaker": "cosmii", "text": "Second: the 'Big Crunch.' Expansion slows, then gravity pulls everything back together. All galaxies collapse to a single point — a reverse Big Bang. And maybe, just maybe, a new Big Bang follows — like the cyclical cosmos of Hindu mythology.", "highlight": "Big Crunch"},
+            {"speaker": "cosmii", "text": "Third: the 'Big Rip.' The expansion accelerates until it tears apart galaxies, stars, planets, and even atoms. The most terrifying ending of all.", "highlight": "Big Rip"},
+            {"speaker": "cosmii", "text": "Which scenario is correct? The key is 'dark energy.' In 1998, scientists made a shocking discovery: the universe's expansion isn't slowing down — it's ACCELERATING. The unknown force causing this is called 'dark energy.' It makes up 68% of the universe, and we still don't know what it is.", "highlight": "Dark energy"},
+            {"speaker": "cosmii", "text": "Current evidence favors the Big Freeze. But Sagan reminds us: what we can observe is just a tiny fraction of the whole universe. What lies beyond the observable universe, what the cosmos's true fate is — humanity has only read the first page.", "highlight": "Our place in cosmic time"}
+        ],
+        "quizzes": [
+            {
+                "question": "Which is NOT one of the three scenarios for the universe's end?",
+                "options": ["Big Freeze — eternal expansion into cold darkness", "Big Crunch — collapse back to a single point", "Big Bounce — the universe bounces back", "Big Rip — everything is torn apart"],
+                "correct_index": 2,
+                "explanation": "Sagan presents three scenarios: Big Freeze, Big Crunch, and Big Rip. The 'Big Bounce' is an extension of the Big Crunch hypothesis but isn't part of this main classification."
+            },
+            {
+                "question": "What does the discovery that the universe's expansion is 'accelerating' mean?",
+                "options": ["The universe will collapse soon", "An unknown 'dark energy' is pushing the universe apart", "Gravity is disappearing", "Stars are being born faster"],
+                "correct_index": 1,
+                "explanation": "The 1998 discovery of accelerating expansion revealed 'dark energy' — an unknown force making up 68% of the universe. Its true nature remains one of the biggest mysteries in science."
+            }
+        ],
+    },
+    20: {
+        "title": "The Persistence of Memory — Genes, Brains, Libraries",
+        "chapter_title": "The Persistence of Memory",
+        "spark": "Genes have stored information for 3 billion years, brains have remembered experiences for millions of years, and books have preserved knowledge for 5,000 years. What's humanity's next memory device?",
+        "cliffhanger": "Genes, brains, libraries — humanity's quest to preserve information. But all of it could vanish in an instant. Carl Sagan left one final, urgent message at the end of Cosmos.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "In Chapter 12, 'The Persistence of Memory,' Sagan asks an entirely new question — how does information survive? This is the story of how life evolved to store information.", "highlight": None},
+            {"speaker": "cosmii", "text": "The first memory is 'genetic memory.' Information stored in DNA. For 3 billion years, life has passed down 'how to survive' through DNA to the next generation. Your reflexive hand-pull from a hot surface? That's memory encoded in your DNA.", "highlight": "Genetic memory"},
+            {"speaker": "cosmii", "text": "The second is 'brain memory.' As brains evolved, organisms could store individual experiences. DNA changes slowly over millions of years, but brains can remember a single moment instantly. A massive speed upgrade.", "highlight": "Brain memory"},
+            {"speaker": "cosmii", "text": "The third is the real revolution — 'extrasomatic memory.' Storing information OUTSIDE the body. Starting with cave paintings, then clay tablets, papyrus, books, and libraries. When a person dies, their knowledge no longer dies with them!", "highlight": "Extrasomatic memory"},
+            {"speaker": "cosmii", "text": "Sagan calls libraries 'humanity's collective brain.' The Library of Alexandria's 500,000 scrolls, today's national libraries, and the internet — they're systems that let humanity accumulate knowledge beyond any individual brain's limits. One person's ideas can leap across thousands of years. That's magic.", "highlight": "Humanity's collective brain"},
+            {"speaker": "cosmii", "text": "And right now, we're in the middle of a new evolution. The internet, cloud computing, AI — all of humanity's knowledge is being connected in real time. 'Extrasomatic memory' is exploding far faster than Sagan imagined in 1980. What comes next?", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "What are the three kinds of memory Carl Sagan described?",
+                "options": ["Short-term, long-term, ultra-long-term memory", "Genetic memory (DNA), brain memory, extrasomatic memory (books/computers)", "Past, present, future memory", "Visual, auditory, tactile memory"],
+                "correct_index": 1,
+                "explanation": "Sagan described three stages of information storage evolution: (1) genetic memory in DNA, (2) personal memory in brains, (3) extrasomatic memory in books, computers, and beyond."
+            },
+            {
+                "question": "Why did Sagan call libraries 'humanity's collective brain'?",
+                "options": ["Library buildings look like brains", "Because knowledge survives and accumulates even when individuals die", "Libraries have many books about the brain", "Librarians memorize everything"],
+                "correct_index": 1,
+                "explanation": "Libraries let knowledge persist and accumulate beyond any individual's lifespan. When one person dies, their knowledge survives for the next generation. That's why it's 'humanity's collective brain.'"
+            }
+        ],
+    },
+    21: {
+        "title": "Information Must Survive — Carl Sagan's Final Message",
+        "chapter_title": "Who Speaks for Earth?",
+        "spark": "'We are a way for the cosmos to know itself.' The final line Carl Sagan left for humanity.",
+        "cliffhanger": "",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "The final chapter of Cosmos, 'Who Speaks for Earth?' — here Sagan weaves the entire book together. Why he wrote it. What he wanted to say.", "highlight": None},
+            {"speaker": "cosmii", "text": "Sagan begins: science is a candle in the dark. The only light illuminating humanity through the darkness of superstition, prejudice, and ignorance. Just as the Library of Alexandria burned and 1,000 years of darkness followed, ignoring science means civilization regresses.", "highlight": "A candle in the dark"},
+            {"speaker": "cosmii", "text": "How fragile is civilization? A single nuclear weapon could end billions of years of evolution. Ignoring climate change could turn us into Venus. Sagan was shouting these warnings back in 1980.", "highlight": "The fragility of civilization"},
+            {"speaker": "cosmii", "text": "But Sagan doesn't despair. He speaks of hope. Humanity invented science in Ionia, gathered knowledge in Alexandria, sent Voyager into the cosmos, and detected the afterglow of the Big Bang. A small species on a small planet accomplished all of this.", "highlight": "Sagan's hope"},
+            {"speaker": "cosmii", "text": "Then comes the most famous line in all of Cosmos: 'We are a way for the cosmos to know itself.' For 13.8 billion years, the universe existed unconsciously. Through humanity, the cosmos finally began to understand itself.", "highlight": "The cosmos knowing itself"},
+            {"speaker": "cosmii", "text": "This is Carl Sagan's final message. We are star stuff. We are children of the cosmos. We are the eyes through which the universe sees itself. Don't close these eyes. Protect science. Love this Earth. And keep asking — where did we come from, and where are we going?", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "What does 'We are a way for the cosmos to know itself' mean?",
+                "options": ["Humans dominate the universe", "Through humans, the unconscious universe finally began to understand itself", "The universe is watching humans", "Humans are the center of the universe"],
+                "correct_index": 1,
+                "explanation": "For 13.8 billion years, the universe existed without consciousness. Through humanity — our science, curiosity, and awareness — the cosmos began to comprehend itself. We are the universe's tool for self-understanding."
+            },
+            {
+                "question": "Why did Sagan call science 'a candle in the dark'?",
+                "options": ["Science experiments need fire", "Because science is the only light protecting humanity from the darkness of superstition and ignorance", "Scientists work at night", "Candles are scientifically important"],
+                "correct_index": 1,
+                "explanation": "Sagan saw science as the light that protects humanity from superstition, prejudice, and ignorance. Just as the destruction of Alexandria's library plunged civilization into darkness, losing science means losing our way."
             }
         ],
     },

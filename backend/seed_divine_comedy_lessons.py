@@ -233,30 +233,30 @@ LESSONS = [
                 "explanation": "중세 시대에 왕과 귀족의 호화로운 식사는 백성들의 것을 착취한 결과야. 단테는 단순한 식탐이 아니라 탐욕과 착취를 비판한 거야."
             }
         ],
-        "cliffhanger": "6단계부터는 분위기가 확 바뀌어. 교황과 추기경들이 지옥에 있다니 — 단테의 용기가 대단해."
+        "cliffhanger": "6단계부터는 분위기가 확 바뀌어. 이단자, 폭력자 — 지옥이 점점 깊어져."
     },
 
     # ── 지옥 하층 (Part 2/2) ──
     {
-        "title": "교황도 지옥에 간다 — 6~7단계, 이단자와 폭력",
+        "title": "이단자와 폭력의 지옥 — 6~7단계",
         "chapter": "Inferno Middle",
         "chapter_title": "지옥 중층",
         "part": 2, "total_parts": 2,
-        "spark": "교황, 추기경, 주교가 지옥에 있다 — 700년 전 단테의 폭로.",
+        "spark": "기독교인이면서 교리를 부정한 자들이 불타는 무덤에 갇혀 있다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "6단계는 이단자의 지옥이야. 1단계 림보에는 세례를 받지 못한 이교도들이 있었지? 여기 6단계는 달라 — 기독교인이면서 교리를 부정한 이단자들이 불타는 무덤에 갇혀 있어.", "highlight": None},
-            {"speaker": "cosmii", "text": "근데 여기서 단테가 폭탄을 터뜨려. 교황이 여기 있어! 추기경도, 주교도! 성직자들이 지옥에 있는 거야. 700년 전에 현직 교황을 지옥에 넣는 소설을 쓴 거야 — 이 용기가 진짜 대단해.", "highlight": "교황이 지옥에"},
-            {"speaker": "cosmii", "text": "이것이 단테가 그려낸 르네상스의 정신이야. 기존의 중세 기독교 권력, 부패한 교회를 정면으로 비판한 거야. 지금 우리 사회를 보는 것 같지 않아?", "highlight": "권력 비판"},
+            {"speaker": "cosmii", "text": "여기서 단테는 피렌체의 정적 파리나타를 만나. 정치적으로 적이었지만, 위풍당당한 모습으로 그려져 있어. 단테가 대단한 점은 — 적조차 존엄하게 묘사했다는 거야. 하지만 더 깊은 곳에서는 교황까지 지옥에 넣어. 그 용기는 곧 보게 될 거야.", "highlight": "파리나타"},
+            {"speaker": "cosmii", "text": "이것이 단테가 그려낸 르네상스의 정신이야. 종교적 권위든, 정치적 권력이든 — 죄를 지으면 지옥에 간다. 누구도 예외가 아니야.", "highlight": "권력 비판"},
             {"speaker": "cosmii", "text": "7단계로 내려가면 폭력의 지옥이야. 여기는 세 종류로 나뉘어. 첫 번째 — 타인에게 폭력을 행사한 자들. 이 사람들은 펄펄 끓는 피의 강에 잠겨 있어. 머리를 내밀면 위에서 켄타우로스가 화살을 쏴. 다시 들어가면 뜨겁고, 나오면 화살이 날아오고 — 영원히.", "highlight": "피의 강"},
             {"speaker": "cosmii", "text": "두 번째는 자기 자신에게 폭력을 행사한 자들, 즉 자해한 사람들의 지옥이야. 이 사람들은 나무가 되어 있어. 베르길리우스가 '가지를 하나 꺾어봐' 하는데, 꺾는 순간 피가 흘러. 나뭇가지 하나하나가 사람인 거야.", "highlight": "나무가 된 사람들"},
             {"speaker": "cosmii", "text": "세 번째는 신에게 폭력을 행사한 자들 — 신성모독자들이야. 뜨거운 모래 위에서 불비가 내려. 마치 건식 사우나인데 영원히 나갈 수 없는 거야. 여기까지가 7단계. 근데 아직도 더 나쁜 놈들이 아래에 있어.", "highlight": None}
         ],
         "quizzes": [
             {
-                "question": "단테가 교황과 추기경을 지옥에 넣은 것이 의미하는 바는?",
-                "options": ["기독교를 부정하는 것", "부패한 종교 권력을 정면으로 비판한 것", "역사적 사실을 기록한 것", "단순한 유머"],
+                "question": "6단계 이단자의 지옥에서 단테가 보여주는 태도는?",
+                "options": ["적을 무조건 비하함", "정적 파리나타조차 존엄하게 묘사하며, 죄 앞에 누구도 예외 없음을 보여줌", "이단자를 동정함", "지옥을 유머러스하게 그림"],
                 "correct_index": 1,
-                "explanation": "단테는 기독교 자체를 부정한 게 아니라, 부패한 성직자들을 비판한 거야. 중세의 권력에 맞서 진실을 말한 것이 신곡의 혁명적인 점이야."
+                "explanation": "단테는 정치적 적인 파리나타도 위풍당당하게 그렸어. 하지만 죄를 지으면 누구든 — 나중에 밝혀지지만 교황조차 — 지옥에 간다는 게 단테의 혁명적 관점이야."
             },
             {
                 "question": "7단계 폭력의 지옥이 세 종류로 나뉘는 기준은?",
@@ -285,7 +285,7 @@ LESSONS = [
             {"speaker": "cosmii", "text": "단테의 묘사가 소름끼쳐. 「나는 턱부터 방귀 끼는 곳까지 찢어진 어떤 자를 보았는데, 두 다리 사이에 창자가 매달려 있고, 내장이 드러났으며, 먹은 것을 똥으로 만드는 축 처진 주머니도 나타났다.」 잔인하지만 엄청나게 생생해.", "highlight": "단테의 생생한 묘사"},
             {"speaker": "cosmii", "text": "가장 끔찍한 건 — 한 바퀴 돌아오는 동안 상처가 아물어. 그러면 또 갈라져. 이걸 영원히 반복하는 거야. 끝나지 않는 고통.", "highlight": "끝나지 않는 반복"},
             {"speaker": "cosmii", "text": "근데 이렇게 갈라지고 있는 사람이 누군지 아나? 무함마드야. 이슬람교의 창시자. 그리고 4대 칼리프 알리도 여기 있어. 단테의 시각에서는 — 기독교 세계를 분열시킨 장본인이니까.", "highlight": "무함마드"},
-            {"speaker": "cosmii", "text": "성직매매 구덩이에는 교황이 또 나와. 6단계에서도 교황이 있었는데 여기도! 거꾸로 처박혀서 불에 타고 있어. 단테가 당시 사회의 부패를 얼마나 미워했는지 느껴지지?", "highlight": None}
+            {"speaker": "cosmii", "text": "성직매매 구덩이에는 교황이 있어! 교황 니콜라우스 3세가 거꾸로 처박혀서 발이 불에 타고 있어. 700년 전에 현직 교황을 지옥에 넣는 소설을 쓴 거야 — 단테의 용기가 진짜 대단해.", "highlight": None}
         ],
         "quizzes": [
             {
@@ -489,7 +489,7 @@ TRANSLATIONS_EN = {
             {"speaker": "cosmii", "text": "Hey there! Starting today, we're diving into Dante's 'Divine Comedy' together. This thing was written 700 years ago, but honestly? It'll give you chills — because it feels like it's about us.", "highlight": None},
             {"speaker": "cosmii", "text": "Here's the very first line: 'Midway upon the journey of our life, I found myself within a forest dark, for the straightforward path had been lost.' Dante was 35 when this kicks off. Why 35? Because the Bible says a human life is 70 years — so 35 is the exact halfway point.", "highlight": "midway upon the journey"},
             {"speaker": "cosmii", "text": "Think about it. You've been charging forward your whole life, and then one day — BAM — you snap out of it and realize you're lost in a dark forest. Who am I? Where even is this? We've all had that moment, right? You've been hustling hard, and suddenly you're like... 'Wait, is this even the right path?'", "highlight": "who am I, where is this"},
-            {"speaker": "cosmii", "text": "So Dante tries to find his way out, but three beasts block his path. First — a leopard, symbolizing greed. Second — a lion, representing the hunger for power. Third — a she-wolf, standing for lust. These are the three things that knock us off the right path in life.", "highlight": "three beasts"},
+            {"speaker": "cosmii", "text": "So Dante tries to find his way out, but three beasts block his path. First — a leopard, symbolizing lust. Second — a lion, representing pride. Third — a she-wolf, standing for greed. These are the three things that knock us off the right path in life.", "highlight": "three beasts"},
             {"speaker": "cosmii", "text": "And this wasn't just fiction for Dante — it was personal. In real life, he was a politician in Florence who got caught up in a brutal political war and was exiled from his own city. The woman he loved died young. He was literally surrounded by power, greed, and desire — trapped in his own dark wood.", "highlight": "Dante's real life"},
             {"speaker": "cosmii", "text": "Then — out of nowhere — a shadow appears in the darkness. Dante cries out: 'Are you a person? Please, help me!' And the shadow replies: 'Once I was a man. Now I am not.' In Italy, this line is as iconic as 'To be or not to be' is in English.", "highlight": "once I was a man"},
         ],
@@ -502,9 +502,9 @@ TRANSLATIONS_EN = {
             },
             {
                 "question": "What do the three beasts blocking Dante's path symbolize?",
-                "options": ["Courage, wisdom, and love", "Greed, hunger for power, and lust", "Past, present, and future", "Hell, Purgatory, and Paradise"],
+                "options": ["Courage, wisdom, and love", "Lust, pride, and greed", "Past, present, and future", "Hell, Purgatory, and Paradise"],
                 "correct_index": 1,
-                "explanation": "The leopard is greed, the lion is the thirst for power, and the she-wolf is lust. These are the three temptations that lead us off the right path."
+                "explanation": "The leopard is lust, the lion is pride, and the she-wolf is greed. These are the three temptations that lead us off the right path."
             },
         ],
     },
@@ -604,7 +604,7 @@ TRANSLATIONS_EN = {
         "title": "From Gluttony to Wrath — Circles 3 Through 5",
         "chapter_title": "Middle Hell",
         "spark": "Three-headed Cerberus guards Circle 3, stone-pushers clash in Circle 4, and rage boils over in Circle 5.",
-        "cliffhanger": "From Circle 6 onward, the mood shifts entirely. Popes and cardinals in Hell — Dante had guts, no question.",
+        "cliffhanger": "From Circle 6 onward, the mood shifts entirely. Heretics, the violent — Hell just keeps getting deeper.",
         "dialogue": [
             {"speaker": "cosmii", "text": "Dante comes to in Circle 3 — the circle of gluttony. This is where the people who consumed, consumed, consumed end up. And the gatekeeper? Absolutely terrifying — it's Cerberus, the three-headed dog!", "highlight": "Cerberus"},
             {"speaker": "cosmii", "text": "Cerberus is snarling with all three heads, ripping souls apart as they come in. Virgil grabs a fistful of mud and chucks it straight into Cerberus's mouths. While the beast is busy chewing mud, they slip right past. Pretty clever, honestly.", "highlight": None},
@@ -629,26 +629,26 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 5: Even Popes Go to Hell ──
+    # ── Lesson 5: Heretics and the Violent ──
     5: {
-        "title": "Even Popes Go to Hell — Circles 6 & 7, Heresy and Violence",
+        "title": "Heretics and the Violent — Circles 6 & 7",
         "chapter_title": "Middle Hell",
-        "spark": "Popes, cardinals, bishops — all in Hell. Dante's exposé, 700 years ago.",
+        "spark": "Christians who denied their own doctrine burn in open tombs. Below them, three kinds of violence get three kinds of punishment.",
         "cliffhanger": "From Circle 8, it's no longer just brute force. Fraud, forgery, betrayal — the hell of those who used their intellect to deceive.",
         "dialogue": [
             {"speaker": "cosmii", "text": "Circle 6 is the heretics' zone. Remember Limbo had unbaptized pagans? Circle 6 is different — these are Christians who denied Church doctrine, trapped in burning tombs.", "highlight": None},
-            {"speaker": "cosmii", "text": "But here's where Dante drops a bombshell. There's a POPE down here. Cardinals too! Bishops! Clergy — in Hell! 700 years ago, Dante literally wrote the sitting Pope into Hell. The sheer audacity? Absolutely legendary.", "highlight": "popes in Hell"},
-            {"speaker": "cosmii", "text": "This is the Renaissance spirit Dante captured. He directly challenged medieval Church power and called out corruption head-on. Sound familiar? Kind of like calling out institutional corruption today, right?", "highlight": "speaking truth to power"},
+            {"speaker": "cosmii", "text": "Here Dante meets Farinata — his political enemy from Florence. But even though they're rivals, Dante depicts him standing tall and proud in his burning tomb. What's remarkable is this: Dante portrays even his enemies with dignity. But as we'll see deeper down, not even popes are spared.", "highlight": "Farinata"},
+            {"speaker": "cosmii", "text": "This is the Renaissance spirit Dante captured. Whether it's religious authority or political power — if you sinned, you go to Hell. No one gets a free pass.", "highlight": "speaking truth to power"},
             {"speaker": "cosmii", "text": "Circle 7 is the circle of violence, split into three zones. Zone one: those who were violent against others. They're submerged in a boiling river of blood. Stick your head up? Centaurs shoot you with arrows. Stay under? You're boiling alive. Head up — arrows. Head down — boiling. Forever.", "highlight": "the river of blood"},
             {"speaker": "cosmii", "text": "Zone two: those who were violent against themselves. They've been turned into trees. Virgil says, 'Break off a branch.' Dante snaps one — and it bleeds. Every single branch, every twig — is a person.", "highlight": "people turned to trees"},
             {"speaker": "cosmii", "text": "Zone three: those who were violent against God — the blasphemers. They lie on burning sand as fire rains from above. Imagine an eternal sauna you can never leave. That's Circle 7 — and believe it or not, there are even worse souls below.", "highlight": None},
         ],
         "quizzes": [
             {
-                "question": "What's the significance of Dante putting popes and cardinals in Hell?",
-                "options": ["He was rejecting Christianity", "He was directly criticizing corrupt religious authority", "He was recording historical facts", "It was just humor"],
+                "question": "What does Dante's portrayal of his enemy Farinata in Circle 6 reveal about his approach?",
+                "options": ["He mocks all his enemies", "He depicts even rivals with dignity, but no one — not even popes — escapes judgment for their sins", "He sympathizes with heretics", "He treats Hell as comedy"],
                 "correct_index": 1,
-                "explanation": "Dante didn't reject Christianity — he called out corrupt clergy. Speaking truth to power in the Middle Ages is what makes the Divine Comedy so revolutionary."
+                "explanation": "Dante gave Farinata a dignified portrayal despite being political rivals. But his larger point is unflinching: sin earns punishment regardless of status — as we'll see with popes deeper in Hell."
             },
             {
                 "question": "How is Circle 7 (violence) divided into three zones?",
@@ -671,7 +671,7 @@ TRANSLATIONS_EN = {
             {"speaker": "cosmii", "text": "Dante's description is absolutely visceral: 'I saw one ripped open from chin to where we fart — between his legs his guts spilled out, the vital organs visible, including the wretched sack that turns what we swallow into waste.' Brutal? Yes. But impossibly vivid.", "highlight": "Dante's vivid imagery"},
             {"speaker": "cosmii", "text": "The worst part? As they walk one full lap around the ditch, the wound heals completely. And then — they get split open again. Over and over. Forever. Pain that never, ever ends.", "highlight": "the endless cycle"},
             {"speaker": "cosmii", "text": "And who's being split apart? Muhammad — the founder of Islam. And Ali, the fourth Caliph, is here too. From Dante's medieval Christian perspective, they were the ones who divided the Christian world.", "highlight": "Muhammad"},
-            {"speaker": "cosmii", "text": "Oh, and there's ANOTHER pope in the simony ditch — the one for clergy who sold spiritual privileges. Remember the pope back in Circle 6? Here's another one! Jammed in upside down, feet on fire. You can really feel how much Dante despised the corruption of his era.", "highlight": None},
+            {"speaker": "cosmii", "text": "And in the simony ditch — where corrupt clergy who sold spiritual privileges are punished — there's a POPE. Pope Nicholas III, jammed in upside down with his feet on fire. 700 years ago, Dante wrote a sitting pope into Hell. The sheer audacity is legendary.", "highlight": None},
         ],
         "quizzes": [
             {
@@ -839,6 +839,780 @@ TRANSLATIONS_EN = {
         ],
     },
 }
+
+
+# ═══════════════════════════════════════════════════════════════════
+# 추가 레슨 12–23: 인페르노 심층 + 연옥 전체 + 천국 전체
+# ═══════════════════════════════════════════════════════════════════
+
+NEW_LESSONS_KO = [
+    # ══════════════════════════════════════════
+    # 인페르노 심층 (2 lessons)
+    # ══════════════════════════════════════════
+
+    # ── Lesson 12: 율리시즈 (Inferno XXVI) ──
+    {
+        "title": "율리시즈의 마지막 항해 — 지식을 향한 금지된 열망",
+        "chapter": "Inferno Depths",
+        "chapter_title": "지옥 심층",
+        "part": 1, "total_parts": 2,
+        "spark": "「너희는 짐승처럼 살려고 태어난 게 아니라, 덕과 지식을 따르기 위해 태어난 것이다.」 — 지옥에서 울려 퍼지는 가장 아름다운 연설.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "8단계 사기꾼의 지옥, 그 안에 특별한 구덩이가 있어. '사악한 조언자'들의 구덩이야. 여기서 망자들은 불꽃에 감싸여 있어 — 몸은 안 보이고 불꽃만 보여. 갈라진 불꽃 하나가 흔들리고 있는데... 그 안에 율리시즈가 있어.", "highlight": "사악한 조언자"},
+            {"speaker": "cosmii", "text": "율리시즈, 즉 오디세우스야. 트로이 목마를 만든 그 사람! 그리스 신화에서 가장 머리 좋은 영웅이지. 근데 왜 지옥에? 천재적인 언변으로 사람들을 속이고 조종했기 때문이야. 머리를 나쁜 데 쓴 거야.", "highlight": "율리시즈"},
+            {"speaker": "cosmii", "text": "단테가 이야기를 들려달라고 해. 율리시즈가 말하기 시작해 — 트로이 전쟁이 끝나고 집에 돌아갈 수 있었는데, 안 돌아갔어. 늙은 동료들과 배를 돌려서 미지의 세계로 향한 거야. 집보다 모험이 더 끌렸던 거지.", "highlight": None},
+            {"speaker": "cosmii", "text": "그때 율리시즈가 동료들에게 한 연설이 이거야. 「형제들이여! 수만 가지 위험을 지나 서쪽에 이른 우리가 아닌가. 너희는 짐승처럼 살려고 태어난 게 아니라, 덕과 지식을 따르기 위해 태어난 것이다.」 이 대사, 700년이 지났는데 아직도 소름 돋아.", "highlight": "짐승처럼 살지 말라"},
+            {"speaker": "cosmii", "text": "동료들이 감동해서 헤라클레스의 기둥 — 지브롤터 해협, 인간이 넘어서는 안 되는 금지된 경계 — 을 넘어버려. 석 달을 항해하다 거대한 산이 보여 — 그게 연옥산이야! 하지만 기뻐할 틈도 없이 폭풍이 일어나서 배가 뒤집혀. 전원 익사.", "highlight": "금지된 경계를 넘다"},
+            {"speaker": "cosmii", "text": "여기서 단테의 천재성이 빛나. 율리시즈의 연설은 진짜 아름다워. 우리 마음을 울려. 근데 그게 바로 그의 죄야 — 아름다운 말로 사람들을 죽음으로 이끈 거거든. 지식을 향한 열망은 숭고하지만, 그것이 금지된 경계를 넘을 때 파멸이 온다는 거야.", "highlight": "아름다움과 파멸의 공존"}
+        ],
+        "quizzes": [
+            {
+                "question": "율리시즈가 8단계 지옥에 있는 이유는?",
+                "options": ["전쟁을 너무 많이 해서", "탁월한 언변으로 사람들을 속이고 죽음으로 이끈 '사악한 조언자'이기 때문에", "바다를 건넜기 때문에", "신을 모독해서"],
+                "correct_index": 1,
+                "explanation": "율리시즈의 죄는 단순한 거짓말이 아니야. 천재적인 언변으로 동료들을 감동시켜 죽음의 항해로 이끈 거야. 아름다운 말 뒤에 숨겨진 기만이 '사악한 조언자'의 죄야."
+            },
+            {
+                "question": "율리시즈의 연설이 특별한 이유는?",
+                "options": ["역사적으로 실제 있었던 연설이라서", "연설 자체는 아름답고 감동적이지만, 그것이 바로 사람들을 파멸로 이끈 도구이기 때문에", "가장 짧은 연설이라서", "신에 대한 찬양이 담겨서"],
+                "correct_index": 1,
+                "explanation": "「짐승처럼 살지 말고 지식을 따르라」는 말은 우리 마음까지 울려. 하지만 그 아름다운 말이 동료들을 금지된 경계 너머로 이끌어 죽게 만들었어. 아름다움과 파멸이 한 문장에 공존하는 거야."
+            }
+        ],
+        "cliffhanger": "8단계보다 더 아래, 얼어붙은 9단계. 그곳에서 단테는 역사상 가장 잔인한 이야기를 듣게 돼."
+    },
+
+    # ── Lesson 13: 우골리노 (Inferno XXXIII) ──
+    {
+        "title": "우골리노 백작 — 지옥에서 가장 잔인한 이야기",
+        "chapter": "Inferno Depths",
+        "chapter_title": "지옥 심층",
+        "part": 2, "total_parts": 2,
+        "spark": "얼어붙은 지옥 최하층, 한 남자가 다른 남자의 두개골을 영원히 갉아먹고 있다. 그 이유를 들으면 — 눈물이 멈추지 않아.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "9단계 지옥, 얼음의 호수 코키투스. 배신자들의 지옥이야. 그 얼음 속에서 단테가 끔찍한 장면을 목격해 — 한 남자가 다른 남자의 뒤통수를 이빨로 갉아먹고 있어. 짐승처럼.", "highlight": "코키투스의 얼음"},
+            {"speaker": "cosmii", "text": "단테가 다가가서 물어. '왜 그러는 겁니까?' 갉아먹던 남자가 고개를 들어. 입에서 피가 흘러. 「내 이야기를 들으면, 울면서도 이해할 것이다.」 그가 우골리노 백작이야. 그리고 그가 갉아먹고 있는 건 — 자기를 배신한 루지에리 대주교의 두개골이야.", "highlight": "우골리노 백작"},
+            {"speaker": "cosmii", "text": "우골리노는 피사의 권력자였어. 정적 루지에리에게 배신당해서 탑에 감금돼. 혼자가 아니야 — 아들 둘과 손자 둘, 총 네 명의 어린아이들과 함께. 그리고 탑의 문이 못으로 박혀 잠겨. 음식은 들어오지 않아.", "highlight": "감금된 탑"},
+            {"speaker": "cosmii", "text": "며칠이 지나고, 아이들이 배고프다고 울어. 우골리노가 아무것도 해줄 수가 없어. 아들이 이렇게 말해 — 「아버지, 우리를 드세요. 이 비참한 살을 당신이 입히셨으니, 당신이 벗기세요.」 이 대사에서 심장이 찢어져.", "highlight": "아이들의 절규"},
+            {"speaker": "cosmii", "text": "하나씩, 하나씩 아이들이 죽어가. 눈앞에서. 우골리노는 이미 눈이 먼 채 더듬거리며 죽은 아이들의 이름을 부르고 있어. 그리고 마지막 줄 — 「그 후로 슬픔보다 굶주림이 더 강했다.」 이 한 줄이 700년간 논쟁이야.", "highlight": "슬픔보다 굶주림이"},
+            {"speaker": "cosmii", "text": "결국 아이들의 시체를 먹었다는 뜻인지, 아니면 슬픔으로는 죽지 못하고 굶주림으로 죽었다는 뜻인지 — 단테는 답을 주지 않아. 그리고 우골리노는 자기를 배신한 루지에리의 두개골을 영원히 갉아먹고 있어. 지옥의 형벌이 잔인한 게 아니라, 인간이 인간에게 한 짓이 잔인한 거야.", "highlight": "답 없는 마지막 줄"}
+        ],
+        "quizzes": [
+            {
+                "question": "우골리노의 마지막 말 「슬픔보다 굶주림이 더 강했다」가 700년간 논쟁인 이유는?",
+                "options": ["번역이 어려워서", "굶어 죽었다는 뜻인지 아이들의 시체를 먹었다는 뜻인지 해석이 갈리기 때문에", "문법이 틀려서", "단테가 실수로 쓴 문장이라서"],
+                "correct_index": 1,
+                "explanation": "이 한 줄은 의도적으로 모호해. '슬픔으로 못 죽고 굶어 죽었다'인지, '결국 굶주림에 아이들을 먹었다'인지 — 단테는 답을 주지 않아. 그 모호함이 오히려 더 잔혹한 거야."
+            },
+            {
+                "question": "우골리노 에피소드가 신곡에서 특별한 이유는?",
+                "options": ["가장 짧은 에피소드라서", "지옥의 형벌이 아니라 인간이 인간에게 한 잔인함이 핵심이기 때문에", "코믹한 장면이라서", "단테가 직접 겪은 이야기라서"],
+                "correct_index": 1,
+                "explanation": "우골리노의 고통은 지옥의 형벌에서 오는 게 아니야. 정적에게 배신당하고 아이들이 눈앞에서 죽어가는 걸 지켜봐야 했던 — 인간의 잔혹함이 핵심이야. 지옥보다 더 지옥 같은 현실."
+            }
+        ],
+        "cliffhanger": "지옥의 어둠을 뒤로하고, 이제 연옥으로. 지옥을 빠져나온 단테가 보는 것은 — 새벽빛과 바다 위의 거대한 산."
+    },
+
+    # ══════════════════════════════════════════
+    # 연옥 (5 lessons)
+    # ══════════════════════════════════════════
+
+    # ── Lesson 14: 연옥 입구 (Purgatorio I-IX) ──
+    {
+        "title": "연옥의 문 앞에서 — 새로운 시작",
+        "chapter": "Purgatorio Lower",
+        "chapter_title": "연옥 하층",
+        "part": 1, "total_parts": 1,
+        "spark": "지옥에서 빠져나온 단테 앞에 새로운 세계가 펼쳐져 — 바다 위에 솟은 연옥산, 그리고 그 입구를 지키는 의외의 인물.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "지옥의 출구를 빠져나오니 — 새벽이야! 하늘에 금성이 빛나고 있어. 지옥은 영원한 어둠이었잖아. 여기는 하늘이 있고, 바람이 있고, 빛이 있어. 단테가 다시 태어난 기분인 거야.", "highlight": "새벽의 금성"},
+            {"speaker": "cosmii", "text": "연옥산 입구를 지키는 사람이 누구게? 카토야 — 로마 공화정의 수호자, 카이사르에 맞서 싸운 사람이야. 자유가 무너지는 걸 보고 자결했거든. 이교도인데 왜 연옥의 수호자일까? 단테는 카토를 '자유를 위해 목숨을 바친 사람'으로 봤기 때문이야.", "highlight": "카토"},
+            {"speaker": "cosmii", "text": "해변에서 기다리고 있으면 — 바다 위에서 하얀 빛이 다가와. 천사가 모는 배야! 배 안에 연옥으로 오는 영혼들이 타고 있어. 찬송가를 부르며 해변에 내려. 지옥과 완전 다른 분위기지?", "highlight": "천사의 배"},
+            {"speaker": "cosmii", "text": "근데 아직 연옥산에 바로 올라갈 수 없어. 입구 앞에 '전연옥' 구역이 있거든. 여기에는 너무 늦게 회개한 사람들이 있어 — 살아있을 때 마지막 순간에야 겨우 회개한 영혼들.", "highlight": "전연옥"},
+            {"speaker": "cosmii", "text": "파문당한 자들, 게으른 자들, 그리고 '군주들의 계곡'이 있어. 살아생전 나라를 다스리느라 바빠서 영혼을 돌보지 않은 왕들이 모여 있어. 권력이 있었어도 영혼의 구원에는 도움이 안 됐다는 거야.", "highlight": "군주들의 계곡"},
+            {"speaker": "cosmii", "text": "핵심 메시지는 이거야 — 「기다린 만큼 기다려야 한다.」 살아있을 때 회개를 미룬 만큼, 연옥 입구에서 그만큼의 시간을 기다려야 해. 인생에서 미룬 것들은 결국 나중에 대가를 치르게 된다는 거지.", "highlight": "미룬 만큼 기다린다"}
+        ],
+        "quizzes": [
+            {
+                "question": "전연옥에서 영혼들이 기다려야 하는 이유는?",
+                "options": ["자리가 부족해서", "살아있을 때 회개를 미룬 만큼 그 시간만큼 기다려야 하기 때문에", "벌을 받는 중이라서", "천사가 허락하지 않아서"],
+                "correct_index": 1,
+                "explanation": "연옥의 원칙은 '미룬 만큼 기다린다'야. 마지막 순간에야 회개한 영혼들은 살아있을 때 미룬 시간만큼 입구에서 대기해야 해. 미루기의 대가인 거지."
+            },
+            {
+                "question": "이교도인 카토가 연옥의 수호자인 이유는?",
+                "options": ["가장 강한 전사여서", "자유를 위해 목숨을 바쳤기에 단테가 도덕적 자유의 상징으로 봤기 때문에", "기독교로 개종해서", "단테와 친구여서"],
+                "correct_index": 1,
+                "explanation": "카토는 공화정의 자유를 지키기 위해 목숨을 바친 인물이야. 이교도임에도 불구하고 '자유의지'의 상징으로 연옥 입구에 세운 거야. 연옥은 자유의지로 정화를 선택하는 곳이니까."
+            }
+        ],
+        "cliffhanger": "드디어 연옥산의 문을 지나 첫 번째 단으로 올라가. 교만한 자들이 거대한 돌을 등에 지고 있어."
+    },
+
+    # ── Lesson 15: 교만에서 분노까지 (Purgatorio X-XVII) ──
+    {
+        "title": "교만에서 분노까지 — 연옥 1~3단",
+        "chapter": "Purgatorio Middle",
+        "chapter_title": "연옥 중층",
+        "part": 1, "total_parts": 1,
+        "spark": "지옥에서는 형벌을 '당하지만', 연옥에서는 형벌을 '선택한다' — 이것이 결정적 차이야.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "연옥 첫 번째 단 — 교만이야. 영혼들이 등에 엄청나게 무거운 돌을 지고 허리를 90도로 구부리며 걷고 있어. 하늘을 볼 수 없어. 교만했던 사람들이 강제로 고개를 숙이는 거야.", "highlight": "교만의 짐"},
+            {"speaker": "cosmii", "text": "여기서 지옥과 결정적으로 다른 점이 있어. 지옥에서는 형벌을 '당하는' 거잖아? 연옥에서는 영혼들이 자발적으로 이 고통을 감내해. 왜? 이걸 통과하면 천국에 갈 수 있으니까. 목적이 있는 고통, 희망이 있는 고통이야.", "highlight": "자발적 선택"},
+            {"speaker": "cosmii", "text": "바닥에 아름다운 대리석 조각이 새겨져 있어. 겸손의 예시들이야 — 성모 마리아의 겸손, 다윗 왕이 하나님 앞에서 춤추는 장면. 고개를 숙여야만 볼 수 있는 예술작품이야. 교만의 반대, 겸손을 배우라는 거지.", "highlight": "대리석의 겸손"},
+            {"speaker": "cosmii", "text": "두 번째 단은 질투야. 영혼들의 눈꺼풀이 철사로 꿰매져 있어. 볼 수가 없어. 살아있을 때 남의 것을 탐내며 눈을 돌렸던 사람들이, 이제 아무것도 볼 수 없게 된 거야. 서로 어깨를 기대고 앉아서 기도해.", "highlight": "철사로 꿰맨 눈"},
+            {"speaker": "cosmii", "text": "세 번째 단은 분노야. 엄청나게 짙은 연기가 가득해. 한 치 앞도 안 보여. 분노에 눈이 멀었던 사람들이, 연기에 눈이 멀어 아무것도 볼 수 없는 거야. 그 연기 속에서 평화의 기도를 부르고 있어.", "highlight": "분노의 연기"},
+            {"speaker": "cosmii", "text": "패턴이 보이지? 연옥의 형벌은 전부 '반대로 뒤집기'야. 교만 → 강제로 고개 숙임. 질투 → 눈을 못 뜸. 분노 → 앞을 못 봄. 이 모든 건 치유를 위한 과정이야. 병원에서 아픈 수술을 받는 것처럼 — 나을 수 있다는 희망이 있으니까 견디는 거야.", "highlight": "반대로 뒤집기"}
+        ],
+        "quizzes": [
+            {
+                "question": "연옥에서 영혼들이 고통을 견디는 이유는?",
+                "options": ["어쩔 수 없어서", "이 고통을 통과하면 천국에 갈 수 있기에 자발적으로 선택하는 것이기 때문에", "지옥보다 덜 아파서", "시간이 지나면 자동으로 끝나서"],
+                "correct_index": 1,
+                "explanation": "지옥의 고통은 목적 없는 영원한 형벌이지만, 연옥의 고통은 정화를 위한 자발적 선택이야. 끝이 있고 목적이 있으니까 견딜 수 있는 거야."
+            },
+            {
+                "question": "연옥 2단에서 질투한 자들의 눈이 철사로 꿰매진 이유는?",
+                "options": ["벌을 주기 위해", "남의 것을 탐내며 눈을 돌렸으니 이제 볼 수 없게 하여 서로에게 의지하게 하기 위해", "어둠이 무서우니까", "눈을 보호하려고"],
+                "correct_index": 1,
+                "explanation": "살아있을 때 남의 것을 탐내며 시기했던 눈이 닫혀. 볼 수 없으니 서로에게 기대야 하고, 그 과정에서 질투의 반대인 형제애를 배우게 되는 거야."
+            }
+        ],
+        "cliffhanger": "4번째 단부터는 또 다른 죄들이 기다려. 나태한 자, 탐욕스러운 자, 그리고 마지막에는 불의 벽이 나타나."
+    },
+
+    # ── Lesson 16: 나태에서 색욕까지 (Purgatorio XVIII-XXVI) ──
+    {
+        "title": "나태에서 색욕까지 — 연옥 4~7단",
+        "chapter": "Purgatorio Upper",
+        "chapter_title": "연옥 상층",
+        "part": 1, "total_parts": 1,
+        "spark": "연옥 산 후반부. 게으른 자들이 미친 듯이 달리고, 탐욕스러운 자들이 엎드려 울고, 마지막에는 불의 벽을 통과해야 해.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "네 번째 단은 나태야. 살아있을 때 게을렀던 영혼들이 뭘 하고 있냐면 — 쉬지 않고 미친 듯이 달리고 있어! 「빨리! 빨리! 사랑에 게을렀던 시간을 낭비할 수 없어!」라고 외치면서. 게으름의 반대 — 끊임없는 움직임으로 정화하는 거야.", "highlight": "달리는 나태자들"},
+            {"speaker": "cosmii", "text": "다섯 번째 단은 탐욕이야. 영혼들이 땅에 완전히 엎드려 있어. 얼굴이 바닥에 닿아 있어. 살아있을 때 물질에만 눈이 갔던 사람들이, 이제 하늘을 올려다볼 수 없게 된 거야. 울면서 시편을 읊고 있어.", "highlight": "엎드린 탐욕자들"},
+            {"speaker": "cosmii", "text": "여기서 시인 스타티우스를 만나! 로마 시인인데, 연옥에서 죄를 다 씻고 천국으로 올라가려는 참이야. 베르길리우스의 시를 읽고 기독교로 개종했다는 설정이야. 스승의 작품이 제자를 구원한 거지.", "highlight": "스타티우스"},
+            {"speaker": "cosmii", "text": "여섯 번째 단은 폭식이야. 향기로운 과일나무 앞을 지나가는데 — 손이 닿질 않아. 배가 고파 죽겠는데 음식은 눈앞에 있고, 먹을 수는 없어. 영혼들이 뼈만 남아서 눈자위가 보석 빠진 반지처럼 움푹 들어가 있어.", "highlight": "손 닿지 않는 과일"},
+            {"speaker": "cosmii", "text": "일곱 번째 단, 마지막 — 색욕이야. 여기는 불길이야. 불 속을 걸어서 통과해야 해. 단테가 무서워서 한 발짝도 못 떼고 있어. 베르길리우스가 말해 — 「이 불 뒤에 베아트리체가 있어.」 그 말 한 마디에 단테가 불 속으로 들어가.", "highlight": "불의 벽"},
+            {"speaker": "cosmii", "text": "연옥의 모든 단을 통과했어! 산 정상에 도착하면 — 에덴동산이야. 지상 낙원. 꽃이 피고 새가 노래하는 완벽한 숲. 여기서 단테의 인생을 바꿀 이별과 재회가 동시에 일어나.", "highlight": "지상 낙원 도착"}
+        ],
+        "quizzes": [
+            {
+                "question": "단테가 연옥 마지막 불의 벽을 통과할 수 있었던 이유는?",
+                "options": ["불이 뜨겁지 않아서", "베르길리우스가 「이 불 뒤에 베아트리체가 있다」고 말했기 때문에", "다른 길이 없어서", "천사가 도와줘서"],
+                "correct_index": 1,
+                "explanation": "사랑이 두려움을 이긴 거야. 베아트리체를 다시 만날 수 있다는 희망이 불의 공포를 넘게 해줬어. 사랑이 모든 고통을 견딜 힘을 준다는 연옥의 핵심 메시지야."
+            },
+            {
+                "question": "연옥 4단에서 나태한 자들이 '쉬지 않고 달리는' 이유는?",
+                "options": ["운동이 건강에 좋아서", "살아있을 때 게을렀으므로 그 반대인 끊임없는 움직임으로 정화하기 때문에", "도망치고 있어서", "경주를 하고 있어서"],
+                "correct_index": 1,
+                "explanation": "연옥의 형벌은 '반대로 뒤집기' 원칙이야. 게으르게 살았던 사람들은 쉬지 않고 달리면서 나태의 반대인 열정을 배우는 거야."
+            }
+        ],
+        "cliffhanger": "지상 낙원에서 베르길리우스가 조용히 이별을 고해. 그리고 빛 속에서 베아트리체가 나타나 — 하지만 다정한 재회가 아니야."
+    },
+
+    # ── Lesson 17: 베르길리우스의 이별 (Purgatorio XXVII-XXX) ──
+    {
+        "title": "베르길리우스의 이별 — 스승이 더 이상 갈 수 없는 곳",
+        "chapter": "Earthly Paradise",
+        "chapter_title": "지상 낙원",
+        "part": 1, "total_parts": 2,
+        "spark": "연옥 정상, 지상 낙원. 스승이 조용히 사라지고, 빛 속에서 나타난 베아트리체는 — 단테를 따뜻하게 안아주지 않아. 울면서 단테를 꾸짖어.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "불의 벽을 통과하고 연옥 산 정상에 도착했어. 지상 낙원, 에덴동산이야. 꽃이 피고, 새가 노래하고, 맑은 시냇물이 흐르고 있어. 완벽한 아름다움이야.", "highlight": "에덴동산"},
+            {"speaker": "cosmii", "text": "그런데 베르길리우스가 멈춰. 이번에는 진짜 마지막이야. 「네 의지는 이제 자유롭고, 올바르고, 건전하다. 네 자신이 네 왕관이고 미트라야.」 이제 스승이 필요 없다는 선언이야. 쓸쓸하지만, 단테가 성장했다는 뜻이기도 해.", "highlight": "네 자신이 네 왕관"},
+            {"speaker": "cosmii", "text": "단테가 뒤를 돌아보는데 — 베르길리우스가 없어. 사라졌어. 「베르길리우스! 베르길리우스!」 소리쳐 불러도 대답이 없어. 어둠의 지옥에서부터 함께했던 스승이, 아무 말 없이 떠나버린 거야.", "highlight": None},
+            {"speaker": "cosmii", "text": "단테가 눈물을 흘리는 그때 — 하늘에서 빛의 행렬이 내려와. 꽃비가 날리고 천사들이 노래해. 녹색, 흰색, 빨간색 옷을 입은 한 여인이 빛의 수레에 앉아 나타나. 베아트리체야!", "highlight": "빛의 수레"},
+            {"speaker": "cosmii", "text": "여기서 감동적인 재회를 기대하잖아? 포옹! 눈물! 근데 아니야. 베아트리체가 단테를 보자마자 — 「나를 똑바로 봐. 맞아, 나는 베아트리체야. 넌 어떻게 여기 올 생각을 했니?」 단테를 꾸짖는 거야.", "highlight": "베아트리체의 질책"},
+            {"speaker": "cosmii", "text": "베아트리체가 죽은 후, 단테가 올바른 길에서 벗어났거든. 다른 여자들에게 마음을 주고, 세속적인 것들에 빠져들었어. 재회의 기쁨이 아니라 — 정산의 시간이야. 사랑하는 사람이기 때문에 더 엄격한 거야. 이게 진짜 사랑이야.", "highlight": "사랑의 엄격함"}
+        ],
+        "quizzes": [
+            {
+                "question": "베르길리우스가 마지막으로 남긴 '네 자신이 네 왕관이다'의 의미는?",
+                "options": ["단테에게 왕위를 물려주는 것", "스승의 인도 없이 스스로 판단할 수 있을 만큼 성장했다는 뜻", "이별이 슬프다는 표현", "지상 낙원의 왕이 되라는 뜻"],
+                "correct_index": 1,
+                "explanation": "이 선언은 교육의 완성이야. 스승이 더 이상 필요 없을 정도로 제자가 성장했다는 거야. 쓸쓸하지만 가장 아름다운 졸업장이야."
+            },
+            {
+                "question": "베아트리체가 재회하자마자 단테를 꾸짖은 이유는?",
+                "options": ["단테가 너무 늦게 와서", "베아트리체가 죽은 후 단테가 방탕했기에 사랑하기 때문에 더 엄격하게 질책한 것", "베르길리우스를 데려와서", "단테의 옷차림이 마음에 안 들어서"],
+                "correct_index": 1,
+                "explanation": "재회는 포옹이 아니라 정산이야. 사랑하는 사람이기에 더 엄격하게 질책하는 거야. 진짜 사랑은 감싸주는 게 아니라 바로잡아주는 거야."
+            }
+        ],
+        "cliffhanger": "단테가 눈물로 고백한 후, 두 개의 강에서 씻김을 받아. 하나는 죄를 잊게 하고, 하나는 선한 기억을 되살려."
+    },
+
+    # ── Lesson 18: 지상 낙원 (Purgatorio XXXI-XXXIII) ──
+    {
+        "title": "지상 낙원 — 레테와 에우노에 강",
+        "chapter": "Earthly Paradise",
+        "chapter_title": "지상 낙원",
+        "part": 2, "total_parts": 2,
+        "spark": "죄를 잊는 강 레테, 선한 기억을 되살리는 강 에우노에. 두 강에서 씻김을 받은 단테는 — '별들을 향해 올라갈 준비가 된' 사람으로 다시 태어나.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "베아트리체의 꾸짖음 앞에서 단테가 무너져. 자기 잘못을 고백하면서 울어. 진심으로 회개하는 거야. 베아트리체가 말해 — 「네 눈물을 다른 칼에 대비해 두어라. 아직 부족하다.」 엄하지만 필요한 과정이야.", "highlight": "단테의 고백"},
+            {"speaker": "cosmii", "text": "두 개의 강이 나타나. 첫 번째는 레테 강 — 그리스 신화의 망각의 강이지? 여기서는 죄의 기억을 씻어주는 강이야. 단테가 이 강물에 잠기면 자기가 지은 죄의 기억이 사라져. 깨끗한 백지 상태가 돼.", "highlight": "레테 — 죄의 망각"},
+            {"speaker": "cosmii", "text": "두 번째는 에우노에 강 — 이건 단테가 창조한 강이야. 그리스 신화에는 없어. '좋은 기억'이라는 뜻인데, 이 강물을 마시면 자기가 했던 선한 일들의 기억이 생생하게 되살아나. 죄는 잊고, 선함은 기억하는 거야.", "highlight": "에우노에 — 선한 기억"},
+            {"speaker": "cosmii", "text": "이 설정이 천재적이지 않아? 완전한 정화란 — 나쁜 기억을 지우는 것만이 아니라, 좋은 기억을 되살리는 것까지 필요하다는 거야. 두 개가 세트야. 하나만으로는 부족해.", "highlight": None},
+            {"speaker": "cosmii", "text": "이 사이에 거대한 알레고리 행렬이 지나가. 교회 역사를 상징하는 장면들이야 — 수레, 독수리, 여우, 용이 나타나면서 교회의 부패와 타락을 풍자해. 천국 직전에서까지 교회 권력을 비판하는 단테의 용기!", "highlight": "교회 비판"},
+            {"speaker": "cosmii", "text": "두 강에서 씻김을 받은 단테. 연옥편의 마지막 줄이 이거야 — 「나는 순수하고 깨끗해져서, 별들을 향해 올라갈 준비가 되었다.」 '별'로 끝나. 지옥편도 '별'로 끝났고, 연옥편도 '별'로 끝나. 천국편도 '별'로 끝나. 세 편 모두가.", "highlight": "별들을 향해"}
+        ],
+        "quizzes": [
+            {
+                "question": "레테 강과 에우노에 강이 둘 다 필요한 이유는?",
+                "options": ["하나는 뜨겁고 하나는 차가워서", "완전한 정화에는 죄를 잊는 것과 선한 기억을 되살리는 것 둘 다 필요하기 때문에", "하나는 들어가고 하나는 마시는 거라서", "장식적 요소일 뿐이라서"],
+                "correct_index": 1,
+                "explanation": "단테의 천재적 통찰이야. 나쁜 것을 지우는 것만으로는 부족해. 좋은 것을 되살려야 비로소 완전한 정화가 이루어지는 거야. 두 강은 반드시 세트야."
+            },
+            {
+                "question": "신곡의 지옥편, 연옥편, 천국편이 모두 '별(stelle)'로 끝나는 이유는?",
+                "options": ["우연의 일치", "별은 희망과 신성을 상징하며 세 편 모두가 궁극적으로 빛을 향한 여정임을 보여주기 때문에", "단테가 천문학자여서", "운율을 맞추기 위해"],
+                "correct_index": 1,
+                "explanation": "단테는 의도적으로 세 편 모두를 '별'로 끝냈어. 지옥을 빠져나와 보는 별, 연옥을 오르며 다가가는 별, 천국에서 도달하는 별 — 어둠에서 빛으로의 여정이 이 한 단어에 압축되어 있어."
+            }
+        ],
+        "cliffhanger": "별을 향해 올라간 단테. 베아트리체와 함께 천국의 문을 열어. 달의 하늘부터 시작되는 아홉 겹의 천국이 펼쳐져."
+    },
+
+    # ══════════════════════════════════════════
+    # 천국 (5 lessons)
+    # ══════════════════════════════════════════
+
+    # ── Lesson 19: 달에서 태양까지 (Paradiso I-XIV) ──
+    {
+        "title": "달에서 태양까지 — 천국의 첫 네 하늘",
+        "chapter": "Paradiso Lower",
+        "chapter_title": "천국 하층",
+        "part": 1, "total_parts": 1,
+        "spark": "천국의 모든 영혼은 완벽하게 행복해 — 다만 그 빛의 밝기가 다를 뿐이야.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "천국은 아홉 겹의 하늘로 구성돼 있어. 각 하늘에 행성이 하나씩 있고, 영혼들이 나타나서 단테를 맞이해. 첫 번째 하늘은 달이야.", "highlight": "아홉 겹의 하늘"},
+            {"speaker": "cosmii", "text": "달의 하늘에서 피카르다라는 여성을 만나. 수녀가 되려 했는데 강제로 결혼당한 사람이야. 서원을 지키지 못한 죄로 가장 낮은 하늘에 있어. 단테가 물어 — 「더 높은 곳에 가고 싶지 않아요?」", "highlight": "피카르다"},
+            {"speaker": "cosmii", "text": "피카르다의 대답이 천국의 핵심이야. 「우리의 뜻은 사랑의 힘에 의해 평화로워졌습니다. 우리가 가진 것 이상을 원하지 않아요.」 천국의 모든 영혼은 자기 자리에서 완벽하게 행복해. 지옥은 영원한 불만, 천국은 완벽한 만족.", "highlight": "완벽한 만족"},
+            {"speaker": "cosmii", "text": "수성의 하늘 — 명예를 위해 선을 행한 사람들. 금성의 하늘 — 사랑의 열정이 넘쳤던 영혼들. 올라갈수록 빛이 강해져. 영혼들이 점점 더 밝게 빛나.", "highlight": None},
+            {"speaker": "cosmii", "text": "네 번째, 태양의 하늘 — 지혜로운 신학자들이 모여 있어! 토마스 아퀴나스, 솔로몬... 인류 역사상 가장 위대한 지성들이야. 빛나는 영혼들이 원을 그리며 단테를 둘러싸고 춤을 춰. 지옥에서 만났던 위인들은 탄식했는데, 천국의 위인들은 춤추고 노래해.", "highlight": "춤추는 신학자들"},
+            {"speaker": "cosmii", "text": "그리고 베아트리체가 올라갈수록 점점 더 아름다워져. 빛이 강해져서 직접 보기가 힘들어져. 단테가 계속 말해 — 「그녀의 미소가 너무 밝아서 눈이 타버릴 것 같다.」 사랑이 빛으로 표현되는 거야.", "highlight": "베아트리체의 미소"}
+        ],
+        "quizzes": [
+            {
+                "question": "피카르다가 「더 높은 곳을 원하지 않는다」고 말한 것이 의미하는 바는?",
+                "options": ["포기한 것", "천국의 모든 영혼은 자기 자리에서 완벽하게 행복하며 불만이 없다는 천국의 본질", "겸손의 미덕", "올라갈 수 없어서"],
+                "correct_index": 1,
+                "explanation": "이것이 천국의 핵심 원리야. 모든 영혼이 자기 자리에서 완벽한 행복을 느껴. '더 원한다'는 개념 자체가 없어. 지옥이 영원한 불만이라면, 천국은 완벽한 만족이야."
+            },
+            {
+                "question": "천국에서 영혼들이 빛으로 나타나는 이유는?",
+                "options": ["물리적 현상이라서", "신의 사랑을 반영하며 높은 하늘에 있을수록 더 밝게 빛나기 때문에", "단테의 눈이 나빠서", "장식적 효과"],
+                "correct_index": 1,
+                "explanation": "천국의 영혼들은 신의 사랑을 거울처럼 반영해. 더 완전하게 반영하는 영혼일수록 더 밝게 빛나는 거야. 빛의 밝기가 곧 사랑의 깊이인 셈이야."
+            }
+        ],
+        "cliffhanger": "다섯 번째 하늘, 화성에서 단테는 가족의 비밀을 알게 돼 — 증조할아버지가 나타나 단테의 미래를 예언해."
+    },
+
+    # ── Lesson 20: 화성에서 토성까지 (Paradiso XV-XXII) ──
+    {
+        "title": "화성에서 토성까지 — 전사, 정의, 명상",
+        "chapter": "Paradiso Middle",
+        "chapter_title": "천국 중층",
+        "part": 1, "total_parts": 1,
+        "spark": "화성에서 만난 단테의 증조할아버지 카치아귀다. 그가 예언하는 단테의 미래 — 「다른 사람의 빵이 얼마나 짠지 알게 될 것이다.」",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "다섯 번째 하늘, 화성이야. 신앙을 위해 싸운 전사들이 있어. 빛나는 영혼들이 거대한 십자가 모양을 만들어 — 그 십자가에서 찬송가가 울려 퍼져. 아름다워서 단테가 넋을 잃어.", "highlight": "빛의 십자가"},
+            {"speaker": "cosmii", "text": "십자가에서 한 영혼이 빠르게 다가와. 「오, 나의 피여! 오, 넘치도록 부어진 하나님의 은총이여!」 카치아귀다 — 단테의 증조할아버지야! 150년 전 십자군 전쟁에서 전사한 사람이야.", "highlight": "카치아귀다"},
+            {"speaker": "cosmii", "text": "카치아귀다가 옛날 피렌체를 회상해. 소박하고 정직했던 시절. 그리고 지금의 부패한 피렌체를 한탄해. 여기서 단테의 개인적 아픔이 나와 — 카치아귀다가 단테의 추방을 예언해.", "highlight": None},
+            {"speaker": "cosmii", "text": "「너는 네가 가장 사랑하는 것들을 떠나게 될 것이다. 다른 사람의 집 계단이 얼마나 딛기 힘든지, 다른 사람의 빵이 얼마나 짠지 알게 될 것이다.」 고향에서 쫓겨나 남의 집에 얹혀살게 된다는 거야. 실제 단테의 삶이 그랬어.", "highlight": "다른 사람의 빵"},
+            {"speaker": "cosmii", "text": "여섯 번째 하늘은 목성, 정의로운 통치자들의 하늘이야. 영혼들이 모여서 거대한 독수리 형상을 만들어! 이 독수리가 하나의 목소리로 정의란 무엇인지 말해 — 개별 영혼이 아니라 하나의 공동체로 말하는 거야.", "highlight": "정의의 독수리"},
+            {"speaker": "cosmii", "text": "일곱 번째 하늘은 토성, 명상가들의 하늘이야. 황금 사다리가 하늘 높이 뻗어 있어 — 끝이 안 보여. 성 베드로 다미아누스 같은 명상의 대가들이 여기 있어. 여기서부터 소리가 사라져. 천국이 너무 높아서 음악조차 초월하는 영역이야.", "highlight": "황금 사다리"}
+        ],
+        "quizzes": [
+            {
+                "question": "카치아귀다의 예언 「다른 사람의 빵이 얼마나 짠지」가 의미하는 것은?",
+                "options": ["빵이 맛없다는 뜻", "고향에서 추방되어 남의 도움으로 살아야 하는 망명의 쓰라림", "소금이 비싸다는 뜻", "건강 조언"],
+                "correct_index": 1,
+                "explanation": "이 예언은 단테의 실제 삶을 그대로 반영해. 피렌체에서 추방당해 이탈리아를 떠돌며 귀족들의 도움으로 살았던 단테. '남의 빵의 짠맛'은 의지하며 사는 쓸쓸함과 수치를 표현한 거야."
+            },
+            {
+                "question": "목성의 하늘에서 영혼들이 독수리 형상을 이루어 '하나의 목소리'로 말하는 의미는?",
+                "options": ["독수리가 로마의 상징이라서", "정의는 개인이 아닌 공동체가 함께 이룰 때 완성된다는 의미", "새를 좋아해서", "장식적 효과"],
+                "correct_index": 1,
+                "explanation": "개별 영혼이 아니라 하나의 독수리로 합쳐져 말한다는 건, 진정한 정의는 개인의 판단이 아니라 공동체의 조화 속에서 실현된다는 단테의 메시지야."
+            }
+        ],
+        "cliffhanger": "여덟 번째 하늘, 항성천. 여기서 단테는 졸업 시험을 치러 — 성 베드로, 성 야고보, 성 요한이 직접 출제하는 시험이야."
+    },
+
+    # ── Lesson 21: 항성천의 시험 (Paradiso XXIII-XXVI) ──
+    {
+        "title": "항성천의 시험 — 믿음, 소망, 사랑",
+        "chapter": "Paradiso Upper",
+        "chapter_title": "천국 상층",
+        "part": 1, "total_parts": 1,
+        "spark": "천국의 가장 높은 곳에서 성인 세 명이 단테를 시험해 — 주제는 믿음, 소망, 사랑. 영적 여정의 졸업 시험이야.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "여덟 번째 하늘, 항성천이야. 개별 행성이 아니라 별들의 세계야. 여기서 엄청난 이벤트가 벌어져 — 성인 세 명이 단테에게 시험을 출제해. 마치 영적 여정의 박사 논문 구술시험이야!", "highlight": "영적 구술시험"},
+            {"speaker": "cosmii", "text": "첫 번째 시험관 — 성 베드로. 주제는 '믿음'이야. 「믿음이란 무엇인가?」 단테가 대답해 — 「믿음은 바라는 것들의 실체이며, 보이지 않는 것들의 증거입니다.」 성 베드로가 만족해서 단테 주위를 세 바퀴 돌아. 합격!", "highlight": "성 베드로의 시험"},
+            {"speaker": "cosmii", "text": "두 번째 시험관 — 성 야고보. 주제는 '소망'이야. 「소망이란 무엇이며, 네 안에 그것이 어떻게 빛나고 있는가?」 단테가 대답해 — 소망은 미래의 영광에 대한 확실한 기대라고. 합격!", "highlight": "성 야고보의 시험"},
+            {"speaker": "cosmii", "text": "세 번째 시험관 — 성 요한. 주제는 '사랑'이야. 가장 중요한 시험이지. 「네 사랑은 어디에서 비롯되었는가?」 단테가 대답해 — 모든 선의 근원인 하나님, 그리고 이 세상의 아름다운 것들이 신의 사랑을 반영하고 있음을 깨달았기 때문이라고.", "highlight": "성 요한의 시험"},
+            {"speaker": "cosmii", "text": "세 시험을 모두 통과한 후 — 아담이 나타나! 인류 최초의 인간이야. 에덴동산에서의 경험을 이야기해. 낙원에서 보낸 시간이 겨우 여섯 시간이었다고. 최초의 언어에 대해서도 말해줘.", "highlight": "아담의 등장"},
+            {"speaker": "cosmii", "text": "이 시험의 의미가 뭘까? 지옥은 죄를 '보는' 여정, 연옥은 죄를 '씻는' 여정이었어. 천국의 이 시험은 — 배운 것을 증명하는 여정이야. 믿음, 소망, 사랑 — 기독교 세 핵심 덕목을 단테가 완전히 체화했는지 확인하는 거야.", "highlight": "여정의 증명"}
+        ],
+        "quizzes": [
+            {
+                "question": "천국의 세 시험이 믿음→소망→사랑 순서인 이유는?",
+                "options": ["알파벳 순서", "믿음이 기초가 되고 소망이 이어지며 사랑이 가장 위대한 덕목이기에 마지막으로 시험하는 것", "시험관의 나이순", "특별한 이유 없음"],
+                "correct_index": 1,
+                "explanation": "고린도전서에 「믿음, 소망, 사랑, 이 세 가지는 항상 있을 것인데 그 중의 제일은 사랑이라」고 써 있어. 가장 중요한 사랑이 마지막 시험인 건 클라이맥스를 위해서야."
+            },
+            {
+                "question": "단테가 '사랑의 근원'으로 답한 것은?",
+                "options": ["베아트리체", "모든 선의 근원인 하나님과 세상의 아름다운 것들이 신의 사랑을 반영한다는 깨달음", "가족", "이탈리아"],
+                "correct_index": 1,
+                "explanation": "단테의 사랑은 개인적 감정에서 시작하지만 궁극적으로는 신의 사랑을 인식하는 것으로 확장돼. 세상의 모든 아름다움이 신의 사랑의 반영이라는 깨달음이 핵심이야."
+            }
+        ],
+        "cliffhanger": "아홉 번째 하늘을 지나 — 드디어 모든 하늘 너머의 세계, 지고천. 거기서 단테는 영원한 빛의 장미를 본다."
+    },
+
+    # ── Lesson 22: 천상의 장미 (Paradiso XXVII-XXXI) ──
+    {
+        "title": "천상의 장미 — 모든 축복받은 영혼이 모인 곳",
+        "chapter": "Empyrean",
+        "chapter_title": "지고천",
+        "part": 1, "total_parts": 2,
+        "spark": "모든 하늘 너머, 지고천. 축복받은 영혼들이 거대한 장미 모양의 원형극장에 모여 있고, 그 중심에 — 눈이 멀 정도의 빛이 있어.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "아홉 번째 하늘, 원동천을 지나. 여기는 물질 세계의 끝이야. 그 너머에 — 지고천, 엠피레오가 있어. 시간도 공간도 초월한 순수한 빛의 세계야.", "highlight": "지고천"},
+            {"speaker": "cosmii", "text": "단테가 지고천에 들어서는 순간 — 빛의 강이 나타나. 빛이 물처럼 흘러. 그 강 양쪽에 보석 같은 꽃들이 피어 있고, 불꽃이 꽃 사이를 날아다녀. 단테가 빛의 강에 눈을 담그면 — 세상이 변해.", "highlight": "빛의 강"},
+            {"speaker": "cosmii", "text": "빛의 강이 거대한 원으로 변해. 그 원이 — 천상의 장미야. 축복받은 영혼들이 거대한 장미 모양의 원형극장에 앉아 있어. 수천, 수만의 영혼이 빛으로 빛나면서 하나의 완벽한 꽃 모양을 이루고 있어.", "highlight": "천상의 장미"},
+            {"speaker": "cosmii", "text": "그리고 여기서 또 한 번의 이별이 와. 베아트리체가 조용히 자기 자리로 돌아가. 단테가 올려다보면 — 장미의 한 꽃잎에 베아트리체가 앉아서 미소 짓고 있어. 그녀도 더 이상 갈 수 없는 거야.", "highlight": "베아트리체의 이별"},
+            {"speaker": "cosmii", "text": "새로운 안내자가 나타나 — 성 베르나르도. 성모 마리아에 대한 헌신으로 유명한 수도사야. 왜 베르나르도냐면 — 마지막 단계, 신을 직접 보기 위해서는 사랑을 넘어서 기도와 은총이 필요하거든.", "highlight": "성 베르나르도"},
+            {"speaker": "cosmii", "text": "이성(베르길리우스) → 사랑(베아트리체) → 은총(성 베르나르도). 세 안내자의 교체가 신곡 전체의 메시지를 보여줘. 이성만으로는 한계가 있고, 사랑으로 더 높이 갈 수 있지만, 궁극적으로 신을 보기 위해서는 은총이 필요하다는 거야.", "highlight": "세 안내자"}
+        ],
+        "quizzes": [
+            {
+                "question": "천상의 장미가 '장미' 형태인 것의 의미는?",
+                "options": ["단테가 꽃을 좋아해서", "축복받은 모든 영혼이 하나의 아름다운 공동체를 이루며 중심의 빛을 향해 열려 있음을 상징", "중세에 장미가 비싸서", "특별한 의미 없음"],
+                "correct_index": 1,
+                "explanation": "장미의 꽃잎들이 중심을 향해 열려 있듯, 축복받은 영혼들이 신의 빛을 중심으로 하나의 완벽한 공동체를 이루고 있어. 개별 영혼이면서 동시에 하나인 거야."
+            },
+            {
+                "question": "신곡의 세 안내자 — 베르길리우스, 베아트리체, 성 베르나르도 — 가 상징하는 것은?",
+                "options": ["과거, 현재, 미래", "이성, 사랑, 은총 — 인간이 신에게 도달하는 세 단계", "세 가지 학문", "세 가지 언어"],
+                "correct_index": 1,
+                "explanation": "이성으로 지옥·연옥을 통과하고, 사랑으로 천국을 오르고, 은총으로 신을 직접 보는 단계까지. 이 세 단계가 신곡 전체의 구조야."
+            }
+        ],
+        "cliffhanger": "모든 안내자의 인도를 마치고, 단테는 마침내 신의 얼굴을 본다. 700년 전, 인간이 신을 묘사한 가장 경이로운 시도."
+    },
+
+    # ── Lesson 23: 신의 얼굴 (Paradiso XXXII-XXXIII) ──
+    {
+        "title": "신의 얼굴 — 모든 여정의 끝",
+        "chapter": "Empyrean",
+        "chapter_title": "지고천",
+        "part": 2, "total_parts": 2,
+        "spark": "세 개의 빛나는 원, 그 안에 인간의 얼굴. 단테는 본 것을 설명하려 하지만 — 언어가 무너져.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "성 베르나르도가 성모 마리아에게 기도해. 신곡에서 가장 아름다운 기도 중 하나야. 「처녀이면서 어머니인 분이여, 당신 아들의 딸이여」로 시작해. 모순적인 표현인데, 그 모순이 신비의 핵심이야. 마리아가 기도를 들어줘 — 단테의 눈이 열려.", "highlight": "마리아에게의 기도"},
+            {"speaker": "cosmii", "text": "그리고 단테가 드디어 본다 — 세 개의 빛나는 원이야. 서로 다른 색인데 같은 크기야. 삼위일체 — 성부, 성자, 성령. 하나이면서 셋이고, 셋이면서 하나인 신비.", "highlight": "세 개의 원"},
+            {"speaker": "cosmii", "text": "두 번째 원 안에서 — 인간의 얼굴이 보여. 성육신이야. 신이 인간이 되었다는 기독교의 핵심 교리가 빛의 이미지로 나타난 거야. 수학자가 원의 넓이를 구하려는 것처럼, 아무리 해도 완전히 이해할 수 없어.", "highlight": "빛 속의 인간 얼굴"},
+            {"speaker": "cosmii", "text": "그리고 단테의 언어가 무너져. 「보았으나 말할 수 없다」 — 이것이 가장 정직한 고백이야. 14,000행이 넘는 시를 써온 천재적 시인이, 마지막 순간에 '언어로는 표현할 수 없다'고 항복하는 거야.", "highlight": "언어의 한계"},
+            {"speaker": "cosmii", "text": "마지막 순간, 단테의 의지와 욕망이 — 균일하게 회전하는 바퀴처럼 — 하나의 힘에 의해 움직여져. 그리고 신곡 100칸토, 14,233행의 마지막 줄. 「태양과 다른 별들을 움직이는 사랑(L'amor che move il sole e l'altre stelle).」", "highlight": "마지막 한 줄"},
+            {"speaker": "cosmii", "text": "이 한 줄이 모든 걸 말해. 우주를 움직이는 힘은 사랑이야. 어두운 숲에서 시작해서, 지옥의 밑바닥을 통과하고, 연옥의 불을 지나고, 천국의 별빛을 올라서 — 마침내 이 한 단어에 도달한 거야. 사랑. 100칸토의 여정이 이 한 줄로 완성돼. 함께 읽어줘서 진심으로 고마워!", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "단테가 신을 보고 '언어로 표현할 수 없다'고 한 것의 의미는?",
+                "options": ["단테의 실력이 부족해서", "인간의 언어로는 담을 수 없는 경험이 존재한다는 정직한 고백이자 역설적으로 그 경험의 위대함을 보여주는 것", "글자 수 제한 때문에", "검열 때문에"],
+                "correct_index": 1,
+                "explanation": "14,000행이 넘는 시를 써온 천재 시인이 마지막에 '말할 수 없다'고 하는 것 자체가, 그 경험이 얼마나 언어를 초월하는지를 역설적으로 증명해. 침묵이 가장 강력한 표현이 되는 순간이야."
+            },
+            {
+                "question": "신곡의 마지막 줄 '태양과 다른 별들을 움직이는 사랑'이 의미하는 것은?",
+                "options": ["태양계의 물리법칙", "우주를 움직이는 근본적 힘은 사랑이며 단테의 100칸토 여정 전체가 이 깨달음을 위한 것이었다는 것", "별자리 이야기", "천문학 지식"],
+                "correct_index": 1,
+                "explanation": "어두운 숲에서 시작한 여정이 이 한 줄에 도달해. 지옥의 어둠, 연옥의 고통, 천국의 빛 — 모든 것을 관통하는 궁극의 힘은 '사랑'이라는 거야. 700년간 읽히는 이유가 바로 이 한 줄에 있어."
+            }
+        ],
+        "cliffhanger": ""
+    },
+]
+
+
+# ═══════════════════════════════════════════════════════════════════
+# English translations for new lessons — natural, casual Cosmii tone
+# ═══════════════════════════════════════════════════════════════════
+
+NEW_TRANSLATIONS_EN = {
+    # ── Lesson 12: Ulysses' Last Voyage ──
+    0: {
+        "title": "Ulysses' Last Voyage — The Forbidden Thirst for Knowledge",
+        "chapter_title": "Inferno Depths",
+        "spark": "'You were not made to live as brutes, but to pursue virtue and knowledge.' — The most beautiful speech ever delivered in Hell.",
+        "cliffhanger": "Below Circle 8, the frozen depths of Circle 9. There, Dante will hear the cruelest story in all of Hell.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Deep in Circle 8 — the circle of fraud — there's a special ditch for 'evil counselors.' Here the damned are wrapped in flames — you can't see their bodies, only flickering fire. One split flame sways back and forth... and inside it is Ulysses.", "highlight": "evil counselors"},
+            {"speaker": "cosmii", "text": "Ulysses — aka Odysseus. The guy who built the Trojan Horse! The cleverest hero in all of Greek mythology. So why is he in Hell? Because he used his brilliant gift for persuasion to manipulate and deceive people. Genius put to terrible use.", "highlight": "Ulysses"},
+            {"speaker": "cosmii", "text": "Dante asks him to tell his story. Ulysses begins — after the Trojan War, he could have gone home. But he didn't. He turned his ship around with his aging crew and sailed toward the unknown. Adventure called louder than home.", "highlight": None},
+            {"speaker": "cosmii", "text": "And here's the speech he gave his men: 'Brothers! We've passed through ten thousand dangers to reach the West. You were not made to live as brutes, but to pursue virtue and knowledge!' This line, written 700 years ago, still gives me chills every single time.", "highlight": "not made to live as brutes"},
+            {"speaker": "cosmii", "text": "His crew was so moved that they sailed past the Pillars of Hercules — the Strait of Gibraltar, the forbidden boundary humans weren't supposed to cross. Three months out, they spotted a massive mountain — that's Mount Purgatory! But before they could celebrate, a whirlpool swallowed the ship. Everyone drowned.", "highlight": "crossing the forbidden boundary"},
+            {"speaker": "cosmii", "text": "This is where Dante's genius shines. Ulysses' speech is genuinely beautiful. It moves us. But that's exactly his sin — he used beautiful words to lead people to their deaths. The thirst for knowledge is noble, but when it crosses forbidden boundaries, destruction follows.", "highlight": "beauty and destruction coexist"},
+        ],
+        "quizzes": [
+            {
+                "question": "Why is Ulysses in Circle 8 of Hell?",
+                "options": ["He fought too many wars", "As an 'evil counselor' who used his brilliant eloquence to deceive people and lead them to death", "He crossed the ocean", "He blasphemed against God"],
+                "correct_index": 1,
+                "explanation": "Ulysses' sin wasn't simple lying — he used his genius-level persuasion to inspire his crew into a fatal voyage. The beauty of his words masked deadly deception. That's what makes an 'evil counselor.'"
+            },
+            {
+                "question": "What makes Ulysses' speech so remarkable?",
+                "options": ["It's a historically documented speech", "The speech itself is beautiful and inspiring, but it's also the very tool that led his men to their doom", "It's the shortest speech in the poem", "It contains praise for God"],
+                "correct_index": 1,
+                "explanation": "'Don't live as brutes — pursue knowledge!' — those words move even us, the readers. But that beautiful speech is exactly what led his crew across a forbidden boundary to their deaths. Beauty and destruction coexist in one sentence."
+            },
+        ],
+    },
+
+    # ── Lesson 13: Count Ugolino ──
+    1: {
+        "title": "Count Ugolino — The Cruelest Story in All of Hell",
+        "chapter_title": "Inferno Depths",
+        "spark": "In the frozen pit of Hell's lowest depths, one man gnaws eternally on another man's skull. Once you hear why — the tears won't stop.",
+        "cliffhanger": "Leaving Hell's darkness behind, Dante heads to Purgatory. What awaits him — dawn light and a great mountain rising from the sea.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Circle 9 — the frozen lake of Cocytus. The traitors' Hell. In that ice, Dante witnesses something horrific: one man gnawing on the back of another man's skull. Like an animal.", "highlight": "the ice of Cocytus"},
+            {"speaker": "cosmii", "text": "Dante approaches and asks: 'Why are you doing this?' The gnawing man lifts his head. Blood drips from his mouth. 'If you hear my story, you will weep — and understand.' This is Count Ugolino. And the skull he's gnawing? It belongs to Archbishop Ruggieri — the man who betrayed him.", "highlight": "Count Ugolino"},
+            {"speaker": "cosmii", "text": "Ugolino was a powerful lord in Pisa. His political rival, Archbishop Ruggieri, betrayed him and had him locked in a tower. Not alone — with his two sons and two grandsons, four young children total. The door was nailed shut. No food was sent in.", "highlight": "the sealed tower"},
+            {"speaker": "cosmii", "text": "Days passed. The children cried from hunger. Ugolino could do nothing. One of his sons said: 'Father, eat us. You gave us this wretched flesh — now take it back.' That line will rip your heart straight out of your chest.", "highlight": "the children's plea"},
+            {"speaker": "cosmii", "text": "One by one, the children died. Right before his eyes. Ugolino, already blind, groped around calling their names. And then the final line: 'Then hunger proved more powerful than grief.' That single sentence has been debated for 700 years.", "highlight": "hunger proved more powerful"},
+            {"speaker": "cosmii", "text": "Did he eat his children's bodies? Or did he simply die of starvation because grief alone couldn't kill him? Dante never gives us the answer. And now Ugolino gnaws on Ruggieri's skull for all eternity. The cruelty of Hell's punishment isn't the point here — the cruelty that humans inflict on each other is.", "highlight": "the unanswered question"},
+        ],
+        "quizzes": [
+            {
+                "question": "Why has Ugolino's final line — 'Then hunger proved more powerful than grief' — been debated for 700 years?",
+                "options": ["Translation difficulties", "It's ambiguous whether he starved to death or was driven to eat his children's bodies", "It has a grammatical error", "Dante wrote it by accident"],
+                "correct_index": 1,
+                "explanation": "The line is intentionally ambiguous. Did hunger kill him because grief couldn't? Or did hunger drive him to... something unspeakable? Dante never tells us. And that deliberate silence makes it even more devastating."
+            },
+            {
+                "question": "What makes the Ugolino episode so powerful within the Divine Comedy?",
+                "options": ["It's the shortest episode", "The real horror isn't Hell's punishment but the cruelty humans inflict on each other", "It's a comedic scene", "Dante experienced it firsthand"],
+                "correct_index": 1,
+                "explanation": "Ugolino's suffering doesn't come from Hell's torments — it comes from being betrayed by his rival and watching his children die before his eyes. The real hell was what humans did to him. Reality was worse than Hell."
+            },
+        ],
+    },
+
+    # ── Lesson 14: Before Purgatory's Gate ──
+    2: {
+        "title": "Before Purgatory's Gate — A New Beginning",
+        "chapter_title": "Lower Purgatory",
+        "spark": "A new world unfolds before Dante — a great mountain rising from the sea, and a surprising figure guarding its entrance.",
+        "cliffhanger": "Finally past the gate and climbing onto the first terrace. The proud are carrying massive stones on their backs.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Climbing out of Hell's exit — it's dawn! Venus is shining in the sky. Hell was eternal darkness, remember? Here there's sky, wind, light. Dante feels like he's been born again.", "highlight": "Venus at dawn"},
+            {"speaker": "cosmii", "text": "Guess who's guarding the entrance to Mount Purgatory? Cato — the defender of the Roman Republic who fought against Julius Caesar. He took his own life rather than see freedom die. But wait, he's pagan — why is he the guardian here? Because Dante saw him as someone who gave his life for freedom.", "highlight": "Cato"},
+            {"speaker": "cosmii", "text": "While waiting on the beach — a white light approaches across the water. It's a boat steered by an angel! Inside are souls arriving at Purgatory, singing hymns as they step ashore. Totally different vibe from Hell, right?", "highlight": "the angel's boat"},
+            {"speaker": "cosmii", "text": "But you can't climb the mountain just yet. Before the gate there's 'Ante-Purgatory' — a waiting zone for souls who repented too late. People who only managed to repent at the very last moment of their lives.", "highlight": "Ante-Purgatory"},
+            {"speaker": "cosmii", "text": "There are the excommunicated, the negligent, and the 'Valley of the Princes' — kings who were so busy ruling their kingdoms that they neglected their souls. All that power did nothing for their spiritual salvation.", "highlight": "Valley of the Princes"},
+            {"speaker": "cosmii", "text": "Here's the key message: 'You must wait as long as you made others wait.' If you put off repentance in life, you wait that same amount of time at Purgatory's gate. The things you procrastinate on always come back around.", "highlight": "wait as long as you delayed"},
+        ],
+        "quizzes": [
+            {
+                "question": "Why must souls in Ante-Purgatory wait before entering?",
+                "options": ["Not enough room", "They must wait as long as they delayed repentance in life", "They're being punished", "The angel won't allow it"],
+                "correct_index": 1,
+                "explanation": "Purgatory's principle: you wait as long as you procrastinated. Souls who only repented at the last moment must spend that same delay waiting at the gate. Procrastination has its price."
+            },
+            {
+                "question": "Why is pagan Cato the guardian of Purgatory?",
+                "options": ["He was the strongest warrior", "He gave his life for freedom, so Dante saw him as the symbol of moral liberty", "He converted to Christianity", "He was Dante's friend"],
+                "correct_index": 1,
+                "explanation": "Cato sacrificed his life to protect republican freedom. Despite being pagan, Dante placed him at Purgatory's entrance as the symbol of free will — because Purgatory is where souls freely choose their own purification."
+            },
+        ],
+    },
+
+    # ── Lesson 15: Pride to Wrath ──
+    3: {
+        "title": "From Pride to Wrath — Purgatory Terraces 1 Through 3",
+        "chapter_title": "Middle Purgatory",
+        "spark": "In Hell you 'suffer' punishment. In Purgatory you 'choose' it. That's the game-changing difference.",
+        "cliffhanger": "From terrace 4 onward, more sins await. The slothful, the greedy, and at the end — a wall of fire.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Purgatory's first terrace — pride. The souls here are carrying enormously heavy stones on their backs, bent over at a 90-degree angle. They can't look up at the sky. People who lived with their heads held too high are now forced to bow.", "highlight": "the weight of pride"},
+            {"speaker": "cosmii", "text": "Here's the game-changer compared to Hell. In Hell, punishment is inflicted ON you. In Purgatory, souls voluntarily endure it. Why? Because passing through this suffering means they get to reach Paradise. This is pain with a purpose. Pain with hope.", "highlight": "voluntary choice"},
+            {"speaker": "cosmii", "text": "The ground beneath their feet is carved with beautiful marble reliefs — examples of humility. The Virgin Mary's humility. King David dancing before God. But you can only see this art if you bow your head. The opposite of pride — humility — carved right where only the humble can see it.", "highlight": "marble humility"},
+            {"speaker": "cosmii", "text": "Terrace 2 is envy. The souls here have their eyelids sewn shut with iron wire. They literally cannot see. People who spent their lives coveting what others had now can't see anything at all. They sit leaning on each other's shoulders, praying together.", "highlight": "eyes sewn shut"},
+            {"speaker": "cosmii", "text": "Terrace 3 is wrath. It's filled with impossibly thick smoke — you can't see a hand in front of your face. People who were blinded by rage now literally can't see through the smoke. And in that darkness, they're singing prayers of peace.", "highlight": "the smoke of wrath"},
+            {"speaker": "cosmii", "text": "See the pattern? Every punishment in Purgatory is an inversion. Pride → forced to bow. Envy → can't see. Wrath → blinded by smoke. And all of it is healing. Like painful surgery at a hospital — you endure it because you know you'll recover.", "highlight": "the inversion principle"},
+        ],
+        "quizzes": [
+            {
+                "question": "Why do souls in Purgatory endure their suffering?",
+                "options": ["They have no choice", "They voluntarily choose it because passing through leads to Paradise", "It hurts less than Hell", "It ends automatically over time"],
+                "correct_index": 1,
+                "explanation": "Hell's suffering is purposeless and eternal. Purgatory's suffering is a voluntary choice toward purification. It has an end and a goal — that's why it's bearable. The difference is hope."
+            },
+            {
+                "question": "Why are the envious souls' eyes sewn shut with wire on terrace 2?",
+                "options": ["As punishment", "They spent their lives coveting others' possessions, so now they can't see and must learn to rely on each other", "They're afraid of the dark", "To protect their eyes"],
+                "correct_index": 1,
+                "explanation": "Eyes that spent a lifetime looking enviously at what others had are now sealed shut. Without sight, they must lean on each other — and in doing so, they learn the opposite of envy: brotherhood."
+            },
+        ],
+    },
+
+    # ── Lesson 16: Sloth to Lust ──
+    4: {
+        "title": "From Sloth to Lust — Purgatory Terraces 4 Through 7",
+        "chapter_title": "Upper Purgatory",
+        "spark": "The second half of the mountain. The lazy run endlessly, the greedy lie face-down weeping, and at the very end — a wall of fire to walk through.",
+        "cliffhanger": "In the Earthly Paradise, Virgil quietly says goodbye. And out of the light, Beatrice appears — but this is no tender reunion.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Terrace 4 is sloth. What are the lazy souls doing? Running flat-out without stopping! Shouting: 'Faster! Faster! We can't waste any more time — we were lazy with love!' The opposite of laziness — constant motion — is how they purify themselves.", "highlight": "the running slothful"},
+            {"speaker": "cosmii", "text": "Terrace 5 is greed. Souls lie completely face-down on the ground, noses in the dirt. People who only looked down at material things in life now can't look up at the sky. They're weeping while reciting psalms.", "highlight": "the prostrate greedy"},
+            {"speaker": "cosmii", "text": "Here Dante meets the poet Statius! A Roman poet who's just finished cleansing his sins and is about to ascend to Paradise. The twist? He converted to Christianity after reading Virgil's poetry. The master's work saved the student.", "highlight": "Statius"},
+            {"speaker": "cosmii", "text": "Terrace 6 is gluttony. Fragrant fruit trees line the path, but the souls can't reach them. They're starving — the food is right there — but they can't eat. The souls are so emaciated their eye sockets look like rings with the gems missing.", "highlight": "unreachable fruit"},
+            {"speaker": "cosmii", "text": "Terrace 7, the final one — lust. This is a wall of fire. You have to walk straight through the flames. Dante is frozen with fear, can't take a single step. Virgil says: 'Beatrice is on the other side of this fire.' That one sentence sends Dante straight into the blaze.", "highlight": "the wall of fire"},
+            {"speaker": "cosmii", "text": "Every terrace cleared! When they reach the mountain's summit — it's the Garden of Eden. The Earthly Paradise. Flowers blooming, birds singing, a perfect forest. And here, something that will change Dante's life: a farewell and a reunion happen at the same time.", "highlight": "the Earthly Paradise"},
+        ],
+        "quizzes": [
+            {
+                "question": "What finally made Dante walk through the wall of fire on the last terrace?",
+                "options": ["The fire wasn't hot", "Virgil told him 'Beatrice is on the other side'", "There was no other path", "An angel helped him"],
+                "correct_index": 1,
+                "explanation": "Love conquered fear. The hope of seeing Beatrice again overpowered the terror of fire. That's Purgatory's core message in one scene — love gives you the strength to endure any suffering."
+            },
+            {
+                "question": "Why are the slothful souls on terrace 4 running nonstop?",
+                "options": ["Exercise is healthy", "They were lazy in life, so the opposite — relentless motion — is how they purify themselves", "They're running away", "It's a race"],
+                "correct_index": 1,
+                "explanation": "Purgatory's punishments follow the 'inversion' principle. People who were lazy learn the opposite — passionate, tireless movement — as their path to purification."
+            },
+        ],
+    },
+
+    # ── Lesson 17: Virgil's Farewell ──
+    5: {
+        "title": "Virgil's Farewell — Where the Teacher Can Go No Further",
+        "chapter_title": "Earthly Paradise",
+        "spark": "At the summit of Purgatory, the Earthly Paradise. The teacher quietly vanishes, and Beatrice appears in a blaze of light — but she doesn't embrace Dante. She scolds him through tears.",
+        "cliffhanger": "After his tearful confession, Dante is cleansed in two rivers. One erases the memory of sin. The other restores the memory of good.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Through the wall of fire and up to the summit of Mount Purgatory — the Earthly Paradise. The Garden of Eden itself. Flowers blooming, birds singing, crystal streams flowing. Absolute perfection.", "highlight": "the Garden of Eden"},
+            {"speaker": "cosmii", "text": "But Virgil stops. This time it's really the end. 'Your will is now free, upright, and sound. You are your own crown and your own miter.' He's declaring that Dante no longer needs a teacher. Bittersweet — but it means Dante has truly grown.", "highlight": "you are your own crown"},
+            {"speaker": "cosmii", "text": "Dante turns around — and Virgil is gone. Just gone. 'Virgil! Virgil!' he cries out. No answer. The teacher who stood by his side through every horror of Hell has left without a word.", "highlight": None},
+            {"speaker": "cosmii", "text": "As tears stream down Dante's face — a procession of light descends from the sky. Flower petals rain down, angels sing. A woman dressed in green, white, and red sits upon a chariot of light. It's Beatrice!", "highlight": "the chariot of light"},
+            {"speaker": "cosmii", "text": "You'd expect a heartwarming reunion, right? Hugs, happy tears? Nope. Beatrice looks at Dante and says: 'Look at me. Yes, I am Beatrice. How dare you come here? Don't you know that to climb the mountain of happiness, you must BE happy?' She's scolding him.", "highlight": "Beatrice's rebuke"},
+            {"speaker": "cosmii", "text": "After Beatrice died, Dante strayed from the right path. He gave his heart to other women, got lost in worldly pursuits. This isn't a joyful reunion — it's a reckoning. She's harsh BECAUSE she loves him. That's what real love looks like.", "highlight": "love's severity"},
+        ],
+        "quizzes": [
+            {
+                "question": "What does Virgil's final declaration — 'You are your own crown' — mean?",
+                "options": ["He's handing Dante a kingdom", "Dante has grown enough to guide himself without a teacher", "He's expressing sadness about parting", "Dante should rule the Earthly Paradise"],
+                "correct_index": 1,
+                "explanation": "This is the completion of education. The student has grown to the point where the teacher is no longer needed. It's bittersweet, but it's the most beautiful diploma anyone could receive."
+            },
+            {
+                "question": "Why does Beatrice scold Dante immediately upon reuniting?",
+                "options": ["Dante arrived too late", "After her death Dante strayed from the right path, and she rebukes him harshly because she truly loves him", "She didn't like that he brought Virgil", "She didn't approve of his outfit"],
+                "correct_index": 1,
+                "explanation": "The reunion is a reckoning, not a hug. Beatrice is harsh because she loves him. Real love doesn't coddle — it sets you straight."
+            },
+        ],
+    },
+
+    # ── Lesson 18: The Earthly Paradise ──
+    6: {
+        "title": "The Earthly Paradise — The Rivers Lethe and Eunoe",
+        "chapter_title": "Earthly Paradise",
+        "spark": "Lethe erases the memory of sin. Eunoe restores the memory of good. Cleansed in both rivers, Dante is reborn — 'pure and ready to climb to the stars.'",
+        "cliffhanger": "Ascending toward the stars, Dante opens the gates of Paradise with Beatrice. Nine celestial spheres unfold, starting from the Moon.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Facing Beatrice's rebuke, Dante breaks down. He confesses his failings through tears. True, sincere repentance. Beatrice tells him: 'Save your tears for another blade. They are not yet enough.' Harsh, but necessary.", "highlight": "Dante's confession"},
+            {"speaker": "cosmii", "text": "Two rivers appear. The first is the river Lethe — you know it from Greek mythology as the river of forgetting? Here it washes away the memory of sin. When Dante is immersed in its waters, every memory of his wrongdoing dissolves. A clean slate.", "highlight": "Lethe — forgetting sin"},
+            {"speaker": "cosmii", "text": "The second is the river Eunoe — and this one Dante invented. It doesn't exist in Greek mythology. It means 'good memory.' Drink from this river and your memories of every good deed you've ever done come flooding back, vivid and alive. Forget the bad, remember the good.", "highlight": "Eunoe — remembering good"},
+            {"speaker": "cosmii", "text": "Isn't that genius? Complete purification isn't just erasing bad memories — it also requires restoring the good ones. You need both rivers. One alone isn't enough.", "highlight": None},
+            {"speaker": "cosmii", "text": "Between the two rivers, a massive allegorical procession passes by — symbolizing the history of the Church. A chariot, an eagle, a fox, a dragon — each representing the Church's corruption and decline. Even on the doorstep of Paradise, Dante is criticizing Church power. That courage.", "highlight": "Church critique"},
+            {"speaker": "cosmii", "text": "Cleansed in both rivers, Dante stands renewed. The very last line of Purgatorio: 'I came back pure and ready to climb to the stars.' It ends with the word 'stars.' Inferno ended with 'stars.' Purgatorio ends with 'stars.' Paradiso will end with 'stars.' All three.", "highlight": "ready for the stars"},
+        ],
+        "quizzes": [
+            {
+                "question": "Why are BOTH the rivers Lethe and Eunoe necessary?",
+                "options": ["One is hot and one is cold", "Complete purification requires both forgetting sin and restoring the memory of good", "One is for swimming, the other for drinking", "They're just decorative"],
+                "correct_index": 1,
+                "explanation": "Dante's brilliant insight: erasing the bad isn't enough. You must also restore the good. Only when both happen together is purification truly complete. The two rivers are always a set."
+            },
+            {
+                "question": "Why do Inferno, Purgatorio, and Paradiso ALL end with the word 'stars' (stelle)?",
+                "options": ["Coincidence", "Stars symbolize hope and the divine — all three books are ultimately a journey toward light", "Dante was an astronomer", "For the sake of rhyme"],
+                "correct_index": 1,
+                "explanation": "Dante deliberately ended all three books with 'stars.' The stars you see leaving Hell, the stars you approach climbing Purgatory, the stars you reach in Paradise — the entire journey from darkness to light is compressed into that one word."
+            },
+        ],
+    },
+
+    # ── Lesson 19: Moon to Sun ──
+    7: {
+        "title": "From the Moon to the Sun — The First Four Heavens",
+        "chapter_title": "Lower Paradise",
+        "spark": "Every soul in Paradise is perfectly happy — they just shine at different levels of brightness.",
+        "cliffhanger": "In the fifth heaven, Mars, Dante discovers a family secret — his great-great-grandfather appears and prophesies Dante's future.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Paradise is made up of nine concentric heavens, each containing a planet. Souls appear in each heaven to greet Dante. The first heaven? The Moon.", "highlight": "nine heavens"},
+            {"speaker": "cosmii", "text": "In the Moon's heaven, Dante meets a woman named Piccarda. She wanted to become a nun but was forced into marriage. Because she couldn't keep her vow, she's in the lowest heaven. Dante asks her: 'Don't you wish you were higher up?'", "highlight": "Piccarda"},
+            {"speaker": "cosmii", "text": "Piccarda's answer IS the key to all of Paradise: 'Our wills have been made peaceful by the power of love. We do not desire anything beyond what we have.' Every soul in Paradise is perfectly happy exactly where they are. Hell is eternal dissatisfaction. Paradise is perfect contentment.", "highlight": "perfect contentment"},
+            {"speaker": "cosmii", "text": "Mercury's heaven — souls who did good for the sake of fame. Venus's heaven — souls who burned with the passion of love. With each sphere, the light grows stronger. The souls shine brighter and brighter.", "highlight": None},
+            {"speaker": "cosmii", "text": "The fourth heaven — the Sun — is where the great theologians gather! Thomas Aquinas, Solomon... the greatest minds in human history. Luminous souls form a circle around Dante and dance. In Hell, the great figures sighed. In Paradise, they dance and sing.", "highlight": "the dancing theologians"},
+            {"speaker": "cosmii", "text": "And Beatrice grows more beautiful with every level they climb. The light intensifies until looking directly at her becomes almost impossible. Dante keeps saying: 'Her smile is so radiant it could burn my eyes.' Love expressed as pure light.", "highlight": "Beatrice's smile"},
+        ],
+        "quizzes": [
+            {
+                "question": "What does Piccarda mean when she says 'I don't desire anything higher'?",
+                "options": ["She's given up", "Every soul in Paradise is perfectly happy in its place — desiring more doesn't exist", "It's a virtue of humility", "She can't ascend"],
+                "correct_index": 1,
+                "explanation": "This is THE core principle of Paradise. Every soul experiences perfect happiness exactly where it is. The concept of 'wanting more' simply doesn't exist. If Hell is eternal dissatisfaction, Paradise is absolute fulfillment."
+            },
+            {
+                "question": "Why do souls in Paradise appear as light?",
+                "options": ["A physical phenomenon", "They reflect God's love, and the higher the heaven, the brighter they shine", "Dante's eyesight was poor", "Decorative effect"],
+                "correct_index": 1,
+                "explanation": "Souls in Paradise reflect God's love like mirrors. The more perfectly they reflect it, the brighter they shine. Brightness equals depth of love."
+            },
+        ],
+    },
+
+    # ── Lesson 20: Mars to Saturn ──
+    8: {
+        "title": "From Mars to Saturn — Warriors, Justice, Contemplation",
+        "chapter_title": "Middle Paradise",
+        "spark": "Dante's great-great-grandfather Cacciaguida, met in Mars, prophesies Dante's future: 'You will learn how salty another person's bread tastes.'",
+        "cliffhanger": "The eighth heaven — the Fixed Stars. Here Dante faces his final exams. Saints Peter, James, and John are the examiners.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "The fifth heaven — Mars. This is where warriors who fought for faith reside. Luminous souls form the shape of a massive cross — and from that cross, hymns resound. It's so beautiful Dante is speechless.", "highlight": "the cross of light"},
+            {"speaker": "cosmii", "text": "One soul rockets toward him from the cross. 'O my blood! O grace of God poured overflowing!' It's Cacciaguida — Dante's great-great-grandfather! He died in the Crusades about 150 years earlier.", "highlight": "Cacciaguida"},
+            {"speaker": "cosmii", "text": "Cacciaguida reminisces about old Florence — a simpler, more honest time. He laments the city's current corruption. And then comes Dante's deepest personal wound — Cacciaguida prophesies Dante's exile.", "highlight": None},
+            {"speaker": "cosmii", "text": "'You shall leave behind everything you love most dearly. You will learn how hard it is to climb another person's stairs, and how salty another person's bread tastes.' Exiled from home, surviving on others' charity. And that's exactly what happened to Dante in real life.", "highlight": "another person's bread"},
+            {"speaker": "cosmii", "text": "The sixth heaven is Jupiter — the heaven of just rulers. The souls assemble into the shape of a giant eagle! This eagle speaks with a single voice about what justice truly means. Not individual souls speaking, but a community speaking as one.", "highlight": "the Eagle of Justice"},
+            {"speaker": "cosmii", "text": "The seventh heaven is Saturn — the heaven of contemplatives. A golden ladder stretches upward into infinity — its top can't be seen. Saints like Peter Damian reside here. From this point, sound disappears. Paradise is so high that it transcends even music.", "highlight": "the golden ladder"},
+        ],
+        "quizzes": [
+            {
+                "question": "What does Cacciaguida's prophecy — 'how salty another person's bread tastes' — mean?",
+                "options": ["The bread is bad", "The bitterness of exile — being driven from home and surviving on others' charity", "Salt was expensive", "Health advice"],
+                "correct_index": 1,
+                "explanation": "This prophecy directly mirrors Dante's real life. Exiled from Florence, he wandered Italy living off noble patrons' generosity. 'The saltiness of another's bread' captures the loneliness and shame of depending on others."
+            },
+            {
+                "question": "What does it mean that souls in Jupiter form an eagle and speak with 'one voice'?",
+                "options": ["The eagle is Rome's symbol", "True justice is achieved not by individuals alone but by a community in harmony", "They like birds", "Decorative effect"],
+                "correct_index": 1,
+                "explanation": "Individual souls merging into one eagle that speaks with one voice means genuine justice isn't about one person's judgment — it's realized through the harmony of community. That's Dante's message."
+            },
+        ],
+    },
+
+    # ── Lesson 21: The Exams in the Fixed Stars ──
+    9: {
+        "title": "The Exams in the Fixed Stars — Faith, Hope, and Love",
+        "chapter_title": "Upper Paradise",
+        "spark": "At the highest reaches of Paradise, three saints test Dante — on faith, hope, and love. This is the PhD defense of the spiritual journey.",
+        "cliffhanger": "Past the ninth heaven — at last, the realm beyond all heavens: the Empyrean. There, Dante sees the eternal Rose of Light.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "The eighth heaven — the Fixed Stars. We're past individual planets now; this is the realm of stars themselves. And here, something huge happens: three saints give Dante an exam. Think of it as the PhD oral defense for his entire spiritual journey!", "highlight": "the spiritual PhD defense"},
+            {"speaker": "cosmii", "text": "First examiner — Saint Peter. Subject: Faith. 'What is faith?' Dante answers: 'Faith is the substance of things hoped for, the evidence of things not seen.' Quoting Hebrews directly. Saint Peter is so pleased he circles Dante three times. Pass!", "highlight": "Saint Peter's exam"},
+            {"speaker": "cosmii", "text": "Second examiner — Saint James. Subject: Hope. 'What is hope, and how does it shine within you?' Dante answers: Hope is the sure expectation of future glory. He backs it up with psalms and scripture. Pass!", "highlight": "Saint James's exam"},
+            {"speaker": "cosmii", "text": "Third examiner — Saint John. Subject: Love. The most important test. 'Where does your love come from?' Dante answers: from God, the source of all goodness, and from the realization that everything beautiful in this world reflects God's love.", "highlight": "Saint John's exam"},
+            {"speaker": "cosmii", "text": "After passing all three — Adam appears! The very first human being. He talks about his time in the Garden of Eden — he only spent six hours there before the Fall. He even discusses the first language ever spoken.", "highlight": "Adam appears"},
+            {"speaker": "cosmii", "text": "What do these exams mean? Hell was about SEEING sin. Purgatory was about CLEANSING sin. These exams in Paradise are about PROVING what you've learned. Faith, hope, love — the three theological virtues — and Dante must demonstrate he's fully internalized them all.", "highlight": "proving the journey"},
+        ],
+        "quizzes": [
+            {
+                "question": "Why are the three exams given in the order faith → hope → love?",
+                "options": ["Alphabetical order", "Faith is the foundation, hope follows, and love — the greatest virtue — comes last as the climax", "By the examiners' age", "No particular reason"],
+                "correct_index": 1,
+                "explanation": "1 Corinthians says: 'And now these three remain: faith, hope, and love. But the greatest of these is love.' Love comes last because it's the most important — the ultimate climax."
+            },
+            {
+                "question": "What did Dante identify as the 'source of love'?",
+                "options": ["Beatrice", "God as the source of all goodness, and the realization that the world's beauty reflects God's love", "Family", "Italy"],
+                "correct_index": 1,
+                "explanation": "Dante's love starts personal but expands to the cosmic. Everything beautiful in the world is a reflection of God's love — recognizing that is the core of his answer."
+            },
+        ],
+    },
+
+    # ── Lesson 22: The Celestial Rose ──
+    10: {
+        "title": "The Celestial Rose — Where All Blessed Souls Gather",
+        "chapter_title": "Empyrean",
+        "spark": "Beyond all the heavens, the Empyrean. Blessed souls sit in a vast rose-shaped amphitheater, and at its center — a point of blinding light.",
+        "cliffhanger": "With all guides' work complete, Dante finally sees the face of God. The most awe-inspiring attempt in 700 years to describe the divine.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Past the ninth heaven — the Primum Mobile — we reach the end of the material universe. Beyond it lies the Empyrean. A world of pure light that transcends time and space.", "highlight": "the Empyrean"},
+            {"speaker": "cosmii", "text": "The moment Dante enters the Empyrean — a river of light appears. Light flowing like water. On both banks, jewel-like flowers bloom and sparks dart between the petals. When Dante dips his eyes into the river of light — everything transforms.", "highlight": "the river of light"},
+            {"speaker": "cosmii", "text": "The river of light reshapes into an enormous circle. That circle is the Celestial Rose. Blessed souls sit in a vast, rose-shaped amphitheater. Tens of thousands of souls, each one shining, forming one perfect flower.", "highlight": "the Celestial Rose"},
+            {"speaker": "cosmii", "text": "And here comes another farewell. Beatrice quietly returns to her seat. Dante looks up — and there she is, on one petal of the rose, smiling down at him. Even she can go no further.", "highlight": "Beatrice's farewell"},
+            {"speaker": "cosmii", "text": "A new guide appears — Saint Bernard of Clairvaux, the monk famous for his devotion to the Virgin Mary. Why Bernard? Because this final step — directly seeing God — requires something beyond even love. It requires prayer and divine grace.", "highlight": "Saint Bernard"},
+            {"speaker": "cosmii", "text": "Reason (Virgil) → Love (Beatrice) → Grace (Saint Bernard). The succession of three guides tells the entire story of the Divine Comedy. Reason has limits; love takes you higher; but to see God, you ultimately need God's own grace.", "highlight": "three guides"},
+        ],
+        "quizzes": [
+            {
+                "question": "What does the rose shape of the Celestial Rose symbolize?",
+                "options": ["Dante liked flowers", "All blessed souls form one beautiful community opening toward the central light of God", "Roses were expensive in medieval times", "No particular meaning"],
+                "correct_index": 1,
+                "explanation": "Just as a rose's petals open toward its center, all blessed souls are oriented around the divine light at the center, forming one perfect community. Individual yet unified."
+            },
+            {
+                "question": "What do the Divine Comedy's three guides — Virgil, Beatrice, Saint Bernard — symbolize?",
+                "options": ["Past, present, future", "Reason, love, and grace — the three stages of reaching God", "Three academic disciplines", "Three languages"],
+                "correct_index": 1,
+                "explanation": "Reason (Virgil) navigates Hell and Purgatory. Love (Beatrice) ascends through Paradise. Grace (Saint Bernard) enables the final vision of God. These three stages ARE the structure of the Divine Comedy."
+            },
+        ],
+    },
+
+    # ── Lesson 23: The Face of God ──
+    11: {
+        "title": "The Face of God — The End of All Journeys",
+        "chapter_title": "Empyrean",
+        "spark": "Three shining circles, and within one — a human face. Dante tries to describe what he sees, but language itself collapses.",
+        "cliffhanger": "",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Saint Bernard prays to the Virgin Mary — one of the most beautiful prayers in all of the Comedy. It opens: 'Virgin Mother, daughter of your Son.' A paradox, but that paradox IS the heart of the mystery. Mary answers the prayer — and Dante's eyes are opened.", "highlight": "the prayer to Mary"},
+            {"speaker": "cosmii", "text": "And then Dante finally sees it — three shining circles of light. Different colors, same size. The Holy Trinity — Father, Son, Holy Spirit. One and three. Three and one. The ultimate mystery.", "highlight": "three circles"},
+            {"speaker": "cosmii", "text": "Within the second circle — a human face appears. The Incarnation. The core Christian doctrine that God became human, rendered as an image of light. Dante tries to understand it — like a mathematician trying to square the circle — but it's beyond comprehension.", "highlight": "a human face in the light"},
+            {"speaker": "cosmii", "text": "And then Dante's language breaks down. 'I saw, but I cannot tell.' This is the most honest confession in the entire poem. A genius poet who spent 14,000 lines describing everything — and at the final moment he surrenders: 'Words cannot capture this.'", "highlight": "the limits of language"},
+            {"speaker": "cosmii", "text": "In the final moment, Dante's will and desire — like a wheel spinning in perfect balance — are moved by a single force. And then comes the very last line of the entire Comedy — all 100 cantos, 14,233 lines — ending with: 'The Love that moves the sun and the other stars.'", "highlight": "the final line"},
+            {"speaker": "cosmii", "text": "That one line says everything. The force that drives the entire universe is love. Starting from a dark wood, descending to the pit of Hell, passing through Purgatory's fire, climbing through Paradise's starlight — Dante's entire journey arrives at a single word: Love. 100 cantos. One word. Thank you so, so much for reading this with me!", "highlight": None},
+        ],
+        "quizzes": [
+            {
+                "question": "What does it mean that Dante — after 14,000 lines — says 'I cannot express what I saw'?",
+                "options": ["Dante lacked skill", "Some experiences genuinely transcend human language — and his admission paradoxically proves the experience's magnitude", "He ran out of space", "Censorship"],
+                "correct_index": 1,
+                "explanation": "A genius poet who described everything for 14,000 lines admitting 'I can't say it' at the very end — that silence itself proves how far beyond words the experience is. Sometimes silence is the most powerful expression."
+            },
+            {
+                "question": "What does the final line — 'the Love that moves the sun and the other stars' — mean?",
+                "options": ["Solar system physics", "The fundamental force driving the universe is love, and Dante's entire 100-canto journey was undertaken to arrive at this realization", "A constellation story", "Astronomical knowledge"],
+                "correct_index": 1,
+                "explanation": "The journey that began in a dark wood ends here. Through Hell's darkness, Purgatory's pain, Paradise's light — the ultimate force behind it all is Love. This single line is why the poem has been read for 700 years."
+            },
+        ],
+    },
+}
+
+
+LESSONS.extend(NEW_LESSONS_KO)
+TRANSLATIONS_EN.update({12 + k: v for k, v in NEW_TRANSLATIONS_EN.items()})
 
 
 def main():

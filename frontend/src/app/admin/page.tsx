@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Upload, BookOpen, Trash2, Sparkles, RefreshCw,
+  Upload, BookOpen, Trash2, RefreshCw,
   Check, AlertCircle, Loader2, ChevronDown,
 } from "lucide-react";
 
@@ -29,7 +29,7 @@ export default function AdminPage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploadProgress, setUploadProgress] = useState<string | null>(null);
-  const [lessonProgress, setLessonProgress] = useState<string | null>(null);
+
   const [expandedBook, setExpandedBook] = useState<string | null>(null);
   const [bookLessons, setBookLessons] = useState<Record<string, LessonSummary[]>>({});
   const fileRef = useRef<HTMLInputElement>(null);
@@ -105,46 +105,6 @@ export default function AdminPage() {
     }
   };
 
-  const handleGenerateLessons = async (bookId: string) => {
-    setLessonProgress(`Generating lessons for ${bookId}...`);
-    try {
-      const res = await fetch(`${API}/admin/books/${bookId}/generate-lessons`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessions_per_chapter: 3, dialogue_parts_per_session: 6, quizzes_per_session: 2 }),
-      });
-
-      const reader = res.body?.getReader();
-      if (!reader) return;
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const text = decoder.decode(value);
-        const lines = text.split("\n").filter(Boolean);
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            try {
-              const data = JSON.parse(line.slice(6));
-              if (data.lessons_generated) {
-                setLessonProgress(`Generated ${data.lessons_generated} lessons`);
-              }
-              if (data.status === "complete") {
-                setLessonProgress(null);
-                fetchBookLessons(bookId);
-              }
-            } catch {}
-          }
-        }
-      }
-    } catch (e) {
-      console.error("Lesson generation failed:", e);
-      setLessonProgress("Generation failed");
-      setTimeout(() => setLessonProgress(null), 3000);
-    }
-  };
-
   const fetchBookLessons = async (bookId: string) => {
     try {
       const res = await fetch(`${API}/admin/books/${bookId}/lessons`);
@@ -197,20 +157,6 @@ export default function AdminPage() {
         </div>
 
         {/* Status banners */}
-        <AnimatePresence>
-          {lessonProgress && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="mb-6 p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center gap-3"
-            >
-              <Loader2 className="w-4 h-4 animate-spin text-indigo-400" />
-              <span className="text-indigo-300">{lessonProgress}</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* Book list */}
         {loading ? (
           <div className="flex items-center justify-center py-32">
@@ -249,13 +195,6 @@ export default function AdminPage() {
                   {/* Actions */}
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => handleGenerateLessons(book.id)}
-                      className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/20 transition-colors"
-                      title="Generate lessons"
-                    >
-                      <Sparkles className="w-4 h-4" />
-                    </button>
-                    <button
                       onClick={() => toggleExpand(book.id)}
                       className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-white/80 transition-colors"
                       title="View lessons"
@@ -291,9 +230,7 @@ export default function AdminPage() {
                         ) : bookLessons[book.id].length === 0 ? (
                           <div className="text-white/30 text-sm py-4 flex items-center gap-2">
                             <AlertCircle className="w-4 h-4" />
-                            No lessons yet. Click
-                            <Sparkles className="w-3 h-3 text-indigo-400" />
-                            to generate.
+                            No lessons yet.
                           </div>
                         ) : (
                           bookLessons[book.id].map((lesson, i) => (
