@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useRef, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useMemo, useRef, useState, useEffect, useCallback } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, TrackballControls } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
@@ -182,40 +182,9 @@ function BookStar({
     }
   });
 
-  const pointerStart = useRef<{ x: number; y: number; time: number } | null>(null);
-
-  const handlePointerDown = (e: THREE.Event & { clientX?: number; clientY?: number; nativeEvent?: PointerEvent }) => {
-    setPressed(true);
-    const evt = e.nativeEvent ?? e;
-    pointerStart.current = {
-      x: (evt as PointerEvent).clientX ?? 0,
-      y: (evt as PointerEvent).clientY ?? 0,
-      time: performance.now(),
-    };
-  };
-
-  const handlePointerUp = (e: THREE.Event & { clientX?: number; clientY?: number; nativeEvent?: PointerEvent; stopPropagation: () => void }) => {
-    setPressed(false);
-    if (!pointerStart.current) return;
-    const evt = e.nativeEvent ?? e;
-    const dx = ((evt as PointerEvent).clientX ?? 0) - pointerStart.current.x;
-    const dy = ((evt as PointerEvent).clientY ?? 0) - pointerStart.current.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    const elapsed = performance.now() - pointerStart.current.time;
-    pointerStart.current = null;
-    if (dist < 10 && elapsed < 400) {
-      e.stopPropagation();
-      pressTime.current = performance.now() / 1000;
-      onClick();
-    }
-  };
-
   return (
-    <group ref={groupRef} position={position}>
+    <group ref={groupRef} position={position} name={`bookstar-${book.id}`}>
       <mesh
-        onPointerDown={handlePointerDown}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={() => setPressed(false)}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => { setHovered(false); setPressed(false); }}
         visible={false}
@@ -330,6 +299,70 @@ function RotatingGroup({ speed, children }: { speed: number; children: React.Rea
   return <group ref={ref}>{children}</group>;
 }
 
+function TapDetector({ books, onSelectBook }: { books: Book[]; onSelectBook: (b: Book) => void }) {
+  const { camera, gl, scene } = useThree();
+  const raycaster = useMemo(() => new THREE.Raycaster(), []);
+  const pointer = useRef<{ x: number; y: number; time: number } | null>(null);
+
+  useEffect(() => {
+    const canvas = gl.domElement;
+
+    const getXY = (e: PointerEvent | TouchEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const t = "touches" in e ? (e.touches[0] ?? (e as TouchEvent).changedTouches[0]) : e;
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top, w: rect.width, h: rect.height };
+    };
+
+    const onDown = (e: PointerEvent | TouchEvent) => {
+      const { x, y } = getXY(e);
+      pointer.current = { x, y, time: performance.now() };
+    };
+
+    const onUp = (e: PointerEvent | TouchEvent) => {
+      if (!pointer.current) return;
+      const { x, y, w, h } = getXY(e);
+      const dx = x - pointer.current.x;
+      const dy = y - pointer.current.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const elapsed = performance.now() - pointer.current.time;
+      pointer.current = null;
+
+      if (dist > 12 || elapsed > 400) return;
+
+      const ndc = new THREE.Vector2((x / w) * 2 - 1, -(y / h) * 2 + 1);
+      raycaster.setFromCamera(ndc, camera);
+      const hits = raycaster.intersectObjects(scene.children, true);
+
+      for (const hit of hits) {
+        let obj: THREE.Object3D | null = hit.object;
+        while (obj) {
+          if (obj.name?.startsWith("bookstar-")) {
+            const bookId = obj.name.replace("bookstar-", "");
+            const book = books.find((b) => b.id === bookId);
+            if (book) onSelectBook(book);
+            return;
+          }
+          obj = obj.parent;
+        }
+      }
+    };
+
+    canvas.addEventListener("pointerdown", onDown, { passive: true });
+    canvas.addEventListener("pointerup", onUp, { passive: true });
+    canvas.addEventListener("touchstart", onDown, { passive: true });
+    canvas.addEventListener("touchend", onUp, { passive: true });
+
+    return () => {
+      canvas.removeEventListener("pointerdown", onDown);
+      canvas.removeEventListener("pointerup", onUp);
+      canvas.removeEventListener("touchstart", onDown);
+      canvas.removeEventListener("touchend", onUp);
+    };
+  }, [camera, gl, scene, books, onSelectBook, raycaster]);
+
+  return null;
+}
+
 function Scene({ books, onSelectBook }: HomeViewProps) {
   const isSingle = books.length === 1;
 
@@ -362,6 +395,7 @@ function Scene({ books, onSelectBook }: HomeViewProps) {
         rotateSpeed={1.5}
         dynamicDampingFactor={0.08}
       />
+      <TapDetector books={books} onSelectBook={onSelectBook} />
       <ambientLight intensity={0.25} />
       <pointLight position={[0, 0, 0]} intensity={0.4} distance={80} />
       <StarField />
