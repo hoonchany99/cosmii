@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServiceClient, getUserId, pick } from "@/lib/supabase-server";
+import { getServiceClient, getAuthUserId, pick } from "@/lib/supabase-server";
 
 export async function GET(
   req: NextRequest,
@@ -7,7 +7,8 @@ export async function GET(
 ) {
   const { bookId } = await params;
   const language = req.nextUrl.searchParams.get("language") ?? "ko";
-  const userId = getUserId();
+  const userId = await getAuthUserId(req);
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const sb = getServiceClient();
 
   const [lessonsRes, progressRes] = await Promise.all([

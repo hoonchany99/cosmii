@@ -19,8 +19,8 @@ router = APIRouter()
 
 
 def _get_user_id(authorization: str | None) -> str:
-    """Extract user ID from Supabase JWT. Placeholder for now."""
-    return "demo-user"
+    """Admin-only backend — returns a fixed admin user ID."""
+    return "admin"
 
 
 def _pick(content: dict, field: str, lang: str) -> str | list | dict:

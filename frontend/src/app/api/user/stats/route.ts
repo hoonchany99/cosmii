@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
-import { getServiceClient, getUserId } from "@/lib/supabase-server";
+import { NextRequest, NextResponse } from "next/server";
+import { getServiceClient, getAuthUserId } from "@/lib/supabase-server";
 
-export async function GET() {
-  const userId = getUserId();
+export async function GET(req: NextRequest) {
+  const userId = await getAuthUserId(req);
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const sb = getServiceClient();
 
   const { data } = await sb.from("user_stats").select("*").eq("user_id", userId);

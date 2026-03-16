@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServiceClient, getUserId } from "@/lib/supabase-server";
+import { getServiceClient, getAuthUserId } from "@/lib/supabase-server";
 
 const XP_THRESHOLDS = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500];
 
@@ -17,7 +17,8 @@ export async function POST(
   const { lessonId } = await params;
   const body = await req.json();
   const { score, correct_answers } = body;
-  const userId = getUserId();
+  const userId = await getAuthUserId(req);
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const sb = getServiceClient();
 
   const baseXp = 50;

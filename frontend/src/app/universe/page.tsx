@@ -132,25 +132,42 @@ export default function UniversePage() {
     fetch(`${API}/api/books?language=${language}`)
       .then((r) => r.json())
       .then((data) => {
-        setBooks(data);
+        if (Array.isArray(data)) setBooks(data);
       })
       .catch(() => {});
 
-    fetch(`${API}/api/user/stats`)
-      .then((r) => r.json())
-      .then((data) => {
-        setStats({
-          xp: data.xp ?? 0,
-          streakDays: data.streak_days ?? 0,
-          lastStudyDate: data.last_study_date ?? null,
-          level: data.level ?? 1,
-        });
-        if ((data.xp ?? 0) === 0 && !onboardingDismissed.current) {
-          setShowOnboarding(true);
-        }
-        setStatsLoaded(true);
-      })
-      .catch(() => { setStatsLoaded(true); });
+    const migratedKey = "cosmii-migrated";
+    const needsMigration = typeof window !== "undefined" && !localStorage.getItem(migratedKey);
+
+    const loadStats = () =>
+      fetch(`${API}/api/user/stats`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.error) return;
+          setStats({
+            xp: data.xp ?? 0,
+            streakDays: data.streak_days ?? 0,
+            lastStudyDate: data.last_study_date ?? null,
+            level: data.level ?? 1,
+          });
+          if ((data.xp ?? 0) === 0 && !onboardingDismissed.current) {
+            setShowOnboarding(true);
+          }
+          setStatsLoaded(true);
+        })
+        .catch(() => { setStatsLoaded(true); });
+
+    if (needsMigration) {
+      fetch(`${API}/api/user/migrate`, { method: "POST" })
+        .then((r) => r.json())
+        .then(() => {
+          localStorage.setItem(migratedKey, "1");
+          loadStats();
+        })
+        .catch(() => loadStats());
+    } else {
+      loadStats();
+    }
 
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
