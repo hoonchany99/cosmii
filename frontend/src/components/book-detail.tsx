@@ -142,44 +142,78 @@ export function BookDetail({
           </div>
 
           {/* Progress ring */}
-          <div className="flex items-center gap-4">
-            <div className="relative w-14 h-14">
-              <svg viewBox="0 0 56 56" className="w-full h-full -rotate-90">
-                <circle
-                  cx="28" cy="28" r="24"
-                  fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4"
-                />
-                <motion.circle
-                  cx="28" cy="28" r="24"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.6)"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeDasharray={`${2 * Math.PI * 24}`}
-                  initial={{ strokeDashoffset: 2 * Math.PI * 24 }}
-                  animate={{ strokeDashoffset: 2 * Math.PI * 24 * (1 - pct / 100) }}
-                  transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-                />
-              </svg>
-              <span className={`absolute inset-0 flex items-center justify-center ${serif} text-[14px] font-bold text-white/80`}>
-                {pct}%
-              </span>
-            </div>
-            <div>
-              <p className="text-white/70 text-[15px] font-semibold">
-                {t("bookDetail.sessionsComplete", { done: completedLessons, total: totalLessons })}
-              </p>
-              {estimatedMinutes > 0 && (
-                <p className="text-white/30 text-[13px] flex items-center gap-1 mt-0.5">
-                  <Clock size={12} />
-                  {t("bookDetail.estMinutes", { min: estimatedMinutes })}
+          {totalLessons > 0 ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className="flex items-center gap-4"
+            >
+              <div className="relative w-14 h-14">
+                <svg viewBox="0 0 56 56" className="w-full h-full -rotate-90">
+                  <circle
+                    cx="28" cy="28" r="24"
+                    fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="4"
+                  />
+                  <motion.circle
+                    cx="28" cy="28" r="24"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.6)"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 24}`}
+                    initial={{ strokeDashoffset: 2 * Math.PI * 24 }}
+                    animate={{ strokeDashoffset: 2 * Math.PI * 24 * (1 - pct / 100) }}
+                    transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                  />
+                </svg>
+                <span className={`absolute inset-0 flex items-center justify-center ${serif} text-[14px] font-bold text-white/80`}>
+                  {pct}%
+                </span>
+              </div>
+              <div>
+                <p className="text-white/70 text-[15px] font-semibold">
+                  {t("bookDetail.sessionsComplete", { done: completedLessons, total: totalLessons })}
                 </p>
-              )}
+                {estimatedMinutes > 0 && (
+                  <p className="text-white/30 text-[13px] flex items-center gap-1 mt-0.5">
+                    <Clock size={12} />
+                    {t("bookDetail.estMinutes", { min: estimatedMinutes })}
+                  </p>
+                )}
+              </div>
+            </motion.div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-white/[0.04] animate-pulse" />
+              <div className="flex flex-col gap-2">
+                <div className="w-32 h-4 rounded-lg bg-white/[0.04] animate-pulse" />
+                <div className="w-20 h-3 rounded-lg bg-white/[0.04] animate-pulse" />
+              </div>
             </div>
-          </div>
+          )}
         </motion.div>
 
         {/* Chapter List */}
+        {chapters.length === 0 && totalLessons === 0 && (
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-4 h-4 rounded bg-white/[0.04] animate-pulse" />
+              <div className="w-16 h-3 rounded-lg bg-white/[0.04] animate-pulse" />
+            </div>
+            <div className="flex flex-col gap-2">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="bg-white/[0.03] border border-white/[0.06] rounded-2xl px-4 py-4 flex items-center gap-3.5">
+                  <div className="flex-1 flex flex-col gap-2">
+                    <div className="w-28 h-4 rounded-lg bg-white/[0.04] animate-pulse" />
+                    <div className="w-16 h-3 rounded-lg bg-white/[0.04] animate-pulse" />
+                  </div>
+                  <div className="w-11 h-1.5 rounded-full bg-white/[0.04] animate-pulse flex-shrink-0" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         {chapters.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
