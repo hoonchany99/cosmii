@@ -75,7 +75,7 @@ function getGlowTexture() {
 /*  Image → pixel analysis → star layout                               */
 /* ------------------------------------------------------------------ */
 
-function analyzeImage(imageData: ImageData, imgW: number, imgH: number, edgeN = 220, interiorN = 200): SampledLayout {
+function analyzeImage(imageData: ImageData, imgW: number, imgH: number, edgeN = 450, interiorN = 160): SampledLayout {
   const { data } = imageData;
   const filled: boolean[][] = [];
   const edgePx: [number, number][] = [];
@@ -121,7 +121,7 @@ function analyzeImage(imageData: ImageData, imgW: number, imgH: number, edgeN = 
     if (filled[y]?.[x - 1]) neighbors++;
     if (filled[y]?.[x + 1]) neighbors++;
 
-    if (neighbors <= 1) edgePx.push([x, y]);
+    if (neighbors <= 2) edgePx.push([x, y]);
     else interiorPx.push([x, y]);
   }
 
@@ -332,13 +332,25 @@ function SpinGroup({ speed, children }: { speed: number; children: React.ReactNo
   return <group ref={ref}>{children}</group>;
 }
 
+function OscillateGroup({ active, children }: { active: boolean; children: React.ReactNode }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (!ref.current || !active) return;
+    const t = state.clock.elapsedTime;
+    ref.current.rotation.y = Math.sin(t * 0.25) * 0.12;
+    ref.current.rotation.x = Math.sin(t * 0.18 + 1.3) * 0.06;
+  });
+  return <group ref={ref}>{children}</group>;
+}
+
 function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = false, spinZ = 0, edgeBold = false }: {
   layout: SampledLayout; animate?: boolean; color?: string; dim?: boolean; spinZ?: number; edgeBold?: boolean;
 }) {
-  const eCoreScale = edgeBold ? 1.2 : 0.35;
-  const eGlowScale = edgeBold ? 3.2 : 0.9;
+  const eCoreScale = edgeBold ? 1.2 : 0.45;
+  const eGlowScale = edgeBold ? 3.2 : 1.1;
   const iCoreMul = edgeBold ? 1.2 : 1;
   const iGlowMul = edgeBold ? 1.2 : 1;
+  const useOscillation = !spinZ;
 
   return (
     <>
@@ -347,7 +359,7 @@ function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = f
         enablePan={false}
         enableZoom={false}
         enableRotate={!dim}
-        autoRotate={!spinZ}
+        autoRotate={false}
         autoRotateSpeed={0.3}
         minDistance={5}
         maxDistance={25}
@@ -357,6 +369,7 @@ function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = f
 
       <BackgroundStars />
 
+      <OscillateGroup active={useOscillation}>
       <SpinGroup speed={spinZ}>
         {layout.edgeStars.map((p, i) => (
           <ConstellationStar
@@ -391,6 +404,7 @@ function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = f
           <EyeStar key={`eye${i}`} position={p} animate={animate} />
         ))}
       </SpinGroup>
+      </OscillateGroup>
     </>
   );
 }
@@ -399,7 +413,7 @@ function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = f
 /*  Image loading hook (shared)                                        */
 /* ------------------------------------------------------------------ */
 
-function useImageLayout(imageSrc: string, edgeN = 220, interiorN = 200) {
+function useImageLayout(imageSrc: string, edgeN = 450, interiorN = 160) {
   const [layout, setLayout] = useState<SampledLayout | null>(null);
 
   useEffect(() => {

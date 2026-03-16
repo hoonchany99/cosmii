@@ -38,22 +38,22 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Cosmii — AI Reading Companion",
+    default: "Cosmii — The easiest way to finish a book",
     template: "%s | Cosmii",
   },
   description:
-    "An AI reading companion that talks like someone who has actually read the books. Deep context understanding through knowledge graphs and multi-layer cognitive loops.",
+    "Three minutes a day. Each chapter distilled into a short conversation. Tap through, quiz yourself, and actually finish the books you\u2019ve been meaning to read.",
   metadataBase: new URL(SITE_URL),
   applicationName: "Cosmii",
   keywords: [
     "AI",
-    "reading companion",
-    "book AI",
-    "knowledge graph",
-    "RAG",
+    "book learning",
+    "3-minute reading",
     "Cosmii",
-    "book assistant",
-    "cognitive loop",
+    "book summary",
+    "reading habit",
+    "finish books",
+    "bite-sized learning",
   ],
   authors: [{ name: "Utopify" }],
   creator: "Utopify",
@@ -64,23 +64,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "Cosmii",
-    title: "Cosmii — AI Reading Companion",
+    title: "Cosmii — The easiest way to finish a book",
     description:
-      "An AI reading companion that talks like someone who has actually read the books.",
+      "Three minutes a day. Tap through bite-sized lessons, quiz yourself, and actually finish the books you\u2019ve been meaning to read.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Cosmii — AI Reading Companion",
+        alt: "Cosmii — The easiest way to finish a book",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cosmii — AI Reading Companion",
+    title: "Cosmii — The easiest way to finish a book",
     description:
-      "An AI reading companion that talks like someone who has actually read the books.",
+      "Three minutes a day. Tap through bite-sized lessons, quiz yourself, and actually finish the books you\u2019ve been meaning to read.",
     images: ["/og-image.png"],
     creator: "@utopify",
   },

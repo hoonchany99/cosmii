@@ -23,6 +23,8 @@ interface SessionCompleteProps {
   streakDays: number;
   levelUp: boolean;
   isLastLesson?: boolean;
+  completedLessons?: number;
+  totalLessons?: number;
   onNextLesson: () => void;
   onGoHome: () => void;
   onRetry?: () => void;
@@ -37,6 +39,8 @@ export function SessionComplete({
   streakDays,
   levelUp,
   isLastLesson = false,
+  completedLessons,
+  totalLessons,
   onNextLesson,
   onGoHome,
   onRetry,
@@ -111,6 +115,38 @@ export function SessionComplete({
             </span>
           )}
         </motion.div>
+
+        {/* Book progress */}
+        {completedLessons != null && totalLessons != null && totalLessons > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.1, ease }}
+            className="w-full mt-6"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-white/30 text-[11px] font-semibold">
+                {t("home.progress")}
+              </span>
+              <span className="text-white/40 text-[11px] font-bold tabular-nums">
+                {completedLessons}/{totalLessons}
+              </span>
+            </div>
+            <div className="w-full h-[4px] bg-white/[0.06] rounded-full overflow-hidden">
+              <motion.div
+                className="h-full rounded-full bg-white/40"
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.round((completedLessons / totalLessons) * 100)}%` }}
+                transition={{ delay: 1.3, duration: 0.8, ease: "easeOut" }}
+              />
+            </div>
+            {!isLastLesson && !allWrong && (
+              <p className="text-white/20 text-[11px] mt-2 text-center">
+                {t("complete.nextEasy")}
+              </p>
+            )}
+          </motion.div>
+        )}
 
         {/* Divider */}
         <motion.div

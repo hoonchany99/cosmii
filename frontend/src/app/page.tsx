@@ -313,7 +313,7 @@ export default function LandingPage() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3, ease }}
-        className="fixed top-0 left-0 right-0 z-50"
+        className="fixed top-0 left-0 right-0 z-50 bg-[rgba(6,6,18,0.6)] backdrop-blur-md"
       >
         <div className="mx-auto flex items-center justify-between px-8 sm:px-12 py-4">
           <Link href="/" className="group flex items-center gap-2.5">
@@ -495,6 +495,24 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Guarantee — emotional */}
+      <section className="relative z-10 py-24 sm:py-32 px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease }}
+          className="max-w-lg mx-auto text-center"
+        >
+          <h2 className={`${serif} text-[28px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-5 leading-[1.2] whitespace-pre-line`}>
+            {t("landing.guaranteeTitle")}
+          </h2>
+          <p className={`${serif} italic text-[15px] sm:text-[16px] text-white/35 leading-[1.9] max-w-sm mx-auto`}>
+            {t("landing.guaranteeSub")}
+          </p>
+        </motion.div>
+      </section>
+
       {/* Closing CTA */}
       <section className="relative z-10 py-24 sm:py-32 px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="max-w-3xl mx-auto text-center">
@@ -502,7 +520,7 @@ export default function LandingPage() {
           <p className="text-[15px] text-white/30 max-w-md mx-auto leading-relaxed mb-10">{t("landing.closingSub")}</p>
           <Link href="/login"
             className="group inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-[#060612] text-[13px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02] active:scale-[0.98]">
-            {t("landing.getStarted")} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
+            {t("landing.cta")} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
           </Link>
         </motion.div>
       </section>

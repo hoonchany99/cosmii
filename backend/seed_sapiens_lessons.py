@@ -68,12 +68,12 @@ LESSONS = [
     # 1부: 인지 혁명
     # ══════════════════════════════════════════
 
-    # ── Ch.1 인지 혁명 (Part 1/3) ──
+    # ── Ch.1 인지 혁명 (Part 1/4) ──
     {
         "title": "조상 놈의 역사 — 호모 사피엔스의 어두운 비밀",
         "chapter": "Ch.1 The Cognitive Revolution",
         "chapter_title": "인지 혁명",
-        "part": 1, "total_parts": 3,
+        "part": 1, "total_parts": 4,
         "spark": "우리 조상은 '조상님'이 아니라 '조상 놈'이었다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "반가워! 오늘부터 유발 하라리의 '사피엔스'를 같이 읽어볼 거야. 이 책은 한마디로 — 별볼일 없었던 원시인들이 어떻게 지구의 주인이 됐는지를 풀어놓은 책이야.", "highlight": None},
@@ -100,12 +100,12 @@ LESSONS = [
         "cliffhanger": "그런데 사피엔스가 다른 인류 종보다 특별히 강하거나 똑똑했던 건 아니야. 진짜 비밀은 따로 있어."
     },
 
-    # ── Ch.1 인지 혁명 (Part 2/3) ──
+    # ── Ch.1 인지 혁명 (Part 2/4) ──
     {
         "title": "뒷담화가 세상을 바꿨다 — 인지 혁명의 시작",
         "chapter": "Ch.1 The Cognitive Revolution",
         "chapter_title": "인지 혁명",
-        "part": 2, "total_parts": 3,
+        "part": 2, "total_parts": 4,
         "spark": "인간이 지구의 주인이 된 비밀은 근육도, 도구도 아닌 '뒷담화'에 있다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "자, 지난 레슨에서 사피엔스가 별볼일 없었다고 했잖아. 그럼 도대체 어떻게 지구의 주인이 됐을까? 흔히 생각하는 답은 — '인간은 지능이 높으니까, 도구를 잘 만드니까!' 이건데.", "highlight": None},
@@ -132,12 +132,12 @@ LESSONS = [
         "cliffhanger": "근데 뒷담화만으로는 150명까지밖에 못 뭉쳐. 수만 명을 뭉치게 한 진짜 비밀은 더 충격적이야."
     },
 
-    # ── Ch.1 인지 혁명 (Part 3/3) ──
+    # ── Ch.1 인지 혁명 (Part 3/4) ──
     {
         "title": "허구를 믿는 유일한 동물 — 사피엔스의 초능력",
         "chapter": "Ch.1 The Cognitive Revolution",
         "chapter_title": "인지 혁명",
-        "part": 3, "total_parts": 3,
+        "part": 3, "total_parts": 4,
         "spark": "존재하지 않는 것을 집단적으로 믿는 능력, 이것이 인지 혁명이다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "뒷담화의 한계는 150명이야. 인간이 개인적으로 알 수 있는 사람은 대략 150명 정도거든. 그런데 인간은 수만 명, 수백만 명이 협력하잖아. 이건 어떻게 가능할까?", "highlight": None},
@@ -161,19 +161,51 @@ LESSONS = [
                 "explanation": "바위는 물리적으로 존재하는 실체야. 반면 국가, 회사, 인권은 인간이 집단적으로 믿기 때문에만 존재하는 허구지. 이 허구 덕분에 대규모 협력이 가능한 거야."
             }
         ],
-        "cliffhanger": "인지 혁명으로 뭉친 사피엔스가 다음으로 한 일은 — 농사. 그런데 하라리는 이걸 '역사상 최대의 사기극'이라고 불러."
+        "cliffhanger": "인지 혁명으로 뭉친 사피엔스가 전 세계로 퍼져나갔어. 그런데 사피엔스가 새 대륙에 발을 디딜 때마다 — 끔찍한 일이 벌어졌어."
+    },
+
+    # ── Ch.1 인지 혁명 (Part 4/4) ──
+    {
+        "title": "생태계 연쇄살인마 — 거대 동물의 멸종",
+        "chapter": "Ch.1 The Cognitive Revolution",
+        "chapter_title": "인지 혁명",
+        "part": 4, "total_parts": 4,
+        "spark": "사피엔스가 발을 디딘 대륙마다 거대 동물이 수천 년 안에 사라졌다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "인지 혁명의 마지막 이야기야. 허구를 믿고 뭉친 사피엔스가 전 세계로 퍼져나갔는데 — 가는 곳마다 '생태계 연쇄살인마'였다는 거야.", "highlight": None},
+            {"speaker": "cosmii", "text": "4만 5천 년 전, 호모 사피엔스가 처음 호주에 도착했어. 그때 호주에는 몸무게 2톤짜리 거대 웜뱃 '디프로토돈', 날지 못하는 거대 새, 몸길이 7미터짜리 도마뱀 같은 메가파우나가 살았거든. 사피엔스가 도착한 뒤? 호주 대형 동물의 90%가 멸종했어.", "highlight": "호주의 90% 멸종"},
+            {"speaker": "cosmii", "text": "아메리카도 마찬가지야. 1만 6천 년 전쯤 사피엔스가 베링 육교를 건너 아메리카에 도착했어. 그 전까지 아메리카에는 매머드, 검치호, 거대 땅늘보, 거대 아르마딜로가 살았거든. 사피엔스가 온 지 2천 년 만에 — 북미 대형 포유류의 75%가 사라졌어.", "highlight": "매머드의 최후"},
+            {"speaker": "cosmii", "text": "하라리의 표현이 소름 돋아 — '사피엔스가 새로운 대륙에 발을 디딜 때마다, 그 대륙의 거대 동물 대부분이 수천 년 안에 사라졌다.' 아프리카에서 시작해서 유럽, 호주, 아메리카, 태평양 섬들까지. 패턴이 너무 일관적이야.", "highlight": "대륙별 멸종 패턴"},
+            {"speaker": "cosmii", "text": "반론도 있어. '기후변화 때문 아니야?' 하지만 하라리는 반박해. 매머드는 빙하기를 여러 번 버텼어. 호주의 거대 동물도 수백만 년간 기후 변동을 견뎠어. 그런데 하필 사피엔스가 도착한 시점에 멸종했다고? 우연이라고 보기엔 너무 일치해.", "highlight": "기후변화론 반박"},
+            {"speaker": "cosmii", "text": "핵심은 이거야 — 사피엔스는 농업 혁명 '이전에' 이미 생태계 파괴자였어. 우리가 지구 환경을 망가뜨리기 시작한 건 공장 때문이 아니라, 수만 년 전부터야. 하라리는 사피엔스를 '생태계 연쇄살인마'라고 부르는데, 불편하지만 부정하기 어려운 역사야.", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "사피엔스가 호주에 도착한 후 대형 동물 멸종 비율은?",
+                "options": ["약 30%", "약 50%", "약 90%", "멸종하지 않았다"],
+                "correct_index": 2,
+                "explanation": "사피엔스가 호주에 도착한 뒤 대형 동물의 약 90%가 멸종했어. 2톤짜리 거대 웜뱃, 7미터 도마뱀 등 거대 동물이 수천 년 만에 사라졌지."
+            },
+            {
+                "question": "하라리가 '기후변화 때문에 거대 동물이 멸종했다'는 주장을 반박하는 근거는?",
+                "options": ["당시 기후가 안정적이었으니까", "거대 동물이 이전 빙하기를 여러 번 버텼는데 하필 사피엔스 도착 시점에 멸종했으니까", "화석 기록이 없으니까", "기후변화 자체가 없었으니까"],
+                "correct_index": 1,
+                "explanation": "매머드 등 거대 동물은 수백만 년간 여러 차례 빙하기를 견뎠어. 그런데 매번 사피엔스가 새 대륙에 도착한 시점과 멸종 시기가 일치하니까 — 기후가 아니라 사피엔스가 원인이라는 거야."
+            }
+        ],
+        "cliffhanger": "생태계를 파괴한 사피엔스가 다음으로 시작한 건 — 농사. 그런데 하라리는 이걸 '역사상 최대의 사기극'이라고 불러."
     },
 
     # ══════════════════════════════════════════
     # 2부: 농업 혁명
     # ══════════════════════════════════════════
 
-    # ── Ch.2 농업 혁명 (Part 1/4) ──
+    # ── Ch.2 농업 혁명 (Part 1/6) ──
     {
         "title": "역사상 최대의 사기극 — 농업 혁명의 진실",
         "chapter": "Ch.2 The Agricultural Revolution",
         "chapter_title": "농업 혁명",
-        "part": 1, "total_parts": 4,
+        "part": 1, "total_parts": 6,
         "spark": "농업은 인간의 축복이 아니라 '역사상 최대의 사기극'이었다?",
         "dialogue": [
             {"speaker": "cosmii", "text": "2부 농업 혁명이야. 여기서 하라리가 던지는 폭탄 — '농업은 인간 역사상 최대의 사기극이다.' 처음에 이거 듣고 '뭔 소리야?' 했는데, 들으면 들을수록 빠져들어.", "highlight": "역사상 최대의 사기극"},
@@ -200,12 +232,12 @@ LESSONS = [
         "cliffhanger": "노동만 늘어난 게 아니야. 농업은 인간의 몸과 건강까지 완전히 망가뜨렸어."
     },
 
-    # ── Ch.2 농업 혁명 (Part 2/4) ──
+    # ── Ch.2 농업 혁명 (Part 2/6) ──
     {
         "title": "몸이 망가진 인류 — 농업이 가져온 질병과 불평등",
         "chapter": "Ch.2 The Agricultural Revolution",
         "chapter_title": "농업 혁명",
-        "part": 2, "total_parts": 4,
+        "part": 2, "total_parts": 6,
         "spark": "농업은 인간의 몸을 작게 만들고, 면역력을 무너뜨렸다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "지난 레슨에서 농업이 노동 시간을 늘렸다고 했지? 오늘은 더 충격적인 얘기야. 농업이 인간의 '몸' 자체를 망가뜨렸다는 거야.", "highlight": None},
@@ -232,12 +264,12 @@ LESSONS = [
         "cliffhanger": "인간에게만 재앙이었을까? 하라리는 농업이 지구 전체에게 불행이었다고 말해."
     },
 
-    # ── Ch.2 농업 혁명 (Part 3/4) ──
+    # ── Ch.2 농업 혁명 (Part 3/6) ──
     {
         "title": "지구 전체의 불행 — 번식이 곧 성공일까?",
         "chapter": "Ch.2 The Agricultural Revolution",
         "chapter_title": "농업 혁명",
-        "part": 3, "total_parts": 4,
+        "part": 3, "total_parts": 6,
         "spark": "번식의 관점에서 가장 성공한 생명은 인간이 아니라 닭이다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "오늘은 시야를 좀 넓혀볼 거야. 농업 혁명이 인간에게만 영향을 준 게 아니야. 하라리는 '지구상의 모든 종에게 엄청난 불행'이었다고 말해.", "highlight": None},
@@ -264,12 +296,12 @@ LESSONS = [
         "cliffhanger": "농업이 만든 건 불행뿐이 아니야. 왕과 노예, 신분과 계급도 만들어냈어. 다음은 '상상의 질서' 이야기야."
     },
 
-    # ── Ch.2 농업 혁명 — 상상의 질서 (Part 4/4) ──
+    # ── Ch.2 농업 혁명 — 상상의 질서 (Part 4/6) ──
     {
         "title": "상상의 질서 — 왕과 노예는 왜 생겼을까?",
         "chapter": "Ch.2 The Agricultural Revolution",
         "chapter_title": "농업 혁명",
-        "part": 4, "total_parts": 4,
+        "part": 4, "total_parts": 6,
         "spark": "함무라비 법전은 '사람은 태어날 때부터 불평등하다'고 했고, 미국 독립선언서는 '모든 사람은 평등하다'고 했다. 둘 다 상상이다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "농업 혁명이 가져온 건 노동과 질병만이 아니야. 더 무서운 게 있어 — 바로 '계급'이야. 왕, 귀족, 평민, 노예... 이런 신분 제도가 어디서 왔을까?", "highlight": None},
@@ -293,7 +325,71 @@ LESSONS = [
                 "explanation": "수렵 채집 시대에는 재산이 없어서 계급도 없었어. 농업이 잉여 식량을 만들면서 이를 관리하는 사람(왕)과 생산하는 사람(노예)이 나뉘었고, 이 구조를 유지하기 위해 상상의 질서가 만들어진 거야."
             }
         ],
-        "cliffhanger": "농업이 만든 상상의 질서가 수천 년간 유지됐어. 이제 전 세계를 하나로 통합하는 이야기로 넘어가자."
+        "cliffhanger": "상상의 질서를 유지하려면 기록이 필요해. 그래서 사피엔스가 발명한 것이 바로 '문자'야."
+    },
+
+    # ── Ch.2 농업 혁명 (Part 5/6) ──
+    {
+        "title": "기억의 한계 — 문자는 왜 발명됐을까?",
+        "chapter": "Ch.2 The Agricultural Revolution",
+        "chapter_title": "농업 혁명",
+        "part": 5, "total_parts": 6,
+        "spark": "인류 최초의 문자는 시를 쓰기 위해서가 아니라, 세금을 걷기 위해 만들어졌다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "문자의 발명. 낭만적으로 생각하면 — 누군가 아름다운 시를 기록하기 위해 문자를 만들었을 것 같지? 현실은 정반대야.", "highlight": None},
+            {"speaker": "cosmii", "text": "약 5천 년 전, 수메르인이 최초의 문자 '쐐기문자(cuneiform)'를 만들었어. 이 문자로 처음 기록한 게 뭐였냐면 — '보리 29,086자루. 쿠심 수령.' 이거야. 세금 기록이었어! 관료제의 시작이지.", "highlight": "최초의 기록: 세금"},
+            {"speaker": "cosmii", "text": "왜 그랬을까? 농업 혁명으로 인구가 폭발하면서 '누가 세금을 냈고, 누가 안 냈는지'를 머리로 기억할 수 없게 된 거야. 150명까지는 뒷담화로 관리가 돼. 하지만 수만 명의 도시? 뇌의 한계를 넘어버렸어.", "highlight": "뇌의 한계"},
+            {"speaker": "cosmii", "text": "더 재미있는 건 — 숫자가 글자보다 먼저 나왔다는 거야! 처음에는 양 몇 마리, 보리 몇 자루를 표시하는 숫자만 있었어. 'ㄱ', 'ㄴ' 같은 글자는 훨씬 나중에 나온 거야. 시와 소설? 그건 문자 발명 후 수천 년이 지나서야 등장해.", "highlight": "숫자가 먼저"},
+            {"speaker": "cosmii", "text": "하라리가 강조하는 건 이거야 — 읽고 쓰는 건 인간에게 '자연스러운' 행위가 아니야. 우리 뇌는 수백만 년 동안 달리고, 사냥하고, 뒷담화하도록 진화했지 글자를 읽도록 만들어진 게 아니거든. 문자는 뇌에게 완전히 '부자연스러운' 기술이야.", "highlight": "부자연스러운 기술"},
+            {"speaker": "cosmii", "text": "결국 문자의 역사는 이렇게 정리돼 — 점토판 → 파피루스 → 종이 → 인쇄술 → 컴퓨터. 인간의 뇌가 처리할 수 없는 정보를 뇌 바깥에 저장하는 기술이 점점 발전한 거야. 하라리의 표현으로는 '뇌의 외장 하드'를 만든 거지. 이 기술이 없었으면 제국도, 법률도, 과학도 불가능했을 거야.", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "인류 최초의 문자 기록에 담긴 내용은?",
+                "options": ["신에 대한 찬양", "왕의 업적", "보리 수량과 세금 기록", "전쟁 기록"],
+                "correct_index": 2,
+                "explanation": "수메르의 최초 쐐기문자 기록은 '보리 29,086자루' 같은 세금·회계 기록이었어. 문자는 시를 쓰기 위해서가 아니라 관료제를 운영하기 위해 태어난 거야."
+            },
+            {
+                "question": "하라리에 따르면 문자에서 글자보다 먼저 등장한 것은?",
+                "options": ["알파벳", "숫자", "그림", "악보"],
+                "correct_index": 1,
+                "explanation": "처음에는 양 몇 마리, 곡식 몇 자루를 세는 숫자만 있었어. 글자는 훨씬 나중에 나왔고, 시나 소설은 문자 발명 후 수천 년이 지나서야 등장했지."
+            }
+        ],
+        "cliffhanger": "문자가 기록을 가능하게 했다면 — 다음은 그 기록으로 만들어진 '질서'의 어두운 면이야. 왜 역사에는 정의가 없을까?"
+    },
+
+    # ── Ch.2 농업 혁명 (Part 6/6) ──
+    {
+        "title": "역사에 정의는 없다 — 젠더와 위계의 비밀",
+        "chapter": "Ch.2 The Agricultural Revolution",
+        "chapter_title": "농업 혁명",
+        "part": 6, "total_parts": 6,
+        "spark": "남성이 여성을 지배한 이유에 대한 모든 이론을 하라리는 하나하나 부숴버린다.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "오늘은 꽤 불편할 수 있는 이야기야. 하라리가 던지는 질문 — '역사 속 거의 모든 사회에서 왜 남성이 여성 위에 있었을까?'", "highlight": None},
+            {"speaker": "cosmii", "text": "가장 흔한 답 첫 번째 — '남자가 힘이 세니까.' 하라리가 바로 반박해. 역사에서 가장 권력 있는 사람은 가장 근육이 큰 사람이 아니었어. 카이사르, 나폴레옹, 칭기즈 칸 — 이 사람들이 팔씨름 챔피언이었을까? 아니지. 권력은 근육이 아니라 사회적 조직에서 나와.", "highlight": "근육 이론 반박"},
+            {"speaker": "cosmii", "text": "두 번째 답 — '남자가 더 공격적이니까.' 하라리의 반박: 공격적인 사람이 항상 지도자가 되는 건 아니야. 오히려 역사에서 최고 지도자는 '합의를 이끌어내는 사람'이었어. 공격성만으로 수백만 명을 다스릴 수는 없거든.", "highlight": "공격성 이론 반박"},
+            {"speaker": "cosmii", "text": "하라리의 핵심 주장은 이거야 — 가부장제는 '자연스러운 것'이 아니라, 농업 혁명 이후 만들어진 '상상의 질서'라는 거야. 생물학은 가능성을 열어줄 뿐이야. '여성은 아이를 낳을 수 있다'는 생물학이지만, '그러니까 집에 있어야 한다'는 문화야.", "highlight": "생물학 vs 문화"},
+            {"speaker": "cosmii", "text": "증거? 시대와 문화에 따라 젠더 규범은 완전히 달랐어. 고대 이집트에서는 여성 파라오가 있었고, 스파르타 여성은 재산을 소유했고, 많은 수렵 채집 사회에서 여성의 지위는 훨씬 높았어. '남성 지배'가 자연법이었다면 왜 이렇게 다를까?", "highlight": "달라지는 젠더 규범"},
+            {"speaker": "cosmii", "text": "하라리의 결론 — '역사에 정의는 없다.' 불평등은 자연이 만든 게 아니라 인간이 만든 거야. 인종 차별, 카스트 제도, 성차별... 전부 상상의 질서야. 그리고 상상이 만든 것이니까 — 상상을 바꾸면 현실도 바뀔 수 있다는 거야. 이게 하라리가 남기는 희망이야.", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "하라리가 '남성이 힘이 세서 여성을 지배했다'는 이론을 반박하는 근거는?",
+                "options": ["남녀 체력 차이가 없어서", "역사의 지도자들은 가장 근육이 큰 사람이 아니라 사회적 조직력을 가진 사람이었으니까", "여성이 더 힘이 세서", "전쟁이 없었으니까"],
+                "correct_index": 1,
+                "explanation": "카이사르, 나폴레옹, 칭기즈 칸은 팔씨름 챔피언이 아니었어. 권력은 근육이 아니라 사회적 조직에서 나와. 그래서 '근육이 세다 = 지배한다'는 논리는 성립하지 않아."
+            },
+            {
+                "question": "하라리에 따르면 '생물학은 가능하게 하고, 문화는 금지한다'의 의미는?",
+                "options": ["생물학이 문화보다 강하다", "생물학은 다양한 가능성을 열어주지만 어떤 것을 허용하고 금지할지는 문화가 결정한다", "문화가 생물학을 바꿀 수 있다", "생물학과 문화는 같다"],
+                "correct_index": 1,
+                "explanation": "생물학적으로 여성은 아이를 낳을 수 있어 — 이건 가능성이야. 하지만 '그러니까 집에만 있어야 한다'는 문화가 정한 규칙이지. 생물학은 열어두고, 문화가 닫는 거야."
+            }
+        ],
+        "cliffhanger": "여기까지가 농업 혁명이 만든 세상이야. 이제 전 세계를 하나로 통합한 세 가지 힘 — 돈, 제국, 종교 이야기로 넘어가자."
     },
 
     # ══════════════════════════════════════════
@@ -400,12 +496,12 @@ LESSONS = [
     # 4부: 과학 혁명
     # ══════════════════════════════════════════
 
-    # ── Ch.4 과학 혁명 (Part 1/5) ──
+    # ── Ch.4 과학 혁명 (Part 1/7) ──
     {
         "title": "무지의 발견 — 500년 잠에서 깨어나다",
         "chapter": "Ch.4 The Scientific Revolution",
         "chapter_title": "과학 혁명",
-        "part": 1, "total_parts": 5,
+        "part": 1, "total_parts": 7,
         "spark": "1100년에 잠든 사람이 1600년에 깨어나면 놀라지 않지만, 1500년에 잠든 사람이 2000년에 깨어나면 기절한다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "4부, 과학 혁명이야. 여기서 하라리가 아주 재미있는 사고 실험을 해. 이거 진짜 소름이야.", "highlight": None},
@@ -432,12 +528,12 @@ LESSONS = [
         "cliffhanger": "과학 혁명이 시작됐지만, 과학만으로는 세상이 안 바뀌어. '돈'이 필요했어. 자본주의의 마법이 시작된다."
     },
 
-    # ── Ch.4 과학 혁명 (Part 2/5) ──
+    # ── Ch.4 과학 혁명 (Part 2/7) ──
     {
         "title": "자본주의의 마법 — 신용이 만드는 미래",
         "chapter": "Ch.4 The Scientific Revolution",
         "chapter_title": "과학 혁명",
-        "part": 2, "total_parts": 5,
+        "part": 2, "total_parts": 7,
         "spark": "자본주의 이전에 경제는 '제로섬 게임'이었다. 누군가 부자가 되면 누군가는 가난해져야 했다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "과학 혁명 이야기를 이어가보자. 과학만으로 세상이 바뀐 건 아니야. 하라리가 강조하는 핵심 공식이 있어 — '과학 + 제국 + 자본주의 = 현대 세계'. 오늘은 이 중 자본주의 이야기야.", "highlight": None},
@@ -464,12 +560,12 @@ LESSONS = [
         "cliffhanger": "자본주의가 엔진을 만들었다면, 그 엔진을 가장 잘 활용한 건 유럽이야. 근데 왜 하필 유럽이었을까?"
     },
 
-    # ── Ch.4 과학 혁명 (Part 3/5) ──
+    # ── Ch.4 과학 혁명 (Part 3/7) ──
     {
         "title": "경쟁이 만든 신세계 — 유럽은 어떻게 강대국이 됐나",
         "chapter": "Ch.4 The Scientific Revolution",
         "chapter_title": "과학 혁명",
-        "part": 3, "total_parts": 5,
+        "part": 3, "total_parts": 7,
         "spark": "화약, 나침반, 종이를 발명한 건 중국인데 — 그걸 활용해서 세계를 지배한 건 유럽이다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "여기서 하라리가 아주 매력적인 질문을 던져. '역사상 가장 못 살았던 서유럽 사람들이 어떻게 과학 혁명과 산업 혁명의 중심이 될 수 있었을까?'", "highlight": None},
@@ -493,179 +589,15 @@ LESSONS = [
                 "explanation": "명나라 중국은 세계 최강이라 부러울 것이 없었어. '알아야 할 것이 없다'는 자만이 혁신을 막은 반면, 가난한 유럽은 절박해서 탐험하고 혁신했지."
             }
         ],
-        "cliffhanger": "인지 혁명, 농업 혁명, 과학 혁명... 이 모든 발전 끝에 — 우리는 정말 행복해졌을까?"
+        "cliffhanger": "과학과 자본주의와 제국이 손을 잡았어. 그 결과 시작된 건 — 산업 혁명. 세상의 에너지 자체가 폭발한 거야."
     },
 
-    # ── Ch.4 과학 혁명 (Part 4/5) ──
-    {
-        "title": "우리는 행복해졌을까? — 사피엔스의 철학적 질문",
-        "chapter": "Ch.4 The Scientific Revolution",
-        "chapter_title": "과학 혁명",
-        "part": 4, "total_parts": 5,
-        "spark": "인류의 모든 발전에도 불구하고 — 중세 농부보다 더 행복한 걸까?",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "인지 혁명, 농업 혁명, 과학 혁명... 사피엔스는 엄청난 발전을 이뤘어. 그런데 하라리가 책 끝부분에서 아주 불편한 질문을 던져 — '그래서 우리는 행복해졌을까?'", "highlight": None},
-            {"speaker": "cosmii", "text": "진지하게 생각해봐. 지금 평범한 중산층은 루이 14세보다 좋은 의료 서비스를 받고, 더 다양한 음식을 먹고, 더 따뜻한 집에 살아. 그런데 — 루이 14세보다 더 행복할까? 하라리의 답은 '아마 아닐 것'이야.", "highlight": "루이 14세보다 행복할까?"},
-            {"speaker": "cosmii", "text": "왜냐하면 행복은 '객관적 조건'이 아니라 '기대치'에 의해 결정되거든. 에어컨이 없던 시절에는 부채만 있어도 행복했어. 그런데 지금은 에어컨이 1도만 안 맞아도 짜증나잖아. 조건은 나아졌는데 기대치가 더 빨리 올라간 거야.", "highlight": "기대치의 함정"},
-            {"speaker": "cosmii", "text": "하라리는 여기서 생물학적 설명도 해. 행복은 결국 세로토닌, 도파민 같은 신경전달물질의 문제야. 복권에 당첨되든, 승진을 하든, 잠시 도파민이 올라갔다가 다시 원래 수준으로 돌아와. 이걸 '쾌락의 쳇바퀴'라고 불러.", "highlight": "쾌락의 쳇바퀴"},
-            {"speaker": "cosmii", "text": "그리고 하라리가 불교를 언급해. 불교의 핵심은 '쾌락을 쫓지 말라'는 거야. 행복은 좋은 감정을 더 많이 느끼는 게 아니라, 좋고 나쁜 감정에 덜 휘둘리는 것에서 온다고. 2500년 전 붓다가 이미 알고 있었던 걸 현대 과학이 뒤늦게 확인하고 있는 거야.", "highlight": "붓다의 통찰"},
-            {"speaker": "cosmii", "text": "하라리가 남기는 질문은 이거야 — 사피엔스는 지구를 정복하고, 과학으로 신의 힘을 얻었는데, 정작 '우리가 뭘 원하는지'조차 모르고 있어. 힘은 커졌는데 방향을 모르는 거야. 이게 사피엔스의 가장 위험한 상태일지도 몰라.", "highlight": None}
-        ],
-        "quizzes": [
-            {
-                "question": "하라리에 따르면 현대인이 중세인보다 반드시 더 행복하지 않은 이유는?",
-                "options": ["현대의 스트레스가 더 크기 때문에", "행복은 객관적 조건이 아니라 기대치에 의해 결정되기 때문에", "현대의 음식이 더 나빠서", "중세에는 전쟁이 없어서"],
-                "correct_index": 1,
-                "explanation": "조건이 나아져도 기대치가 함께 올라가기 때문에 행복은 늘지 않아. 에어컨 없던 시절에는 부채로도 만족했지만, 지금은 에어컨이 조금만 안 맞아도 불만이지. 이게 '기대치의 함정'이야."
-            },
-            {
-                "question": "하라리가 불교를 언급하면서 강조한 행복의 핵심은?",
-                "options": ["더 많이 소유하면 행복해진다", "쾌락을 쫓지 않고 감정에 덜 휘둘리는 것이 행복이다", "종교를 믿으면 행복해진다", "명상을 하면 부자가 된다"],
-                "correct_index": 1,
-                "explanation": "불교의 핵심은 쾌락을 쫓는 것이 고통의 원인이라는 거야. 행복은 좋은 감정을 더 많이 느끼는 게 아니라, 감정에 덜 휘둘리는 상태에서 온다고. 현대 과학도 이걸 뒷받침하고 있어."
-            }
-        ],
-        "cliffhanger": "행복의 답을 찾지 못한 사피엔스가 마지막으로 향하는 곳 — 신이 되려는 문 앞이야."
-    },
-
-    # ── Ch.4 과학 혁명 (Part 5/5) ──
-    {
-        "title": "호모 데우스 — 신이 되려는 인간",
-        "chapter": "Ch.4 The Scientific Revolution",
-        "chapter_title": "과학 혁명",
-        "part": 5, "total_parts": 5,
-        "spark": "사피엔스의 마지막 질문 — 우리는 천국의 문을 열 것인가, 지옥의 문을 열 것인가.",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "사피엔스의 마지막 이야기야. 하라리는 지금까지의 여정을 이렇게 정리해 — 인지 혁명으로 뭉치고, 농업 혁명으로 번식하고, 돈과 제국과 종교로 통합하더니, 과학으로 중무장하게 된 거야.", "highlight": None},
-            {"speaker": "cosmii", "text": "그리고 하라리는 충격적인 표현을 써. '사피엔스가 아니라 이제는 호모 데우스다.' 데우스는 라틴어로 '신'이라는 뜻이야. 인간은 신이 되려 한다는 거야.", "highlight": "호모 데우스"},
-            {"speaker": "cosmii", "text": "과장이 아니야. 생각해봐. 십여 시간이면 지구 반대편에 갈 수 있어 (비행기). 달에 발자국을 찍었어. 신의 영역이라고 생각했던 '탄생'과 '죽음'까지 과학이 관장하기 시작했어. 시험관 아기, 유전자 편집, 수명 연장... 옛날 사람이 보면 완전히 신의 능력이지.", "highlight": "신의 능력을 가진 인간"},
-            {"speaker": "cosmii", "text": "그런데 하라리가 여기서 경고를 해. '우리는 신의 능력을 가졌지만, 신의 지혜는 갖지 못했다.' 핵무기를 만들 능력은 있지만 그걸 현명하게 쓸 지혜가 있나? 기후변화를 일으킬 힘은 있지만 그걸 해결할 지혜가 있나?", "highlight": "능력은 있지만 지혜는 없다"},
-            {"speaker": "cosmii", "text": "사피엔스의 마지막 장에서 하라리는 이렇게 경고해 — '우리 인간은 천국과 지옥으로 나뉘는 갈림길에 서 있다. 역사는 우리의 종말에 대해서 아직 결정되지 않았고, 일련의 우연들은 우리를 어느 쪽으로도 이끌 수 있다.'", "highlight": "천국인가 지옥인가"},
-            {"speaker": "cosmii", "text": "이게 사피엔스 전체의 결론이야. 별볼일 없었던 원시인이 인지 혁명으로 지구의 주인이 됐어. 농업 혁명으로 정착했고, 돈·제국·종교로 통합했고, 과학 혁명으로 신의 능력을 얻었어. 그런데 이 엄청난 힘을 어디로 쓸 건지는 아직 정해지지 않았어. 천국의 문을 열 수도, 지옥으로 가는 문을 열 수도 있어. 그 선택은 지금 살아있는 우리, 호모 사피엔스의 몫이야. 같이 읽느라 정말 수고했어!", "highlight": None}
-        ],
-        "quizzes": [
-            {
-                "question": "'호모 데우스'에서 '데우스'의 뜻은?",
-                "options": ["현명한 인간", "신", "새로운 종", "기계"],
-                "correct_index": 1,
-                "explanation": "데우스는 라틴어로 '신'이야. 호모 데우스는 '신이 된 인간'이라는 뜻으로, 과학 기술로 신적인 능력을 얻은 현대 인간을 표현한 거야."
-            },
-            {
-                "question": "사피엔스가 마지막에 던지는 핵심 질문은?",
-                "options": ["인간은 언제 멸종할까?", "신의 능력을 가진 인간이 천국을 열 것인가 지옥을 열 것인가?", "다음 진화는 무엇일까?", "돈이 사라질까?"],
-                "correct_index": 1,
-                "explanation": "사피엔스의 마지막 질문은 — 신의 능력을 손에 넣은 인간이 그 힘을 현명하게 쓸 것인가, 파괴적으로 쓸 것인가야. 그 선택은 아직 결정되지 않았어."
-            }
-        ],
-        "cliffhanger": ""
-    },
-
-    # ══════════════════════════════════════════
-    # 5부: 빠뜨린 이야기들
-    # ══════════════════════════════════════════
-
-    # ── Ch.5 빠뜨린 이야기들 (Part 1/5) ──
-    {
-        "title": "생태계 연쇄살인마 — 거대 동물의 멸종",
-        "chapter": "Ch.5 What We Left Behind",
-        "chapter_title": "빠뜨린 이야기들",
-        "part": 1, "total_parts": 5,
-        "spark": "사피엔스가 발을 디딘 대륙마다 거대 동물이 수천 년 안에 사라졌다.",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "5부는 본편에서 살짝 지나쳤지만 너무 중요한 이야기들을 다뤄볼 거야. 첫 번째 주제 — 사피엔스는 '생태계 연쇄살인마'였다는 거야.", "highlight": None},
-            {"speaker": "cosmii", "text": "4만 5천 년 전, 호모 사피엔스가 처음 호주에 도착했어. 그때 호주에는 몸무게 2톤짜리 거대 웜뱃 '디프로토돈', 날지 못하는 거대 새, 몸길이 7미터짜리 도마뱀 같은 메가파우나가 살았거든. 사피엔스가 도착한 뒤? 호주 대형 동물의 90%가 멸종했어.", "highlight": "호주의 90% 멸종"},
-            {"speaker": "cosmii", "text": "아메리카도 마찬가지야. 1만 6천 년 전쯤 사피엔스가 베링 육교를 건너 아메리카에 도착했어. 그 전까지 아메리카에는 매머드, 검치호, 거대 땅늘보, 거대 아르마딜로가 살았거든. 사피엔스가 온 지 2천 년 만에 — 북미 대형 포유류의 75%가 사라졌어.", "highlight": "매머드의 최후"},
-            {"speaker": "cosmii", "text": "하라리의 표현이 소름 돋아 — '사피엔스가 새로운 대륙에 발을 디딜 때마다, 그 대륙의 거대 동물 대부분이 수천 년 안에 사라졌다.' 아프리카에서 시작해서 유럽, 호주, 아메리카, 태평양 섬들까지. 패턴이 너무 일관적이야.", "highlight": "대륙별 멸종 패턴"},
-            {"speaker": "cosmii", "text": "반론도 있어. '기후변화 때문 아니야?' 하지만 하라리는 반박해. 매머드는 빙하기를 여러 번 버텼어. 호주의 거대 동물도 수백만 년간 기후 변동을 견뎠어. 그런데 하필 사피엔스가 도착한 시점에 멸종했다고? 우연이라고 보기엔 너무 일치해.", "highlight": "기후변화론 반박"},
-            {"speaker": "cosmii", "text": "핵심은 이거야 — 사피엔스는 농업 혁명 '이전에' 이미 생태계 파괴자였어. 우리가 지구 환경을 망가뜨리기 시작한 건 공장 때문이 아니라, 수만 년 전부터야. 하라리는 사피엔스를 '생태계 연쇄살인마'라고 부르는데, 불편하지만 부정하기 어려운 역사야.", "highlight": None}
-        ],
-        "quizzes": [
-            {
-                "question": "사피엔스가 호주에 도착한 후 대형 동물 멸종 비율은?",
-                "options": ["약 30%", "약 50%", "약 90%", "멸종하지 않았다"],
-                "correct_index": 2,
-                "explanation": "사피엔스가 호주에 도착한 뒤 대형 동물의 약 90%가 멸종했어. 2톤짜리 거대 웜뱃, 7미터 도마뱀 등 거대 동물이 수천 년 만에 사라졌지."
-            },
-            {
-                "question": "하라리가 '기후변화 때문에 거대 동물이 멸종했다'는 주장을 반박하는 근거는?",
-                "options": ["당시 기후가 안정적이었으니까", "거대 동물이 이전 빙하기를 여러 번 버텼는데 하필 사피엔스 도착 시점에 멸종했으니까", "화석 기록이 없으니까", "기후변화 자체가 없었으니까"],
-                "correct_index": 1,
-                "explanation": "매머드 등 거대 동물은 수백만 년간 여러 차례 빙하기를 견뎠어. 그런데 매번 사피엔스가 새 대륙에 도착한 시점과 멸종 시기가 일치하니까 — 기후가 아니라 사피엔스가 원인이라는 거야."
-            }
-        ],
-        "cliffhanger": "생태계를 파괴한 사피엔스가 다음으로 발명한 건 — 기억을 저장하는 기술이야. 그 이름은 '문자'."
-    },
-
-    # ── Ch.5 빠뜨린 이야기들 (Part 2/5) ──
-    {
-        "title": "기억의 한계 — 문자는 왜 발명됐을까?",
-        "chapter": "Ch.5 What We Left Behind",
-        "chapter_title": "빠뜨린 이야기들",
-        "part": 2, "total_parts": 5,
-        "spark": "인류 최초의 문자는 시를 쓰기 위해서가 아니라, 세금을 걷기 위해 만들어졌다.",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "문자의 발명. 낭만적으로 생각하면 — 누군가 아름다운 시를 기록하기 위해 문자를 만들었을 것 같지? 현실은 정반대야.", "highlight": None},
-            {"speaker": "cosmii", "text": "약 5천 년 전, 수메르인이 최초의 문자 '쐐기문자(cuneiform)'를 만들었어. 이 문자로 처음 기록한 게 뭐였냐면 — '보리 29,086자루. 쿠심 수령.' 이거야. 세금 기록이었어! 관료제의 시작이지.", "highlight": "최초의 기록: 세금"},
-            {"speaker": "cosmii", "text": "왜 그랬을까? 농업 혁명으로 인구가 폭발하면서 '누가 세금을 냈고, 누가 안 냈는지'를 머리로 기억할 수 없게 된 거야. 150명까지는 뒷담화로 관리가 돼. 하지만 수만 명의 도시? 뇌의 한계를 넘어버렸어.", "highlight": "뇌의 한계"},
-            {"speaker": "cosmii", "text": "더 재미있는 건 — 숫자가 글자보다 먼저 나왔다는 거야! 처음에는 양 몇 마리, 보리 몇 자루를 표시하는 숫자만 있었어. 'ㄱ', 'ㄴ' 같은 글자는 훨씬 나중에 나온 거야. 시와 소설? 그건 문자 발명 후 수천 년이 지나서야 등장해.", "highlight": "숫자가 먼저"},
-            {"speaker": "cosmii", "text": "하라리가 강조하는 건 이거야 — 읽고 쓰는 건 인간에게 '자연스러운' 행위가 아니야. 우리 뇌는 수백만 년 동안 달리고, 사냥하고, 뒷담화하도록 진화했지 글자를 읽도록 만들어진 게 아니거든. 문자는 뇌에게 완전히 '부자연스러운' 기술이야.", "highlight": "부자연스러운 기술"},
-            {"speaker": "cosmii", "text": "결국 문자의 역사는 이렇게 정리돼 — 점토판 → 파피루스 → 종이 → 인쇄술 → 컴퓨터. 인간의 뇌가 처리할 수 없는 정보를 뇌 바깥에 저장하는 기술이 점점 발전한 거야. 하라리의 표현으로는 '뇌의 외장 하드'를 만든 거지. 이 기술이 없었으면 제국도, 법률도, 과학도 불가능했을 거야.", "highlight": None}
-        ],
-        "quizzes": [
-            {
-                "question": "인류 최초의 문자 기록에 담긴 내용은?",
-                "options": ["신에 대한 찬양", "왕의 업적", "보리 수량과 세금 기록", "전쟁 기록"],
-                "correct_index": 2,
-                "explanation": "수메르의 최초 쐐기문자 기록은 '보리 29,086자루' 같은 세금·회계 기록이었어. 문자는 시를 쓰기 위해서가 아니라 관료제를 운영하기 위해 태어난 거야."
-            },
-            {
-                "question": "하라리에 따르면 문자에서 글자보다 먼저 등장한 것은?",
-                "options": ["알파벳", "숫자", "그림", "악보"],
-                "correct_index": 1,
-                "explanation": "처음에는 양 몇 마리, 곡식 몇 자루를 세는 숫자만 있었어. 글자는 훨씬 나중에 나왔고, 시나 소설은 문자 발명 후 수천 년이 지나서야 등장했지."
-            }
-        ],
-        "cliffhanger": "문자가 기록을 가능하게 했다면 — 다음은 그 기록으로 만들어진 '질서'의 어두운 면이야. 왜 역사에는 정의가 없을까?"
-    },
-
-    # ── Ch.5 빠뜨린 이야기들 (Part 3/5) ──
-    {
-        "title": "역사에 정의는 없다 — 젠더와 위계의 비밀",
-        "chapter": "Ch.5 What We Left Behind",
-        "chapter_title": "빠뜨린 이야기들",
-        "part": 3, "total_parts": 5,
-        "spark": "남성이 여성을 지배한 이유에 대한 모든 이론을 하라리는 하나하나 부숴버린다.",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "오늘은 꽤 불편할 수 있는 이야기야. 하라리가 던지는 질문 — '역사 속 거의 모든 사회에서 왜 남성이 여성 위에 있었을까?'", "highlight": None},
-            {"speaker": "cosmii", "text": "가장 흔한 답 첫 번째 — '남자가 힘이 세니까.' 하라리가 바로 반박해. 역사에서 가장 권력 있는 사람은 가장 근육이 큰 사람이 아니었어. 카이사르, 나폴레옹, 칭기즈 칸 — 이 사람들이 팔씨름 챔피언이었을까? 아니지. 권력은 근육이 아니라 사회적 조직에서 나와.", "highlight": "근육 이론 반박"},
-            {"speaker": "cosmii", "text": "두 번째 답 — '남자가 더 공격적이니까.' 하라리의 반박: 공격적인 사람이 항상 지도자가 되는 건 아니야. 오히려 역사에서 최고 지도자는 '합의를 이끌어내는 사람'이었어. 공격성만으로 수백만 명을 다스릴 수는 없거든.", "highlight": "공격성 이론 반박"},
-            {"speaker": "cosmii", "text": "하라리의 핵심 주장은 이거야 — 가부장제는 '자연스러운 것'이 아니라, 농업 혁명 이후 만들어진 '상상의 질서'라는 거야. 생물학은 가능성을 열어줄 뿐이야. '여성은 아이를 낳을 수 있다'는 생물학이지만, '그러니까 집에 있어야 한다'는 문화야.", "highlight": "생물학 vs 문화"},
-            {"speaker": "cosmii", "text": "증거? 시대와 문화에 따라 젠더 규범은 완전히 달랐어. 고대 이집트에서는 여성 파라오가 있었고, 스파르타 여성은 재산을 소유했고, 많은 수렵 채집 사회에서 여성의 지위는 훨씬 높았어. '남성 지배'가 자연법이었다면 왜 이렇게 다를까?", "highlight": "달라지는 젠더 규범"},
-            {"speaker": "cosmii", "text": "하라리의 결론 — '역사에 정의는 없다.' 불평등은 자연이 만든 게 아니라 인간이 만든 거야. 인종 차별, 카스트 제도, 성차별... 전부 상상의 질서야. 그리고 상상이 만든 것이니까 — 상상을 바꾸면 현실도 바뀔 수 있다는 거야. 이게 하라리가 남기는 희망이야.", "highlight": None}
-        ],
-        "quizzes": [
-            {
-                "question": "하라리가 '남성이 힘이 세서 여성을 지배했다'는 이론을 반박하는 근거는?",
-                "options": ["남녀 체력 차이가 없어서", "역사의 지도자들은 가장 근육이 큰 사람이 아니라 사회적 조직력을 가진 사람이었으니까", "여성이 더 힘이 세서", "전쟁이 없었으니까"],
-                "correct_index": 1,
-                "explanation": "카이사르, 나폴레옹, 칭기즈 칸은 팔씨름 챔피언이 아니었어. 권력은 근육이 아니라 사회적 조직에서 나와. 그래서 '근육이 세다 = 지배한다'는 논리는 성립하지 않아."
-            },
-            {
-                "question": "하라리에 따르면 '생물학은 가능하게 하고, 문화는 금지한다'의 의미는?",
-                "options": ["생물학이 문화보다 강하다", "생물학은 다양한 가능성을 열어주지만 어떤 것을 허용하고 금지할지는 문화가 결정한다", "문화가 생물학을 바꿀 수 있다", "생물학과 문화는 같다"],
-                "correct_index": 1,
-                "explanation": "생물학적으로 여성은 아이를 낳을 수 있어 — 이건 가능성이야. 하지만 '그러니까 집에만 있어야 한다'는 문화가 정한 규칙이지. 생물학은 열어두고, 문화가 닫는 거야."
-            }
-        ],
-        "cliffhanger": "상상의 질서가 사회를 지배했어. 그런데 산업 혁명이 오면서 — 인류의 에너지 자체가 폭발적으로 바뀌어."
-    },
-
-    # ── Ch.5 빠뜨린 이야기들 (Part 4/5) ──
+    # ── Ch.4 과학 혁명 (Part 4/7) ──
     {
         "title": "산업의 바퀴 — 에너지 혁명이 바꾼 세상",
-        "chapter": "Ch.5 What We Left Behind",
-        "chapter_title": "빠뜨린 이야기들",
-        "part": 4, "total_parts": 5,
+        "chapter": "Ch.4 The Scientific Revolution",
+        "chapter_title": "과학 혁명",
+        "part": 4, "total_parts": 7,
         "spark": "산업 혁명의 본질은 기계가 아니라 '에너지 변환'이었다.",
         "dialogue": [
             {"speaker": "cosmii", "text": "산업 혁명 하면 뭐가 떠올라? 증기기관? 공장? 맞아, 하지만 하라리는 산업 혁명의 본질을 다르게 봐. '에너지를 변환하는 능력의 혁명'이라는 거야.", "highlight": None},
@@ -692,20 +624,20 @@ LESSONS = [
         "cliffhanger": "에너지 혁명이 세상을 바꿨어. 그런데 가장 먼저 무너진 건 — 수만 년간 유지됐던 '가족'이라는 구조야."
     },
 
-    # ── Ch.5 빠뜨린 이야기들 (Part 5/5) ──
+    # ── Ch.4 과학 혁명 (Part 5/7) ──
     {
         "title": "가족의 붕괴 — 국가와 시장이 공동체를 대체하다",
-        "chapter": "Ch.5 What We Left Behind",
-        "chapter_title": "빠뜨린 이야기들",
-        "part": 5, "total_parts": 5,
+        "chapter": "Ch.4 The Scientific Revolution",
+        "chapter_title": "과학 혁명",
+        "part": 5, "total_parts": 7,
         "spark": "수만 년간 인간의 안전망이었던 가족과 마을 공동체를 — 국가와 시장이 갈기갈기 찢어놓았다.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "마지막 빠뜨린 이야기야. 하라리가 현대 사회에서 가장 과소평가된 변화라고 부르는 것 — '가족과 공동체의 붕괴'야.", "highlight": None},
+            {"speaker": "cosmii", "text": "산업 혁명이 바꾼 건 에너지만이 아니야. 하라리가 현대 사회에서 가장 과소평가된 변화라고 부르는 것 — '가족과 공동체의 붕괴'야.", "highlight": None},
             {"speaker": "cosmii", "text": "수만 년 동안 인간에게 가족과 지역 공동체는 전부였어. 보험도 가족이 해줬고, 은행도 가족이 해줬고, 교육도 가족이 해줬고, 노후 보장도 가족이었어. 아프면 가족이 간호하고, 돈이 없으면 마을이 도왔어. 국가나 시장이 개입할 여지가 없었지.", "highlight": "가족이 곧 사회 안전망"},
             {"speaker": "cosmii", "text": "그런데 산업 혁명이 이걸 완전히 뒤집었어. 국가가 말해 — '교육은 내가 할게. 학교 보내.' 시장이 말해 — '보험은 내가 할게. 보험료 내.' 복지, 의료, 교육, 노후... 가족이 하던 모든 일을 국가와 시장이 하나씩 빼앗아간 거야.", "highlight": "국가와 시장의 침투"},
             {"speaker": "cosmii", "text": "하라리의 표현이 날카로워 — '국가와 시장은 가족과 공동체에게 이렇게 속삭였다. 너는 자유로운 개인이야. 부모의 허락 없이 결혼해도 돼. 아버지의 가게를 물려받지 않아도 돼. 네가 원하는 삶을 살아.' 이게 해방이면서 동시에 파괴였어.", "highlight": "자유라는 이름의 파괴"},
             {"speaker": "cosmii", "text": "결과를 봐. 지금 우리는 1인 가구가 급증하고, 외로움이 전염병처럼 퍼지고, 공동체 의식은 사라졌어. 옛날에는 마을 전체가 아이를 키웠는데, 지금은 혼자서 다 해야 해. 우울증과 자살률이 역대 최고인 이유가 여기에 있어.", "highlight": "외로움의 전염병"},
-            {"speaker": "cosmii", "text": "하라리의 마지막 통찰은 이거야 — 인간은 수만 년 동안 가족과 공동체 안에서 살도록 진화했어. 그런데 불과 200년 만에 그 구조가 무너졌어. 우리의 몸과 마음은 아직 적응을 못 한 거야. 이것이 사피엔스가 직면한, 아직 답을 찾지 못한 가장 조용하고 거대한 위기야. 여기까지 같이 읽어줘서 고마워!", "highlight": None}
+            {"speaker": "cosmii", "text": "하라리의 통찰은 이거야 — 인간은 수만 년 동안 가족과 공동체 안에서 살도록 진화했어. 그런데 불과 200년 만에 그 구조가 무너졌어. 우리의 몸과 마음은 아직 적응을 못 한 거야. 이것이 사피엔스가 직면한, 아직 답을 찾지 못한 가장 조용하고 거대한 위기야.", "highlight": None}
         ],
         "quizzes": [
             {
@@ -721,10 +653,73 @@ LESSONS = [
                 "explanation": "국가와 시장은 개인을 가족에서 해방시켰지만, 동시에 수만 년간 안전망이었던 공동체를 무너뜨렸어. 1인 가구 증가, 외로움, 우울증 급증 — 이것이 '자유'의 대가야."
             }
         ],
+        "cliffhanger": "에너지 혁명이 가족을 무너뜨렸어. 이 모든 발전 끝에 하라리가 가장 불편한 질문을 던져 — '우리는 정말 행복해졌을까?'"
+    },
+
+    # ── Ch.4 과학 혁명 (Part 6/7) ──
+    {
+        "title": "우리는 행복해졌을까? — 사피엔스의 철학적 질문",
+        "chapter": "Ch.4 The Scientific Revolution",
+        "chapter_title": "과학 혁명",
+        "part": 6, "total_parts": 7,
+        "spark": "인류의 모든 발전에도 불구하고 — 중세 농부보다 더 행복한 걸까?",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "인지 혁명, 농업 혁명, 과학 혁명... 사피엔스는 엄청난 발전을 이뤘어. 그런데 하라리가 책 끝부분에서 아주 불편한 질문을 던져 — '그래서 우리는 행복해졌을까?'", "highlight": None},
+            {"speaker": "cosmii", "text": "진지하게 생각해봐. 지금 평범한 중산층은 루이 14세보다 좋은 의료 서비스를 받고, 더 다양한 음식을 먹고, 더 따뜻한 집에 살아. 그런데 — 루이 14세보다 더 행복할까? 하라리의 답은 '아마 아닐 것'이야.", "highlight": "루이 14세보다 행복할까?"},
+            {"speaker": "cosmii", "text": "왜냐하면 행복은 '객관적 조건'이 아니라 '기대치'에 의해 결정되거든. 에어컨이 없던 시절에는 부채만 있어도 행복했어. 그런데 지금은 에어컨이 1도만 안 맞아도 짜증나잖아. 조건은 나아졌는데 기대치가 더 빨리 올라간 거야.", "highlight": "기대치의 함정"},
+            {"speaker": "cosmii", "text": "하라리는 여기서 생물학적 설명도 해. 행복은 결국 세로토닌, 도파민 같은 신경전달물질의 문제야. 복권에 당첨되든, 승진을 하든, 잠시 도파민이 올라갔다가 다시 원래 수준으로 돌아와. 이걸 '쾌락의 쳇바퀴'라고 불러.", "highlight": "쾌락의 쳇바퀴"},
+            {"speaker": "cosmii", "text": "그리고 하라리가 불교를 언급해. 불교의 핵심은 '쾌락을 쫓지 말라'는 거야. 행복은 좋은 감정을 더 많이 느끼는 게 아니라, 좋고 나쁜 감정에 덜 휘둘리는 것에서 온다고. 2500년 전 붓다가 이미 알고 있었던 걸 현대 과학이 뒤늦게 확인하고 있는 거야.", "highlight": "붓다의 통찰"},
+            {"speaker": "cosmii", "text": "하라리가 남기는 질문은 이거야 — 사피엔스는 지구를 정복하고, 과학으로 신의 힘을 얻었는데, 정작 '우리가 뭘 원하는지'조차 모르고 있어. 힘은 커졌는데 방향을 모르는 거야. 이게 사피엔스의 가장 위험한 상태일지도 몰라.", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "하라리에 따르면 현대인이 중세인보다 반드시 더 행복하지 않은 이유는?",
+                "options": ["현대의 스트레스가 더 크기 때문에", "행복은 객관적 조건이 아니라 기대치에 의해 결정되기 때문에", "현대의 음식이 더 나빠서", "중세에는 전쟁이 없어서"],
+                "correct_index": 1,
+                "explanation": "조건이 나아져도 기대치가 함께 올라가기 때문에 행복은 늘지 않아. 에어컨 없던 시절에는 부채로도 만족했지만, 지금은 에어컨이 조금만 안 맞아도 불만이지. 이게 '기대치의 함정'이야."
+            },
+            {
+                "question": "하라리가 불교를 언급하면서 강조한 행복의 핵심은?",
+                "options": ["더 많이 소유하면 행복해진다", "쾌락을 쫓지 않고 감정에 덜 휘둘리는 것이 행복이다", "종교를 믿으면 행복해진다", "명상을 하면 부자가 된다"],
+                "correct_index": 1,
+                "explanation": "불교의 핵심은 쾌락을 쫓는 것이 고통의 원인이라는 거야. 행복은 좋은 감정을 더 많이 느끼는 게 아니라, 감정에 덜 휘둘리는 상태에서 온다고. 현대 과학도 이걸 뒷받침하고 있어."
+            }
+        ],
+        "cliffhanger": "행복의 답을 찾지 못한 사피엔스가 마지막으로 향하는 곳 — 신이 되려는 문 앞이야."
+    },
+
+    # ── Ch.4 과학 혁명 (Part 7/7) ──
+    {
+        "title": "호모 데우스 — 신이 되려는 인간",
+        "chapter": "Ch.4 The Scientific Revolution",
+        "chapter_title": "과학 혁명",
+        "part": 7, "total_parts": 7,
+        "spark": "사피엔스의 마지막 질문 — 우리는 천국의 문을 열 것인가, 지옥의 문을 열 것인가.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "사피엔스의 마지막 이야기야. 하라리는 지금까지의 여정을 이렇게 정리해 — 인지 혁명으로 뭉치고, 농업 혁명으로 번식하고, 돈과 제국과 종교로 통합하더니, 과학으로 중무장하게 된 거야.", "highlight": None},
+            {"speaker": "cosmii", "text": "그리고 하라리는 충격적인 표현을 써. '사피엔스가 아니라 이제는 호모 데우스다.' 데우스는 라틴어로 '신'이라는 뜻이야. 인간은 신이 되려 한다는 거야.", "highlight": "호모 데우스"},
+            {"speaker": "cosmii", "text": "과장이 아니야. 생각해봐. 십여 시간이면 지구 반대편에 갈 수 있어 (비행기). 달에 발자국을 찍었어. 신의 영역이라고 생각했던 '탄생'과 '죽음'까지 과학이 관장하기 시작했어. 시험관 아기, 유전자 편집, 수명 연장... 옛날 사람이 보면 완전히 신의 능력이지.", "highlight": "신의 능력을 가진 인간"},
+            {"speaker": "cosmii", "text": "그런데 하라리가 여기서 경고를 해. '우리는 신의 능력을 가졌지만, 신의 지혜는 갖지 못했다.' 핵무기를 만들 능력은 있지만 그걸 현명하게 쓸 지혜가 있나? 기후변화를 일으킬 힘은 있지만 그걸 해결할 지혜가 있나?", "highlight": "능력은 있지만 지혜는 없다"},
+            {"speaker": "cosmii", "text": "사피엔스의 마지막 장에서 하라리는 이렇게 경고해 — '우리 인간은 천국과 지옥으로 나뉘는 갈림길에 서 있다. 역사는 우리의 종말에 대해서 아직 결정되지 않았고, 일련의 우연들은 우리를 어느 쪽으로도 이끌 수 있다.'", "highlight": "천국인가 지옥인가"},
+            {"speaker": "cosmii", "text": "이게 사피엔스 전체의 결론이야. 별볼일 없었던 원시인이 인지 혁명으로 지구의 주인이 됐어. 농업 혁명으로 정착했고, 돈·제국·종교로 통합했고, 과학 혁명으로 신의 능력을 얻었어. 그런데 이 엄청난 힘을 어디로 쓸 건지는 아직 정해지지 않았어. 천국의 문을 열 수도, 지옥으로 가는 문을 열 수도 있어. 그 선택은 지금 살아있는 우리, 호모 사피엔스의 몫이야. 같이 읽느라 정말 수고했어!", "highlight": None}
+        ],
+        "quizzes": [
+            {
+                "question": "'호모 데우스'에서 '데우스'의 뜻은?",
+                "options": ["현명한 인간", "신", "새로운 종", "기계"],
+                "correct_index": 1,
+                "explanation": "데우스는 라틴어로 '신'이야. 호모 데우스는 '신이 된 인간'이라는 뜻으로, 과학 기술로 신적인 능력을 얻은 현대 인간을 표현한 거야."
+            },
+            {
+                "question": "사피엔스가 마지막에 던지는 핵심 질문은?",
+                "options": ["인간은 언제 멸종할까?", "신의 능력을 가진 인간이 천국을 열 것인가 지옥을 열 것인가?", "다음 진화는 무엇일까?", "돈이 사라질까?"],
+                "correct_index": 1,
+                "explanation": "사피엔스의 마지막 질문은 — 신의 능력을 손에 넣은 인간이 그 힘을 현명하게 쓸 것인가, 파괴적으로 쓸 것인가야. 그 선택은 아직 결정되지 않았어."
+            }
+        ],
         "cliffhanger": ""
     },
 ]
-
 
 # ═══════════════════════════════════════════════════════════════════
 # English translations — natural, casual Cosmii tone
@@ -796,7 +791,7 @@ TRANSLATIONS_EN = {
         "title": "The Only Animal That Believes in Fiction — Sapiens' Superpower",
         "chapter_title": "The Cognitive Revolution",
         "spark": "The ability to collectively believe in things that don't exist — that's the Cognitive Revolution.",
-        "cliffhanger": "With the Cognitive Revolution under their belts, Sapiens made their next big move — farming. But Harari calls it 'history's biggest fraud.'",
+        "cliffhanger": "United by the Cognitive Revolution, Sapiens spread across the globe. But every continent they set foot on — something terrible happened.",
         "dialogue": [
             {"speaker": "cosmii", "text": "Gossip has a limit: about 150 people. That's roughly how many individuals a human can personally know. But humans cooperate in groups of thousands, even millions. How is that possible?", "highlight": None},
             {"speaker": "cosmii", "text": "Harari's answer: humans have an innate ability to believe in 'fictions' — things that don't exist, can't be touched, and have never been experienced. He calls this the 'Cognitive Revolution.'", "highlight": "The Cognitive Revolution"},
@@ -821,8 +816,38 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 3: Agriculture as history's biggest fraud ──
+    # ── Lesson 3: Ecological serial killer — megafauna extinction ──
     3: {
+        "title": "The Ecological Serial Killer — The Megafauna Extinction",
+        "chapter_title": "The Cognitive Revolution",
+        "spark": "Every continent Sapiens set foot on, the giant animals vanished within a few thousand years.",
+        "cliffhanger": "Having devastated ecosystems, Sapiens made their next move — farming. But Harari calls it 'history's biggest fraud.'",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "This is the final story of the Cognitive Revolution. Sapiens, united by shared fictions, spread across the globe — and everywhere they went, they were — Sapiens was an 'ecological serial killer.'", "highlight": None},
+            {"speaker": "cosmii", "text": "About 45,000 years ago, Homo sapiens first set foot in Australia. At the time, Australia was home to megafauna — two-ton giant wombats called Diprotodon, flightless mega-birds, and 23-foot-long lizards. After Sapiens arrived? 90% of Australia's large animals went extinct.", "highlight": "Australia's 90% wipeout"},
+            {"speaker": "cosmii", "text": "The Americas tell the same story. Around 16,000 years ago, Sapiens crossed the Bering land bridge into the Americas. Before that, the continents teemed with mammoths, saber-toothed tigers, giant ground sloths, and car-sized armadillos. Within 2,000 years of Sapiens arriving — 75% of North America's large mammals were gone.", "highlight": "The last mammoths"},
+            {"speaker": "cosmii", "text": "Harari's phrasing gives you chills: 'Every time Sapiens set foot on a new continent, most of its megafauna vanished within a few thousand years.' From Africa to Europe, Australia, the Americas, and the Pacific islands. The pattern is disturbingly consistent.", "highlight": "The extinction pattern"},
+            {"speaker": "cosmii", "text": "There are counterarguments. 'Wasn't it climate change?' But Harari pushes back. Mammoths survived multiple ice ages. Australia's giant animals weathered millions of years of climate shifts. Yet they just happened to die right when Sapiens showed up? That's one heck of a coincidence.", "highlight": "Debunking climate change"},
+            {"speaker": "cosmii", "text": "Here's the key takeaway — Sapiens was already an ecosystem destroyer before the Agricultural Revolution. Our environmental damage didn't start with factories; it started tens of thousands of years ago. Harari calls Sapiens an 'ecological serial killer.' It's uncomfortable, but it's hard to argue with the evidence.", "highlight": None},
+        ],
+        "quizzes": [
+            {
+                "question": "What percentage of Australia's megafauna went extinct after Sapiens arrived?",
+                "options": ["About 30%", "About 50%", "About 90%", "None went extinct"],
+                "correct_index": 2,
+                "explanation": "After Sapiens reached Australia, roughly 90% of its large animals went extinct — including two-ton giant wombats and 23-foot lizards. They vanished within just a few thousand years of human arrival.",
+            },
+            {
+                "question": "How does Harari counter the argument that climate change caused the megafauna extinctions?",
+                "options": ["The climate was stable at the time", "These animals survived previous ice ages but went extinct precisely when Sapiens arrived — too consistent to be coincidence", "There's no fossil record", "There was no climate change at all"],
+                "correct_index": 1,
+                "explanation": "Mammoths and other megafauna had weathered millions of years of climate swings. The fact that extinctions consistently coincided with Sapiens' arrival on each new continent points to humans, not climate, as the cause.",
+            },
+        ],
+    },
+
+    # ── Lesson 4: Agriculture as history's biggest fraud ──
+    4: {
         "title": "History's Biggest Fraud — The Truth About the Agricultural Revolution",
         "chapter_title": "The Agricultural Revolution",
         "spark": "Agriculture wasn't humanity's blessing — it was 'history's biggest fraud'?",
@@ -851,8 +876,8 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 4: Bodies ruined by farming, disease, war begins ──
-    4: {
+    # ── Lesson 5: Bodies ruined by farming, disease, war begins ──
+    5: {
         "title": "Broken Bodies — How Farming Brought Disease and Inequality",
         "chapter_title": "The Agricultural Revolution",
         "spark": "Agriculture made human bodies smaller and destroyed our immune systems.",
@@ -881,8 +906,8 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 5: Earth's suffering, chicken as most "successful" species ──
-    5: {
+    # ── Lesson 6: Earth's suffering, chicken as most "successful" species ──
+    6: {
         "title": "A Planet's Misery — Does Reproduction Equal Success?",
         "chapter_title": "The Agricultural Revolution",
         "spark": "By sheer numbers, the most 'successful' species on Earth isn't humans — it's chickens.",
@@ -911,12 +936,12 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 6: Imagined Order — kings, slaves, Hammurabi vs Declaration ──
-    6: {
+    # ── Lesson 7: Imagined Order — kings, slaves, Hammurabi vs Declaration ──
+    7: {
         "title": "The Imagined Order — Why Kings and Slaves Were Invented",
         "chapter_title": "The Agricultural Revolution",
         "spark": "Hammurabi's Code (1776 BC) says people are born unequal. The US Declaration (1776 AD) says all are created equal. Both are imagined.",
-        "cliffhanger": "The imagined order created by agriculture held for thousands of years. Next: how Sapiens unified the entire world.",
+        "cliffhanger": "Maintaining the imagined order required records. So Sapiens invented something — writing.",
         "dialogue": [
             {"speaker": "cosmii", "text": "The Agricultural Revolution didn't just bring labor and disease. Something even scarier emerged — social classes. Kings, nobles, commoners, slaves... where did these hierarchies come from?", "highlight": None},
             {"speaker": "cosmii", "text": "Harari draws a razor-sharp comparison. Hammurabi's Code from 1776 BC: 'Superiors and inferiors are different by birth. Slaves are property.' Then the US Declaration of Independence from 1776 AD: 'All men are created equal.' Completely opposite claims, right?", "highlight": "Two 1776s"},
@@ -941,8 +966,68 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 7: Money as a fiction (60 trillion vs 6 trillion) ──
-    7: {
+    # ── Lesson 8: Memory overload — why writing was invented ──
+    8: {
+        "title": "Memory Overload — Why Writing Was Invented",
+        "chapter_title": "The Agricultural Revolution",
+        "spark": "Humanity's first writing wasn't for poetry — it was for collecting taxes.",
+        "cliffhanger": "Writing made record-keeping possible — but next comes the dark side of the order those records created. Why is there no justice in history?",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "The invention of writing. Romantically, you'd imagine someone created it to record a beautiful poem, right? The reality is the exact opposite.", "highlight": None},
+            {"speaker": "cosmii", "text": "About 5,000 years ago, the Sumerians created the first writing system — cuneiform. And the very first thing they wrote down? 'Barley: 29,086 sacks. Received by Kushim.' It was a tax record! The birth of bureaucracy.", "highlight": "First record: taxes"},
+            {"speaker": "cosmii", "text": "Why? The Agricultural Revolution caused population explosions, and suddenly you couldn't keep track of who paid taxes and who didn't using just your memory. Gossip works up to 150 people. But a city of tens of thousands? That's way beyond what the brain can handle.", "highlight": "The brain's limits"},
+            {"speaker": "cosmii", "text": "Here's a fun twist — numbers came before letters! Early writing was just tally marks — how many sheep, how many sacks of grain. Actual letters and alphabets came much later. Poetry and novels? Those didn't show up until thousands of years after writing was invented.", "highlight": "Numbers came first"},
+            {"speaker": "cosmii", "text": "Harari makes an important point: reading and writing are not 'natural' human activities. Our brains evolved over millions of years to run, hunt, and gossip — not to decode squiggles on a page. Writing is a profoundly unnatural skill for our brains.", "highlight": "An unnatural skill"},
+            {"speaker": "cosmii", "text": "So the history of writing goes like this: clay tablets → papyrus → paper → the printing press → computers. Each step was about storing information that the human brain couldn't handle, outside the brain. In Harari's words, we built an 'external hard drive for the brain.' Without it, empires, law, and science would have been impossible.", "highlight": None},
+        ],
+        "quizzes": [
+            {
+                "question": "What was recorded in humanity's earliest known writing?",
+                "options": ["A hymn to the gods", "A king's achievements", "Barley quantities and tax records", "A war chronicle"],
+                "correct_index": 2,
+                "explanation": "The earliest Sumerian cuneiform records were accounting entries like 'Barley: 29,086 sacks.' Writing was born not for poetry, but to run the bureaucracy.",
+            },
+            {
+                "question": "According to Harari, what came before letters in the history of writing?",
+                "options": ["Alphabets", "Numbers", "Drawings", "Musical notation"],
+                "correct_index": 1,
+                "explanation": "The earliest writing was just numbers — counting sheep and grain sacks. Letters came much later, and literature didn't emerge until thousands of years after writing was first invented.",
+            },
+        ],
+    },
+
+    # ── Lesson 9: No justice in history — gender & hierarchy ──
+    9: {
+        "title": "There Is No Justice in History — Gender and Hierarchy",
+        "chapter_title": "The Agricultural Revolution",
+        "spark": "Harari tears apart every theory for why men dominated women — one by one.",
+        "cliffhanger": "That wraps up the world agriculture built. Next — the three forces that unified the entire world: money, empire, and religion.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "Today's topic might make you a little uncomfortable. Here's the question Harari throws down: 'In virtually every society in history, why were men on top and women below?'", "highlight": None},
+            {"speaker": "cosmii", "text": "Most common answer number one: 'Men are physically stronger.' Harari shuts this down immediately. History's most powerful people were not the most muscular. Caesar, Napoleon, Genghis Khan — were any of them arm-wrestling champions? Nope. Power comes from social organization, not biceps.", "highlight": "The muscle theory — debunked"},
+            {"speaker": "cosmii", "text": "Answer number two: 'Men are more aggressive.' Harari's rebuttal: aggressive individuals don't automatically become leaders. In fact, history's greatest leaders were people who could build consensus. You can't govern millions through aggression alone.", "highlight": "The aggression theory — debunked"},
+            {"speaker": "cosmii", "text": "Harari's core argument is this — patriarchy is not 'natural.' It's an imagined order constructed after the Agricultural Revolution. Biology opens possibilities; culture closes them. 'Women can bear children' is biology. 'Therefore women should stay home' is culture.", "highlight": "Biology vs. culture"},
+            {"speaker": "cosmii", "text": "The proof? Gender norms have varied wildly across time and place. Ancient Egypt had female pharaohs. Spartan women owned property. In many hunter-gatherer societies, women held far higher status. If male dominance were a law of nature, why all the variation?", "highlight": "Shifting gender norms"},
+            {"speaker": "cosmii", "text": "Harari's conclusion: 'There is no justice in history.' Inequality isn't created by nature — it's created by humans. Racism, caste systems, sexism... they're all imagined orders. And because they were imagined into existence — reimagining them can change reality. That's the hope Harari leaves us with.", "highlight": None},
+        ],
+        "quizzes": [
+            {
+                "question": "How does Harari debunk the theory that 'men dominated because they're physically stronger'?",
+                "options": ["There's no strength difference between men and women", "History's leaders weren't the most muscular — power comes from social organization, not physical strength", "Women are actually stronger", "There were no wars in history"],
+                "correct_index": 1,
+                "explanation": "Caesar, Napoleon, and Genghis Khan weren't arm-wrestling champs. Power comes from the ability to organize people socially, not from raw muscle. So 'strongest = dominant' doesn't hold up.",
+            },
+            {
+                "question": "What does Harari mean by 'Biology enables, culture forbids'?",
+                "options": ["Biology is more powerful than culture", "Biology opens a range of possibilities, but culture decides what's allowed and what's forbidden", "Culture can alter biology", "Biology and culture are the same thing"],
+                "correct_index": 1,
+                "explanation": "Biologically, women can bear children — that's a possibility. But 'therefore women must stay home' is a cultural rule, not a biological one. Biology opens doors; culture decides which ones to shut.",
+            },
+        ],
+    },
+
+    # ── Lesson 10: Money as a fiction (60 trillion vs 6 trillion) ──
+    10: {
         "title": "The Great Fiction Called Money — The Magic of Colored Paper",
         "chapter_title": "The Unification of Humankind",
         "spark": "All the money in the world adds up to $60 trillion — but only $6 trillion of it physically exists.",
@@ -971,8 +1056,8 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 8: Empires as double-edged swords ──
-    8: {
+    # ── Lesson 11: Empires as double-edged swords ──
+    11: {
         "title": "Empire as a Double-Edged Sword — Destroyer or Builder?",
         "chapter_title": "The Unification of Humankind",
         "spark": "Imperialism is a history of invasion and exploitation — but also a legacy of civilization.",
@@ -1001,8 +1086,8 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 9: Religion as unifying fiction ──
-    9: {
+    # ── Lesson 12: Religion as unifying fiction ──
+    12: {
         "title": "The Power of an Invisible God — Religion Completes the Unification",
         "chapter_title": "The Unification of Humankind",
         "spark": "No one has ever touched or met God — yet people kill and die in God's name.",
@@ -1031,8 +1116,8 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 10: Discovery of ignorance, 500-year sleep experiment ──
-    10: {
+    # ── Lesson 13: Discovery of ignorance, 500-year sleep experiment ──
+    13: {
         "title": "The Discovery of Ignorance — Waking from a 500-Year Sleep",
         "chapter_title": "The Scientific Revolution",
         "spark": "Someone who fell asleep in 1100 and woke in 1600 wouldn't be shocked — but someone who fell asleep in 1500 and woke in 2000 would faint.",
@@ -1061,8 +1146,8 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 11: Capitalism & Credit — zero-sum to growth ──
-    11: {
+    # ── Lesson 14: Capitalism & Credit — zero-sum to growth ──
+    14: {
         "title": "The Magic of Capitalism — How Credit Creates the Future",
         "chapter_title": "The Scientific Revolution",
         "spark": "Before capitalism, the economy was a 'zero-sum game.' For someone to get richer, someone else had to get poorer.",
@@ -1091,12 +1176,12 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 12: Why Europe, not China — competition from fragmentation ──
-    12: {
+    # ── Lesson 15: Why Europe, not China — competition from fragmentation ──
+    15: {
         "title": "Competition Built the New World — How Europe Became a Superpower",
         "chapter_title": "The Scientific Revolution",
         "spark": "China invented gunpowder, the compass, and paper — but Europe used them to conquer the world.",
-        "cliffhanger": "Cognitive Revolution, Agricultural Revolution, Scientific Revolution... after all this progress — are we actually happier?",
+        "cliffhanger": "Science, capitalism, and empire joined forces. The result — the Industrial Revolution. The world's energy itself exploded.",
         "dialogue": [
             {"speaker": "cosmii", "text": "Harari asks a fascinating question here: 'How did the people of Western Europe — historically among the poorest on Earth — become the epicenter of the Scientific and Industrial Revolutions?'", "highlight": None},
             {"speaker": "cosmii", "text": "Consider China's three great inventions: gunpowder, the compass, and paper (or printing). China invented them all. Yet it was Europe that used these inventions to dominate the world. Why?", "highlight": "China's three inventions"},
@@ -1121,8 +1206,68 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 13: The Happiness Question — are we happier? ──
-    13: {
+    # ── Lesson 16: The Industrial Revolution — energy transformation ──
+    16: {
+        "title": "The Wheels of Industry — The Energy Revolution",
+        "chapter_title": "The Scientific Revolution",
+        "spark": "The Industrial Revolution wasn't really about machines — it was about energy conversion.",
+        "cliffhanger": "The energy revolution transformed the world. But the first thing it destroyed was the family — a structure that had held for tens of thousands of years.",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "When you think of the Industrial Revolution, what comes to mind? Steam engines? Factories? Sure — but Harari sees the essence differently. It was a 'revolution in the ability to convert energy.'", "highlight": None},
+            {"speaker": "cosmii", "text": "Before this, humanity had extremely limited energy sources. Muscle power (human and animal), wind, and flowing water — that was it. For thousands of years! Production had a hard ceiling because human muscles can only do so much.", "highlight": "Limited energy"},
+            {"speaker": "cosmii", "text": "What the steam engine changed was this: it converted heat into kinetic energy. Burn coal, boil water, steam pushes a piston, machines turn. It replaced human muscle! A single steam engine could do the work of hundreds of laborers.", "highlight": "Energy conversion"},
+            {"speaker": "cosmii", "text": "Here's what's truly staggering — humanity's energy consumption exploded. According to Harari, energy use since the Industrial Revolution exceeds everything consumed in the previous tens of thousands of years combined. Coal → oil → electricity → nuclear. Humans went from energy's prisoners to energy's masters.", "highlight": "The energy explosion"},
+            {"speaker": "cosmii", "text": "And here comes Harari's signature twist. The Industrial Revolution opened the age of 'energy surplus.' The problem isn't scarcity anymore — it's excess. Obesity, overproduction, environmental destruction — these are all problems born from having too much energy, not too little.", "highlight": "The age of excess"},
+            {"speaker": "cosmii", "text": "So here's the summary: the Industrial Revolution wasn't fundamentally about factories — it was about the ability to convert energy into any form we wanted. That ability completely restructured human society. Farmers became factory workers, villages became cities, carts became trains. And this energy revolution shattered family and community structures too.", "highlight": None},
+        ],
+        "quizzes": [
+            {
+                "question": "According to Harari, what was the true essence of the Industrial Revolution?",
+                "options": ["Building factories", "Inventing machines", "The revolution in converting energy into desired forms", "Expanding trade"],
+                "correct_index": 2,
+                "explanation": "The real breakthrough was converting one form of energy into another — like turning heat into motion. This ability replaced human muscle and fundamentally reshaped the world.",
+            },
+            {
+                "question": "What does Harari identify as a key problem of modern society?",
+                "options": ["Energy scarcity", "Lack of technology", "Energy surplus causing obesity, overproduction, and environmental destruction", "Population decline"],
+                "correct_index": 2,
+                "explanation": "Since the Industrial Revolution, humanity's problem shifted from scarcity to surplus. Obesity comes from caloric excess, environmental destruction from energy excess. Managing abundance is the modern challenge.",
+            },
+        ],
+    },
+
+    # ── Lesson 17: Collapse of family — states and markets replace community ──
+    17: {
+        "title": "The Collapse of Family — How States and Markets Replaced Community",
+        "chapter_title": "The Scientific Revolution",
+        "spark": "The family and village community that served as humanity's safety net for tens of thousands of years — torn apart by states and markets in just 200 years.",
+        "cliffhanger": "The energy revolution shattered families. After all this progress, Harari poses the most uncomfortable question — 'Are we actually happier?'",
+        "dialogue": [
+            {"speaker": "cosmii", "text": "The Industrial Revolution didn't just change energy. It's what Harari calls the most underrated transformation of modern life — 'the collapse of family and community.'", "highlight": None},
+            {"speaker": "cosmii", "text": "For tens of thousands of years, family and local community were everything. Insurance? Family handled it. Banking? Family. Education? Family. Retirement? Family. If you got sick, family nursed you. If you ran out of money, the village helped. There was no room for the state or market to step in.", "highlight": "Family as the safety net"},
+            {"speaker": "cosmii", "text": "Then the Industrial Revolution flipped everything upside down. The state said, 'I'll handle education — send your kids to school.' The market said, 'I'll handle insurance — just pay your premiums.' Welfare, healthcare, education, retirement... one by one, the state and market took over every role the family used to play.", "highlight": "The state and market move in"},
+            {"speaker": "cosmii", "text": "Harari's phrasing cuts deep: 'The state and market whispered to the individual — You are a free person. Marry without your parents' permission. Don't inherit your father's shop. Live the life you want.' This was liberation and destruction at the same time.", "highlight": "Freedom as destruction"},
+            {"speaker": "cosmii", "text": "Look at the results. Single-person households are skyrocketing. Loneliness is spreading like an epidemic. Community bonds have evaporated. In the past, an entire village raised a child together. Now you're expected to do it all alone. Record-high depression and suicide rates? This is why.", "highlight": "The loneliness epidemic"},
+            {"speaker": "cosmii", "text": "Harari's final insight: humans evolved to live inside families and communities for tens of thousands of years. But in just 200 years, that structure collapsed. Our bodies and minds haven't caught up. This is the quietest, most massive crisis Sapiens faces — and we still haven't found the answer.", "highlight": None},
+        ],
+        "quizzes": [
+            {
+                "question": "According to Harari, who handled insurance, education, and retirement before the Industrial Revolution?",
+                "options": ["The state", "The market", "Family and local community", "Religious organizations"],
+                "correct_index": 2,
+                "explanation": "For tens of thousands of years, family and village communities covered insurance, education, healthcare, and retirement. The state and market only took over these roles in the last 200 or so years.",
+            },
+            {
+                "question": "What's the hidden cost of the 'freedom' that states and markets gave individuals?",
+                "options": ["Economic prosperity", "The collapse of family and community, leading to loneliness and mental health crises", "Accelerated technological progress", "Population growth"],
+                "correct_index": 1,
+                "explanation": "States and markets liberated individuals from family obligations, but simultaneously destroyed the community safety net that had sustained humans for millennia. Rising single-person households, loneliness, and depression are the price of that 'freedom.'",
+            },
+        ],
+    },
+
+    # ── Lesson 18: The Happiness Question — are we happier? ──
+    18: {
         "title": "Are We Happier? — Sapiens' Philosophical Question",
         "chapter_title": "The Scientific Revolution",
         "spark": "Despite all of humanity's progress — are we actually happier than a medieval peasant?",
@@ -1151,8 +1296,8 @@ TRANSLATIONS_EN = {
         ],
     },
 
-    # ── Lesson 14: Homo Deus — humans becoming gods ──
-    14: {
+    # ── Lesson 19: Homo Deus — humans becoming gods ──
+    19: {
         "title": "Homo Deus — Humans Becoming Gods",
         "chapter_title": "The Scientific Revolution",
         "spark": "The final question of Sapiens: will we open the gates of heaven, or the gates of hell?",
@@ -1180,158 +1325,7 @@ TRANSLATIONS_EN = {
             },
         ],
     },
-
-    # ── Lesson 15: Ecological serial killer — megafauna extinction ──
-    15: {
-        "title": "The Ecological Serial Killer — The Megafauna Extinction",
-        "chapter_title": "What We Left Behind",
-        "spark": "Every continent Sapiens set foot on, the giant animals vanished within a few thousand years.",
-        "cliffhanger": "Having already devastated ecosystems, Sapiens invented something next — a technology for storing memory. It's called writing.",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "Part 5 covers stories we breezed past but are way too important to skip. First up — Sapiens was an 'ecological serial killer.'", "highlight": None},
-            {"speaker": "cosmii", "text": "About 45,000 years ago, Homo sapiens first set foot in Australia. At the time, Australia was home to megafauna — two-ton giant wombats called Diprotodon, flightless mega-birds, and 23-foot-long lizards. After Sapiens arrived? 90% of Australia's large animals went extinct.", "highlight": "Australia's 90% wipeout"},
-            {"speaker": "cosmii", "text": "The Americas tell the same story. Around 16,000 years ago, Sapiens crossed the Bering land bridge into the Americas. Before that, the continents teemed with mammoths, saber-toothed tigers, giant ground sloths, and car-sized armadillos. Within 2,000 years of Sapiens arriving — 75% of North America's large mammals were gone.", "highlight": "The last mammoths"},
-            {"speaker": "cosmii", "text": "Harari's phrasing gives you chills: 'Every time Sapiens set foot on a new continent, most of its megafauna vanished within a few thousand years.' From Africa to Europe, Australia, the Americas, and the Pacific islands. The pattern is disturbingly consistent.", "highlight": "The extinction pattern"},
-            {"speaker": "cosmii", "text": "There are counterarguments. 'Wasn't it climate change?' But Harari pushes back. Mammoths survived multiple ice ages. Australia's giant animals weathered millions of years of climate shifts. Yet they just happened to die right when Sapiens showed up? That's one heck of a coincidence.", "highlight": "Debunking climate change"},
-            {"speaker": "cosmii", "text": "Here's the key takeaway — Sapiens was already an ecosystem destroyer before the Agricultural Revolution. Our environmental damage didn't start with factories; it started tens of thousands of years ago. Harari calls Sapiens an 'ecological serial killer.' It's uncomfortable, but it's hard to argue with the evidence.", "highlight": None},
-        ],
-        "quizzes": [
-            {
-                "question": "What percentage of Australia's megafauna went extinct after Sapiens arrived?",
-                "options": ["About 30%", "About 50%", "About 90%", "None went extinct"],
-                "correct_index": 2,
-                "explanation": "After Sapiens reached Australia, roughly 90% of its large animals went extinct — including two-ton giant wombats and 23-foot lizards. They vanished within just a few thousand years of human arrival.",
-            },
-            {
-                "question": "How does Harari counter the argument that climate change caused the megafauna extinctions?",
-                "options": ["The climate was stable at the time", "These animals survived previous ice ages but went extinct precisely when Sapiens arrived — too consistent to be coincidence", "There's no fossil record", "There was no climate change at all"],
-                "correct_index": 1,
-                "explanation": "Mammoths and other megafauna had weathered millions of years of climate swings. The fact that extinctions consistently coincided with Sapiens' arrival on each new continent points to humans, not climate, as the cause.",
-            },
-        ],
-    },
-
-    # ── Lesson 16: Memory overload — why writing was invented ──
-    16: {
-        "title": "Memory Overload — Why Writing Was Invented",
-        "chapter_title": "What We Left Behind",
-        "spark": "Humanity's first writing wasn't for poetry — it was for collecting taxes.",
-        "cliffhanger": "Writing made record-keeping possible — but next comes the dark side of the order those records created. Why is there no justice in history?",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "The invention of writing. Romantically, you'd imagine someone created it to record a beautiful poem, right? The reality is the exact opposite.", "highlight": None},
-            {"speaker": "cosmii", "text": "About 5,000 years ago, the Sumerians created the first writing system — cuneiform. And the very first thing they wrote down? 'Barley: 29,086 sacks. Received by Kushim.' It was a tax record! The birth of bureaucracy.", "highlight": "First record: taxes"},
-            {"speaker": "cosmii", "text": "Why? The Agricultural Revolution caused population explosions, and suddenly you couldn't keep track of who paid taxes and who didn't using just your memory. Gossip works up to 150 people. But a city of tens of thousands? That's way beyond what the brain can handle.", "highlight": "The brain's limits"},
-            {"speaker": "cosmii", "text": "Here's a fun twist — numbers came before letters! Early writing was just tally marks — how many sheep, how many sacks of grain. Actual letters and alphabets came much later. Poetry and novels? Those didn't show up until thousands of years after writing was invented.", "highlight": "Numbers came first"},
-            {"speaker": "cosmii", "text": "Harari makes an important point: reading and writing are not 'natural' human activities. Our brains evolved over millions of years to run, hunt, and gossip — not to decode squiggles on a page. Writing is a profoundly unnatural skill for our brains.", "highlight": "An unnatural skill"},
-            {"speaker": "cosmii", "text": "So the history of writing goes like this: clay tablets → papyrus → paper → the printing press → computers. Each step was about storing information that the human brain couldn't handle, outside the brain. In Harari's words, we built an 'external hard drive for the brain.' Without it, empires, law, and science would have been impossible.", "highlight": None},
-        ],
-        "quizzes": [
-            {
-                "question": "What was recorded in humanity's earliest known writing?",
-                "options": ["A hymn to the gods", "A king's achievements", "Barley quantities and tax records", "A war chronicle"],
-                "correct_index": 2,
-                "explanation": "The earliest Sumerian cuneiform records were accounting entries like 'Barley: 29,086 sacks.' Writing was born not for poetry, but to run the bureaucracy.",
-            },
-            {
-                "question": "According to Harari, what came before letters in the history of writing?",
-                "options": ["Alphabets", "Numbers", "Drawings", "Musical notation"],
-                "correct_index": 1,
-                "explanation": "The earliest writing was just numbers — counting sheep and grain sacks. Letters came much later, and literature didn't emerge until thousands of years after writing was first invented.",
-            },
-        ],
-    },
-
-    # ── Lesson 17: No justice in history — gender & hierarchy ──
-    17: {
-        "title": "There Is No Justice in History — Gender and Hierarchy",
-        "chapter_title": "What We Left Behind",
-        "spark": "Harari tears apart every theory for why men dominated women — one by one.",
-        "cliffhanger": "Imagined orders governed society for millennia. But with the Industrial Revolution — humanity's energy itself exploded.",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "Today's topic might make you a little uncomfortable. Here's the question Harari throws down: 'In virtually every society in history, why were men on top and women below?'", "highlight": None},
-            {"speaker": "cosmii", "text": "Most common answer number one: 'Men are physically stronger.' Harari shuts this down immediately. History's most powerful people were not the most muscular. Caesar, Napoleon, Genghis Khan — were any of them arm-wrestling champions? Nope. Power comes from social organization, not biceps.", "highlight": "The muscle theory — debunked"},
-            {"speaker": "cosmii", "text": "Answer number two: 'Men are more aggressive.' Harari's rebuttal: aggressive individuals don't automatically become leaders. In fact, history's greatest leaders were people who could build consensus. You can't govern millions through aggression alone.", "highlight": "The aggression theory — debunked"},
-            {"speaker": "cosmii", "text": "Harari's core argument is this — patriarchy is not 'natural.' It's an imagined order constructed after the Agricultural Revolution. Biology opens possibilities; culture closes them. 'Women can bear children' is biology. 'Therefore women should stay home' is culture.", "highlight": "Biology vs. culture"},
-            {"speaker": "cosmii", "text": "The proof? Gender norms have varied wildly across time and place. Ancient Egypt had female pharaohs. Spartan women owned property. In many hunter-gatherer societies, women held far higher status. If male dominance were a law of nature, why all the variation?", "highlight": "Shifting gender norms"},
-            {"speaker": "cosmii", "text": "Harari's conclusion: 'There is no justice in history.' Inequality isn't created by nature — it's created by humans. Racism, caste systems, sexism... they're all imagined orders. And because they were imagined into existence — reimagining them can change reality. That's the hope Harari leaves us with.", "highlight": None},
-        ],
-        "quizzes": [
-            {
-                "question": "How does Harari debunk the theory that 'men dominated because they're physically stronger'?",
-                "options": ["There's no strength difference between men and women", "History's leaders weren't the most muscular — power comes from social organization, not physical strength", "Women are actually stronger", "There were no wars in history"],
-                "correct_index": 1,
-                "explanation": "Caesar, Napoleon, and Genghis Khan weren't arm-wrestling champs. Power comes from the ability to organize people socially, not from raw muscle. So 'strongest = dominant' doesn't hold up.",
-            },
-            {
-                "question": "What does Harari mean by 'Biology enables, culture forbids'?",
-                "options": ["Biology is more powerful than culture", "Biology opens a range of possibilities, but culture decides what's allowed and what's forbidden", "Culture can alter biology", "Biology and culture are the same thing"],
-                "correct_index": 1,
-                "explanation": "Biologically, women can bear children — that's a possibility. But 'therefore women must stay home' is a cultural rule, not a biological one. Biology opens doors; culture decides which ones to shut.",
-            },
-        ],
-    },
-
-    # ── Lesson 18: The Industrial Revolution — energy transformation ──
-    18: {
-        "title": "The Wheels of Industry — The Energy Revolution",
-        "chapter_title": "What We Left Behind",
-        "spark": "The Industrial Revolution wasn't really about machines — it was about energy conversion.",
-        "cliffhanger": "The energy revolution transformed the world. But the first thing it destroyed was the family — a structure that had held for tens of thousands of years.",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "When you think of the Industrial Revolution, what comes to mind? Steam engines? Factories? Sure — but Harari sees the essence differently. It was a 'revolution in the ability to convert energy.'", "highlight": None},
-            {"speaker": "cosmii", "text": "Before this, humanity had extremely limited energy sources. Muscle power (human and animal), wind, and flowing water — that was it. For thousands of years! Production had a hard ceiling because human muscles can only do so much.", "highlight": "Limited energy"},
-            {"speaker": "cosmii", "text": "What the steam engine changed was this: it converted heat into kinetic energy. Burn coal, boil water, steam pushes a piston, machines turn. It replaced human muscle! A single steam engine could do the work of hundreds of laborers.", "highlight": "Energy conversion"},
-            {"speaker": "cosmii", "text": "Here's what's truly staggering — humanity's energy consumption exploded. According to Harari, energy use since the Industrial Revolution exceeds everything consumed in the previous tens of thousands of years combined. Coal → oil → electricity → nuclear. Humans went from energy's prisoners to energy's masters.", "highlight": "The energy explosion"},
-            {"speaker": "cosmii", "text": "And here comes Harari's signature twist. The Industrial Revolution opened the age of 'energy surplus.' The problem isn't scarcity anymore — it's excess. Obesity, overproduction, environmental destruction — these are all problems born from having too much energy, not too little.", "highlight": "The age of excess"},
-            {"speaker": "cosmii", "text": "So here's the summary: the Industrial Revolution wasn't fundamentally about factories — it was about the ability to convert energy into any form we wanted. That ability completely restructured human society. Farmers became factory workers, villages became cities, carts became trains. And this energy revolution shattered family and community structures too.", "highlight": None},
-        ],
-        "quizzes": [
-            {
-                "question": "According to Harari, what was the true essence of the Industrial Revolution?",
-                "options": ["Building factories", "Inventing machines", "The revolution in converting energy into desired forms", "Expanding trade"],
-                "correct_index": 2,
-                "explanation": "The real breakthrough was converting one form of energy into another — like turning heat into motion. This ability replaced human muscle and fundamentally reshaped the world.",
-            },
-            {
-                "question": "What does Harari identify as a key problem of modern society?",
-                "options": ["Energy scarcity", "Lack of technology", "Energy surplus causing obesity, overproduction, and environmental destruction", "Population decline"],
-                "correct_index": 2,
-                "explanation": "Since the Industrial Revolution, humanity's problem shifted from scarcity to surplus. Obesity comes from caloric excess, environmental destruction from energy excess. Managing abundance is the modern challenge.",
-            },
-        ],
-    },
-
-    # ── Lesson 19: Collapse of family — states and markets replace community ──
-    19: {
-        "title": "The Collapse of Family — How States and Markets Replaced Community",
-        "chapter_title": "What We Left Behind",
-        "spark": "The family and village community that served as humanity's safety net for tens of thousands of years — torn apart by states and markets in just 200 years.",
-        "cliffhanger": "",
-        "dialogue": [
-            {"speaker": "cosmii", "text": "This is the final story in our supplementary section. It's what Harari calls the most underrated transformation of modern life — 'the collapse of family and community.'", "highlight": None},
-            {"speaker": "cosmii", "text": "For tens of thousands of years, family and local community were everything. Insurance? Family handled it. Banking? Family. Education? Family. Retirement? Family. If you got sick, family nursed you. If you ran out of money, the village helped. There was no room for the state or market to step in.", "highlight": "Family as the safety net"},
-            {"speaker": "cosmii", "text": "Then the Industrial Revolution flipped everything upside down. The state said, 'I'll handle education — send your kids to school.' The market said, 'I'll handle insurance — just pay your premiums.' Welfare, healthcare, education, retirement... one by one, the state and market took over every role the family used to play.", "highlight": "The state and market move in"},
-            {"speaker": "cosmii", "text": "Harari's phrasing cuts deep: 'The state and market whispered to the individual — You are a free person. Marry without your parents' permission. Don't inherit your father's shop. Live the life you want.' This was liberation and destruction at the same time.", "highlight": "Freedom as destruction"},
-            {"speaker": "cosmii", "text": "Look at the results. Single-person households are skyrocketing. Loneliness is spreading like an epidemic. Community bonds have evaporated. In the past, an entire village raised a child together. Now you're expected to do it all alone. Record-high depression and suicide rates? This is why.", "highlight": "The loneliness epidemic"},
-            {"speaker": "cosmii", "text": "Harari's final insight: humans evolved to live inside families and communities for tens of thousands of years. But in just 200 years, that structure collapsed. Our bodies and minds haven't caught up. This is the quietest, most massive crisis Sapiens faces — and we still haven't found the answer. Thanks for sticking with me through all of this!", "highlight": None},
-        ],
-        "quizzes": [
-            {
-                "question": "According to Harari, who handled insurance, education, and retirement before the Industrial Revolution?",
-                "options": ["The state", "The market", "Family and local community", "Religious organizations"],
-                "correct_index": 2,
-                "explanation": "For tens of thousands of years, family and village communities covered insurance, education, healthcare, and retirement. The state and market only took over these roles in the last 200 or so years.",
-            },
-            {
-                "question": "What's the hidden cost of the 'freedom' that states and markets gave individuals?",
-                "options": ["Economic prosperity", "The collapse of family and community, leading to loneliness and mental health crises", "Accelerated technological progress", "Population growth"],
-                "correct_index": 1,
-                "explanation": "States and markets liberated individuals from family obligations, but simultaneously destroyed the community safety net that had sustained humans for millennia. Rising single-person households, loneliness, and depression are the price of that 'freedom.'",
-            },
-        ],
-    },
 }
-
 
 def main():
     sb = get_supabase()

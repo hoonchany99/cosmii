@@ -453,7 +453,7 @@ LESSONS = [
             {"speaker": "cosmii", "text": "자, 신곡 전체를 돌아보자. 인생의 한가운데에서 길을 잃은 단테 — 어두운 숲, 세 마리 짐승, 베르길리우스의 손. 지옥의 9단계를 하나하나 내려가면서 인간의 죄를 직시하고.", "highlight": None},
             {"speaker": "cosmii", "text": "지옥을 빠져나와 별을 보고, 연옥에서 죄를 씻고, 스승과 이별하고. 베아트리체를 만나 사랑의 인도로 천국에 올라. 그리고 마침내 — 모든 것이 빛이 되는 곳에 도달해.", "highlight": "전체 여정 정리"},
             {"speaker": "cosmii", "text": "그리고 신곡의 마지막 한 줄. 이탈리아 문학 역사상 가장 유명한 문장이야. 「태양과 다른 별들을 움직이는 사랑」 — 이 거대한 우주를 움직이는 힘이 뭐냐면, 사랑이라는 거야. 어둠을 통과하면 빛이 있고, 그 빛의 정체는 결국 사랑이야. 이것이 신곡의 핵심이야.", "highlight": "태양과 다른 별들을 움직이는 사랑"},
-            {"speaker": "cosmii", "text": "700년 전에 쓰인 이 작품이 아직도 읽히는 이유가 바로 이거야. 우리 모두 인생의 어두운 숲에서 길을 잃을 때가 있잖아. 그때 단테가 말해주는 거야 — 어둠을 피하지 마, 통과해. 그러면 별이 보일 거야. 같이 읽느라 정말 수고했어!", "highlight": None}
+            {"speaker": "cosmii", "text": "700년 전에 쓰인 이 작품이 아직도 읽히는 이유가 바로 이거야. 우리 모두 인생의 어두운 숲에서 길을 잃을 때가 있잖아. 그때 단테가 말해주는 거야 — 어둠을 피하지 마, 통과해. 그러면 별이 보일 거야.", "highlight": None}
         ],
         "quizzes": [
             {
@@ -469,7 +469,7 @@ LESSONS = [
                 "explanation": "인생의 어둠(지옥)을 피하지 않고 직면하고 통과하면, 희망(연옥)을 거쳐 빛(천국)에 도달한다는 거야. 이것이 700년간 사랑받은 신곡의 핵심이야."
             }
         ],
-        "cliffhanger": ""
+        "cliffhanger": "지옥에서 천국까지, 큰 그림을 봤어. 이제 빠르게 지나쳤던 장면들을 깊이 들여다볼 차례야. 먼저 지옥 8단계로 돌아가자 — 역사상 가장 아름다운 연설이 울려 퍼지는 불꽃 속으로."
     },
 ]
 
@@ -814,14 +814,14 @@ TRANSLATIONS_EN = {
         "title": "'Remember This and Tell the World' — The Final Canto",
         "chapter_title": "Paradise",
         "spark": "Beatrice's final words — 'Remember this, and make sure you tell the world.'",
-        "cliffhanger": "",
+        "cliffhanger": "We've seen the full arc — from Hell to Paradise. Now it's time to dive deeper into the scenes we flew past. Back to Circle 8 of Hell — into the flames where history's most beautiful speech echoes.",
         "dialogue": [
             {"speaker": "cosmii", "text": "At the very peak of Paradise, the light is so intense that Dante's mind begins to fade. And at the center of that light — Dante glimpses God. A single point of infinite radiance. Individual forms are gone — everything has melted into one immense, singular light.", "highlight": "a point of infinite light"},
             {"speaker": "cosmii", "text": "That's when Beatrice takes Dante's hand and says: 'Dante, remember all of this. You MUST write it down and leave it for those who come after you.' This is the entire reason the Divine Comedy exists. Dante made this journey so he could share it with the world.", "highlight": "remember and tell others"},
             {"speaker": "cosmii", "text": "Let's look back at the whole journey. Dante, lost at the midpoint of his life — the dark wood, the three beasts, Virgil extending his hand. Descending through Hell's 9 circles, staring human sin straight in the face.", "highlight": None},
             {"speaker": "cosmii", "text": "Escaping Hell to see the stars. Climbing Purgatory to cleanse his sins. Saying goodbye to his beloved teacher. Meeting Beatrice, and ascending through Paradise on the wings of love. Until finally — reaching the place where everything becomes light.", "highlight": "the complete journey"},
             {"speaker": "cosmii", "text": "And then — the very last line of the entire poem. The most famous sentence in all of Italian literature: 'the love that moves the sun and the other stars.' The force that drives this whole universe? It's love. Face the darkness, push through, and you'll reach the light. And that light, at its core, is love. That's the Divine Comedy's ultimate message.", "highlight": "the love that moves the sun and the other stars"},
-            {"speaker": "cosmii", "text": "That's why a work written 700 years ago still resonates today. We've all been lost in our own dark wood at some point, right? In those moments, Dante is whispering to us — don't avoid the darkness. Walk through it. The stars will be waiting on the other side. Thanks for going on this journey with me — you were awesome!", "highlight": None},
+            {"speaker": "cosmii", "text": "That's why a work written 700 years ago still resonates today. We've all been lost in our own dark wood at some point, right? In those moments, Dante is whispering to us — don't avoid the darkness. Walk through it. The stars will be waiting on the other side.", "highlight": None},
         ],
         "quizzes": [
             {
@@ -858,7 +858,7 @@ NEW_LESSONS_KO = [
         "part": 1, "total_parts": 2,
         "spark": "「너희는 짐승처럼 살려고 태어난 게 아니라, 덕과 지식을 따르기 위해 태어난 것이다.」 — 지옥에서 울려 퍼지는 가장 아름다운 연설.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "8단계 사기꾼의 지옥, 그 안에 특별한 구덩이가 있어. '사악한 조언자'들의 구덩이야. 여기서 망자들은 불꽃에 감싸여 있어 — 몸은 안 보이고 불꽃만 보여. 갈라진 불꽃 하나가 흔들리고 있는데... 그 안에 율리시즈가 있어.", "highlight": "사악한 조언자"},
+            {"speaker": "cosmii", "text": "자, 이제부터 빠르게 지나쳤던 장면들을 깊이 파볼 거야. 먼저 지옥 8단계로 돌아가자. 사기꾼의 지옥 안에 특별한 구덩이가 있어. '사악한 조언자'들의 구덩이야. 망자들은 불꽃에 감싸여 있어 — 몸은 안 보이고 불꽃만 보여. 갈라진 불꽃 하나가 흔들리고 있는데... 그 안에 율리시즈가 있어.", "highlight": "사악한 조언자"},
             {"speaker": "cosmii", "text": "율리시즈, 즉 오디세우스야. 트로이 목마를 만든 그 사람! 그리스 신화에서 가장 머리 좋은 영웅이지. 근데 왜 지옥에? 천재적인 언변으로 사람들을 속이고 조종했기 때문이야. 머리를 나쁜 데 쓴 거야.", "highlight": "율리시즈"},
             {"speaker": "cosmii", "text": "단테가 이야기를 들려달라고 해. 율리시즈가 말하기 시작해 — 트로이 전쟁이 끝나고 집에 돌아갈 수 있었는데, 안 돌아갔어. 늙은 동료들과 배를 돌려서 미지의 세계로 향한 거야. 집보다 모험이 더 끌렸던 거지.", "highlight": None},
             {"speaker": "cosmii", "text": "그때 율리시즈가 동료들에게 한 연설이 이거야. 「형제들이여! 수만 가지 위험을 지나 서쪽에 이른 우리가 아닌가. 너희는 짐승처럼 살려고 태어난 게 아니라, 덕과 지식을 따르기 위해 태어난 것이다.」 이 대사, 700년이 지났는데 아직도 소름 돋아.", "highlight": "짐승처럼 살지 말라"},
@@ -1256,7 +1256,7 @@ NEW_TRANSLATIONS_EN = {
         "spark": "'You were not made to live as brutes, but to pursue virtue and knowledge.' — The most beautiful speech ever delivered in Hell.",
         "cliffhanger": "Below Circle 8, the frozen depths of Circle 9. There, Dante will hear the cruelest story in all of Hell.",
         "dialogue": [
-            {"speaker": "cosmii", "text": "Deep in Circle 8 — the circle of fraud — there's a special ditch for 'evil counselors.' Here the damned are wrapped in flames — you can't see their bodies, only flickering fire. One split flame sways back and forth... and inside it is Ulysses.", "highlight": "evil counselors"},
+            {"speaker": "cosmii", "text": "Alright, now we're going to dig deep into the scenes we flew past before. Let's head back to Circle 8 of Hell. In the circle of fraud, there's a special ditch for 'evil counselors.' The damned here are wrapped in flames — no bodies visible, just flickering fire. One split flame sways back and forth... and inside it is Ulysses.", "highlight": "evil counselors"},
             {"speaker": "cosmii", "text": "Ulysses — aka Odysseus. The guy who built the Trojan Horse! The cleverest hero in all of Greek mythology. So why is he in Hell? Because he used his brilliant gift for persuasion to manipulate and deceive people. Genius put to terrible use.", "highlight": "Ulysses"},
             {"speaker": "cosmii", "text": "Dante asks him to tell his story. Ulysses begins — after the Trojan War, he could have gone home. But he didn't. He turned his ship around with his aging crew and sailed toward the unknown. Adventure called louder than home.", "highlight": None},
             {"speaker": "cosmii", "text": "And here's the speech he gave his men: 'Brothers! We've passed through ten thousand dangers to reach the West. You were not made to live as brutes, but to pursue virtue and knowledge!' This line, written 700 years ago, still gives me chills every single time.", "highlight": "not made to live as brutes"},

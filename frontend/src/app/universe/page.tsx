@@ -557,6 +557,8 @@ export default function UniversePage() {
               streakDays={completeData.streakDays}
               levelUp={completeData.levelUp}
               isLastLesson={currentLessonIndex + 1 >= lessons.length && lessons.every((l) => l.completed || l.lesson.id === currentLesson?.lesson.id)}
+              completedLessons={lessons.filter((l) => l.completed).length}
+              totalLessons={lessons.length}
               onNextLesson={handleNextLesson}
               onGoHome={handleGoHome}
               onRetry={handleRetryLesson}

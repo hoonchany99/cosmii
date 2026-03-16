@@ -64,7 +64,7 @@ export function BookDetail({
   );
 
   const isStarted = completedLessons > 0;
-  const estimatedMinutes = (totalLessons - completedLessons) * 5;
+  const estimatedMinutes = (totalLessons - completedLessons) * 3;
   const [imgError, setImgError] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 

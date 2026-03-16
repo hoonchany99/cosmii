@@ -429,7 +429,7 @@ LESSONS = [
                 "explanation": "바이킹은 생명체의 확실한 증거를 못 찾았지만, 화성에 과거 물이 흘렀던 흔적이 있어. 생명의 가능성은 아직 열려 있어."
             }
         ],
-        "cliffhanger": "화성에서 생명을 못 찾았다면 — 이 거대한 우주에 우리만 있는 걸까? 외계 지적 생명체가 있을 확률을 계산하는 공식이 있어. 드레이크 방정식이야."
+        "cliffhanger": "화성에서 생명의 확실한 증거는 아직 못 찾았어. 하지만 한 발짝 물러서서 더 큰 그림을 보자 — 생명이 존재하려면 별이 필요해. 별이 태어나고, 살고, 장렬하게 죽는 이야기부터 해볼게."
     },
 
     # ══════════════════════════════════════════
@@ -504,11 +504,11 @@ LESSONS = [
     # 7부: 칼 세이건의 유언
     # ══════════════════════════════════════════
 
-    # ── Ch.7 칼 세이건의 유언 (Part 1/1) ──
+    # ── Ch.7 우주적 관점 (Part 1/1) ──
     {
         "title": "누가 지구를 대변할 것인가 — 칼 세이건의 유언",
-        "chapter": "Ch.7 Who Speaks for Earth?",
-        "chapter_title": "칼 세이건의 유언",
+        "chapter": "Ch.7 The Cosmic Perspective",
+        "chapter_title": "우주적 관점",
         "part": 1, "total_parts": 1,
         "spark": "'우리는 종으로서 인류를 사랑해야 하며, 지구에게 충성해야 한다. 아니면 그 누가 우리의 지구를 대변해줄 수 있겠는가?'",
         "dialogue": [
@@ -784,12 +784,12 @@ LESSONS = [
     # 13부: 칼 세이건의 마지막 메시지
     # ══════════════════════════════════════════
 
-    # ── Ch.13 누가 지구를 대변할 것인가 (Part 2/2) ──
+    # ── Ch.13 누가 지구를 대변할 것인가 (Part 1/1) ──
     {
         "title": "정보는 살아남아야 한다 — 칼 세이건의 마지막 메시지",
         "chapter": "Ch.13 Who Speaks for Earth?",
         "chapter_title": "누가 지구를 대변할 것인가",
-        "part": 2, "total_parts": 2,
+        "part": 1, "total_parts": 1,
         "spark": "'우리는 코스모스가 스스로를 알아가는 방법이다(We are a way for the cosmos to know itself).' 칼 세이건이 인류에게 남긴 마지막 문장.",
         "dialogue": [
             {"speaker": "cosmii", "text": "코스모스의 마지막 장 '누가 지구를 대변할 것인가' — 칼 세이건은 여기서 이 책 전체를 하나로 묶어. 왜 이 책을 썼는지, 무엇을 전하고 싶었는지.", "highlight": None},
@@ -1107,7 +1107,7 @@ TRANSLATIONS_EN = {
         "title": "The Martian Horizon — Moved by the Red Planet",
         "chapter_title": "Exploring the Solar System",
         "spark": "Seeing Viking's first images from Mars, Carl Sagan wrote: 'I stared, spellbound. It didn't feel like an alien world.'",
-        "cliffhanger": "No life found on Mars — but then, are we alone in this vast universe? There's actually a formula to calculate the probability of intelligent alien life.",
+        "cliffhanger": "No definitive proof of life on Mars — yet. But let's step back and look at the bigger picture. For life to exist, you need stars. Let's start with how stars are born, live, and die spectacular deaths.",
         "dialogue": [
             {"speaker": "cosmii", "text": "If Venus is hell, hope shifted to Mars. In H.G. Wells's 'The War of the Worlds,' aliens always come from Mars. Expectations for life on Mars ran high.", "highlight": "Hopes for Mars"},
             {"speaker": "cosmii", "text": "The Soviet Mars probes failed. But America's Viking successfully landed and began sending back images. For the first time, humanity saw another planet's surface!", "highlight": "Viking landing"},
@@ -1188,8 +1188,8 @@ TRANSLATIONS_EN = {
         ],
     },
     13: {
-        "title": "Who Speaks for Earth? — Carl Sagan's Final Message",
-        "chapter_title": "Carl Sagan's Legacy",
+        "title": "Who Speaks for Earth? — Carl Sagan's Testament",
+        "chapter_title": "The Cosmic Perspective",
         "spark": "'We must love humanity as a species, and be loyal to our planet. If not us, who can speak for Earth?'",
         "cliffhanger": "Children of the stars — but how did stellar elements become 'living' things? The 4-billion-year story of life's evolution, and the cosmic language called DNA, awaits.",
         "dialogue": [

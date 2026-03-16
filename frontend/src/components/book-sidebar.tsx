@@ -97,7 +97,7 @@ export function BookSidebar({
           </motion.div>
           <div>
             <h1 className="text-[15px] font-bold tracking-tight text-white font-brand">Cosmii</h1>
-            <p className="text-xs text-white/40">AI Reading Companion</p>
+            <p className="text-xs text-white/40">The easiest way to finish a book</p>
           </div>
         </div>
       </div>
