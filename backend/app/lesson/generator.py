@@ -177,6 +177,7 @@ async def generate_lessons_for_book(
             bilingual["dialogue_ko"] = lesson_data.get("dialogue", [])
             bilingual["quizzes_ko"] = [_shuffle_quiz_options(q) for q in lesson_data.get("quizzes", [])]
             bilingual["chapter_title_ko"] = lesson_data.get("chapter_title", "")
+            bilingual["chapter_ko"] = lesson_data.get("chapter", "")
             if en_data:
                 bilingual["title_en"] = en_data.get("title", "")
                 bilingual["spark_en"] = en_data.get("spark", "")
@@ -184,6 +185,7 @@ async def generate_lessons_for_book(
                 bilingual["dialogue_en"] = en_data.get("dialogue", [])
                 bilingual["quizzes_en"] = [_shuffle_quiz_options(q) for q in en_data.get("quizzes", [])]
                 bilingual["chapter_title_en"] = en_data.get("chapter_title", "")
+                bilingual["chapter_en"] = en_data.get("chapter", "")
 
             lesson_id = str(uuid.uuid4())
             lesson_row = {

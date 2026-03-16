@@ -37,4 +37,16 @@ export const BOOK_I18N: Record<string, Record<string, string>> = {
     author_ko: "헤르만 헤세",
     author_en: "Hermann Hesse",
   },
+  "45b77580": {
+    title_ko: "사피엔스",
+    title_en: "Sapiens",
+    author_ko: "유발 하라리",
+    author_en: "Yuval Noah Harari",
+  },
+  e40c0e43: {
+    title_ko: "신곡",
+    title_en: "Divine Comedy",
+    author_ko: "단테 알리기에리",
+    author_en: "Dante Alighieri",
+  },
 };
