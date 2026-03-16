@@ -271,6 +271,15 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                   : t("onboarding.readyDefault")}
               </motion.p>
 
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.0, duration: 0.6 }}
+                className="text-white/25 text-[13px] mt-3 max-w-[240px] text-center"
+              >
+                {t("onboarding.freeBookHint")}
+              </motion.p>
+
               <motion.button
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}

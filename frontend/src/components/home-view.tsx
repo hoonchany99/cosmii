@@ -32,6 +32,7 @@ interface HomeViewProps {
   onSelectBook: (book: Book) => void;
   activeSession?: ActiveSession | null;
   onContinueLearning?: () => void;
+  freeBookId?: string | null;
 }
 
 /* ── Texture generators (singleton) ── */
@@ -113,11 +114,15 @@ function BookStar({
   position,
   onClick,
   isSingle,
+  locked,
+  enterDelay,
 }: {
   book: Book;
   position: [number, number, number];
   onClick: () => void;
   isSingle: boolean;
+  locked: boolean;
+  enterDelay: number;
 }) {
   const groupRef = useRef<THREE.Group>(null!);
   const coreRef = useRef<THREE.Sprite>(null!);
@@ -126,6 +131,7 @@ function BookStar({
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
   const pressTime = useRef(0);
+  const birthTime = useRef(-1);
   const coreTex = useMemo(() => getCoreTexture(), []);
   const glowTex = useMemo(() => getGlowTexture(), []);
   const rayTex = useMemo(() => getRayTexture(), []);
@@ -136,10 +142,17 @@ function BookStar({
   }, [hovered]);
 
   const color = book.color || "#6366f1";
+  const dimFactor = locked ? 0.4 : 1;
 
   useFrame(({ clock }) => {
     if (!groupRef.current || !coreRef.current) return;
     const t = clock.getElapsedTime();
+
+    if (birthTime.current < 0) birthTime.current = t;
+    const age = t - birthTime.current - enterDelay;
+    const enterProgress = age < 0 ? 0 : Math.min(1, age / 0.6);
+    const eased = 1 - Math.pow(1 - enterProgress, 3);
+
     const pulse = 1 + Math.sin(t * 1.2 + position[0] * 2) * 0.08;
 
     const now = performance.now() / 1000;
@@ -150,7 +163,7 @@ function BookStar({
         ? 1 + Math.sin(elapsed * Math.PI / 0.3) * 0.18
         : 1;
 
-    const base = (hovered ? 1.15 : 1) * tapBounce;
+    const base = (hovered ? 1.15 : 1) * tapBounce * eased;
     groupRef.current.scale.setScalar(
       THREE.MathUtils.lerp(groupRef.current.scale.x, base * pulse, pressed ? 0.25 : 0.08),
     );
@@ -162,7 +175,7 @@ function BookStar({
 
     const opacityBoost = pressed ? 1.6 : (elapsed < 0.25 ? 1 + (1 - elapsed / 0.25) * 0.5 : 1);
     if (coreRef.current.material) {
-      (coreRef.current.material as THREE.SpriteMaterial).opacity = Math.min(1, opacityBoost);
+      (coreRef.current.material as THREE.SpriteMaterial).opacity = Math.min(1, opacityBoost * dimFactor * eased);
     }
 
     if (glowRef.current) {
@@ -170,7 +183,7 @@ function BookStar({
       glowRef.current.scale.setScalar(
         THREE.MathUtils.lerp(glowRef.current.scale.x, gs, 0.08),
       );
-      (glowRef.current.material as THREE.SpriteMaterial).opacity = Math.min(0.6, 0.35 * opacityBoost);
+      (glowRef.current.material as THREE.SpriteMaterial).opacity = Math.min(0.6, 0.35 * opacityBoost * dimFactor * eased);
     }
 
     if (rayRef.current) {
@@ -179,6 +192,7 @@ function BookStar({
         THREE.MathUtils.lerp(rayRef.current.scale.x, rs, 0.06),
       );
       rayRef.current.material.rotation = t * 0.08;
+      (rayRef.current.material as THREE.SpriteMaterial).opacity = 0.15 * dimFactor * eased;
     }
   });
 
@@ -198,7 +212,7 @@ function BookStar({
           map={rayTex}
           color={color}
           transparent
-          opacity={0.15}
+          opacity={0.15 * dimFactor}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
@@ -209,7 +223,7 @@ function BookStar({
           map={glowTex}
           color={color}
           transparent
-          opacity={0.35}
+          opacity={0.35 * dimFactor}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
@@ -220,7 +234,7 @@ function BookStar({
           map={coreTex}
           color={color}
           transparent
-          opacity={1}
+          opacity={1 * dimFactor}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
@@ -228,18 +242,26 @@ function BookStar({
 
       <Html center style={{ pointerEvents: "none", whiteSpace: "nowrap" }}>
         <div className="text-center" style={{ transform: "translateY(43px)" }}>
-          <p
-            className={`${serif} text-[14px] font-semibold`}
-            style={{
-              color: "rgba(255,255,255,0.88)",
-              textShadow: "0 2px 8px rgba(0,0,0,0.8)",
-              letterSpacing: "0.02em",
-            }}
-          >
-            {book.title}
-          </p>
+          <div className="flex items-center justify-center gap-1.5">
+            <p
+              className={`${serif} text-[14px] font-semibold`}
+              style={{
+                color: locked ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.88)",
+                textShadow: "0 2px 8px rgba(0,0,0,0.8)",
+                letterSpacing: "0.02em",
+              }}
+            >
+              {book.title}
+            </p>
+            {locked && (
+              <svg width="10" height="12" viewBox="0 0 10 12" fill="none" style={{ opacity: 0.35, marginTop: 1 }}>
+                <rect x="0.5" y="5" width="9" height="6.5" rx="1.5" stroke="white" strokeWidth="1" fill="none" />
+                <path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" stroke="white" strokeWidth="1" fill="none" />
+              </svg>
+            )}
+          </div>
           {book.author && (
-            <p className="text-white/40 text-[11px] mt-0.5">{book.author}</p>
+            <p className={`text-[11px] mt-0.5 ${locked ? "text-white/20" : "text-white/40"}`}>{book.author}</p>
           )}
         </div>
       </Html>
@@ -368,7 +390,7 @@ function TapDetector({ books, onSelectBook }: { books: Book[]; onSelectBook: (b:
   return null;
 }
 
-function Scene({ books, onSelectBook }: HomeViewProps) {
+function Scene({ books, onSelectBook, freeBookId }: HomeViewProps) {
   const isSingle = books.length === 1;
 
   const bookPositions = useMemo(() => {
@@ -412,6 +434,8 @@ function Scene({ books, onSelectBook }: HomeViewProps) {
           position={bookPositions[i] || [0, 0, 0]}
           onClick={() => onSelectBook(book)}
           isSingle={isSingle}
+          locked={freeBookId != null && freeBookId !== book.id}
+          enterDelay={i * 0.15}
         />
       ))}
       </RotatingGroup>
@@ -421,7 +445,7 @@ function Scene({ books, onSelectBook }: HomeViewProps) {
 
 /* ── HomeView ── */
 
-export function HomeView({ books, onSelectBook, activeSession, onContinueLearning }: HomeViewProps) {
+export function HomeView({ books, onSelectBook, activeSession, onContinueLearning, freeBookId }: HomeViewProps) {
   const mobile = useIsMobile();
   const t = useT();
   const language = useSettingsStore((s) => s.language);
@@ -459,7 +483,7 @@ export function HomeView({ books, onSelectBook, activeSession, onContinueLearnin
         className="absolute inset-0"
         style={{ background: "transparent", zIndex: 1 }}
       >
-        <Scene books={books} onSelectBook={onSelectBook} />
+        <Scene books={books} onSelectBook={onSelectBook} freeBookId={freeBookId} />
       </Canvas>
 
       {/* Top: Date + Greeting */}

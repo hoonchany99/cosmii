@@ -9,7 +9,10 @@ import {
   Play,
   Clock,
   Layers,
+  Lock,
+  Download,
 } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 import { PrimaryButton } from "@/components/ui/glass-panel";
 import { getBookConstellation } from "@/lib/book-constellations";
 import dynamic from "next/dynamic";
@@ -34,8 +37,12 @@ interface BookDetailProps {
   chapters: ChapterSummary[];
   completedLessons: number;
   totalLessons: number;
+  locked?: boolean;
+  showConfirm?: boolean;
   onBack: () => void;
   onStartLearning: () => void;
+  onConfirmFreeBook?: () => void;
+  onCancelConfirm?: () => void;
 }
 
 export function BookDetail({
@@ -43,8 +50,12 @@ export function BookDetail({
   chapters,
   completedLessons,
   totalLessons,
+  locked = false,
+  showConfirm = false,
   onBack,
   onStartLearning,
+  onConfirmFreeBook,
+  onCancelConfirm,
 }: BookDetailProps) {
   const t = useT();
   const pct = useMemo(
@@ -220,11 +231,71 @@ export function BookDetail({
 
       {/* Bottom CTA */}
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#060612] via-[#060612]/90 to-transparent pt-12 pb-safe-lg px-6 z-20">
-        <PrimaryButton onClick={onStartLearning} className="py-4 text-[16px] flex items-center justify-center gap-2">
-          <Play size={18} className="fill-white" />
-          {isStarted ? t("bookDetail.continue") : t("bookDetail.startLearning")}
-        </PrimaryButton>
+        {locked ? (
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-2 text-white/30">
+              <Lock size={14} />
+              <span className="text-[14px] font-medium">{t("bookDetail.lockedTitle")}</span>
+            </div>
+            <p className="text-white/20 text-[13px] text-center mb-2">{t("bookDetail.lockedSub")}</p>
+            <a
+              href="#app-download"
+              className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/[0.08] border border-white/[0.10] text-white/60 text-[15px] font-semibold hover:bg-white/[0.12] active:bg-white/[0.16] transition-colors"
+            >
+              <Download size={16} />
+              {t("bookDetail.downloadApp")}
+            </a>
+          </div>
+        ) : (
+          <PrimaryButton onClick={onStartLearning} className="py-4 text-[16px] flex items-center justify-center gap-2">
+            <Play size={18} className="fill-white" />
+            {isStarted ? t("bookDetail.continue") : t("bookDetail.startLearning")}
+          </PrimaryButton>
+        )}
       </div>
+
+      {/* Confirm Dialog */}
+      <AnimatePresence>
+        {showConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-8"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 12 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-[320px] bg-[#12121e] border border-white/[0.08] rounded-3xl p-6 flex flex-col items-center"
+            >
+              <h3 className={`${serif} text-[20px] font-bold text-white/90 text-center`}>
+                {t("bookDetail.confirmTitle")}
+              </h3>
+              <p className="text-white/35 text-[14px] text-center mt-3 leading-relaxed whitespace-pre-line">
+                {t("bookDetail.confirmSub")}
+              </p>
+              <div className="flex flex-col gap-2.5 w-full mt-6">
+                <PrimaryButton
+                  onClick={onConfirmFreeBook}
+                  className="py-3.5 text-[15px]"
+                >
+                  {t("bookDetail.confirmBtn")}
+                </PrimaryButton>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={onCancelConfirm}
+                  className="text-white/30 hover:text-white/50 font-medium py-3 transition-colors text-[14px]"
+                >
+                  {t("bookDetail.confirmBack")}
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

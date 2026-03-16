@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Download } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/glass-panel";
 import dynamic from "next/dynamic";
 
@@ -22,6 +22,7 @@ interface SessionCompleteProps {
   xpEarned: number;
   streakDays: number;
   levelUp: boolean;
+  isLastLesson?: boolean;
   onNextLesson: () => void;
   onGoHome: () => void;
   onRetry?: () => void;
@@ -35,6 +36,7 @@ export function SessionComplete({
   xpEarned,
   streakDays,
   levelUp,
+  isLastLesson = false,
   onNextLesson,
   onGoHome,
   onRetry,
@@ -151,6 +153,32 @@ export function SessionComplete({
                   {t("complete.goHome")}
                 </motion.button>
               </div>
+            </>
+          ) : isLastLesson && !allWrong ? (
+            <>
+              <div className="flex flex-col items-center gap-1 mb-4">
+                <span className={`${serif} text-[16px] text-white/60 font-medium`}>
+                  {t("complete.bookDone")}
+                </span>
+                <span className="text-[13px] text-white/30">
+                  {t("complete.bookDoneSub")}
+                </span>
+              </div>
+              <a
+                href="#app-download"
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/90 text-[#060612] text-[15px] font-bold hover:bg-white/80 active:bg-white/70 transition-colors"
+              >
+                <Download size={16} />
+                {t("complete.moreBooks")}
+              </a>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.15, ease }}
+                onClick={onGoHome}
+                className="text-white/25 hover:text-white/50 font-medium py-3 transition-colors duration-300 text-[14px] min-h-[44px]"
+              >
+                {t("complete.goHome")}
+              </motion.button>
             </>
           ) : (
             <>

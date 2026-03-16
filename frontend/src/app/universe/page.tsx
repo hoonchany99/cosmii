@@ -97,11 +97,12 @@ export default function UniversePage() {
   const pendingViewRef = useRef<View | null>(null);
   const pendingActionRef = useRef<(() => void) | null>(null);
 
-  const { stats, setStats, setProfile, incrementTodayCompleted, todayCompleted } = useAppStore();
+  const { stats, setStats, setProfile, incrementTodayCompleted, todayCompleted, freeBookId, setFreeBookId, clearFreeBookId } = useAppStore();
   const dailyGoal = useSettingsStore((s) => s.dailyGoal);
   const [showGoalToast, setShowGoalToast] = useState(false);
   const [showLevelUpToast, setShowLevelUpToast] = useState(false);
   const [levelUpLevel, setLevelUpLevel] = useState(0);
+  const [showFreeBookConfirm, setShowFreeBookConfirm] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("no-scroll");
@@ -192,8 +193,24 @@ export default function UniversePage() {
   }, [language]);
 
   const handleStartLearning = useCallback(() => {
+    if (!freeBookId) {
+      setShowFreeBookConfirm(true);
+      return;
+    }
     warpTo("constellation");
-  }, [warpTo]);
+  }, [warpTo, freeBookId]);
+
+  const handleConfirmFreeBook = useCallback(() => {
+    if (selectedBook) {
+      setFreeBookId(selectedBook.id);
+      setShowFreeBookConfirm(false);
+      warpTo("constellation");
+    }
+  }, [selectedBook, setFreeBookId, warpTo]);
+
+  const handleCancelConfirm = useCallback(() => {
+    setShowFreeBookConfirm(false);
+  }, []);
 
   const handleSelectLesson = useCallback(async (lessonId: string) => {
     try {
@@ -393,6 +410,7 @@ export default function UniversePage() {
             <HomeView
               books={books}
               onSelectBook={handleSelectBook}
+              freeBookId={freeBookId}
               activeSession={
                 selectedBook && lessons.length > 0
                   ? {
@@ -414,8 +432,12 @@ export default function UniversePage() {
               chapters={chapterSummaries}
               completedLessons={lessons.filter((l) => l.completed).length}
               totalLessons={lessons.length}
-              onBack={() => setView("home")}
+              locked={freeBookId !== null && freeBookId !== selectedBook.id}
+              showConfirm={showFreeBookConfirm}
+              onBack={() => { setShowFreeBookConfirm(false); setView("home"); }}
               onStartLearning={handleStartLearning}
+              onConfirmFreeBook={handleConfirmFreeBook}
+              onCancelConfirm={handleCancelConfirm}
             />
           </motion.div>
         )}
@@ -504,6 +526,7 @@ export default function UniversePage() {
               xpEarned={completeData.xpEarned}
               streakDays={completeData.streakDays}
               levelUp={completeData.levelUp}
+              isLastLesson={currentLessonIndex + 1 >= lessons.length && lessons.every((l) => l.completed || l.lesson.id === currentLesson?.lesson.id)}
               onNextLesson={handleNextLesson}
               onGoHome={handleGoHome}
               onRetry={handleRetryLesson}
@@ -540,6 +563,7 @@ export default function UniversePage() {
                 setLessons((prev) =>
                   prev.map((l) => ({ ...l, completed: false, score: null, review_needed: false })),
                 );
+                clearFreeBookId();
               }}
             />
           </motion.div>

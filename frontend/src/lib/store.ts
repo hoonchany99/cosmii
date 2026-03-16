@@ -58,6 +58,11 @@ interface AppState {
   selectedBookId: string | null;
   setSelectedBookId: (id: string | null) => void;
 
+  // Free book (web: one book free)
+  freeBookId: string | null;
+  setFreeBookId: (id: string) => void;
+  clearFreeBookId: () => void;
+
   // Lesson progress
   progress: Map<string, LessonProgress>;
   setProgress: (lessonId: string, p: LessonProgress) => void;
@@ -92,6 +97,10 @@ export const useAppStore = create<AppState>((set) => ({
 
   selectedBookId: null,
   setSelectedBookId: (id) => set({ selectedBookId: id }),
+
+  freeBookId: loadSetting<string | null>("freeBookId", null),
+  setFreeBookId: (id) => { saveSetting("freeBookId", id); set({ freeBookId: id }); },
+  clearFreeBookId: () => { saveSetting("freeBookId", null); set({ freeBookId: null }); },
 
   progress: new Map(),
   setProgress: (lessonId, p) =>

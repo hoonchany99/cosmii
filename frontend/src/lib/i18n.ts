@@ -165,6 +165,9 @@ const ko = {
   "complete.lessonList": "탐험 목록",
   "complete.goHome": "홈으로",
   "complete.nextLesson": "다음 탐험",
+  "complete.bookDone": "모든 탐험 완료!",
+  "complete.bookDoneSub": "이 책의 여정을 마쳤어요",
+  "complete.moreBooks": "앱에서 더 많은 책 읽기",
   "complete.msgGreat.0": "오늘도 한 걸음 더 가까워졌어.",
   "complete.msgGreat.1": "이 정도면 꽤 깊이 읽은 거야.",
   "complete.msgGreat.2": "네가 이해한 만큼, 책도 너를 기억해.",
@@ -228,6 +231,7 @@ const ko = {
   "onboarding.readyName": "{name}, 첫 번째 책을 골라볼까?",
   "onboarding.readyDefault": "첫 번째 책을 골라볼까?",
   "onboarding.startExplore": "시작하기",
+  "onboarding.freeBookHint": "웹에서는 한 권을 무료로 읽을 수 있어",
 
   // ── Floating Cosmii ──
   "thinking.0": "음... 🤔",
@@ -251,6 +255,13 @@ const ko = {
   "bookDetail.chapterSessions": "{done}/{total} 탐험",
   "bookDetail.continue": "이어서 학습하기",
   "bookDetail.startLearning": "학습 시작하기",
+  "bookDetail.lockedTitle": "앱에서 학습할 수 있어요",
+  "bookDetail.lockedSub": "Cosmii 앱을 다운로드해서 이 책도 탐험해보세요",
+  "bookDetail.downloadApp": "앱 다운로드",
+  "bookDetail.confirmTitle": "이 책으로 시작할까요?",
+  "bookDetail.confirmSub": "웹에서는 한 권을 무료로 읽을 수 있어요.\n한번 선택하면 변경할 수 없어요.",
+  "bookDetail.confirmBtn": "선택하기",
+  "bookDetail.confirmBack": "돌아가기",
 
   // ── Book Notes ──
   "notes.title": "학습 노트",
@@ -522,6 +533,9 @@ const en: Record<TranslationKey, string> = {
   "complete.lessonList": "Lesson List",
   "complete.goHome": "Home",
   "complete.nextLesson": "Next Lesson",
+  "complete.bookDone": "All explorations complete!",
+  "complete.bookDoneSub": "You\u2019ve finished this book\u2019s journey",
+  "complete.moreBooks": "Read more books in the app",
   "complete.msgGreat.0": "You've come a little closer today.",
   "complete.msgGreat.1": "You read that deeply. I could tell.",
   "complete.msgGreat.2": "The book remembers you, too.",
@@ -585,6 +599,7 @@ const en: Record<TranslationKey, string> = {
   "onboarding.readyName": "{name}, ready to pick your first book?",
   "onboarding.readyDefault": "Ready to pick your first book?",
   "onboarding.startExplore": "Begin",
+  "onboarding.freeBookHint": "You can read one book for free on the web",
 
   // ── Floating Cosmii ──
   "thinking.0": "Hmm... 🤔",
@@ -608,6 +623,13 @@ const en: Record<TranslationKey, string> = {
   "bookDetail.chapterSessions": "{done}/{total} sessions",
   "bookDetail.continue": "Continue Learning",
   "bookDetail.startLearning": "Start Learning",
+  "bookDetail.lockedTitle": "Available in the app",
+  "bookDetail.lockedSub": "Download the Cosmii app to explore this book too",
+  "bookDetail.downloadApp": "Download App",
+  "bookDetail.confirmTitle": "Start with this book?",
+  "bookDetail.confirmSub": "You can read one book for free on the web.\nThis choice cannot be changed.",
+  "bookDetail.confirmBtn": "Choose",
+  "bookDetail.confirmBack": "Go back",
 
   // ── Book Notes ──
   "notes.title": "Study Notes",
