@@ -33,6 +33,7 @@ interface ProfileViewProps {
   totalBooks: number;
   completedLessons: number;
   totalLessons: number;
+  bookTitle?: string;
   onBack: () => void;
   onOpenSettings: () => void;
 }
@@ -137,6 +138,7 @@ export function ProfileView({
   totalBooks,
   completedLessons,
   totalLessons,
+  bookTitle,
   onBack,
   onOpenSettings,
 }: ProfileViewProps) {
@@ -310,36 +312,48 @@ export function ProfileView({
             />
           </div>
 
-          {totalLessons > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-4 bg-white/[0.05] border border-white/[0.10] rounded-2xl p-5"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <TrendingUp size={16} className="text-white/55" />
-                  <span className="text-white/70 text-[13px] font-semibold">{t("profile.overallProgress")}</span>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-4 bg-white/[0.05] border border-white/[0.10] rounded-2xl p-5"
+          >
+            {totalLessons > 0 ? (
+              <>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <TrendingUp size={16} className="text-white/55 flex-shrink-0" />
+                    <span className="text-white/70 text-[13px] font-semibold truncate">{bookTitle ? `${t("profile.progress")} — ${bookTitle}` : t("profile.overallProgress")}</span>
+                  </div>
+                  <span className={`${serif} text-white/70 font-bold text-[15px] flex-shrink-0 ml-2`}>
+                    {lessonPct}%
+                  </span>
                 </div>
-                <span className={`${serif} text-white/70 font-bold text-[15px]`}>
-                  {lessonPct}%
-                </span>
+                <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-violet-400/50 to-indigo-400/50 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${lessonPct}%` }}
+                    transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+                  />
+                </div>
+                <div className="flex justify-between mt-2">
+                  <span className="text-white/45 text-[11px] font-medium">{t("profile.completed", { n: completedLessons })}</span>
+                  <span className="text-white/45 text-[11px] font-medium">{t("profile.outOf", { n: totalLessons })}</span>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center gap-3 py-1">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.04] flex items-center justify-center flex-shrink-0">
+                  <BookOpen size={18} className="text-white/30" />
+                </div>
+                <div>
+                  <p className="text-white/50 text-[13px] font-semibold">{t("profile.noProgress")}</p>
+                  <p className="text-white/30 text-[11px] mt-0.5">{t("profile.noProgressSub")}</p>
+                </div>
               </div>
-              <div className="w-full h-3 bg-white/[0.06] rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-violet-400/50 to-indigo-400/50 rounded-full"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${lessonPct}%` }}
-                  transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-                />
-              </div>
-              <div className="flex justify-between mt-2">
-                <span className="text-white/45 text-[11px] font-medium">{t("profile.completed", { n: completedLessons })}</span>
-                <span className="text-white/45 text-[11px] font-medium">{t("profile.outOf", { n: totalLessons })}</span>
-              </div>
-            </motion.div>
-          )}
+            )}
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}

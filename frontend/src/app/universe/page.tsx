@@ -76,17 +76,6 @@ interface LessonDetail {
 
 type View = "home" | "bookDetail" | "constellation" | "dialogue" | "quiz" | "complete" | "profile" | "settings" | "notes";
 
-const EXTRA_STARS: Record<string, Book[]> = {
-  ko: [
-    { id: "placeholder-hamlet", title: "햄릿", author: "윌리엄 셰익스피어", color: "#10b981" },
-    { id: "placeholder-cosmos", title: "코스모스", author: "칼 세이건", color: "#8b5cf6" },
-  ],
-  en: [
-    { id: "placeholder-hamlet", title: "Hamlet", author: "William Shakespeare", color: "#10b981" },
-    { id: "placeholder-cosmos", title: "Cosmos", author: "Carl Sagan", color: "#8b5cf6" },
-  ],
-};
-
 export default function UniversePage() {
   const [view, setView] = useState<View>("home");
   const [books, setBooks] = useState<Book[]>([]);
@@ -99,6 +88,7 @@ export default function UniversePage() {
   const [completeData, setCompleteData] = useState({ xpEarned: 0, streakDays: 0, levelUp: false });
 
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const onboardingDismissed = useRef(false);
   const [statsLoaded, setStatsLoaded] = useState(false);
 
   const t = useT();
@@ -139,8 +129,7 @@ export default function UniversePage() {
     fetch(`${API}/api/books?language=${language}`)
       .then((r) => r.json())
       .then((data) => {
-        const extras = EXTRA_STARS[language] ?? EXTRA_STARS.ko;
-        setBooks([...data, ...extras]);
+        setBooks(data);
       })
       .catch(() => {});
 
@@ -153,7 +142,7 @@ export default function UniversePage() {
           lastStudyDate: data.last_study_date ?? null,
           level: data.level ?? 1,
         });
-        if ((data.xp ?? 0) === 0) {
+        if ((data.xp ?? 0) === 0 && !onboardingDismissed.current) {
           setShowOnboarding(true);
         }
         setStatsLoaded(true);
@@ -193,7 +182,6 @@ export default function UniversePage() {
   }, []);
 
   const handleSelectBook = useCallback((book: Book) => {
-    if (book.id.startsWith("placeholder-")) return;
     setSelectedBook(book);
     setLessons([]);
     setView("bookDetail");
@@ -366,7 +354,7 @@ export default function UniversePage() {
   if (showOnboarding) {
     return (
       <div className="h-screen w-screen overflow-hidden bg-[#050510] relative">
-        <Onboarding onComplete={() => setShowOnboarding(false)} />
+        <Onboarding onComplete={() => { onboardingDismissed.current = true; setShowOnboarding(false); }} />
       </div>
     );
   }
@@ -530,6 +518,7 @@ export default function UniversePage() {
               totalBooks={books.length}
               completedLessons={lessons.filter((l) => l.completed).length}
               totalLessons={lessons.length}
+              bookTitle={selectedBook?.title}
               onBack={() => setView("home")}
               onOpenSettings={() => setView("settings")}
             />

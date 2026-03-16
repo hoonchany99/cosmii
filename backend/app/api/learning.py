@@ -53,6 +53,18 @@ BOOK_I18N: dict[str, dict[str, str]] = {
         "author_ko": "단테 알리기에리",
         "author_en": "Dante Alighieri",
     },
+    "afd7a4b0": {
+        "title_ko": "코스모스",
+        "title_en": "Cosmos",
+        "author_ko": "칼 세이건",
+        "author_en": "Carl Sagan",
+    },
+    "2021cd07": {
+        "title_ko": "햄릿",
+        "title_en": "Hamlet",
+        "author_ko": "윌리엄 셰익스피어",
+        "author_en": "William Shakespeare",
+    },
 }
 
 
