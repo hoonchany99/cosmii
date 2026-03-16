@@ -57,11 +57,14 @@ export function BookDetail({
   const [imgError, setImgError] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
 
+  const localCover = `/covers/${book.id}.jpg`;
   const coverSrc = book.cover_url
     ? book.cover_url.startsWith("http")
       ? book.cover_url
-      : `${API}${book.cover_url}`
-    : null;
+      : book.cover_url.startsWith("/covers/")
+        ? book.cover_url
+        : `${API}${book.cover_url}`
+    : localCover;
   const showCover = !!coverSrc && !imgError;
 
   return (

@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
+import { TrackballControls } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
@@ -310,36 +311,49 @@ function StarField() {
 
 /* ── Scene ── */
 
+function RotatingGroup({ speed, children }: { speed: number; children: React.ReactNode }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame((_, delta) => {
+    if (ref.current) ref.current.rotation.y += delta * speed;
+  });
+  return <group ref={ref}>{children}</group>;
+}
+
 function Scene({ books, onSelectBook }: HomeViewProps) {
   const isSingle = books.length === 1;
 
   const bookPositions = useMemo(() => {
-    const positions: [number, number, number][] = [];
     const count = books.length;
-    if (count === 0) return positions;
+    if (count === 0) return [] as [number, number, number][];
+    if (count === 1) return [[0, 0, 0]] as [number, number, number][];
 
-    if (count === 1) {
-      positions.push([0, 1.5, 0]);
-    } else {
-      const radius = Math.max(2.2, count * 0.8);
-      for (let i = 0; i < count; i++) {
-        const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
-        const r = radius + Math.sin(i * 1.5) * 0.4;
-        positions.push([
-          Math.cos(angle) * r,
-          Math.sin(angle) * r * 0.4 + 1.5,
-          -1.5 + Math.random() * 1.5,
-        ]);
-      }
+    const radius = 3.5;
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    const positions: [number, number, number][] = [];
+    for (let i = 0; i < count; i++) {
+      const y = 1 - (i / (count - 1)) * 2;
+      const r = Math.sqrt(1 - y * y);
+      const theta = golden * i;
+      positions.push([
+        r * Math.cos(theta) * radius,
+        y * radius,
+        r * Math.sin(theta) * radius,
+      ]);
     }
     return positions;
   }, [books.length]);
 
   return (
     <>
+      <TrackballControls
+        noPan
+        noZoom
+        rotateSpeed={1.5}
+      />
       <ambientLight intensity={0.25} />
       <pointLight position={[0, 0, 0]} intensity={0.4} distance={80} />
       <StarField />
+      <RotatingGroup speed={0.05}>
       {books.map((book, i) => (
         <BookStar
           key={book.id}
@@ -349,6 +363,7 @@ function Scene({ books, onSelectBook }: HomeViewProps) {
           isSingle={isSingle}
         />
       ))}
+      </RotatingGroup>
     </>
   );
 }

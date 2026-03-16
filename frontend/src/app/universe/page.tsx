@@ -76,6 +76,17 @@ interface LessonDetail {
 
 type View = "home" | "bookDetail" | "constellation" | "dialogue" | "quiz" | "complete" | "profile" | "settings" | "notes";
 
+const EXTRA_STARS: Record<string, Book[]> = {
+  ko: [
+    { id: "placeholder-hamlet", title: "햄릿", author: "윌리엄 셰익스피어", color: "#10b981" },
+    { id: "placeholder-cosmos", title: "코스모스", author: "칼 세이건", color: "#8b5cf6" },
+  ],
+  en: [
+    { id: "placeholder-hamlet", title: "Hamlet", author: "William Shakespeare", color: "#10b981" },
+    { id: "placeholder-cosmos", title: "Cosmos", author: "Carl Sagan", color: "#8b5cf6" },
+  ],
+};
+
 export default function UniversePage() {
   const [view, setView] = useState<View>("home");
   const [books, setBooks] = useState<Book[]>([]);
@@ -108,9 +119,29 @@ export default function UniversePage() {
   }, []);
 
   useEffect(() => {
+    if (!selectedBook) return;
+    const updated = books.find((b) => b.id === selectedBook.id);
+    if (updated && updated.title !== selectedBook.title) {
+      setSelectedBook(updated);
+    }
+  }, [books, selectedBook]);
+
+  useEffect(() => {
+    if (view === "constellation" && selectedBook) {
+      fetch(`${API}/api/books/${selectedBook.id}/lessons?language=${language}`)
+        .then((r) => r.json())
+        .then((data) => setLessons(data))
+        .catch(() => {});
+    }
+  }, [view, selectedBook, language]);
+
+  useEffect(() => {
     fetch(`${API}/api/books?language=${language}`)
       .then((r) => r.json())
-      .then((data) => setBooks(data))
+      .then((data) => {
+        const extras = EXTRA_STARS[language] ?? EXTRA_STARS.ko;
+        setBooks([...data, ...extras]);
+      })
       .catch(() => {});
 
     fetch(`${API}/api/user/stats`)
@@ -161,16 +192,15 @@ export default function UniversePage() {
     pendingActionRef.current = null;
   }, []);
 
-  const handleSelectBook = useCallback(async (book: Book) => {
+  const handleSelectBook = useCallback((book: Book) => {
+    if (book.id.startsWith("placeholder-")) return;
     setSelectedBook(book);
-    try {
-      const res = await fetch(`${API}/api/books/${book.id}/lessons?language=${language}`);
-      const data = await res.json();
-      setLessons(data);
-    } catch {
-      setLessons([]);
-    }
+    setLessons([]);
     setView("bookDetail");
+    fetch(`${API}/api/books/${book.id}/lessons?language=${language}`)
+      .then((r) => r.json())
+      .then((data) => setLessons(data))
+      .catch(() => setLessons([]));
   }, [language]);
 
   const handleStartLearning = useCallback(() => {
@@ -224,6 +254,14 @@ export default function UniversePage() {
             level: data.level ?? stats.level,
           });
 
+          setLessons((prev) =>
+            prev.map((l) =>
+              l.lesson.id === currentLesson.lesson.id
+                ? { ...l, completed: true, score }
+                : l,
+            ),
+          );
+
           if (data.level_up) {
             setLevelUpLevel(data.level ?? stats.level + 1);
             setTimeout(() => setShowLevelUpToast(true), 800);
@@ -245,24 +283,14 @@ export default function UniversePage() {
     [currentLesson, stats, setStats, incrementTodayCompleted, todayCompleted, dailyGoal],
   );
 
-  const refreshLessons = useCallback(async () => {
-    if (!selectedBook) return;
-    try {
-      const r = await fetch(`${API}/api/books/${selectedBook.id}/lessons?language=${language}`);
-      const data = await r.json();
-      setLessons(data);
-    } catch { /* ignore */ }
-  }, [selectedBook, language]);
-
   const handleNextLesson = useCallback(async () => {
     const nextIdx = currentLessonIndex + 1;
     if (nextIdx < lessons.length) {
       handleSelectLesson(lessons[nextIdx].lesson.id);
     } else {
-      await refreshLessons();
       setView("constellation");
     }
-  }, [currentLessonIndex, lessons, handleSelectLesson, refreshLessons]);
+  }, [currentLessonIndex, lessons, handleSelectLesson]);
 
   const handleRetryLesson = useCallback(() => {
     if (currentLesson) {
@@ -270,15 +298,13 @@ export default function UniversePage() {
     }
   }, [currentLesson]);
 
-  const handleGoToList = useCallback(async () => {
-    await refreshLessons();
+  const handleGoToList = useCallback(() => {
     setView("constellation");
-  }, [refreshLessons]);
+  }, []);
 
-  const handleGoHome = useCallback(async () => {
-    await refreshLessons();
+  const handleGoHome = useCallback(() => {
     warpTo("home");
-  }, [warpTo, refreshLessons]);
+  }, [warpTo]);
 
   const handleBackToHome = useCallback(() => {
     warpTo("home");
@@ -355,17 +381,22 @@ export default function UniversePage() {
       <LevelUpToast show={showLevelUpToast} newLevel={levelUpLevel} onDone={() => setShowLevelUpToast(false)} />
       <GoalToast show={showGoalToast} goal={dailyGoal} onDone={() => setShowGoalToast(false)} />
 
-      {(view === "constellation" || view === "dialogue" || view === "quiz") && selectedBook && (
-        <div className="absolute inset-0 z-0">
-          <ImageConstellation
-              imageSrc={getBookConstellation(selectedBook.id).image}
+      {(view === "constellation" || view === "dialogue" || view === "quiz") && selectedBook && (() => {
+        const bc = getBookConstellation(selectedBook.id);
+        return (
+          <div className="absolute inset-0 z-0">
+            <ImageConstellation
+              imageSrc={bc.image}
               color={selectedBook.color}
               animate={false}
               dim
               dimOpacity={view === "quiz" ? 0.25 : 0.35}
+              starDensity={bc.starDensity}
+              edgeBold={bc.edgeBold}
             />
-        </div>
-      )}
+          </div>
+        );
+      })()}
 
       <AnimatePresence mode="wait">
         {view === "home" && (

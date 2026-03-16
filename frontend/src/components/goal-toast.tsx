@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowUp } from "lucide-react";
 import { useT } from "@/lib/i18n";
@@ -9,15 +9,18 @@ const serif = "font-[var(--font-serif)]";
 
 function useAutoToast(show: boolean, onDone: () => void, duration = 3000) {
   const [visible, setVisible] = useState(false);
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+
   useEffect(() => {
     if (!show) return;
     setVisible(true);
     const timer = setTimeout(() => {
       setVisible(false);
-      setTimeout(onDone, 400);
+      setTimeout(() => onDoneRef.current(), 400);
     }, duration);
     return () => clearTimeout(timer);
-  }, [show, onDone, duration]);
+  }, [show, duration]);
   return visible;
 }
 
@@ -49,8 +52,7 @@ interface GoalToastProps {
 
 export function GoalToast({ show, goal, onDone }: GoalToastProps) {
   const t = useT();
-  const stableDone = useCallback(onDone, [onDone]);
-  const visible = useAutoToast(show, stableDone);
+  const visible = useAutoToast(show, onDone);
 
   return (
     <ToastShell visible={visible}>
@@ -77,8 +79,7 @@ interface LevelUpToastProps {
 
 export function LevelUpToast({ show, newLevel, onDone }: LevelUpToastProps) {
   const t = useT();
-  const stableDone = useCallback(onDone, [onDone]);
-  const visible = useAutoToast(show, stableDone, 3500);
+  const visible = useAutoToast(show, onDone, 3500);
 
   return (
     <ToastShell visible={visible}>

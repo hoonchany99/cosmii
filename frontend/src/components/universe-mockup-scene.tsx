@@ -193,11 +193,11 @@ function StarField() {
 /* ── Scene ── */
 
 const BOOKS: { titleKey: string; color: string; pos: [number, number, number] }[] = [
-  { titleKey: "book.demian", color: "#6366f1", pos: [-2.5, 2, -1] },
-  { titleKey: "book.cosmos", color: "#3b82f6", pos: [3.5, 3, -2] },
-  { titleKey: "book.sapiens", color: "#10b981", pos: [1, 0.5, 0] },
-  { titleKey: "book.hamlet", color: "#f43f5e", pos: [-3.5, -0.5, -1.5] },
-  { titleKey: "book.divineComedy", color: "#f59e0b", pos: [0, -1.5, -0.5] },
+  { titleKey: "book.demian", color: "#6BC5A0", pos: [-2.5, 2, -1] },
+  { titleKey: "book.cosmos", color: "#60a5fa", pos: [3.5, 3, -2] },
+  { titleKey: "book.sapiens", color: "#f59e0b", pos: [1, 0.5, 0] },
+  { titleKey: "book.hamlet", color: "#c084fc", pos: [-3.5, -0.5, -1.5] },
+  { titleKey: "book.divineComedy", color: "#f43f5e", pos: [0, -1.5, -0.5] },
 ];
 
 function Scene() {
