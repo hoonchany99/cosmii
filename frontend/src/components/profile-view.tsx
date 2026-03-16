@@ -16,6 +16,8 @@ import {
   Settings,
   Camera,
   Check,
+  Smartphone,
+  Download,
   X,
 } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -396,6 +398,31 @@ export function ProfileView({
                   </motion.div>
                 );
               })}
+            </div>
+          </motion.div>
+
+          {/* App Download Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-4 bg-white/[0.05] border border-white/[0.10] rounded-2xl p-5"
+          >
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+                <Smartphone size={18} className="text-white/50" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-white/70 text-[14px] font-semibold">{t("profile.getApp")}</p>
+                <p className="text-white/30 text-[12px] mt-0.5">{t("profile.getAppSub")}</p>
+              </div>
+              <a
+                href="#app-download"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/[0.08] border border-white/[0.10] text-white/60 text-[13px] font-semibold hover:bg-white/[0.12] active:bg-white/[0.16] transition-colors flex-shrink-0"
+              >
+                <Download size={13} />
+                {t("profile.getAppBtn")}
+              </a>
             </div>
           </motion.div>
         </div>

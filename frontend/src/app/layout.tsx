@@ -111,6 +111,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        <meta name="apple-itunes-app" content="app-id=PLACEHOLDER_APP_ID, app-argument=cosmii://home" />
         {/* Preload Cosmii character WebP sprites to avoid pop-in */}
         <link rel="preload" as="image" type="image/webp" href="/cosmii/standing-mobile.webp" />
         <link rel="preload" as="image" type="image/webp" href="/cosmii/talking-mobile.webp" />

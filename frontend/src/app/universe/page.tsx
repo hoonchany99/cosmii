@@ -16,7 +16,7 @@ import { SettingsView } from "@/components/settings-view";
 import { BookDetail } from "@/components/book-detail";
 import { BookNotes } from "@/components/book-notes";
 import { WarpOverlay } from "@/components/warp-overlay";
-import { GoalToast, LevelUpToast } from "@/components/goal-toast";
+import { GoalToast, LevelUpToast, AppDownloadToast } from "@/components/goal-toast";
 import { Onboarding } from "@/components/onboarding";
 import dynamic from "next/dynamic";
 
@@ -103,6 +103,8 @@ export default function UniversePage() {
   const [showLevelUpToast, setShowLevelUpToast] = useState(false);
   const [levelUpLevel, setLevelUpLevel] = useState(0);
   const [showFreeBookConfirm, setShowFreeBookConfirm] = useState(false);
+  const [showAppToast, setShowAppToast] = useState(false);
+  const completedCountRef = useRef(0);
 
   useEffect(() => {
     document.body.classList.add("no-scroll");
@@ -277,6 +279,16 @@ export default function UniversePage() {
           if (newCount === dailyGoal) {
             setTimeout(() => setShowGoalToast(true), data.level_up ? 4800 : 1200);
           }
+
+          completedCountRef.current += 1;
+          if (completedCountRef.current === 3) {
+            const alreadyShown = typeof window !== "undefined" && localStorage.getItem("cosmii-appToastShown") === "1";
+            if (!alreadyShown) {
+              localStorage.setItem("cosmii-appToastShown", "1");
+              const delay = data.level_up ? 6000 : newCount === dailyGoal ? 5500 : 2000;
+              setTimeout(() => setShowAppToast(true), delay);
+            }
+          }
         } catch {
           setCompleteData({ xpEarned: 50, streakDays: stats.streakDays, levelUp: false });
         }
@@ -385,6 +397,7 @@ export default function UniversePage() {
       />
       <LevelUpToast show={showLevelUpToast} newLevel={levelUpLevel} onDone={() => setShowLevelUpToast(false)} />
       <GoalToast show={showGoalToast} goal={dailyGoal} onDone={() => setShowGoalToast(false)} />
+      <AppDownloadToast show={showAppToast} onDone={() => setShowAppToast(false)} />
 
       {(view === "constellation" || view === "dialogue" || view === "quiz") && selectedBook && (() => {
         const bc = getBookConstellation(selectedBook.id);

@@ -125,6 +125,9 @@ const ko = {
   "profile.noProgress": "아직 탐험을 시작하지 않았어요",
   "profile.noProgressSub": "별을 터치해서 첫 여정을 시작해보세요",
   "profile.badges": "달성 뱃지",
+  "profile.getApp": "Cosmii 앱",
+  "profile.getAppSub": "오프라인 학습, 알림 등 더 많은 기능",
+  "profile.getAppBtn": "다운로드",
   "profile.chooseAvatar": "아바타 선택",
   "profile.levelTitle1": "우주의 첫 발자국",
   "profile.levelTitle2": "지식의 항해자",
@@ -151,6 +154,8 @@ const ko = {
   "toast.dailyGoalSub": "{goal}개의 탐험을 완료했어",
   "toast.levelUp": "레벨 업!",
   "toast.levelUpSub": "Lv.{level} 달성 — 계속 탐험해봐",
+  "toast.appDownload": "앱에서 더 편하게 읽어보세요",
+  "toast.appDownloadSub": "오프라인 학습도 가능해요",
 
   // ── Session Complete ──
   "complete.reviewAgain": "다시 만나볼까?",
@@ -493,6 +498,9 @@ const en: Record<TranslationKey, string> = {
   "profile.noProgress": "No explorations yet",
   "profile.noProgressSub": "Tap a star to begin your first journey",
   "profile.badges": "Badges",
+  "profile.getApp": "Cosmii App",
+  "profile.getAppSub": "Offline learning, reminders, and more",
+  "profile.getAppBtn": "Download",
   "profile.chooseAvatar": "Choose Avatar",
   "profile.levelTitle1": "First Steps",
   "profile.levelTitle2": "Knowledge Voyager",
@@ -519,6 +527,8 @@ const en: Record<TranslationKey, string> = {
   "toast.dailyGoalSub": "You completed {goal} explorations today",
   "toast.levelUp": "Level up!",
   "toast.levelUpSub": "You reached Lv.{level} — keep exploring",
+  "toast.appDownload": "Read more comfortably in the app",
+  "toast.appDownloadSub": "Offline learning available",
 
   // ── Session Complete ──
   "complete.reviewAgain": "Once more?",

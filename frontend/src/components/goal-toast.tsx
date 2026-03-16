@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ArrowUp } from "lucide-react";
+import { Sparkles, ArrowUp, Download } from "lucide-react";
 import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
@@ -94,6 +94,34 @@ export function LevelUpToast({ show, newLevel, onDone }: LevelUpToastProps) {
           {(t("toast.levelUpSub") as string).replace("{level}", String(newLevel))}
         </p>
       </div>
+    </ToastShell>
+  );
+}
+
+interface AppDownloadToastProps {
+  show: boolean;
+  onDone: () => void;
+}
+
+export function AppDownloadToast({ show, onDone }: AppDownloadToastProps) {
+  const t = useT();
+  const visible = useAutoToast(show, onDone, 4000);
+
+  return (
+    <ToastShell visible={visible}>
+      <a href="#app-download" className="flex items-center gap-3">
+        <div className="w-9 h-9 rounded-xl bg-white/[0.08] flex items-center justify-center flex-shrink-0">
+          <Download size={17} className="text-white/70" />
+        </div>
+        <div>
+          <p className={`${serif} text-white/90 text-[15px] font-bold`}>
+            {t("toast.appDownload")}
+          </p>
+          <p className="text-white/45 text-[12px] mt-0.5">
+            {t("toast.appDownloadSub")}
+          </p>
+        </div>
+      </a>
     </ToastShell>
   );
 }
