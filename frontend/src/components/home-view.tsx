@@ -130,6 +130,7 @@ function BookStar({
   const rayRef = useRef<THREE.Sprite>(null!);
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
+  const [depthOpacity, setDepthOpacity] = useState(1);
   const pressTime = useRef(0);
   const birthTime = useRef(-1);
   const coreTex = useMemo(() => getCoreTexture(), []);
@@ -144,7 +145,9 @@ function BookStar({
   const color = book.color || "#6366f1";
   const dimFactor = locked ? 0.4 : 1;
 
-  useFrame(({ clock }) => {
+  const _worldPos = useMemo(() => new THREE.Vector3(), []);
+
+  useFrame(({ clock, camera }) => {
     if (!groupRef.current || !coreRef.current) return;
     const t = clock.getElapsedTime();
 
@@ -152,6 +155,17 @@ function BookStar({
     const age = t - birthTime.current - enterDelay;
     const enterProgress = age < 0 ? 0 : Math.min(1, age / 0.6);
     const eased = 1 - Math.pow(1 - enterProgress, 3);
+
+    groupRef.current.getWorldPosition(_worldPos);
+    const dist = camera.position.distanceTo(_worldPos);
+    const depthFade = THREE.MathUtils.clamp((30 - dist) / 16, 0.15, 1);
+
+    const rounded = Math.round(depthFade * 20) / 20;
+    if (Math.abs(rounded - depthOpacity) > 0.04) setDepthOpacity(rounded);
+
+    groupRef.current.renderOrder = Math.round((1 - depthFade) * -100);
+
+    const depthScale = THREE.MathUtils.lerp(0.7, 1, depthFade);
 
     const pulse = 1 + Math.sin(t * 1.2 + position[0] * 2) * 0.08;
 
@@ -163,7 +177,7 @@ function BookStar({
         ? 1 + Math.sin(elapsed * Math.PI / 0.3) * 0.18
         : 1;
 
-    const base = (hovered ? 1.15 : 1) * tapBounce * eased;
+    const base = (hovered ? 1.15 : 1) * tapBounce * eased * depthScale;
     groupRef.current.scale.setScalar(
       THREE.MathUtils.lerp(groupRef.current.scale.x, base * pulse, pressed ? 0.25 : 0.08),
     );
@@ -173,9 +187,10 @@ function BookStar({
       THREE.MathUtils.lerp(coreRef.current.scale.x, coreScale, 0.08),
     );
 
+    const fade = dimFactor * eased * depthFade;
     const opacityBoost = pressed ? 1.6 : (elapsed < 0.25 ? 1 + (1 - elapsed / 0.25) * 0.5 : 1);
     if (coreRef.current.material) {
-      (coreRef.current.material as THREE.SpriteMaterial).opacity = Math.min(1, opacityBoost * dimFactor * eased);
+      (coreRef.current.material as THREE.SpriteMaterial).opacity = Math.min(1, opacityBoost * fade);
     }
 
     if (glowRef.current) {
@@ -183,7 +198,7 @@ function BookStar({
       glowRef.current.scale.setScalar(
         THREE.MathUtils.lerp(glowRef.current.scale.x, gs, 0.08),
       );
-      (glowRef.current.material as THREE.SpriteMaterial).opacity = Math.min(0.6, 0.35 * opacityBoost * dimFactor * eased);
+      (glowRef.current.material as THREE.SpriteMaterial).opacity = Math.min(0.6, 0.35 * opacityBoost * fade);
     }
 
     if (rayRef.current) {
@@ -192,7 +207,7 @@ function BookStar({
         THREE.MathUtils.lerp(rayRef.current.scale.x, rs, 0.06),
       );
       rayRef.current.material.rotation = t * 0.08;
-      (rayRef.current.material as THREE.SpriteMaterial).opacity = 0.15 * dimFactor * eased;
+      (rayRef.current.material as THREE.SpriteMaterial).opacity = 0.15 * fade;
     }
   });
 
@@ -240,7 +255,7 @@ function BookStar({
         />
       </sprite>
 
-      <Html center style={{ pointerEvents: "none", whiteSpace: "nowrap" }}>
+      <Html center style={{ pointerEvents: "none", whiteSpace: "nowrap", opacity: depthOpacity, transition: "opacity 0.15s" }}>
         <div className="text-center" style={{ transform: "translateY(43px)" }}>
           <div className="flex items-center justify-center gap-1.5">
             <p
