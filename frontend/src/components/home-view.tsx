@@ -2,8 +2,7 @@
 
 import { useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
-import { TrackballControls } from "@react-three/drei";
+import { Html, TrackballControls } from "@react-three/drei";
 import * as THREE from "three";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
@@ -246,8 +245,8 @@ function BookStar({
         />
       </sprite>
 
-      <Html position={[0, -1.8, 0]} center style={{ pointerEvents: "none", whiteSpace: "nowrap" }}>
-        <div className="text-center">
+      <Html center style={{ pointerEvents: "none", whiteSpace: "nowrap" }}>
+        <div className="text-center" style={{ transform: "translateY(43px)" }}>
           <p
             className={`${serif} text-[14px] font-semibold`}
             style={{
@@ -349,6 +348,7 @@ function Scene({ books, onSelectBook }: HomeViewProps) {
         noPan
         noZoom
         rotateSpeed={1.5}
+        dynamicDampingFactor={0.08}
       />
       <ambientLight intensity={0.25} />
       <pointLight position={[0, 0, 0]} intensity={0.4} distance={80} />
