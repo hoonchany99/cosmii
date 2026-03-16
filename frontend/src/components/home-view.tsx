@@ -185,12 +185,12 @@ function BookStar({
   return (
     <group ref={groupRef} position={position} name={`bookstar-${book.id}`}>
       <mesh
+        name="bookstar-hitbox"
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => { setHovered(false); setPressed(false); }}
-        visible={false}
       >
         <sphereGeometry args={[1.5, 8, 8]} />
-        <meshBasicMaterial />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
 
       <sprite ref={rayRef}>
@@ -331,12 +331,17 @@ function TapDetector({ books, onSelectBook }: { books: Book[]; onSelectBook: (b:
 
       const ndc = new THREE.Vector2((x / w) * 2 - 1, -(y / h) * 2 + 1);
       raycaster.setFromCamera(ndc, camera);
-      const hits = raycaster.intersectObjects(scene.children, true);
 
-      for (const hit of hits) {
-        let obj: THREE.Object3D | null = hit.object;
+      const hitTargets: THREE.Object3D[] = [];
+      scene.traverse((obj) => {
+        if (obj.name === "bookstar-hitbox") hitTargets.push(obj);
+      });
+      const hits = raycaster.intersectObjects(hitTargets, false);
+
+      if (hits.length > 0) {
+        let obj: THREE.Object3D | null = hits[0].object;
         while (obj) {
-          if (obj.name?.startsWith("bookstar-")) {
+          if (obj.name?.startsWith("bookstar-") && obj.name !== "bookstar-hitbox") {
             const bookId = obj.name.replace("bookstar-", "");
             const book = books.find((b) => b.id === bookId);
             if (book) onSelectBook(book);
