@@ -346,8 +346,8 @@ function OscillateGroup({ active, children }: { active: boolean; children: React
 function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = false, spinZ = 0, edgeBold = false }: {
   layout: SampledLayout; animate?: boolean; color?: string; dim?: boolean; spinZ?: number; edgeBold?: boolean;
 }) {
-  const eCoreScale = edgeBold ? 1.2 : 0.45;
-  const eGlowScale = edgeBold ? 3.2 : 1.1;
+  const eCoreScale = edgeBold ? 1.2 : 0.35;
+  const eGlowScale = edgeBold ? 3.2 : 0.9;
   const iCoreMul = edgeBold ? 1.2 : 1;
   const iGlowMul = edgeBold ? 1.2 : 1;
   const useOscillation = !spinZ;
