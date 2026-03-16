@@ -182,25 +182,37 @@ function BookStar({
     }
   });
 
-  const handlePointerDown = () => {
+  const pointerStart = useRef<{ x: number; y: number; time: number } | null>(null);
+
+  const handlePointerDown = (e: THREE.Event & { clientX?: number; clientY?: number; nativeEvent?: PointerEvent }) => {
     setPressed(true);
+    const evt = e.nativeEvent ?? e;
+    pointerStart.current = {
+      x: (evt as PointerEvent).clientX ?? 0,
+      y: (evt as PointerEvent).clientY ?? 0,
+      time: performance.now(),
+    };
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (e: THREE.Event & { clientX?: number; clientY?: number; nativeEvent?: PointerEvent; stopPropagation: () => void }) => {
     setPressed(false);
-  };
-
-  const handleClick = (e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    setPressed(false);
-    pressTime.current = performance.now() / 1000;
-    onClick();
+    if (!pointerStart.current) return;
+    const evt = e.nativeEvent ?? e;
+    const dx = ((evt as PointerEvent).clientX ?? 0) - pointerStart.current.x;
+    const dy = ((evt as PointerEvent).clientY ?? 0) - pointerStart.current.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const elapsed = performance.now() - pointerStart.current.time;
+    pointerStart.current = null;
+    if (dist < 10 && elapsed < 400) {
+      e.stopPropagation();
+      pressTime.current = performance.now() / 1000;
+      onClick();
+    }
   };
 
   return (
     <group ref={groupRef} position={position}>
       <mesh
-        onClick={handleClick}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerLeave={() => setPressed(false)}
