@@ -75,7 +75,7 @@ function getGlowTexture() {
 /*  Image → pixel analysis → star layout                               */
 /* ------------------------------------------------------------------ */
 
-function analyzeImage(imageData: ImageData, imgW: number, imgH: number, edgeN = 450, interiorN = 160): SampledLayout {
+function analyzeImage(imageData: ImageData, imgW: number, imgH: number, edgeN = 450, interiorN = 0): SampledLayout {
   const { data } = imageData;
   const filled: boolean[][] = [];
   const edgePx: [number, number][] = [];
@@ -413,7 +413,7 @@ function ConstellationScene({ layout, animate = true, color = "#6BC5A0", dim = f
 /*  Image loading hook (shared)                                        */
 /* ------------------------------------------------------------------ */
 
-function useImageLayout(imageSrc: string, edgeN = 450, interiorN = 160) {
+function useImageLayout(imageSrc: string, edgeN = 450, interiorN = 0) {
   const [layout, setLayout] = useState<SampledLayout | null>(null);
 
   useEffect(() => {

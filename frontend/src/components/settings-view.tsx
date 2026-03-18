@@ -128,7 +128,7 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
   return (
     <div className="w-full h-full relative overflow-hidden text-white">
       <div className="absolute inset-0 z-0">
-        <ImageConstellation imageSrc="/constellations/settings-gear.svg" color="#6BC5A0" animate={false} dim dimOpacity={0.25} dimZoom={16} spinZ={0.08} starDensity={{ edge: 350, interior: 200 }} />
+        <ImageConstellation imageSrc="/constellations/settings-gear.svg" color="#6BC5A0" animate={false} dim dimOpacity={0.25} dimZoom={16} spinZ={0.08} starDensity={{ edge: 350, interior: 0 }} />
       </div>
 
       {/* Header */}
