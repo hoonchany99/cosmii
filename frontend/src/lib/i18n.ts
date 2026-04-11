@@ -264,6 +264,12 @@ const ko = {
   "onboarding.readyDefault": "어떤 책부터 읽어볼까?",
   "onboarding.startExplore": "시작하기",
   "onboarding.freeBookHint": "한 권을 끝까지 무료로 읽을 수 있어",
+  "onboarding.goalN": "{n}개 레슨",
+  "onboarding.nameTitle": "뭐라고 부를까?",
+  "onboarding.nameSub": "나중에 언제든 바꿀 수 있어",
+  "onboarding.namePlaceholder": "이름을 입력해줘",
+  "onboarding.useGoogleName": "{name} 사용하기",
+  "onboarding.randomName": "랜덤 이름 만들기 ✦",
 
   // ── Floating Cosmii ──
   "thinking.0": "음... 🤔",
@@ -713,6 +719,12 @@ const en: Record<TranslationKey, string> = {
   "onboarding.readyDefault": "Which book will you start with?",
   "onboarding.startExplore": "Begin",
   "onboarding.freeBookHint": "Read one book, cover to cover, for free",
+  "onboarding.goalN": "{n} lesson(s)",
+  "onboarding.nameTitle": "What should we call you?",
+  "onboarding.nameSub": "You can always change this later",
+  "onboarding.namePlaceholder": "Enter your name",
+  "onboarding.useGoogleName": "Use {name}",
+  "onboarding.randomName": "Random name ✦",
 
   // ── Floating Cosmii ──
   "thinking.0": "Hmm... 🤔",
