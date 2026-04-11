@@ -1,6 +1,8 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const alt = "Cosmii — 좋아하는 책을, 이번엔 끝까지";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -12,8 +14,24 @@ async function loadFont() {
   return res.arrayBuffer();
 }
 
+async function loadSerifFont() {
+  const res = await fetch(
+    "https://fonts.gstatic.com/s/ebgaramond/v32/SlGDmQSNjdsmc35JDF1K5E55YMjF_7DPuGi-DPNUAw.ttf",
+  );
+  return res.arrayBuffer();
+}
+
+async function loadImage() {
+  const buf = await readFile(join(process.cwd(), "public", "cosmii-logo.png"));
+  return `data:image/png;base64,${buf.toString("base64")}`;
+}
+
 export default async function OGImage() {
-  const fontData = await loadFont();
+  const [fontData, serifFontData, imageSrc] = await Promise.all([
+    loadFont(),
+    loadSerifFont(),
+    loadImage(),
+  ]);
 
   return new ImageResponse(
     (
@@ -78,54 +96,23 @@ export default async function OGImage() {
           ))}
         </div>
 
-        {/* Cosmii character glow */}
-        <div
-          style={{
-            width: 160,
-            height: 160,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(110,231,183,0.15) 0%, transparent 70%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 8,
-          }}
-        >
-          <div
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, #6ee7b7, #34d399)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 0 40px rgba(110,231,183,0.3)",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 64,
-                color: "#065f46",
-                fontWeight: 700,
-                lineHeight: 1,
-                marginTop: -6,
-                display: "flex",
-              }}
-            >
-              ,
-            </div>
-          </div>
-        </div>
+        {/* Cosmii character */}
+        <img
+          src={imageSrc}
+          width={160}
+          height={160}
+          style={{ objectFit: "contain", marginBottom: 16 }}
+        />
 
         {/* Cosmii logo text */}
         <div
           style={{
-            fontSize: 36,
+            fontSize: 40,
             fontWeight: 700,
+            fontFamily: "EBGaramond, serif",
             color: "rgba(255,255,255,0.7)",
             letterSpacing: "-0.01em",
-            marginBottom: 20,
+            marginBottom: 16,
             display: "flex",
           }}
         >
@@ -135,10 +122,9 @@ export default async function OGImage() {
         {/* Oneliner */}
         <div
           style={{
-            fontSize: 28,
+            fontSize: 26,
             fontWeight: 700,
-            color: "rgba(255,255,255,0.40)",
-            letterSpacing: "-0.01em",
+            color: "rgba(255,255,255,0.35)",
             display: "flex",
           }}
         >
@@ -152,6 +138,12 @@ export default async function OGImage() {
         {
           name: "NanumGothic",
           data: fontData,
+          style: "normal" as const,
+          weight: 700,
+        },
+        {
+          name: "EBGaramond",
+          data: serifFontData,
           style: "normal" as const,
           weight: 700,
         },
