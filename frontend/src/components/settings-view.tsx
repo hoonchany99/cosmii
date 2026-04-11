@@ -15,12 +15,6 @@ import {
   FileText,
   Shield,
 } from "lucide-react";
-import dynamic from "next/dynamic";
-
-const ImageConstellation = dynamic(
-  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
-  { ssr: false },
-);
 import {
   useSettingsStore,
   type Language,
@@ -126,13 +120,9 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
 
   const currentLang = LANGUAGES.find((l) => l.code === settings.language) ?? LANGUAGES[0];
   return (
-    <div className="w-full h-full relative overflow-hidden text-white">
-      <div className="absolute inset-0 z-0">
-        <ImageConstellation imageSrc="/constellations/settings-gear.svg" color="#6BC5A0" animate={false} dim dimOpacity={0.25} dimZoom={16} spinZ={0.08} starDensity={{ edge: 350, interior: 0 }} />
-      </div>
-
+    <div className="w-full h-full relative overflow-hidden text-white bg-[#060612]">
       {/* Header */}
-      <div className="absolute top-0 w-full pt-safe pb-3 px-5 flex items-center z-30 bg-[rgba(6,6,18,0.5)] border-b border-white/[0.04]">
+      <div className="absolute top-0 w-full pt-safe pb-3 px-5 flex items-center z-30 bg-[rgba(6,6,18,0.85)] border-b border-white/[0.04] backdrop-blur-sm">
         <motion.button
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 22 }}
@@ -148,9 +138,9 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
       </div>
 
       <div className="absolute inset-0 overflow-y-auto pb-20 z-10">
-        <div className="w-full h-[180px]" />
+        <div className="w-full h-[80px]" />
 
-        <div className="px-5 -mt-4">
+        <div className="px-5">
 
         {/* ─── 학습 설정 ─── */}
         <div className="mb-6">

@@ -108,7 +108,7 @@ export function QuizView({ quizzes, progressPercent, onBack, onComplete }: QuizV
   };
 
   return (
-    <div className="w-full h-full relative overflow-hidden text-white flex flex-col">
+    <div className="w-full h-full relative overflow-hidden text-white flex flex-col bg-[#060612]">
 
       {/* Header + Progress line */}
       <div className="z-20 relative">

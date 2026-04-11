@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAppStore, useSettingsStore } from "@/lib/store";
+import { useAppStore, useSettingsStore, generateCosmiiName } from "@/lib/store";
 import { createClient } from "@/lib/supabase";
 import { useT } from "@/lib/i18n";
 import { HudOverlay } from "@/components/hud-overlay";
@@ -15,18 +15,11 @@ import { ProfileView } from "@/components/profile-view";
 import { SettingsView } from "@/components/settings-view";
 import { BookDetail } from "@/components/book-detail";
 import { BookNotes } from "@/components/book-notes";
+import { LibraryView } from "@/components/library-view";
 import { WarpOverlay } from "@/components/warp-overlay";
 import { GoalToast, LevelUpToast, AppDownloadToast } from "@/components/goal-toast";
 import { Onboarding } from "@/components/onboarding";
-import dynamic from "next/dynamic";
-
-const ImageConstellation = dynamic(
-  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
-  { ssr: false },
-);
-
-import { getBookConstellation } from "@/lib/book-constellations";
-
+import { TabBar } from "@/components/tab-bar";
 const API = "";
 
 interface Book {
@@ -48,6 +41,16 @@ interface LessonListItem {
   completed: boolean;
   score: number | null;
   review_needed: boolean;
+}
+
+interface ReadingBook {
+  id: string;
+  title: string;
+  author: string;
+  color: string;
+  cover_url?: string | null;
+  completedLessons: number;
+  totalLessons: number;
 }
 
 interface LessonDetail {
@@ -74,7 +77,7 @@ interface LessonDetail {
   }[];
 }
 
-type View = "home" | "bookDetail" | "constellation" | "dialogue" | "quiz" | "complete" | "profile" | "settings" | "notes";
+type View = "home" | "universe" | "constellation" | "dialogue" | "quiz" | "complete" | "profile" | "settings" | "notes";
 
 export default function UniversePage() {
   const [view, setView] = useState<View>("home");
@@ -87,6 +90,12 @@ export default function UniversePage() {
   const [quizResults, setQuizResults] = useState({ score: 0, total: 0, correct: 0 });
   const [completeData, setCompleteData] = useState({ xpEarned: 0, streakDays: 0, levelUp: false });
 
+  const [readingBooks, setReadingBooks] = useState<ReadingBook[]>([]);
+
+  const [showBookDetail, setShowBookDetail] = useState(false);
+  const [detailBook, setDetailBook] = useState<Book | null>(null);
+  const [detailLessons, setDetailLessons] = useState<LessonListItem[]>([]);
+
   const [showOnboarding, setShowOnboarding] = useState(false);
   const onboardingDismissed = useRef(false);
   const [statsLoaded, setStatsLoaded] = useState(false);
@@ -97,7 +106,7 @@ export default function UniversePage() {
   const pendingViewRef = useRef<View | null>(null);
   const pendingActionRef = useRef<(() => void) | null>(null);
 
-  const { stats, setStats, setProfile, incrementTodayCompleted, todayCompleted, freeBookId, setFreeBookId, clearFreeBookId } = useAppStore();
+  const { stats, setStats, setProfile, setPresetAvatar, setAccessory, setName, setSpentXP, setUnlockedItems, incrementTodayCompleted, todayCompleted, freeBookId, setFreeBookId, clearFreeBookId } = useAppStore();
   const dailyGoal = useSettingsStore((s) => s.dailyGoal);
   const [showGoalToast, setShowGoalToast] = useState(false);
   const [showLevelUpToast, setShowLevelUpToast] = useState(false);
@@ -139,10 +148,12 @@ export default function UniversePage() {
     const migratedKey = "cosmii-migrated";
     const needsMigration = typeof window !== "undefined" && !localStorage.getItem(migratedKey);
 
+    const AVATAR_IDS = ["pink", "mint", "peach", "coral", "yellow", "blue", "skyblue", "lavender"];
+
     const loadStats = () =>
       fetch(`${API}/api/user/stats`)
         .then((r) => r.json())
-        .then((data) => {
+        .then(async (data) => {
           if (data.error) return;
           setStats({
             xp: data.xp ?? 0,
@@ -150,6 +161,36 @@ export default function UniversePage() {
             lastStudyDate: data.last_study_date ?? null,
             level: data.level ?? 1,
           });
+
+          let nickname = data.nickname as string | null;
+          let presetAvatar = data.preset_avatar as string | null;
+          const accessory = data.accessory as string | null;
+          const needsInit = !nickname || !presetAvatar;
+
+          if (!nickname) {
+            nickname = generateCosmiiName(language);
+          }
+          if (!presetAvatar) {
+            presetAvatar = AVATAR_IDS[Math.floor(Math.random() * AVATAR_IDS.length)];
+          }
+
+          if (needsInit) {
+            try {
+              await fetch(`${API}/api/user/profile`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nickname, preset_avatar: presetAvatar }),
+              });
+            } catch {}
+          }
+
+          setName(nickname);
+          setPresetAvatar(presetAvatar);
+          setAccessory(accessory);
+
+          if (typeof data.spent_xp === "number") setSpentXP(data.spent_xp);
+          if (Array.isArray(data.unlocked_items)) setUnlockedItems(data.unlocked_items);
+
           if ((data.xp ?? 0) === 0 && !onboardingDismissed.current) {
             setShowOnboarding(true);
           }
@@ -169,18 +210,69 @@ export default function UniversePage() {
       loadStats();
     }
 
+    fetch(`${API}/api/user/reading?language=${language}`)
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setReadingBooks(data); })
+      .catch(() => {});
+
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) {
-        const meta = data.user.user_metadata;
-        setProfile({
-          name: meta?.full_name ?? meta?.name ?? null,
-          email: data.user.email ?? null,
-          avatarUrl: meta?.avatar_url ?? meta?.picture ?? null,
-        });
+        setProfile({ email: data.user.email ?? null });
       }
     });
-  }, [setStats, setProfile, language]);
+  }, [setStats, setProfile, setName, setPresetAvatar, setAccessory, setSpentXP, setUnlockedItems, language]);
+
+  const demoBookHandled = useRef(false);
+  useEffect(() => {
+    if (demoBookHandled.current || books.length === 0) return;
+    const demoBookId = localStorage.getItem("cosmii-demo-book");
+    if (!demoBookId) return;
+    demoBookHandled.current = true;
+    const book = books.find((b) => b.id === demoBookId);
+    if (!book) return;
+    setSelectedBook(book);
+    if (!freeBookId) setFreeBookId(book.id);
+    fetch(`${API}/api/books/${book.id}/lessons?language=${language}`)
+      .then((r) => r.json())
+      .then(async (data: LessonListItem[]) => {
+        const demoScore = localStorage.getItem("cosmii-demo-score");
+        const firstLesson = Array.isArray(data) && data.length > 0 ? data[0] : null;
+        if (demoScore && firstLesson && !firstLesson.completed) {
+          try {
+            const score = parseInt(demoScore, 10) || 100;
+            const correct = Math.round((score / 100) * 2);
+            await fetch(`${API}/api/lessons/${firstLesson.lesson.id}/complete`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ score, total_questions: 2, correct_answers: correct }),
+            });
+            firstLesson.completed = true;
+            firstLesson.score = score;
+          } catch {}
+        }
+        localStorage.removeItem("cosmii-demo-book");
+        localStorage.removeItem("cosmii-demo-score");
+        setLessons(data);
+        setView("constellation");
+      })
+      .catch(() => {});
+  }, [books, freeBookId, setFreeBookId, language]);
+
+  // freeBookId가 있으면 홈 화면에서도 해당 책과 레슨 데이터 자동 로드
+  const freeBookLoaded = useRef(false);
+  useEffect(() => {
+    if (freeBookLoaded.current || books.length === 0 || !freeBookId) return;
+    if (selectedBook) return; // 이미 선택된 책이 있으면 스킵
+    const book = books.find((b) => b.id === freeBookId);
+    if (!book) return;
+    freeBookLoaded.current = true;
+    setSelectedBook(book);
+    fetch(`${API}/api/books/${book.id}/lessons?language=${language}`)
+      .then((r) => r.json())
+      .then((data) => { if (Array.isArray(data)) setLessons(data); })
+      .catch(() => {});
+  }, [books, freeBookId, selectedBook, language]);
 
   const warpTo = useCallback((targetView: View, beforeSwitch?: () => void) => {
     pendingViewRef.current = targetView;
@@ -202,30 +294,43 @@ export default function UniversePage() {
   }, []);
 
   const handleSelectBook = useCallback((book: Book) => {
-    setSelectedBook(book);
-    setLessons([]);
-    setView("bookDetail");
+    setDetailBook(book);
+    setDetailLessons([]);
+    setShowBookDetail(true);
     fetch(`${API}/api/books/${book.id}/lessons?language=${language}`)
       .then((r) => r.json())
-      .then((data) => setLessons(data))
-      .catch(() => setLessons([]));
+      .then((data) => setDetailLessons(data))
+      .catch(() => setDetailLessons([]));
   }, [language]);
+
+  const applyDetailToMain = useCallback(() => {
+    if (!detailBook) return;
+    const isSameBook = selectedBook?.id === detailBook.id;
+    setSelectedBook(detailBook);
+    if (!isSameBook || detailLessons.length > 0) {
+      setLessons(detailLessons);
+    }
+  }, [detailBook, detailLessons, selectedBook]);
 
   const handleStartLearning = useCallback(() => {
     if (!freeBookId) {
       setShowFreeBookConfirm(true);
       return;
     }
+    applyDetailToMain();
+    setShowBookDetail(false);
     warpTo("constellation");
-  }, [warpTo, freeBookId]);
+  }, [warpTo, freeBookId, applyDetailToMain]);
 
   const handleConfirmFreeBook = useCallback(() => {
-    if (selectedBook) {
-      setFreeBookId(selectedBook.id);
+    if (detailBook) {
+      setFreeBookId(detailBook.id);
+      applyDetailToMain();
       setShowFreeBookConfirm(false);
+      setShowBookDetail(false);
       warpTo("constellation");
     }
-  }, [selectedBook, setFreeBookId, warpTo]);
+  }, [detailBook, setFreeBookId, warpTo, applyDetailToMain]);
 
   const handleCancelConfirm = useCallback(() => {
     setShowFreeBookConfirm(false);
@@ -298,14 +403,15 @@ export default function UniversePage() {
           }
 
           completedCountRef.current += 1;
-          if (completedCountRef.current === 3) {
-            const alreadyShown = typeof window !== "undefined" && localStorage.getItem("cosmii-appToastShown") === "1";
-            if (!alreadyShown) {
-              localStorage.setItem("cosmii-appToastShown", "1");
-              const delay = data.level_up ? 6000 : newCount === dailyGoal ? 5500 : 2000;
-              setTimeout(() => setShowAppToast(true), delay);
-            }
+          if (completedCountRef.current % 2 === 0) {
+            const delay = data.level_up ? 6000 : newCount === dailyGoal ? 5500 : 2000;
+            setTimeout(() => setShowAppToast(true), delay);
           }
+
+          fetch(`${API}/api/user/reading?language=${language}`)
+            .then((r) => r.json())
+            .then((rd) => { if (Array.isArray(rd)) setReadingBooks(rd); })
+            .catch(() => {});
         } catch {
           setCompleteData({ xpEarned: 50, streakDays: stats.streakDays, levelUp: false });
         }
@@ -366,6 +472,18 @@ export default function UniversePage() {
     return Array.from(map.values());
   }, [lessons]);
 
+  const detailChapterSummaries = useMemo(() => {
+    const map = new Map<string, { chapter: string; lessonCount: number; completedCount: number }>();
+    detailLessons.forEach((l) => {
+      const ch = l.lesson.chapter || t("universe.other");
+      if (!map.has(ch)) map.set(ch, { chapter: ch, lessonCount: 0, completedCount: 0 });
+      const entry = map.get(ch)!;
+      entry.lessonCount++;
+      if (l.completed) entry.completedCount++;
+    });
+    return Array.from(map.values());
+  }, [detailLessons]);
+
   const fadeScale = {
     initial: { opacity: 0, scale: 0.96, filter: "blur(6px)" },
     animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
@@ -382,31 +500,31 @@ export default function UniversePage() {
 
   if (!statsLoaded) {
     return (
-      <div className="h-screen w-screen bg-[#050510] relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <ImageConstellation
-            imageSrc="/cosmii-constellation.png"
-            color="#6BC5A0"
-            animate={false}
-            dim
-            dimOpacity={0.15}
-            dimZoom={10}
-          />
-        </div>
+      <div className="h-screen w-screen overflow-hidden bg-[#020208] relative md:flex md:items-center md:justify-center">
+        <div className="phone-frame relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] overflow-hidden bg-[#060612]" />
       </div>
     );
   }
 
   if (showOnboarding) {
     return (
-      <div className="h-screen w-screen overflow-hidden bg-[#050510] relative">
-        <Onboarding onComplete={() => { onboardingDismissed.current = true; setShowOnboarding(false); }} />
+      <div className="h-screen w-screen overflow-hidden bg-[#020208] relative md:flex md:items-center md:justify-center">
+        <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] rounded-full bg-[#a78bfa]/[0.04] blur-[120px]" />
+        </div>
+        <div className="phone-frame relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] md:border md:border-white/[0.06] md:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_80px_rgba(167,139,250,0.06)] overflow-hidden bg-[#050510]">
+          <Onboarding onComplete={() => { onboardingDismissed.current = true; setShowOnboarding(false); }} />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-[#050510] relative">
+    <div className="h-screen w-screen overflow-hidden bg-[#020208] relative md:flex md:items-center md:justify-center">
+      <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] rounded-full bg-[#a78bfa]/[0.04] blur-[120px]" />
+      </div>
+      <div className="phone-frame relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] md:border md:border-white/[0.06] md:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_80px_rgba(167,139,250,0.06)] overflow-hidden bg-[#050510]">
       <WarpOverlay
         active={warpActive}
         onMidpoint={handleWarpMidpoint}
@@ -416,31 +534,14 @@ export default function UniversePage() {
       <GoalToast show={showGoalToast} goal={dailyGoal} onDone={() => setShowGoalToast(false)} />
       <AppDownloadToast show={showAppToast} onDone={() => setShowAppToast(false)} />
 
-      {(view === "constellation" || view === "dialogue" || view === "quiz") && selectedBook && (() => {
-        const bc = getBookConstellation(selectedBook.id);
-        return (
-          <div className="absolute inset-0 z-0">
-            <ImageConstellation
-              imageSrc={bc.image}
-              color={selectedBook.color}
-              animate={false}
-              dim
-              dimOpacity={view === "quiz" ? 0.25 : 0.35}
-              starDensity={bc.starDensity}
-              edgeBold={bc.edgeBold}
-            />
-          </div>
-        );
-      })()}
-
       <AnimatePresence mode="wait">
         {view === "home" && (
           <motion.div key="home" {...fadeScale} className="absolute inset-0">
-            <HudOverlay onOpenProfile={() => setView("profile")} />
             <HomeView
               books={books}
               onSelectBook={handleSelectBook}
               freeBookId={freeBookId}
+              readingBooks={readingBooks}
               activeSession={
                 selectedBook && lessons.length > 0
                   ? {
@@ -455,22 +556,27 @@ export default function UniversePage() {
           </motion.div>
         )}
 
-        {view === "bookDetail" && selectedBook && (
-          <motion.div key="bookDetail" {...slideRight} className="absolute inset-0">
-            <BookDetail
-              book={selectedBook}
-              chapters={chapterSummaries}
-              completedLessons={lessons.filter((l) => l.completed).length}
-              totalLessons={lessons.length}
-              locked={freeBookId !== null && freeBookId !== selectedBook.id}
-              showConfirm={showFreeBookConfirm}
-              onBack={() => { setShowFreeBookConfirm(false); setView("home"); }}
-              onStartLearning={handleStartLearning}
-              onConfirmFreeBook={handleConfirmFreeBook}
-              onCancelConfirm={handleCancelConfirm}
+        {view === "universe" && (
+          <motion.div key="universe" {...fadeScale} className="absolute inset-0">
+            <LibraryView
+              books={books}
+              freeBookId={freeBookId}
+              readingBooks={readingBooks}
+              activeSession={
+                selectedBook && lessons.length > 0
+                  ? {
+                      book: selectedBook,
+                      completedLessons: lessons.filter((l) => l.completed).length,
+                      totalLessons: lessons.length,
+                    }
+                  : null
+              }
+              onSelectBook={handleSelectBook}
+              onContinueLearning={handleContinueLearning}
             />
           </motion.div>
         )}
+
 
         {view === "constellation" && selectedBook && (
           <motion.div key="constellation" {...fadeScale} className="absolute inset-0 z-10">
@@ -478,6 +584,8 @@ export default function UniversePage() {
               bookId={selectedBook.id}
               bookTitle={selectedBook.title}
               bookAuthor={selectedBook.author}
+              bookColor={selectedBook.color}
+              bookCoverUrl={selectedBook.cover_url}
               completedCount={lessons.filter((l) => l.completed).length}
               totalCount={lessons.length}
               lessons={lessons.map((l, i) => {
@@ -571,11 +679,9 @@ export default function UniversePage() {
           <motion.div key="profile" {...slideRight} className="absolute inset-0">
             <ProfileView
               totalBooks={books.length}
-              completedLessons={lessons.filter((l) => l.completed).length}
-              totalLessons={lessons.length}
-              bookTitle={selectedBook?.title}
-              onBack={() => setView("home")}
+              readingBooks={readingBooks}
               onOpenSettings={() => setView("settings")}
+              isTab
             />
           </motion.div>
         )}
@@ -620,6 +726,53 @@ export default function UniversePage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {(view === "home" || view === "universe" || view === "profile") && (
+        <TabBar
+          activeTab={view as "home" | "universe" | "profile"}
+          onTabChange={(tab) => setView(tab)}
+        />
+      )}
+
+      {/* Book Detail Bottom Sheet */}
+      <AnimatePresence>
+        {showBookDetail && detailBook && (
+          <>
+            <motion.div
+              key="detail-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0 z-40 bg-black/50"
+              onClick={() => { setShowFreeBookConfirm(false); setShowBookDetail(false); }}
+            />
+            <motion.div
+              key="detail-sheet"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="absolute bottom-0 left-0 right-0 z-50 rounded-t-3xl overflow-hidden"
+              style={{ height: "92%" }}
+            >
+              <BookDetail
+                book={detailBook}
+                chapters={detailChapterSummaries}
+                completedLessons={detailLessons.filter((l) => l.completed).length}
+                totalLessons={detailLessons.length}
+                locked={freeBookId !== null && freeBookId !== detailBook.id}
+                showConfirm={showFreeBookConfirm}
+                onBack={() => { setShowFreeBookConfirm(false); setShowBookDetail(false); }}
+                onStartLearning={handleStartLearning}
+                onConfirmFreeBook={handleConfirmFreeBook}
+                onCancelConfirm={handleCancelConfirm}
+              />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+      </div>
     </div>
   );
 }

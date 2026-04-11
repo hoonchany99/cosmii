@@ -33,7 +33,7 @@ function ToastShell({ visible, children }: { visible: boolean; children: React.R
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 400, damping: 28 }}
-          className="fixed top-safe left-0 right-0 z-[100] flex justify-center px-5 pt-4 pointer-events-none"
+          className="absolute top-safe left-0 right-0 z-[100] flex justify-center px-5 pt-4 pointer-events-none"
         >
           <div className="bg-[#0e0e1c]/90 backdrop-blur-xl border border-white/[0.12] rounded-2xl px-5 py-3.5 flex items-center gap-3 shadow-2xl shadow-black/40 pointer-events-auto">
             {children}
@@ -109,7 +109,7 @@ export function AppDownloadToast({ show, onDone }: AppDownloadToastProps) {
 
   return (
     <ToastShell visible={visible}>
-      <a href="#app-download" className="flex items-center gap-3">
+      <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-white/[0.08] flex items-center justify-center flex-shrink-0">
           <Download size={17} className="text-white/70" />
         </div>

@@ -1,15 +1,11 @@
 "use client";
 
-import { useMemo, useRef, useState, useEffect, useCallback } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Html, TrackballControls } from "@react-three/drei";
-import * as THREE from "three";
-import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
-import { CosmicBg } from "@/components/cosmic-bg";
-import { useIsMobile } from "@/lib/utils";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, Download, Flame, Star, Search, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import { useSettingsStore } from "@/lib/store";
+import { useAppStore, useSettingsStore } from "@/lib/store";
+import { BETA_CURATION_SECTIONS, BETA_RECOMMENDED_IDS, BOOK_TAGLINES } from "@/lib/curations";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -19,6 +15,16 @@ interface Book {
   author: string;
   color: string;
   cover_url?: string | null;
+}
+
+interface ReadingBook {
+  id: string;
+  title: string;
+  author: string;
+  color: string;
+  cover_url?: string | null;
+  completedLessons: number;
+  totalLessons: number;
 }
 
 interface ActiveSession {
@@ -31,554 +37,398 @@ interface HomeViewProps {
   books: Book[];
   onSelectBook: (book: Book) => void;
   activeSession?: ActiveSession | null;
+  readingBooks?: ReadingBook[];
   onContinueLearning?: () => void;
   freeBookId?: string | null;
 }
 
-/* ── Texture generators (singleton) ── */
-
-let _coreTex: THREE.CanvasTexture | null = null;
-function getCoreTexture() {
-  if (_coreTex) return _coreTex;
-  const s = 128;
-  const c = document.createElement("canvas");
-  c.width = s;
-  c.height = s;
-  const ctx = c.getContext("2d")!;
-  const h = s / 2;
-  const g = ctx.createRadialGradient(h, h, 0, h, h, h);
-  g.addColorStop(0, "rgba(255,255,255,1)");
-  g.addColorStop(0.05, "rgba(255,255,255,0.95)");
-  g.addColorStop(0.15, "rgba(255,255,255,0.6)");
-  g.addColorStop(0.35, "rgba(255,255,255,0.15)");
-  g.addColorStop(0.6, "rgba(255,255,255,0.03)");
-  g.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, s, s);
-  _coreTex = new THREE.CanvasTexture(c);
-  return _coreTex;
-}
-
-let _glowTex: THREE.CanvasTexture | null = null;
-function getGlowTexture() {
-  if (_glowTex) return _glowTex;
-  const s = 128;
-  const c = document.createElement("canvas");
-  c.width = s;
-  c.height = s;
-  const ctx = c.getContext("2d")!;
-  const h = s / 2;
-  const g = ctx.createRadialGradient(h, h, 0, h, h, h);
-  g.addColorStop(0, "rgba(255,255,255,0.4)");
-  g.addColorStop(0.1, "rgba(255,255,255,0.15)");
-  g.addColorStop(0.3, "rgba(255,255,255,0.04)");
-  g.addColorStop(0.6, "rgba(255,255,255,0.01)");
-  g.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, s, s);
-  _glowTex = new THREE.CanvasTexture(c);
-  return _glowTex;
-}
-
-let _rayTex: THREE.CanvasTexture | null = null;
-function getRayTexture() {
-  if (_rayTex) return _rayTex;
-  const s = 128;
-  const c = document.createElement("canvas");
-  c.width = s;
-  c.height = s;
-  const ctx = c.getContext("2d")!;
-  const h = s / 2;
-  ctx.clearRect(0, 0, s, s);
-  for (let i = 0; i < 4; i++) {
-    ctx.save();
-    ctx.translate(h, h);
-    ctx.rotate((i * Math.PI) / 4);
-    const lg = ctx.createLinearGradient(0, 0, h, 0);
-    lg.addColorStop(0, "rgba(255,255,255,0.25)");
-    lg.addColorStop(0.5, "rgba(255,255,255,0.03)");
-    lg.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.fillStyle = lg;
-    ctx.fillRect(0, -0.5, h, 1);
-    ctx.fillRect(-h, -0.5, h, 1);
-    ctx.restore();
-  }
-  _rayTex = new THREE.CanvasTexture(c);
-  return _rayTex;
-}
-
-/* ── BookStar ── */
-
-function BookStar({
-  book,
-  position,
-  onClick,
-  isSingle,
-  locked,
-  enterDelay,
-}: {
-  book: Book;
-  position: [number, number, number];
-  onClick: () => void;
-  isSingle: boolean;
-  locked: boolean;
-  enterDelay: number;
-}) {
-  const groupRef = useRef<THREE.Group>(null!);
-  const coreRef = useRef<THREE.Sprite>(null!);
-  const glowRef = useRef<THREE.Sprite>(null!);
-  const rayRef = useRef<THREE.Sprite>(null!);
-  const [hovered, setHovered] = useState(false);
-  const [pressed, setPressed] = useState(false);
-  const [depthOpacity, setDepthOpacity] = useState(1);
-  const pressTime = useRef(0);
-  const birthTime = useRef(-1);
-  const coreTex = useMemo(() => getCoreTexture(), []);
-  const glowTex = useMemo(() => getGlowTexture(), []);
-  const rayTex = useMemo(() => getRayTexture(), []);
-
-  useEffect(() => {
-    document.body.style.cursor = hovered ? "pointer" : "auto";
-    return () => { document.body.style.cursor = "auto"; };
-  }, [hovered]);
-
-  const color = book.color || "#6366f1";
-  const dimFactor = locked ? 0.4 : 1;
-
-  const _worldPos = useMemo(() => new THREE.Vector3(), []);
-
-  useFrame(({ clock, camera }) => {
-    if (!groupRef.current || !coreRef.current) return;
-    const t = clock.getElapsedTime();
-
-    if (birthTime.current < 0) birthTime.current = t;
-    const age = t - birthTime.current - enterDelay;
-    const enterProgress = age < 0 ? 0 : Math.min(1, age / 0.6);
-    const eased = 1 - Math.pow(1 - enterProgress, 3);
-
-    groupRef.current.getWorldPosition(_worldPos);
-    const dist = camera.position.distanceTo(_worldPos);
-    const depthFade = THREE.MathUtils.clamp((30 - dist) / 16, 0.15, 1);
-
-    const rounded = Math.round(depthFade * 20) / 20;
-    if (Math.abs(rounded - depthOpacity) > 0.04) setDepthOpacity(rounded);
-
-    groupRef.current.renderOrder = Math.round((1 - depthFade) * -100);
-
-    const depthScale = THREE.MathUtils.lerp(0.7, 1, depthFade);
-
-    const pulse = 1 + Math.sin(t * 1.2 + position[0] * 2) * 0.08;
-
-    const now = performance.now() / 1000;
-    const elapsed = now - pressTime.current;
-    const tapBounce = pressed
-      ? 0.82
-      : elapsed < 0.3
-        ? 1 + Math.sin(elapsed * Math.PI / 0.3) * 0.18
-        : 1;
-
-    const base = (hovered ? 1.15 : 1) * tapBounce * eased * depthScale;
-    groupRef.current.scale.setScalar(
-      THREE.MathUtils.lerp(groupRef.current.scale.x, base * pulse, pressed ? 0.25 : 0.08),
-    );
-
-    const coreScale = isSingle ? (hovered ? 3.2 : 2.8) : (hovered ? 2.4 : 2);
-    coreRef.current.scale.setScalar(
-      THREE.MathUtils.lerp(coreRef.current.scale.x, coreScale, 0.08),
-    );
-
-    const fade = dimFactor * eased * depthFade;
-    const opacityBoost = pressed ? 1.6 : (elapsed < 0.25 ? 1 + (1 - elapsed / 0.25) * 0.5 : 1);
-    if (coreRef.current.material) {
-      (coreRef.current.material as THREE.SpriteMaterial).opacity = Math.min(1, opacityBoost * fade);
-    }
-
-    if (glowRef.current) {
-      const gs = (isSingle ? 9 : (hovered ? 8 : 6.5)) * pulse;
-      glowRef.current.scale.setScalar(
-        THREE.MathUtils.lerp(glowRef.current.scale.x, gs, 0.08),
-      );
-      (glowRef.current.material as THREE.SpriteMaterial).opacity = Math.min(0.6, 0.35 * opacityBoost * fade);
-    }
-
-    if (rayRef.current) {
-      const rs = (isSingle ? 12 : (hovered ? 10 : 8)) * pulse;
-      rayRef.current.scale.setScalar(
-        THREE.MathUtils.lerp(rayRef.current.scale.x, rs, 0.06),
-      );
-      rayRef.current.material.rotation = t * 0.08;
-      (rayRef.current.material as THREE.SpriteMaterial).opacity = 0.15 * fade;
-    }
-  });
+function BookCover({ book, size = "md" }: { book: Book; size?: "sm" | "md" | "lg" }) {
+  const dims = size === "lg" ? "w-[90px] h-[126px]" : size === "md" ? "w-[100px] h-[145px]" : "w-[80px] h-[116px]";
+  const coverSrc = book.cover_url || `/covers/${book.id}.jpg`;
 
   return (
-    <group ref={groupRef} position={position} name={`bookstar-${book.id}`}>
-      <mesh
-        name="bookstar-hitbox"
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => { setHovered(false); setPressed(false); }}
-      >
-        <sphereGeometry args={[1.5, 8, 8]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-      </mesh>
-
-      <sprite ref={rayRef}>
-        <spriteMaterial
-          map={rayTex}
-          color={color}
-          transparent
-          opacity={0.15 * dimFactor}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </sprite>
-
-      <sprite ref={glowRef}>
-        <spriteMaterial
-          map={glowTex}
-          color={color}
-          transparent
-          opacity={0.35 * dimFactor}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </sprite>
-
-      <sprite ref={coreRef}>
-        <spriteMaterial
-          map={coreTex}
-          color={color}
-          transparent
-          opacity={1 * dimFactor}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </sprite>
-
-      <Html center style={{ pointerEvents: "none", whiteSpace: "nowrap", opacity: depthOpacity, transition: "opacity 0.15s" }}>
-        <div className="text-center" style={{ transform: "translateY(43px)" }}>
-          <div className="flex items-center justify-center gap-1.5">
-            <p
-              className={`${serif} text-[14px] font-semibold`}
-              style={{
-                color: locked ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.88)",
-                textShadow: "0 2px 8px rgba(0,0,0,0.8)",
-                letterSpacing: "0.02em",
-              }}
-            >
-              {book.title}
-            </p>
-            {locked && (
-              <svg width="10" height="12" viewBox="0 0 10 12" fill="none" style={{ opacity: 0.35, marginTop: 1 }}>
-                <rect x="0.5" y="5" width="9" height="6.5" rx="1.5" stroke="white" strokeWidth="1" fill="none" />
-                <path d="M2.5 5V3.5a2.5 2.5 0 015 0V5" stroke="white" strokeWidth="1" fill="none" />
-              </svg>
-            )}
-          </div>
-          {book.author && (
-            <p className={`text-[11px] mt-0.5 ${locked ? "text-white/20" : "text-white/40"}`}>{book.author}</p>
-          )}
-        </div>
-      </Html>
-    </group>
-  );
-}
-
-/* ── StarField ── */
-
-function StarField() {
-  const ref1 = useRef<THREE.Points>(null!);
-  const ref2 = useRef<THREE.Points>(null!);
-
-  const [farGeo, nearGeo] = useMemo(() => {
-    const mkGeo = (count: number, rMin: number, rMax: number) => {
-      const pos = new Float32Array(count * 3);
-      for (let i = 0; i < count; i++) {
-        const th = Math.random() * Math.PI * 2;
-        const ph = Math.acos(2 * Math.random() - 1);
-        const r = rMin + Math.random() * (rMax - rMin);
-        pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
-        pos[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th);
-        pos[i * 3 + 2] = r * Math.cos(ph);
-      }
-      const g = new THREE.BufferGeometry();
-      g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-      return g;
-    };
-    return [mkGeo(1200, 50, 120), mkGeo(300, 22, 50)];
-  }, []);
-
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    if (ref1.current) ref1.current.rotation.y = t * 0.002;
-    if (ref2.current) ref2.current.rotation.y = t * 0.005;
-  });
-
-  return (
-    <>
-      <points ref={ref1} geometry={farGeo}>
-        <pointsMaterial color="#a0b4ff" size={0.08} sizeAttenuation transparent opacity={0.45} depthWrite={false} />
-      </points>
-      <points ref={ref2} geometry={nearGeo}>
-        <pointsMaterial color="#dde0ff" size={0.18} sizeAttenuation transparent opacity={0.65} depthWrite={false} />
-      </points>
-    </>
-  );
-}
-
-/* ── Scene ── */
-
-function RotatingGroup({ speed, children }: { speed: number; children: React.ReactNode }) {
-  const ref = useRef<THREE.Group>(null);
-  useFrame((_, delta) => {
-    if (ref.current) ref.current.rotation.y += delta * speed;
-  });
-  return <group ref={ref}>{children}</group>;
-}
-
-function TapDetector({ books, onSelectBook }: { books: Book[]; onSelectBook: (b: Book) => void }) {
-  const { camera, gl, scene } = useThree();
-  const raycaster = useMemo(() => new THREE.Raycaster(), []);
-  const pointer = useRef<{ x: number; y: number; time: number } | null>(null);
-
-  useEffect(() => {
-    const canvas = gl.domElement;
-
-    const getXY = (e: PointerEvent | TouchEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const t = "touches" in e ? (e.touches[0] ?? (e as TouchEvent).changedTouches[0]) : e;
-      return { x: t.clientX - rect.left, y: t.clientY - rect.top, w: rect.width, h: rect.height };
-    };
-
-    const onDown = (e: PointerEvent | TouchEvent) => {
-      const { x, y } = getXY(e);
-      pointer.current = { x, y, time: performance.now() };
-    };
-
-    const onUp = (e: PointerEvent | TouchEvent) => {
-      if (!pointer.current) return;
-      const { x, y, w, h } = getXY(e);
-      const dx = x - pointer.current.x;
-      const dy = y - pointer.current.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const elapsed = performance.now() - pointer.current.time;
-      pointer.current = null;
-
-      if (dist > 12 || elapsed > 400) return;
-
-      const ndc = new THREE.Vector2((x / w) * 2 - 1, -(y / h) * 2 + 1);
-      raycaster.setFromCamera(ndc, camera);
-
-      const hitTargets: THREE.Object3D[] = [];
-      scene.traverse((obj) => {
-        if (obj.name === "bookstar-hitbox") hitTargets.push(obj);
-      });
-      const hits = raycaster.intersectObjects(hitTargets, false);
-
-      if (hits.length > 0) {
-        let obj: THREE.Object3D | null = hits[0].object;
-        while (obj) {
-          if (obj.name?.startsWith("bookstar-") && obj.name !== "bookstar-hitbox") {
-            const bookId = obj.name.replace("bookstar-", "");
-            const book = books.find((b) => b.id === bookId);
-            if (book) onSelectBook(book);
-            return;
-          }
-          obj = obj.parent;
-        }
-      }
-    };
-
-    canvas.addEventListener("pointerdown", onDown, { passive: true });
-    canvas.addEventListener("pointerup", onUp, { passive: true });
-    canvas.addEventListener("touchstart", onDown, { passive: true });
-    canvas.addEventListener("touchend", onUp, { passive: true });
-
-    return () => {
-      canvas.removeEventListener("pointerdown", onDown);
-      canvas.removeEventListener("pointerup", onUp);
-      canvas.removeEventListener("touchstart", onDown);
-      canvas.removeEventListener("touchend", onUp);
-    };
-  }, [camera, gl, scene, books, onSelectBook, raycaster]);
-
-  return null;
-}
-
-function Scene({ books, onSelectBook, freeBookId }: HomeViewProps) {
-  const isSingle = books.length === 1;
-
-  const bookPositions = useMemo(() => {
-    const count = books.length;
-    if (count === 0) return [] as [number, number, number][];
-    if (count === 1) return [[0, 0, 0]] as [number, number, number][];
-
-    const radius = 3.5;
-    const golden = Math.PI * (3 - Math.sqrt(5));
-    const positions: [number, number, number][] = [];
-    for (let i = 0; i < count; i++) {
-      const y = 1 - (i / (count - 1)) * 2;
-      const r = Math.sqrt(1 - y * y);
-      const theta = golden * i;
-      positions.push([
-        r * Math.cos(theta) * radius,
-        y * radius,
-        r * Math.sin(theta) * radius,
-      ]);
-    }
-    return positions;
-  }, [books.length]);
-
-  return (
-    <>
-      <TrackballControls
-        noPan
-        noZoom
-        rotateSpeed={1.5}
-        dynamicDampingFactor={0.08}
+    <div className={`${dims} rounded-xl flex-shrink-0 relative overflow-hidden`} style={{ background: `linear-gradient(135deg, ${book.color}40, ${book.color}15)` }}>
+      <img
+        src={coverSrc}
+        alt={book.title}
+        className="absolute inset-0 w-full h-full object-cover"
+        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
       />
-      <TapDetector books={books} onSelectBook={onSelectBook} />
-      <ambientLight intensity={0.25} />
-      <pointLight position={[0, 0, 0]} intensity={0.4} distance={80} />
-      <StarField />
-      <RotatingGroup speed={0.05}>
-      {books.map((book, i) => (
-        <BookStar
-          key={book.id}
-          book={book}
-          position={bookPositions[i] || [0, 0, 0]}
-          onClick={() => onSelectBook(book)}
-          isSingle={isSingle}
-          locked={freeBookId != null && freeBookId !== book.id}
-          enterDelay={i * 0.15}
-        />
-      ))}
-      </RotatingGroup>
-    </>
+    </div>
   );
 }
 
-/* ── HomeView ── */
-
-export function HomeView({ books, onSelectBook, activeSession, onContinueLearning, freeBookId }: HomeViewProps) {
-  const mobile = useIsMobile();
+export function HomeView({ books, onSelectBook, activeSession, readingBooks = [], onContinueLearning, freeBookId }: HomeViewProps) {
   const t = useT();
-  const language = useSettingsStore((s) => s.language);
+  const isKo = useSettingsStore((s) => s.language) === "ko";
+  const stats = useAppStore((s) => s.stats);
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const greeting = useMemo(() => {
-    const h = new Date().getHours();
-    const n = Math.floor(Math.random() * 5) + 1;
-    const period = h < 6 ? "Night" : h < 12 ? "Morning" : h < 18 ? "Afternoon" : "Evening";
-    return {
-      title: t(`home.greet${period}${n}` as any),
-      sub: t(`home.greet${period}Sub${n}` as any),
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const bookMap = useMemo(() => {
+    const m = new Map<string, Book>();
+    books.forEach((b) => m.set(b.id, b));
+    return m;
+  }, [books]);
+
+  const recommendedBooks = useMemo(
+    () => BETA_RECOMMENDED_IDS.map((id) => bookMap.get(id)).filter(Boolean) as Book[],
+    [bookMap],
+  );
+
+  const curationSections = useMemo(
+    () => BETA_CURATION_SECTIONS.slice(0, 12).map((s) => ({
+      ...s,
+      books: s.bookIds.map((id) => bookMap.get(id)).filter(Boolean) as Book[],
+    })).filter((s) => s.books.length > 0),
+    [bookMap],
+  );
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase();
+    return books.filter(
+      (b) =>
+        b.title.toLowerCase().includes(q) ||
+        b.author.toLowerCase().includes(q),
+    );
+  }, [searchQuery, books]);
+
+  const openSearch = useCallback(() => {
+    setSearchVisible(true);
+    setTimeout(() => inputRef.current?.focus(), 100);
   }, []);
 
-  const dateStr = useMemo(() => {
-    const d = new Date();
-    const locale = language === "ko" ? "ko-KR" : "en-US";
-    return d.toLocaleDateString(locale, { month: "long", day: "numeric", weekday: "short" });
-  }, [language]);
+  const closeSearch = useCallback(() => {
+    setSearchVisible(false);
+    setSearchQuery("");
+  }, []);
 
-  const progress = activeSession
-    ? Math.round((activeSession.completedLessons / Math.max(activeSession.totalLessons, 1)) * 100)
-    : 0;
+  const xpDisplay = stats.xp >= 1000 ? `${(stats.xp / 1000).toFixed(1)}K` : `${stats.xp}`;
 
   return (
-    <div className="w-full h-full relative overflow-hidden">
-      <CosmicBg accent="indigo" />
-
-      {/* 3D Canvas */}
-      <Canvas
-        camera={{ position: [0, 3, 22], fov: 50, near: 0.1, far: 300 }}
-        dpr={mobile ? [1, 1.5] : [1, 2]}
-        gl={{ alpha: true, antialias: !mobile }}
-        className="absolute inset-0"
-        style={{ background: "transparent", zIndex: 1 }}
-      >
-        <Scene books={books} onSelectBook={onSelectBook} freeBookId={freeBookId} />
-      </Canvas>
-
-      {/* Top: Date + Greeting */}
-      <motion.div
-        className="absolute top-[108px] left-0 right-0 z-20 px-7"
-        initial={{ opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <p className="text-white/25 text-[12px] font-semibold tracking-[0.15em] uppercase">
-          {dateStr}
-        </p>
-        <h1 className={`${serif} text-white/90 text-[28px] font-bold mt-1.5 leading-tight`}>
-          {greeting.title}
-        </h1>
-        <p className="text-white/40 text-[14px] mt-0.5 font-medium">
-          {greeting.sub}
-        </p>
-      </motion.div>
-
-      {/* Bottom gradient for legibility */}
-      <div
-        className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
-        style={{
-          height: "50%",
-          background: "linear-gradient(to top, rgba(6,6,18,0.95) 0%, rgba(6,6,18,0.6) 40%, transparent 100%)",
-        }}
-      />
-
-      {/* Bottom content */}
-      <div className="absolute bottom-0 left-0 right-0 z-20 px-5 pb-safe-lg flex flex-col items-center">
-        {/* Recently Read Book Card */}
-        {activeSession && onContinueLearning && activeSession.totalLessons > 0 && activeSession.completedLessons > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-[340px] mb-3.5"
+    <div className="h-full overflow-y-auto pb-[90px] relative">
+      {/* Header */}
+      <div className="sticky top-0 z-30 flex items-center justify-between px-5 h-14 bg-[rgba(6,6,18,0.85)] border-b border-white/[0.04] backdrop-blur-sm">
+        <div className="flex items-center gap-2">
+          <span className="text-white/70 text-[20px] font-bold" style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: 0.4 }}>Cosmii</span>
+          <span className="px-2 py-0.5 rounded-md bg-[rgba(129,140,248,0.15)] border border-[rgba(129,140,248,0.3)] text-[rgba(165,180,252,0.9)] text-[11px] font-semibold tracking-wide">Beta</span>
+        </div>
+        <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-1">
+            <Flame size={14} className="text-white/30" />
+            <span className="text-white/60 text-[13px] tabular-nums" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>{stats.streakDays}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Star size={14} className="text-white/30" />
+            <span className="text-white/60 text-[13px] tabular-nums" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>{xpDisplay}</span>
+          </div>
+          <motion.button
+            whileTap={{ scale: 0.85 }}
+            onClick={openSearch}
+            className="p-1.5 rounded-lg"
           >
-            <p className="text-white/25 text-[11px] font-bold tracking-[0.14em] uppercase mb-2 pl-1">
-              {t("home.recentBooks")}
+            <Search size={18} className="text-white/45" />
+          </motion.button>
+        </div>
+      </div>
+
+      <div className="pt-6">
+        {/* Hero CTA — most recent reading book */}
+        <div className="px-5">
+          {(() => {
+            const heroBook = activeSession && activeSession.completedLessons > 0
+              ? { book: activeSession.book, pct: activeSession.totalLessons > 0 ? Math.round((activeSession.completedLessons / activeSession.totalLessons) * 100) : 0, canContinue: true }
+              : readingBooks.length > 0
+                ? {
+                    book: readingBooks[0],
+                    pct: readingBooks[0].totalLessons > 0 ? Math.round((readingBooks[0].completedLessons / readingBooks[0].totalLessons) * 100) : 0,
+                    canContinue: readingBooks[0].id === freeBookId,
+                  }
+                : null;
+
+            if (heroBook) {
+              return (
+                <motion.button
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => heroBook.canContinue && onContinueLearning ? onContinueLearning() : onSelectBook(heroBook.book)}
+                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 flex items-center gap-4 mb-8 text-left active:bg-white/[0.06] transition-colors"
+                >
+                  <BookCover book={heroBook.book} size="lg" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] text-white/30 uppercase tracking-[0.12em] font-semibold mb-1.5">
+                      {t("home.readingNow")}
+                    </p>
+                    <p className={`${serif} text-white/90 text-[16px] font-bold truncate`}>
+                      {heroBook.book.title}
+                    </p>
+                    <p className="text-white/30 text-[12px] mt-0.5 truncate">{heroBook.book.author}</p>
+                    <div className="mt-3 flex items-center gap-2">
+                      <div className="flex-1 h-[3px] bg-white/[0.06] rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full rounded-full bg-[#a78bfa]"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${heroBook.pct}%` }}
+                          transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+                        />
+                      </div>
+                      <span className="text-[11px] text-white/30 tabular-nums">{heroBook.pct}%</span>
+                    </div>
+                    <div className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/90 text-[#060612]">
+                      <Play size={12} className="fill-[#060612]" />
+                      <span className="text-[12px] font-semibold">{t("home.keepReading")}</span>
+                    </div>
+                  </div>
+                </motion.button>
+              );
+            }
+
+            if (!freeBookId && readingBooks.length === 0) {
+              return (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-full bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 text-center mb-8"
+                >
+                  <p className={`${serif} text-white/80 text-[18px] font-bold mb-2`}>{t("home.startFirst")}</p>
+                  <p className="text-white/30 text-[13px] mb-5">{t("home.startFirstSub")}</p>
+                  <div className="flex justify-center gap-3">
+                    {recommendedBooks.slice(0, 3).map((book) => (
+                      <motion.button key={book.id} whileTap={{ scale: 0.95 }} onClick={() => onSelectBook(book)}>
+                        <BookCover book={book} size="sm" />
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            }
+
+            return null;
+          })()}
+        </div>
+
+        {/* Recommended */}
+        {recommendedBooks.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.15, duration: 0.5 }}
+            className="mb-8"
+          >
+            <p className="text-[11px] text-white/25 uppercase tracking-[0.12em] font-semibold mb-3 px-5">
+              {isKo ? "추천" : "Recommended"}
             </p>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={onContinueLearning}
-              className="w-full bg-white/[0.02] border border-white/[0.06] rounded-2xl overflow-hidden active:bg-white/[0.05] transition-colors select-none"
-            >
-              <div className="p-4 flex items-center gap-3">
-                <div className="flex-1 min-w-0 text-left">
-                  <p className={`${serif} text-white/90 text-[15px] font-bold truncate`}>{activeSession.book.title}</p>
-                  {activeSession.book.author && (
-                    <p className="text-white/30 text-[11px] mt-0.5">{activeSession.book.author}</p>
-                  )}
-                </div>
-                <ChevronRight size={16} className="text-white/20 flex-shrink-0" />
-              </div>
-              <div className="px-4 pb-3.5">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-white/30 text-[11px] font-semibold">{t("home.progress")}</span>
-                  <span className="text-white/40 text-[11px] font-bold tabular-nums">{progress}%</span>
-                </div>
-                <div className="w-full h-[4px] bg-white/[0.06] rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full bg-white/50"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${progress}%` }}
-                    transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
-                  />
-                </div>
-                <p className="text-white/20 text-[11px] mt-1.5 tabular-nums">
-                  {t("home.sessionsComplete", { done: activeSession.completedLessons, total: activeSession.totalLessons })}
-                </p>
-              </div>
-            </motion.button>
+            <div className="flex gap-3 overflow-x-auto px-5 pb-1 scrollbar-hide">
+              {recommendedBooks.map((book) => {
+                const tagline = BOOK_TAGLINES[book.id];
+                return (
+                  <motion.button
+                    key={book.id}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onSelectBook(book)}
+                    className="flex-shrink-0 w-[100px] text-left"
+                  >
+                    <BookCover book={book} size="md" />
+                    <p className={`${serif} text-white/70 text-[12px] mt-2 truncate font-medium`}>{book.title}</p>
+                    {tagline && (
+                      <p className="text-white/25 text-[10px] mt-0.5 line-clamp-2 leading-snug">
+                        {isKo ? tagline.ko : tagline.en}
+                      </p>
+                    )}
+                  </motion.button>
+                );
+              })}
+            </div>
           </motion.div>
         )}
 
-        {/* Empty state hint — hidden when no recent session */}
+        {/* Curation Sections */}
+        {curationSections.map((section, sIdx) => (
+          <div key={section.id}>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + sIdx * 0.05, duration: 0.5 }}
+              className="mb-8"
+            >
+              <div className="px-5 mb-3">
+                <p className={`${serif} text-white/70 text-[15px] font-bold`}>
+                  {isKo ? section.title : section.titleEn}
+                </p>
+                <p className="text-white/25 text-[12px] mt-0.5">
+                  {isKo ? section.subtitle : section.subtitleEn}
+                </p>
+              </div>
+              <div className="flex gap-3 overflow-x-auto px-5 pb-1 scrollbar-hide">
+                {section.books.map((book) => {
+                  const tagline = BOOK_TAGLINES[book.id];
+                  return (
+                    <motion.button
+                      key={book.id}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => onSelectBook(book)}
+                      className="flex-shrink-0 w-[110px] text-left"
+                    >
+                      <div
+                        className="w-[110px] h-[160px] rounded-xl relative overflow-hidden flex-shrink-0"
+                        style={{ background: `linear-gradient(135deg, ${book.color}40, ${book.color}15)` }}
+                      >
+                        <img
+                          src={book.cover_url || `/covers/${book.id}.jpg`}
+                          alt={book.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                        />
+                      </div>
+                      <p className={`${serif} text-white/60 text-[12px] mt-2 truncate font-medium`}>{book.title}</p>
+                      {tagline && (
+                        <p className="text-white/20 text-[10px] mt-0.5 line-clamp-2 leading-snug">
+                          {isKo ? tagline.ko : tagline.en}
+                        </p>
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
+        ))}
 
+        {/* App Download CTA */}
+        <div className="px-5 pb-6">
+          <a
+            href="https://apps.apple.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-white/[0.06] bg-white/[0.02] text-white/35 text-[13px] font-medium hover:bg-white/[0.04] hover:text-white/50 transition-all"
+          >
+            <Download size={14} />
+            {t("home.moreInAppSub")}
+          </a>
+        </div>
       </div>
+
+      {/* ── Search Overlay ── */}
+      <AnimatePresence>
+        {searchVisible && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 z-50 bg-[#060612] flex flex-col"
+          >
+            {/* Search Header */}
+            <div className="flex items-center gap-2.5 px-4 h-14 border-b border-white/[0.04] flex-shrink-0">
+              <div className="flex-1 min-w-0 flex items-center gap-2.5 bg-white/[0.06] rounded-xl px-3.5 h-10">
+                <Search size={16} className="text-white/30 flex-shrink-0" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={isKo ? "책, 작가 검색..." : "Search books, authors..."}
+                  className={`${serif} flex-1 bg-transparent text-white/90 text-[15px] outline-none placeholder:text-white/25`}
+                />
+                {searchQuery.length > 0 && (
+                  <motion.button whileTap={{ scale: 0.85 }} onClick={() => setSearchQuery("")}>
+                    <X size={16} className="text-white/35" />
+                  </motion.button>
+                )}
+              </div>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={closeSearch}
+                className="flex-shrink-0 pl-1 pr-1"
+              >
+                <span className={`${serif} text-white/50 text-[14px] font-semibold`}>
+                  {isKo ? "취소" : "Cancel"}
+                </span>
+              </motion.button>
+            </div>
+
+            {/* Search Results */}
+            <div className="flex-1 overflow-y-auto px-5 pt-4 pb-[100px]">
+              {searchQuery.trim().length === 0 ? (
+                <div>
+                  <p className="text-[11px] text-white/25 uppercase tracking-[0.12em] font-semibold mb-3">
+                    {isKo ? "추천" : "Recommended"}
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    {recommendedBooks.map((book) => {
+                      const tagline = BOOK_TAGLINES[book.id];
+                      return (
+                        <motion.button
+                          key={book.id}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => { onSelectBook(book); closeSearch(); }}
+                          className="flex items-center gap-3 text-left p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] active:bg-white/[0.06] transition-colors"
+                        >
+                          <BookCover book={book} size="sm" />
+                          <div className="flex-1 min-w-0">
+                            <p className={`${serif} text-white/80 text-[15px] font-bold truncate`}>{book.title}</p>
+                            <p className="text-white/35 text-[12px] mt-0.5">{book.author}</p>
+                            {tagline && (
+                              <p className="text-white/20 text-[11px] mt-1 line-clamp-1">
+                                {isKo ? tagline.ko : tagline.en}
+                              </p>
+                            )}
+                          </div>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : searchResults.length > 0 ? (
+                <div>
+                  <p className="text-[11px] text-white/25 uppercase tracking-[0.12em] font-semibold mb-3">
+                    {isKo ? `${searchResults.length}개 결과` : `${searchResults.length} results`}
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    {searchResults.map((book) => {
+                      const tagline = BOOK_TAGLINES[book.id];
+                      return (
+                        <motion.button
+                          key={book.id}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => { onSelectBook(book); closeSearch(); }}
+                          className="flex items-center gap-3 text-left p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] active:bg-white/[0.06] transition-colors"
+                        >
+                          <BookCover book={book} size="sm" />
+                          <div className="flex-1 min-w-0">
+                            <p className={`${serif} text-white/80 text-[15px] font-bold truncate`}>{book.title}</p>
+                            <p className="text-white/35 text-[12px] mt-0.5">{book.author}</p>
+                            {tagline && (
+                              <p className="text-white/20 text-[11px] mt-1 line-clamp-1">
+                                {isKo ? tagline.ko : tagline.en}
+                              </p>
+                            )}
+                          </div>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center pt-20 text-center">
+                  <Search size={32} className="text-white/10 mb-3" />
+                  <p className={`${serif} text-white/30 text-[15px]`}>
+                    {isKo ? "검색 결과가 없어요" : "No results found"}
+                  </p>
+                  <p className="text-white/15 text-[13px] mt-1">
+                    {isKo ? "다른 키워드로 검색해보세요" : "Try a different keyword"}
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

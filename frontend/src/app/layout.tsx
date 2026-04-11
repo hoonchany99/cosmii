@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, EB_Garamond, Gowun_Batang } from "next/font/google";
+import { Geist, Geist_Mono, EB_Garamond, Nanum_Gothic } from "next/font/google";
 import { LanguageSync } from "@/components/language-sync";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -19,10 +19,10 @@ const ebGaramond = EB_Garamond({
   subsets: ["latin"],
 });
 
-const gowunBatang = Gowun_Batang({
+const nanumGothic = Nanum_Gothic({
   variable: "--font-ko-serif",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "700", "800"],
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.app";
@@ -124,7 +124,7 @@ export default function RootLayout({
         <link rel="preload" as="image" type="image/png" href="/cosmii-constellation.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${gowunBatang.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${nanumGothic.variable} antialiased`}
       >
         <LanguageSync />
         <TooltipProvider>{children}</TooltipProvider>

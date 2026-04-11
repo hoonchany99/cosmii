@@ -4,7 +4,6 @@ import { useState, useCallback, useEffect, Fragment } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { CosmiiConstellation } from "@/components/cosmii-constellation";
 import { createClient } from "@/lib/supabase";
 import { useT } from "@/lib/i18n";
 import { useSettingsStore } from "@/lib/store";
@@ -53,11 +52,26 @@ export default function AuthPage() {
 
   return (
     <motion.div
-      className="min-h-screen bg-[#060612] text-white overflow-hidden flex"
+      className="min-h-screen bg-[#060612] text-white overflow-hidden flex relative"
       initial={{ opacity: 0 }}
       animate={leaving ? { opacity: 0 } : { opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 80 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: Math.random() * 2 + 1,
+              height: Math.random() * 2 + 1,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              opacity: Math.random() * 0.4 + 0.1,
+            }}
+          />
+        ))}
+      </div>
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 sm:px-12 py-12 relative z-10">
         <div className="absolute inset-0 bg-[#060612]/1 lg:bg-transparent lg:bg-gradient-to-r lg:from-[#060612] lg:via-[#060612]/90 lg:to-[#060612]/25" />
 
@@ -158,15 +172,6 @@ export default function AuthPage() {
           </motion.div>
       </div>
 
-      {/* Mobile — subtle background constellation */}
-      <div className="absolute inset-0 lg:hidden opacity-35 pointer-events-none">
-        <CosmiiConstellation dim dimOpacity={1} dimZoom={11} />
-      </div>
-
-      {/* Desktop — right half */}
-      <div className="hidden lg:block lg:w-1/2 relative">
-        <CosmiiConstellation dim dimOpacity={1} dimZoom={11} />
-      </div>
     </motion.div>
   );
 }

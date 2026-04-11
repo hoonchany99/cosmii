@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServiceClient, getAuthUserId } from "@/lib/supabase-server";
 
-const XP_THRESHOLDS = [0, 100, 300, 600, 1000, 1500, 2100, 2800, 3600, 4500, 5500];
-
-function calcLevel(xp: number): number {
-  for (let i = 0; i < XP_THRESHOLDS.length; i++) {
-    if (xp < XP_THRESHOLDS[i]) return i;
-  }
-  return XP_THRESHOLDS.length;
-}
-
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ lessonId: string }> },
@@ -21,65 +12,56 @@ export async function POST(
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const sb = getServiceClient();
 
-  const baseXp = 50;
-  const quizXp = (correct_answers ?? 0) * 20;
-  const xpEarned = baseXp + quizXp;
+  const xpEarned = Math.round((score ?? 0) * 0.6 + (correct_answers ?? 0) * 10);
 
-  await sb.from("user_progress").upsert({
-    user_id: userId,
-    lesson_id: lessonId,
-    completed: true,
-    score,
-    completed_at: new Date().toISOString(),
-  });
+  await sb.from("user_progress").upsert(
+    {
+      user_id: userId,
+      lesson_id: lessonId,
+      completed: true,
+      score,
+      review_needed: false,
+      completed_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id,lesson_id" },
+  );
 
-  const { data: statsRows } = await sb
+  const { data: stats } = await sb
     .from("user_stats")
     .select("*")
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .single();
 
-  const today = new Date().toISOString().slice(0, 10);
-  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const today = new Date().toISOString().split("T")[0];
+  const prevDate = stats?.last_study_date;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+  const isConsecutive = prevDate === yesterday || prevDate === today;
 
-  let newXp: number;
-  let newStreak: number;
-  let newLevel: number;
-  let levelUp: boolean;
+  const newXp = (stats?.xp ?? 0) + xpEarned;
+  const newStreak =
+    prevDate === today
+      ? (stats?.streak_days ?? 1)
+      : isConsecutive
+        ? (stats?.streak_days ?? 0) + 1
+        : 1;
+  const newLevel = Math.floor(newXp / 200) + 1;
+  const prevLevel = stats?.level ?? 1;
 
-  if (statsRows && statsRows.length > 0) {
-    const cur = statsRows[0];
-    newXp = cur.xp + xpEarned;
-    const last = cur.last_study_date;
-    if (last === yesterday) newStreak = cur.streak_days + 1;
-    else if (last === today) newStreak = cur.streak_days;
-    else newStreak = 1;
-
-    newLevel = calcLevel(newXp);
-    levelUp = newLevel > (cur.level ?? 1);
-
-    await sb
-      .from("user_stats")
-      .update({ xp: newXp, streak_days: newStreak, last_study_date: today, level: newLevel })
-      .eq("user_id", userId);
-  } else {
-    newXp = xpEarned;
-    newStreak = 1;
-    newLevel = calcLevel(newXp);
-    levelUp = newLevel > 1;
-
-    await sb.from("user_stats").insert({
+  await sb.from("user_stats").upsert(
+    {
       user_id: userId,
       xp: newXp,
-      streak_days: 1,
+      streak_days: newStreak,
       last_study_date: today,
       level: newLevel,
-    });
-  }
+    },
+    { onConflict: "user_id" },
+  );
 
   return NextResponse.json({
     xp_earned: xpEarned,
     streak_days: newStreak,
     level: newLevel,
-    level_up: levelUp,
+    level_up: newLevel > prevLevel,
   });
 }

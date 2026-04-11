@@ -201,7 +201,9 @@ export function SessionComplete({
                 </span>
               </div>
               <a
-                href="#app-download"
+                href="https://apps.apple.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/90 text-[#060612] text-[15px] font-bold hover:bg-white/80 active:bg-white/70 transition-colors"
               >
                 <Download size={16} />

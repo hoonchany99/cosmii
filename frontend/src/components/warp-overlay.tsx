@@ -54,8 +54,8 @@ export function WarpOverlay({ active, onMidpoint, onComplete }: WarpOverlayProps
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = canvas.clientWidth || window.innerWidth;
+    canvas.height = canvas.clientHeight || window.innerHeight;
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
 
@@ -174,8 +174,10 @@ export function WarpOverlay({ active, onMidpoint, onComplete }: WarpOverlayProps
     <canvas
       ref={canvasRef}
       style={{
-        position: "fixed",
+        position: "absolute",
         inset: 0,
+        width: "100%",
+        height: "100%",
         zIndex: 60,
         pointerEvents: "none",
       }}

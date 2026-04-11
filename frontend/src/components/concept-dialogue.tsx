@@ -2,13 +2,10 @@
 
 import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronUp, Send, X } from "lucide-react";
-import { useIsMobile } from "@/lib/utils";
-import { useSettingsStore } from "@/lib/store";
+import { ChevronLeft, ChevronUp } from "lucide-react";
 import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
-const API = "";
 
 interface DialoguePart {
   speaker: string;
@@ -30,21 +27,6 @@ interface ConceptDialogueProps {
   isFirstInChapter?: boolean;
   onBack: () => void;
   onComplete: () => void;
-}
-
-function HighlightPill({ keyword }: { keyword: string }) {
-  return (
-    <span className="inline-flex items-center gap-1 bg-white/[0.08] border border-white/[0.15] text-white/70 text-[12px] font-semibold px-2.5 py-0.5 rounded-full">
-      {keyword}
-    </span>
-  );
-}
-
-function splitIntoBubbles(text: string): string[] {
-  return text
-    .split(/\n\n+/)
-    .map((s) => s.trim())
-    .filter(Boolean);
 }
 
 function parseChapterNumber(chapter: string | undefined): string {
@@ -69,9 +51,7 @@ export function ConceptDialogue({
   onBack,
   onComplete,
 }: ConceptDialogueProps) {
-  const mobile = useIsMobile();
   const t = useT();
-  const language = useSettingsStore((s) => s.language);
   const [showChapterIntro, setShowChapterIntro] = useState(!!isFirstInChapter);
 
   useEffect(() => {
@@ -114,43 +94,18 @@ export function ConceptDialogue({
   const [focusedIndex, setFocusedIndex] = useState(0);
   const isLast = currentIndex >= splitDialogue.length - 1;
 
-  const [questionOpen, setQuestionOpen] = useState(false);
-  const [questionInput, setQuestionInput] = useState("");
-  const [sheetInput, setSheetInput] = useState("");
-  const [sheetMessages, setSheetMessages] = useState<{ role: "user" | "cosmii"; bubbles: string[] }[]>([]);
-  const [isAnswering, setIsAnswering] = useState(false);
-  const [visibleBubbleIdx, setVisibleBubbleIdx] = useState(0);
-  const chatHistoryRef = useRef<{ role: "user" | "assistant"; content: string }[]>([]);
-  const answerBottomRef = useRef<HTMLDivElement>(null);
   const dialogueScrollRef = useRef<HTMLDivElement>(null);
   const bubbleRefs = useRef<(HTMLDivElement | null)[]>([]);
   const currentIndexRef = useRef(0);
-  const sheetInputRef = useRef<HTMLInputElement>(null);
-  const [kbHeight, setKbHeight] = useState(0);
 
   const dialoguePct = useMemo(
     () => Math.round(((currentIndex + 1) / Math.max(splitDialogue.length, 1)) * 100),
     [currentIndex, splitDialogue.length],
   );
 
-  const totalBubbles = useMemo(
-    () => sheetMessages.reduce((sum, m) => sum + m.bubbles.length, 0),
-    [sheetMessages],
-  );
-
-  useEffect(() => {
-    if (questionOpen) {
-      setTimeout(() => answerBottomRef.current?.scrollIntoView({ behavior: "smooth" }), 350);
-    }
-  }, [questionOpen]);
-
-  useEffect(() => {
-    answerBottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [visibleBubbleIdx, sheetMessages]);
-
-  const scrollToCenter = useCallback((index: number, behavior: ScrollBehavior = "smooth") => {
+  const scrollToCenter = useCallback((index: number) => {
     setTimeout(() => {
-      bubbleRefs.current[index]?.scrollIntoView({ block: "center", behavior });
+      bubbleRefs.current[index]?.scrollIntoView({ block: "center", behavior: "smooth" });
     }, 50);
   }, []);
 
@@ -193,115 +148,14 @@ export function ConceptDialogue({
     return () => { container.removeEventListener("scroll", onScroll); cancelAnimationFrame(rafId); };
   }, []);
 
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-    const onResize = () => {
-      const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      setKbHeight(kb);
-      if (kb > 0) scrollToCenter(currentIndexRef.current);
-    };
-    vv.addEventListener("resize", onResize);
-    return () => vv.removeEventListener("resize", onResize);
-  }, [scrollToCenter]);
-
-  useEffect(() => {
-    if (totalBubbles > 0 && visibleBubbleIdx < totalBubbles) {
-      const timer = setTimeout(() => setVisibleBubbleIdx((p) => p + 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [totalBubbles, visibleBubbleIdx]);
-
   const handleTap = useCallback(() => {
-    if (questionOpen || showChapterIntro) return;
+    if (showChapterIntro) return;
     if (isLast) {
       onComplete();
     } else {
       setCurrentIndex((prev) => prev + 1);
     }
-  }, [isLast, onComplete, questionOpen, showChapterIntro]);
-
-  const askQuestion = useCallback(async (question: string) => {
-    setSheetMessages((prev) => [...prev, { role: "user", bubbles: [question] }]);
-    setVisibleBubbleIdx((prev) => prev + 1);
-    setIsAnswering(true);
-
-    chatHistoryRef.current.push({ role: "user", content: question });
-
-    try {
-      const lessonTexts = dialogue
-        .slice(0, currentIndex + 1)
-        .map((d) => d.text)
-        .join(" ")
-        .slice(0, 1500);
-      const lessonContext = `[Book: ${bookTitle}${bookAuthor ? ` by ${bookAuthor}` : ""}] [Chapter: ${chapter}] [Lesson: ${lessonTitle}] [Progress: ${currentLesson}/${totalLessons}]\n${lessonTexts}`;
-
-      const res = await fetch(`${API}/api/chat/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: question,
-          book_id: bookId,
-          lesson_context: lessonContext,
-          history: chatHistoryRef.current.slice(-6),
-          language,
-        }),
-      });
-
-      const reader = res.body?.getReader();
-      if (!reader) return;
-      const decoder = new TextDecoder();
-      let fullAnswer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const text = decoder.decode(value);
-        const lines = text.split("\n").filter(Boolean);
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            try {
-              const data = JSON.parse(line.slice(6));
-              if (data.token) fullAnswer += data.token;
-            } catch {}
-          }
-        }
-      }
-
-      if (fullAnswer) {
-        chatHistoryRef.current.push({ role: "assistant", content: fullAnswer });
-        const bubbles = splitIntoBubbles(fullAnswer);
-        setSheetMessages((prev) => [...prev, { role: "cosmii", bubbles: bubbles.length > 0 ? bubbles : [fullAnswer] }]);
-      }
-    } catch {
-      setSheetMessages((prev) => [...prev, { role: "cosmii", bubbles: [t("dialogue.errorAnswer")] }]);
-    } finally {
-      setIsAnswering(false);
-    }
-  }, [bookId, dialogue, currentIndex]);
-
-  const handleAskInline = useCallback(async () => {
-    const q = questionInput.trim();
-    if (!q || isAnswering) return;
-
-    setQuestionInput("");
-    setQuestionOpen(true);
-
-    await askQuestion(q);
-  }, [questionInput, isAnswering, askQuestion]);
-
-  const handleSheetAsk = useCallback(async () => {
-    const q = sheetInput.trim();
-    if (!q || isAnswering) return;
-
-    setSheetInput("");
-    await askQuestion(q);
-  }, [sheetInput, isAnswering, askQuestion]);
-
-  const handleCloseAnswer = useCallback(() => {
-    setQuestionOpen(false);
-  }, []);
-
+  }, [isLast, onComplete, showChapterIntro]);
 
   const renderText = (text: string, highlight?: string | null) => {
     if (!highlight) return text;
@@ -316,11 +170,11 @@ export function ConceptDialogue({
 
   return (
     <div
-      className="w-full h-full relative overflow-hidden text-white"
-      onClick={!questionOpen ? handleTap : undefined}
-      style={{ cursor: questionOpen ? "default" : "pointer" }}
+      className="w-full h-full relative overflow-hidden text-white bg-[#060612]"
+      onClick={handleTap}
+      style={{ cursor: "pointer" }}
     >
-      {/* Chapter intro overlay — solid background hides lesson content */}
+      {/* Chapter intro overlay */}
       <AnimatePresence>
         {showChapterIntro && chapter && (
           <motion.div
@@ -396,10 +250,10 @@ export function ConceptDialogue({
         className="absolute inset-0 z-10 overflow-y-auto"
         style={{
           paddingTop: "124px",
-          paddingBottom: `${160 + kbHeight}px`,
+          paddingBottom: "160px",
           scrollSnapType: "y proximity",
           scrollPaddingTop: "124px",
-          scrollPaddingBottom: `${160 + kbHeight}px`,
+          scrollPaddingBottom: "160px",
         }}
       >
         <div
@@ -446,193 +300,22 @@ export function ConceptDialogue({
         </div>
       </div>
 
-      {/* Tap indicator — fixed overlay */}
-      {!questionOpen && (
-        <div
-          className="absolute left-0 right-0 flex flex-col items-center gap-1 pointer-events-none"
-          style={{ bottom: `${140 + kbHeight}px`, zIndex: 15 }}
-        >
-          <motion.div
-            animate={{ opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
-            className="flex flex-col items-center gap-1"
-          >
-            <ChevronUp size={16} className="text-white/25" />
-            <span className="text-white/20 text-[11px] tracking-[0.2em] uppercase">
-              {isLast ? t("dialogue.tapFinish") : t("dialogue.tapContinue")}
-            </span>
-          </motion.div>
-        </div>
-      )}
-
-      {/* Bottom question input bar */}
+      {/* Tap indicator */}
       <div
-        className="absolute left-0 right-0 z-30 px-5 pb-safe-lg transition-[bottom] duration-200"
-        style={{ bottom: kbHeight }}
+        className="absolute left-0 right-0 flex flex-col items-center gap-1 pointer-events-none"
+        style={{ bottom: "60px", zIndex: 15 }}
       >
-        <div
-          className="relative w-full"
-          onClick={(e) => e.stopPropagation()}
+        <motion.div
+          animate={{ opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 2.5, repeat: Infinity }}
+          className="flex flex-col items-center gap-1"
         >
-          <input
-            type="text"
-            value={questionInput}
-            onChange={(e) => setQuestionInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleAskInline()}
-            onPointerDown={(e) => {
-              if (sheetMessages.length > 0) {
-                e.preventDefault();
-                setQuestionOpen(true);
-                setTimeout(() => sheetInputRef.current?.focus(), 400);
-              }
-            }}
-            placeholder={t("dialogue.askPlaceholder")}
-                    className="w-full h-12 bg-white/[0.04] border border-white/[0.10] rounded-full pl-5 pr-13 text-white text-[15px] placeholder-white/25 outline-none focus:border-white/[0.25] focus:bg-white/[0.06] transition-all"
-          />
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            onClick={handleAskInline}
-            disabled={!questionInput.trim() || isAnswering}
-            aria-label="Send"
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/[0.08] hover:bg-white/[0.15] rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-white/[0.20]"
-          >
-            <Send size={16} className="text-white/50 ml-0.5" />
-          </motion.button>
-        </div>
+          <ChevronUp size={16} className="text-white/25" />
+          <span className="text-white/20 text-[11px] tracking-[0.2em] uppercase">
+            {isLast ? t("dialogue.tapFinish") : t("dialogue.tapContinue")}
+          </span>
+        </motion.div>
       </div>
-
-      {/* Answer bottom sheet overlay */}
-      <AnimatePresence>
-        {questionOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/40 z-35"
-              onClick={!isAnswering ? handleCloseAnswer : undefined}
-              style={{ zIndex: 35 }}
-            />
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute bottom-0 left-0 right-0 max-h-[70vh] bg-[#060612] border-t border-white/[0.06] rounded-t-3xl overflow-hidden flex flex-col"
-              style={{ zIndex: 40 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Sheet header */}
-              <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/[0.06]">
-                <span className={`${serif} font-brand text-white/50 text-[15px] font-medium tracking-wide`}>Cosmii</span>
-                {!isAnswering && (
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                    onClick={handleCloseAnswer}
-                    className="text-white/30 hover:text-white/60 p-2 -mr-2 rounded-lg hover:bg-white/[0.04] transition-colors"
-                  >
-                    <X size={16} />
-                  </motion.button>
-                )}
-              </div>
-
-              {/* Chat bubbles */}
-              <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
-                {(() => {
-                  let globalIdx = 0;
-                  return sheetMessages.map((msg, mi) =>
-                    msg.bubbles.map((bubble, bi) => {
-                      const idx = globalIdx++;
-                      const show = idx < visibleBubbleIdx;
-                      if (!show) return null;
-                      const isUser = msg.role === "user";
-                      return (
-                        <motion.div
-                          key={`${mi}-${bi}`}
-                          initial={{ opacity: 0, y: 12 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                          className={isUser
-                            ? "self-end w-fit bg-white/[0.06] border border-white/[0.10] rounded-2xl rounded-br-md px-4 py-3 max-w-[85%]"
-                            : "w-fit bg-white/[0.025] border border-white/[0.06] rounded-2xl rounded-tl-md px-4 py-3 max-w-[90%]"
-                          }
-                        >
-                          <p className={`text-[14px] leading-[1.7] font-medium ${isUser ? "text-white/90" : "text-white/85"}`}>{bubble}</p>
-                        </motion.div>
-                      );
-                    })
-                  );
-                })()}
-
-                {isAnswering && (
-                  <div className="flex gap-1.5 py-2">
-                    {[0, 1, 2].map((i) => (
-                      <motion.div
-                        key={i}
-                        className="w-2 h-2 rounded-full bg-white/30"
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {!isAnswering && visibleBubbleIdx < totalBubbles && (
-                  <div className="flex gap-1.5 py-1">
-                    {[0, 1, 2].map((i) => (
-                      <motion.div
-                        key={i}
-                        className="w-1.5 h-1.5 rounded-full bg-white/20"
-                        animate={{ opacity: [0.3, 0.8, 0.3] }}
-                        transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                <div ref={answerBottomRef} />
-              </div>
-
-              {/* Bottom: input + back to lesson */}
-              <div className="px-5 pb-safe-lg pt-3 border-t border-white/[0.06] flex flex-col gap-3">
-                <div className="relative w-full">
-                  <input
-                    ref={sheetInputRef}
-                    type="text"
-                    value={sheetInput}
-                    onChange={(e) => setSheetInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleSheetAsk()}
-                    placeholder={t("dialogue.sheetPlaceholder")}
-                    disabled={isAnswering}
-                    className="w-full h-12 bg-white/[0.04] border border-white/[0.10] rounded-full pl-5 pr-12 text-white text-[15px] placeholder-white/25 outline-none focus:border-white/[0.25] focus:bg-white/[0.06] transition-all disabled:opacity-40"
-                  />
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                    onClick={handleSheetAsk}
-                    disabled={!sheetInput.trim() || isAnswering}
-                    aria-label="Send"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/[0.08] hover:bg-white/[0.15] rounded-full flex items-center justify-center transition-colors disabled:opacity-25 active:bg-white/[0.20]"
-                  >
-                    <Send size={16} className="text-white/50 ml-0.5" />
-                  </motion.button>
-                </div>
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                  onClick={handleCloseAnswer}
-                  disabled={isAnswering}
-                  className="text-white/35 hover:text-white/60 text-[14px] font-semibold mx-auto py-1 transition-colors disabled:opacity-30 active:text-white/90"
-                >
-                  {t("dialogue.backToExplore")}
-                </motion.button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

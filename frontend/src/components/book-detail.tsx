@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  ChevronLeft,
+  X,
   BookOpen,
   Play,
   Clock,
@@ -14,14 +14,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import { PrimaryButton } from "@/components/ui/glass-panel";
-import { getBookConstellation } from "@/lib/book-constellations";
-import dynamic from "next/dynamic";
 import { useT } from "@/lib/i18n";
-
-const ImageConstellation = dynamic(
-  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
-  { ssr: false },
-);
 
 const API = "";
 const serif = "font-[var(--font-serif)]";
@@ -79,25 +72,26 @@ export function BookDetail({
   const showCover = !!coverSrc && !imgError;
 
   return (
-    <div className="w-full h-full relative overflow-hidden text-white">
-      <div className="absolute inset-0 z-0">
-        <ImageConstellation imageSrc={getBookConstellation(book.id).image} color={book.color} animate={false} dim dimOpacity={0.25} />
+    <div className="w-full h-full relative overflow-hidden text-white bg-[#0e0e1a] rounded-t-3xl">
+      {/* Drag Handle */}
+      <div className="flex justify-center pt-3 pb-1">
+        <div className="w-9 h-1 rounded-full bg-white/15" />
       </div>
 
       {/* Header */}
-      <div className="absolute pt-safe top-0 w-full px-5 flex items-center z-20">
+      <div className="w-full px-5 flex items-center justify-end z-20 h-10">
         <motion.button
           whileTap={{ scale: 0.85 }}
           transition={{ type: "spring", stiffness: 400, damping: 22 }}
           onClick={onBack}
-          aria-label="Back"
-          className="text-white/60 hover:text-white transition-colors p-3 -ml-3 rounded-xl hover:bg-white/[0.06] active:bg-white/[0.10]"
+          aria-label="Close"
+          className="text-white/40 hover:text-white/70 transition-colors p-2 rounded-xl"
         >
-          <ChevronLeft size={22} />
+          <X size={20} />
         </motion.button>
       </div>
 
-      <div className="absolute inset-0 overflow-y-auto pt-24 pb-36 px-6 z-10">
+      <div className="absolute top-14 left-0 right-0 bottom-0 overflow-y-auto pb-36 px-6 z-10">
         {/* Book Hero */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -273,7 +267,9 @@ export function BookDetail({
             </div>
             <p className="text-white/20 text-[13px] text-center mb-2">{t("bookDetail.lockedSub")}</p>
             <a
-              href="#app-download"
+              href="https://apps.apple.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/[0.08] border border-white/[0.10] text-white/60 text-[15px] font-semibold hover:bg-white/[0.12] active:bg-white/[0.16] transition-colors"
             >
               <Download size={16} />
