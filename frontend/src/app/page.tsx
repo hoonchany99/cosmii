@@ -539,17 +539,11 @@ export default function LandingPage() {
   ];
 
   return (
-    <motion.div
-      className="min-h-screen bg-[#060612] text-white overflow-x-hidden selection:bg-white/10 break-keep"
-      animate={leaving ? { opacity: 0, scale: 0.98 } : { opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, ease }}
-    >
-      <StarField lite />
-
-      {/* Nav */}
+    <>
+      {/* Nav — outside transform container so fixed positioning works correctly */}
       <motion.nav
         initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={leaving ? { opacity: 0 } : { opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3, ease }}
         className="fixed top-0 left-0 right-0 z-50 bg-[rgba(6,6,18,0.6)] backdrop-blur-md"
       >
@@ -576,6 +570,13 @@ export default function LandingPage() {
         </div>
         <div className="h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
       </motion.nav>
+
+      <motion.div
+        className="min-h-screen bg-[#060612] text-white selection:bg-white/10 break-keep"
+        animate={leaving ? { opacity: 0, scale: 0.98 } : { opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease }}
+      >
+      <StarField lite />
 
       {/* Hero */}
       <motion.section
@@ -1100,5 +1101,6 @@ export default function LandingPage() {
         )}
       </AnimatePresence>
     </motion.div>
+    </>
   );
 }
