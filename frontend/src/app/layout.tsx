@@ -48,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const isKo = detectKorean(h.get("accept-language"));
 
   const title = isKo
-    ? "Cosmii — 좋아하는 책을 끝까지 읽는 가장 쉬운 방법"
+    ? "Cosmii — 읽고 싶었던 책을 끝까지 읽는 가장 쉬운 방법"
     : "Cosmii — The easiest way to finish a book";
   const description = isKo
     ? "하루 3분, 짧은 레슨과 퀴즈로 읽고 싶었던 책을 가볍게 시작하세요. 끝까지 못 읽던 책도 조금씩 이해하게 돼요."

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   const { data: books, error: bErr } = await sb
     .from("books")
-    .select("id, title, author, color, cover_url")
+    .select("id, title, author, color, cover_url, pages")
     .in("id", DEMO_BOOK_IDS);
 
   if (bErr) return NextResponse.json({ error: bErr.message }, { status: 500 });
@@ -89,6 +89,7 @@ export async function GET(req: NextRequest) {
       tagline: BOOK_TAGLINES[book.id]
         ? (language === "ko" ? BOOK_TAGLINES[book.id].ko : BOOK_TAGLINES[book.id].en)
         : "",
+      pages: book.pages ?? 0,
       lesson,
     };
   }).filter(Boolean);

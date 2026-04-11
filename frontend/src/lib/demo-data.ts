@@ -8,6 +8,7 @@ export interface DemoBook {
   tagline: string;
   taglineEn: string;
   coverUrl?: string;
+  pages?: number;
 }
 
 export interface DemoDialoguePart {
@@ -59,6 +60,7 @@ export const DEMO_BOOKS: DemoBook[] = [
     tagline: "매일 1%가 인생을 바꾸는 원리",
     taglineEn: "How 1% daily changes everything",
     coverUrl: "/covers/s_atomic.jpg",
+    pages: 320,
   },
   {
     id: "s_money_psych",
@@ -70,6 +72,7 @@ export const DEMO_BOOKS: DemoBook[] = [
     tagline: "돈은 수학이 아니라 심리학이다",
     taglineEn: "Money is psychology, not math",
     coverUrl: "/covers/s_money_psych.jpg",
+    pages: 336,
   },
   {
     id: "45b77580",
@@ -81,6 +84,7 @@ export const DEMO_BOOKS: DemoBook[] = [
     tagline: "인류 7만 년의 가장 큰 비밀",
     taglineEn: "The biggest secret of 70,000 years of humanity",
     coverUrl: "/covers/45b77580.jpg",
+    pages: 636,
   },
 ];
 

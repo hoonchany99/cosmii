@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export const runtime = "nodejs";
-export const alt = "Cosmii — 좋아하는 책을, 이번엔 끝까지";
+export const alt = "Cosmii — 읽고 싶었던 책, 이번엔 끝까지";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

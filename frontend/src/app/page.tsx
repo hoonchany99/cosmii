@@ -18,6 +18,7 @@ interface ApiDemoBook {
   color: string;
   coverUrl?: string;
   tagline: string;
+  pages?: number;
   lesson: {
     title: string;
     chapter: string;
@@ -536,6 +537,7 @@ export default function LandingPage() {
       color: b.color,
       coverUrl: b.coverUrl,
       tagline: isKo ? b.tagline : b.taglineEn,
+      pages: b.pages,
       lesson: FALLBACK_DEMO_LESSONS[b.id] ? {
         title: isKo ? FALLBACK_DEMO_LESSONS[b.id].title : FALLBACK_DEMO_LESSONS[b.id].titleEn,
         chapter: isKo ? FALLBACK_DEMO_LESSONS[b.id].chapter : FALLBACK_DEMO_LESSONS[b.id].chapterEn,
@@ -659,7 +661,7 @@ export default function LandingPage() {
 
           <div className="flex-1 flex flex-col items-start text-left">
             <motion.h1 custom={0.35} variants={fadeUp} initial="hidden" animate="visible" className="max-w-2xl mb-6">
-              <span className={`${serif} text-[28px] sm:text-[44px] md:text-[52px] font-normal leading-[1.2] tracking-tight text-white whitespace-pre-line`}>
+              <span className={`${serif} text-[32px] sm:text-[48px] md:text-[60px] font-normal leading-[1.15] tracking-tight text-white whitespace-pre-line`}>
                 {t("landing.heroTitle")}
               </span>
             </motion.h1>
@@ -768,6 +770,11 @@ export default function LandingPage() {
                 >
                   <img src={coverSrc} alt={book.title} className="w-full h-full object-cover" />
                 </div>
+                {book.pages ? (
+                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/[0.06] text-white/40 text-[11px] font-medium tracking-wide mb-2">
+                    {book.pages}p
+                  </span>
+                ) : null}
                 <h3 className={`${serif} text-[18px] font-semibold text-white/90 mb-1.5`}>
                   {book.title}
                 </h3>

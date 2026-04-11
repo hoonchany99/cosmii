@@ -10,13 +10,7 @@ import {
   Filter,
 } from "lucide-react";
 import { getBookConstellation } from "@/lib/book-constellations";
-import dynamic from "next/dynamic";
 import { useT } from "@/lib/i18n";
-
-const ImageConstellation = dynamic(
-  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
-  { ssr: false },
-);
 
 const serif = "font-[var(--font-serif)]";
 
@@ -72,13 +66,11 @@ export function BookNotes({ bookId, bookTitle, bookColor, notes, onBack }: BookN
   const isEmpty = notes.length === 0;
 
   return (
-    <div className="w-full h-full relative overflow-hidden text-white">
-      <div className="absolute inset-0 z-0">
-        <ImageConstellation imageSrc={getBookConstellation(bookId).image} color={bookColor || getBookConstellation(bookId).color} animate={false} dim dimOpacity={0.35} />
-      </div>
+    <div className="w-full h-full relative overflow-hidden text-white bg-[#0a0a0f]">
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[var(--book-color,transparent)]/[0.08] to-transparent" style={{ "--book-color": bookColor || getBookConstellation(bookId).color } as React.CSSProperties} />
 
       {/* Header */}
-      <div className="absolute top-14 w-full px-5 flex items-center z-20">
+      <div className="absolute top-6 w-full px-5 flex items-center z-20">
         <motion.button
           whileTap={{ scale: 0.88 }}
           transition={{ type: "spring", stiffness: 500, damping: 25 }}
