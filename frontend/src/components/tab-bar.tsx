@@ -18,11 +18,8 @@ const tabs: { id: TabId; icon: typeof Sparkles }[] = [
 
 export function TabBar({ activeTab, onTabChange }: TabBarProps) {
   return (
-    <div
-      className="absolute bottom-0 left-0 right-0 z-50 pointer-events-none"
-      style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom, 12px))" }}
-    >
-      <div className="pointer-events-auto mx-4 flex items-center justify-around rounded-2xl bg-white/[0.06] border border-white/[0.08] py-2">
+    <div className="absolute bottom-3 left-4 right-4 z-50" style={{ marginBottom: "env(safe-area-inset-bottom, 0px)" }}>
+      <div className="flex items-center justify-around rounded-2xl bg-[#12122a] border border-white/[0.10] py-1.5 shadow-[0_4px_24px_rgba(0,0,0,0.5)]">
         {tabs.map((tab) => {
           const active = activeTab === tab.id;
           const Icon = tab.icon;
@@ -32,7 +29,7 @@ export function TabBar({ activeTab, onTabChange }: TabBarProps) {
               whileTap={{ scale: 0.88 }}
               transition={{ type: "spring", damping: 28, stiffness: 520 }}
               onClick={() => onTabChange(tab.id)}
-              className="flex items-center justify-center w-14 h-14"
+              className="flex items-center justify-center w-14 h-12"
             >
               <Icon
                 size={22}
