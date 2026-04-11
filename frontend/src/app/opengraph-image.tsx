@@ -40,39 +40,39 @@ export default async function OGImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
           background: "#060612",
           fontFamily: "NanumGothic, sans-serif",
           position: "relative",
           overflow: "hidden",
+          padding: "0 80px",
+          gap: 64,
         }}
       >
         {/* Gradient orbs */}
         <div
           style={{
             position: "absolute",
-            top: -200,
-            left: "50%",
-            marginLeft: -300,
+            top: -120,
+            left: -100,
             width: 600,
             height: 600,
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(110,220,180,0.10) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(110,220,180,0.12) 0%, transparent 70%)",
             display: "flex",
           }}
         />
         <div
           style={{
             position: "absolute",
-            bottom: -250,
-            left: "50%",
-            marginLeft: -350,
+            bottom: -200,
+            right: -150,
             width: 700,
             height: 700,
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
             display: "flex",
           }}
         />
@@ -96,39 +96,47 @@ export default async function OGImage() {
           ))}
         </div>
 
-        {/* Cosmii character */}
+        {/* Left: Cosmii character */}
         <img
           src={imageSrc}
-          width={160}
-          height={160}
-          style={{ objectFit: "contain", marginBottom: 16 }}
+          width={300}
+          height={300}
+          style={{ objectFit: "contain", flexShrink: 0 }}
         />
 
-        {/* Cosmii logo text */}
+        {/* Right: Text */}
         <div
           style={{
-            fontSize: 40,
-            fontWeight: 700,
-            fontFamily: "EBGaramond, serif",
-            color: "rgba(255,255,255,0.7)",
-            letterSpacing: "-0.01em",
-            marginBottom: 16,
             display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 0,
           }}
         >
-          Cosmii
-        </div>
-
-        {/* Oneliner */}
-        <div
-          style={{
-            fontSize: 26,
-            fontWeight: 700,
-            color: "rgba(255,255,255,0.35)",
-            display: "flex",
-          }}
-        >
-          읽고 싶었던 책, 이번엔 끝까지
+          <div
+            style={{
+              fontSize: 64,
+              fontWeight: 700,
+              fontFamily: "EBGaramond, serif",
+              color: "rgba(255,255,255,0.75)",
+              letterSpacing: "-0.01em",
+              marginBottom: 20,
+              display: "flex",
+            }}
+          >
+            Cosmii
+          </div>
+          <div
+            style={{
+              fontSize: 32,
+              fontWeight: 700,
+              color: "rgba(255,255,255,0.38)",
+              display: "flex",
+              lineHeight: 1.4,
+            }}
+          >
+            읽고 싶었던 책, 이번엔 끝까지
+          </div>
         </div>
       </div>
     ),

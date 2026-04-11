@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ? "Cosmii — 좋아하는 책을 끝까지 읽는 가장 쉬운 방법"
     : "Cosmii — The easiest way to finish a book";
   const description = isKo
-    ? "하루 3분, 짧은 대화와 퀴즈로 읽고 싶었던 책을 가볍게 시작하세요. 끝까지 못 읽던 책도 조금씩 이해하게 돼요."
+    ? "하루 3분, 짧은 레슨과 퀴즈로 읽고 싶었던 책을 가볍게 시작하세요. 끝까지 못 읽던 책도 조금씩 이해하게 돼요."
     : "Three minutes a day. Each chapter distilled into a short conversation. Tap through, quiz yourself, and actually finish the books you\u2019ve been meaning to read.";
   const locale = isKo ? "ko_KR" : "en_US";
   const keywords = isKo
@@ -130,7 +130,7 @@ export default async function RootLayout({
     applicationCategory: "EducationalApplication",
     operatingSystem: "Web, iOS, Android",
     description: isKoPage
-      ? "하루 3분, 짧은 대화와 퀴즈로 읽고 싶었던 책을 가볍게 시작하세요."
+      ? "하루 3분, 짧은 레슨과 퀴즈로 읽고 싶었던 책을 가볍게 시작하세요."
       : "Three minutes a day. Tap through bite-sized lessons, quiz yourself, and actually finish the books you\u2019ve been meaning to read.",
     offers: {
       "@type": "Offer",
