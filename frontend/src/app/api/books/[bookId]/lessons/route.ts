@@ -27,7 +27,9 @@ export async function GET(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result = (lessonsRes.data ?? []).map((lesson: any) => {
-    const content = JSON.parse(lesson.content_json ?? "{}");
+    const content = typeof lesson.content_json === "string"
+      ? JSON.parse(lesson.content_json)
+      : (lesson.content_json ?? {});
     const p = progressMap.get(lesson.id);
 
     return {

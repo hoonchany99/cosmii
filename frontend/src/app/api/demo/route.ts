@@ -41,7 +41,9 @@ export async function GET(req: NextRequest) {
 
     let lesson = null;
     if (firstLesson) {
-      const content = JSON.parse(firstLesson.content_json ?? "{}");
+      const content = typeof firstLesson.content_json === "string"
+        ? JSON.parse(firstLesson.content_json)
+        : (firstLesson.content_json ?? {});
 
       let dialogue = pick(content, "dialogue", language);
       if (!Array.isArray(dialogue)) dialogue = content.dialogue ?? [];
@@ -60,7 +62,9 @@ export async function GET(req: NextRequest) {
 
       let nextTitle = "";
       if (secondLesson) {
-        const secondContent = JSON.parse(secondLesson.content_json ?? "{}");
+        const secondContent = typeof secondLesson.content_json === "string"
+          ? JSON.parse(secondLesson.content_json)
+          : (secondLesson.content_json ?? {});
         nextTitle = (pick(secondContent, "title", language) as string) || secondLesson.title || "";
       }
 

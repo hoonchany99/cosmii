@@ -18,7 +18,9 @@ export async function GET(
   if (error || !lesson)
     return NextResponse.json({ error: "Lesson not found" }, { status: 404 });
 
-  const content = JSON.parse(lesson.content_json ?? "{}");
+  const content = typeof lesson.content_json === "string"
+    ? JSON.parse(lesson.content_json)
+    : (lesson.content_json ?? {});
 
   const contentQuizzes = pick(content, "quizzes", language);
   let quizzes: unknown[];
