@@ -1,23 +1,14 @@
 import { ImageResponse } from "next/og";
-import { headers } from "next/headers";
 
 export const runtime = "edge";
-export const alt = "Cosmii";
+export const alt = "Cosmii — 좋아하는 책을, 이번엔 끝까지";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OGImage() {
-  const h = await headers();
-  const acceptLang = h.get("accept-language") ?? "";
-  const isKo = acceptLang.split(",")[0].trim().toLowerCase().startsWith("ko");
-
-  const title = isKo ? "좋아하는 책을,\n이번엔 끝까지" : "This time,\nfinish the book you love";
-  const sub = isKo
-    ? "하루 3분 · 대화형 레슨 · 퀴즈로 완독"
-    : "3 min a day · conversational lessons · quiz to finish";
-  const tags = isKo
-    ? ["하루 3분", "대화형 독서", "첫 책 무료"]
-    : ["3 min/day", "Conversational reading", "First book free"];
+  const title = "좋아하는 책을,\n이번엔 끝까지";
+  const sub = "하루 3분 · 대화형 레슨 · 퀴즈로 완독";
+  const tags = ["하루 3분", "대화형 독서", "첫 책 무료"];
 
   return new ImageResponse(
     (
@@ -117,6 +108,7 @@ export default async function OGImage() {
                   fontWeight: 700,
                   lineHeight: 1,
                   marginTop: -4,
+                  display: "flex",
                 }}
               >
                 ,
@@ -128,6 +120,7 @@ export default async function OGImage() {
                 fontWeight: 700,
                 color: "rgba(255,255,255,0.6)",
                 letterSpacing: "-0.01em",
+                display: "flex",
               }}
             >
               Cosmii
@@ -144,6 +137,7 @@ export default async function OGImage() {
               letterSpacing: "-0.02em",
               whiteSpace: "pre-wrap",
               marginBottom: 20,
+              display: "flex",
             }}
           >
             {title}
@@ -156,6 +150,7 @@ export default async function OGImage() {
               color: "rgba(255,255,255,0.35)",
               lineHeight: 1.5,
               marginBottom: 36,
+              display: "flex",
             }}
           >
             {sub}
@@ -173,6 +168,7 @@ export default async function OGImage() {
                   color: "rgba(255,255,255,0.45)",
                   fontSize: 15,
                   background: "rgba(255,255,255,0.04)",
+                  display: "flex",
                 }}
               >
                 {tag}
@@ -233,7 +229,7 @@ export default async function OGImage() {
                 boxShadow: "0 0 20px rgba(110,231,183,0.2)",
               }}
             >
-              <div style={{ fontSize: 36, color: "#065f46", fontWeight: 700, marginTop: -4 }}>,</div>
+              <div style={{ fontSize: 36, color: "#065f46", fontWeight: 700, marginTop: -4, display: "flex" }}>,</div>
             </div>
 
             {/* Mock chat bubbles */}
@@ -244,10 +240,11 @@ export default async function OGImage() {
                   borderRadius: 16,
                   padding: "12px 16px",
                   maxWidth: "85%",
+                  display: "flex",
                 }}
               >
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>
-                  {isKo ? "습관이 바뀌면 정체성이 바뀐다는 건 어떤 뜻일까요?" : "What does it mean when habits change your identity?"}
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.5, display: "flex" }}>
+                  습관이 바뀌면 정체성이 바뀐다는 건 어떤 뜻일까요?
                 </div>
               </div>
               <div
@@ -258,10 +255,11 @@ export default async function OGImage() {
                   maxWidth: "85%",
                   alignSelf: "flex-end",
                   border: "1px solid rgba(139,92,246,0.15)",
+                  display: "flex",
                 }}
               >
-                <div style={{ fontSize: 12, color: "rgba(167,139,250,0.7)", lineHeight: 1.5 }}>
-                  {isKo ? "반복하면 그 사람이 되는 거죠" : "You become what you repeat"}
+                <div style={{ fontSize: 12, color: "rgba(167,139,250,0.7)", lineHeight: 1.5, display: "flex" }}>
+                  반복하면 그 사람이 되는 거죠
                 </div>
               </div>
               <div
@@ -270,10 +268,11 @@ export default async function OGImage() {
                   borderRadius: 16,
                   padding: "12px 16px",
                   maxWidth: "85%",
+                  display: "flex",
                 }}
               >
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>
-                  {isKo ? "맞아요! 바로 그거예요 ✨" : "Exactly! That's the key ✨"}
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", lineHeight: 1.5, display: "flex" }}>
+                  맞아요! 바로 그거예요 ✨
                 </div>
               </div>
             </div>
@@ -287,8 +286,8 @@ export default async function OGImage() {
                 gap: 6,
               }}
             >
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)" }}>
-                {isKo ? "3/10 레슨 완료" : "3/10 lessons done"}
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", display: "flex" }}>
+                3/10 레슨 완료
               </div>
               <div
                 style={{
