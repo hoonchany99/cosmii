@@ -5,10 +5,19 @@ export const alt = "Cosmii — 좋아하는 책을, 이번엔 끝까지";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+async function loadFont() {
+  const res = await fetch(
+    "https://fonts.gstatic.com/s/nanumgothic/v26/PN_oRfi-oW3hYwmKDpxS7F_LQv37zg.ttf",
+  );
+  return res.arrayBuffer();
+}
+
 export default async function OGImage() {
+  const fontData = await loadFont();
+
   const title = "좋아하는 책을,\n이번엔 끝까지";
-  const sub = "하루 3분 · 대화형 레슨 · 퀴즈로 완독";
-  const tags = ["하루 3분", "대화형 독서", "첫 책 무료"];
+  const sub = "대화형 레슨 · 퀴즈로 완독";
+  const tags = ["매일 조금씩", "대화형 독서", "첫 책 무료"];
 
   return new ImageResponse(
     (
@@ -19,7 +28,7 @@ export default async function OGImage() {
           display: "flex",
           flexDirection: "row",
           background: "#060612",
-          fontFamily: "system-ui, sans-serif",
+          fontFamily: "NanumGothic, sans-serif",
           overflow: "hidden",
           position: "relative",
         }}
@@ -312,6 +321,16 @@ export default async function OGImage() {
         </div>
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      fonts: [
+        {
+          name: "NanumGothic",
+          data: fontData,
+          style: "normal" as const,
+          weight: 700,
+        },
+      ],
+    },
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,8 +8,26 @@ import { ArrowRight, Award, Check, ChevronLeft, ChevronUp, Flame, Lightbulb, Rot
 import { useIsMobile } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { useSettingsStore } from "@/lib/store";
-import { DEMO_BOOKS, DEMO_LESSONS, type DemoBook } from "@/lib/demo-data";
+import { DEMO_BOOKS as FALLBACK_DEMO_BOOKS, DEMO_LESSONS as FALLBACK_DEMO_LESSONS } from "@/lib/demo-data";
 import { BETA_BOOK_IDS, BOOK_COVER_MAP } from "@/lib/curations";
+
+interface ApiDemoBook {
+  id: string;
+  title: string;
+  author: string;
+  color: string;
+  coverUrl?: string;
+  tagline: string;
+  lesson: {
+    title: string;
+    chapter: string;
+    dialogue: { speaker: string; text: string; highlight?: string | null }[];
+    quizzes: { id: string; question: string; options: string[]; correctIndex: number; explanation: string }[];
+    cliffhanger: string;
+    nextTitle: string;
+    totalLessons: number;
+  } | null;
+}
 import { ConceptDialogue } from "@/components/concept-dialogue";
 import { QuizView } from "@/components/quiz-view";
 
@@ -498,9 +516,49 @@ export default function LandingPage() {
   const setLanguage = useSettingsStore((s) => s.setLanguage);
   const isKo = language === "ko";
 
+  const [apiDemoBooks, setApiDemoBooks] = useState<ApiDemoBook[]>([]);
+
+  useEffect(() => {
+    fetch(`/api/demo?language=${language}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) setApiDemoBooks(data);
+      })
+      .catch(() => {});
+  }, [language]);
+
+  const demoBooks = useMemo(() => {
+    if (apiDemoBooks.length > 0) return apiDemoBooks;
+    return FALLBACK_DEMO_BOOKS.map((b) => ({
+      id: b.id,
+      title: isKo ? b.title : b.titleEn,
+      author: isKo ? b.author : b.authorEn,
+      color: b.color,
+      coverUrl: b.coverUrl,
+      tagline: isKo ? b.tagline : b.taglineEn,
+      lesson: FALLBACK_DEMO_LESSONS[b.id] ? {
+        title: isKo ? FALLBACK_DEMO_LESSONS[b.id].title : FALLBACK_DEMO_LESSONS[b.id].titleEn,
+        chapter: isKo ? FALLBACK_DEMO_LESSONS[b.id].chapter : FALLBACK_DEMO_LESSONS[b.id].chapterEn,
+        dialogue: isKo ? FALLBACK_DEMO_LESSONS[b.id].dialogue : FALLBACK_DEMO_LESSONS[b.id].dialogueEn,
+        quizzes: isKo ? FALLBACK_DEMO_LESSONS[b.id].quizzes : FALLBACK_DEMO_LESSONS[b.id].quizzesEn,
+        cliffhanger: isKo ? FALLBACK_DEMO_LESSONS[b.id].cliffhanger : FALLBACK_DEMO_LESSONS[b.id].cliffhangerEn,
+        nextTitle: isKo ? FALLBACK_DEMO_LESSONS[b.id].nextTitle : FALLBACK_DEMO_LESSONS[b.id].nextTitleEn,
+        totalLessons: FALLBACK_DEMO_LESSONS[b.id].totalLessons,
+      } : null,
+    }));
+  }, [apiDemoBooks, isKo]);
+
+  const demoLessonMap = useMemo(() => {
+    const m = new Map<string, ApiDemoBook["lesson"]>();
+    for (const b of demoBooks) {
+      if (b.lesson) m.set(b.id, b.lesson);
+    }
+    return m;
+  }, [demoBooks]);
+
   const [demoOpen, setDemoOpen] = useState(false);
   const [demoPhase, setDemoPhase] = useState<DemoPhase>("pick");
-  const [demoBook, setDemoBook] = useState<DemoBook | null>(null);
+  const [demoBook, setDemoBook] = useState<ApiDemoBook | null>(null);
   const [demoScore, setDemoScore] = useState(0);
 
   const openDemo = useCallback(() => {
@@ -693,11 +751,8 @@ export default function LandingPage() {
         </motion.div>
 
         <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-          {DEMO_BOOKS.map((book, i) => {
+          {demoBooks.map((book, i) => {
             const coverSrc = book.coverUrl || `/covers/${book.id}.jpg`;
-            const tagKey = book.id === "s_atomic" ? "landing.featuredTagAtomic" as const
-              : book.id === "s_money_psych" ? "landing.featuredTagMoney" as const
-              : "landing.featuredTagSapiens" as const;
             return (
               <motion.div
                 key={book.id}
@@ -711,13 +766,13 @@ export default function LandingPage() {
                   className="w-full max-w-[200px] aspect-[3/4.3] rounded-xl overflow-hidden mb-5 shadow-lg"
                   style={{ boxShadow: `0 8px 32px ${book.color}25, 0 2px 8px rgba(0,0,0,0.4)` }}
                 >
-                  <img src={coverSrc} alt={isKo ? book.title : book.titleEn} className="w-full h-full object-cover" />
+                  <img src={coverSrc} alt={book.title} className="w-full h-full object-cover" />
                 </div>
                 <h3 className={`${serif} text-[18px] font-semibold text-white/90 mb-1.5`}>
-                  {isKo ? book.title : book.titleEn}
+                  {book.title}
                 </h3>
                 <p className="text-[13px] text-white/35 mb-5 leading-snug max-w-[220px]">
-                  {t(tagKey)}
+                  {book.tagline}
                 </p>
                 <button
                   onClick={() => {
@@ -895,7 +950,7 @@ export default function LandingPage() {
                 </motion.div>
 
                 <div className="w-full max-w-[720px] grid grid-cols-3 gap-3 sm:gap-5">
-                  {DEMO_BOOKS.map((book, i) => {
+                  {demoBooks.map((book, i) => {
                     const coverSrc = book.coverUrl || `/covers/${book.id}.jpg`;
                     return (
                       <motion.button
@@ -911,29 +966,25 @@ export default function LandingPage() {
                         }}
                         className="group flex flex-col items-center text-center relative"
                       >
-                        {/* Cover */}
                         <div
                           className="relative w-full aspect-[3/4.3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-4 shadow-lg"
                           style={{ boxShadow: `0 8px 32px ${book.color}25, 0 2px 8px rgba(0,0,0,0.4)` }}
                         >
                           <img
                             src={coverSrc}
-                            alt={isKo ? book.title : book.titleEn}
+                            alt={book.title}
                             className="absolute inset-0 w-full h-full object-cover"
                             onError={(e) => {
                               (e.target as HTMLImageElement).style.display = "none";
                             }}
                           />
-                          {/* Gradient fallback always behind */}
                           <div
                             className="absolute inset-0 -z-10"
                             style={{
                               background: `linear-gradient(160deg, ${book.color}90 0%, ${book.color}30 50%, #0a0a1a 100%)`,
                             }}
                           />
-                          {/* Bottom gradient for readability */}
                           <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
-                          {/* Hover glow */}
                           <div
                             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                             style={{
@@ -942,15 +993,14 @@ export default function LandingPage() {
                           />
                         </div>
 
-                        {/* Text */}
                         <h3 className={`${serif} text-[13px] sm:text-[16px] font-semibold text-white/90 leading-tight mb-0.5 sm:mb-1`}>
-                          {isKo ? book.title : book.titleEn}
+                          {book.title}
                         </h3>
                         <p className="text-[10px] sm:text-[12px] text-white/35 mb-1 sm:mb-1.5 leading-snug">
-                          {isKo ? book.author : book.authorEn}
+                          {book.author}
                         </p>
                         <p className="text-[10px] sm:text-[12px] text-white/20 leading-snug hidden sm:block">
-                          {isKo ? book.tagline : book.taglineEn}
+                          {book.tagline}
                         </p>
                       </motion.button>
                     );
@@ -970,131 +1020,137 @@ export default function LandingPage() {
               </motion.div>
             )}
 
-            {demoPhase === "lesson" && demoBook && DEMO_LESSONS[demoBook.id] && (
-              <div className="h-full">
-                <ConceptDialogue
-                  bookId={demoBook.id}
-                  bookTitle={isKo ? demoBook.title : demoBook.titleEn}
-                  chapter={isKo ? DEMO_LESSONS[demoBook.id].chapter : DEMO_LESSONS[demoBook.id].chapterEn}
-                  lessonTitle={isKo ? DEMO_LESSONS[demoBook.id].title : DEMO_LESSONS[demoBook.id].titleEn}
-                  currentLesson={1}
-                  totalLessons={1}
-                  progressPercent={0}
-                  dialogue={isKo ? DEMO_LESSONS[demoBook.id].dialogue : DEMO_LESSONS[demoBook.id].dialogueEn}
-                  spark=""
-                  isFirstInChapter
-                  onBack={() => setDemoPhase("pick")}
-                  onComplete={() => setDemoPhase("quiz")}
-                />
-              </div>
-            )}
+            {(demoPhase === "lesson" || demoPhase === "quiz" || demoPhase === "done") && demoBook && (
+              <div className="h-full w-full flex items-center justify-center bg-[#020208]">
+                <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] rounded-full bg-[#a78bfa]/[0.04] blur-[120px]" />
+                </div>
+                <div className="relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] md:border md:border-white/[0.06] md:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_80px_rgba(167,139,250,0.06)] overflow-hidden bg-[#060612]">
 
-            {demoPhase === "quiz" && demoBook && DEMO_LESSONS[demoBook.id] && (
-              <div className="h-full">
-                <QuizView
-                  quizzes={isKo ? DEMO_LESSONS[demoBook.id].quizzes : DEMO_LESSONS[demoBook.id].quizzesEn}
-                  progressPercent={100}
-                  onBack={() => setDemoPhase("pick")}
-                  onComplete={(score) => {
-                    setDemoScore(score);
-                    setDemoPhase("done");
-                  }}
-                />
-              </div>
-            )}
+                  {demoPhase === "lesson" && demoLessonMap.get(demoBook.id) && (
+                    <div className="h-full">
+                      <ConceptDialogue
+                        bookId={demoBook.id}
+                        bookTitle={demoBook.title}
+                        chapter={demoLessonMap.get(demoBook.id)!.chapter}
+                        lessonTitle={demoLessonMap.get(demoBook.id)!.title}
+                        currentLesson={1}
+                        totalLessons={1}
+                        progressPercent={0}
+                        dialogue={demoLessonMap.get(demoBook.id)!.dialogue}
+                        spark=""
+                        isFirstInChapter
+                        onBack={() => setDemoPhase("pick")}
+                        onComplete={() => setDemoPhase("quiz")}
+                      />
+                    </div>
+                  )}
 
-            {demoPhase === "done" && demoBook && (() => {
-              const lesson = DEMO_LESSONS[demoBook.id];
-              const doneCover = demoBook.coverUrl || `/covers/${demoBook.id}.jpg`;
-              return (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="h-full relative flex flex-col items-center justify-center px-6 overflow-hidden"
-                >
-                  {/* Blurred cover background */}
-                  <div className="absolute inset-0 -z-10">
-                    <img src={doneCover} alt="" className="absolute inset-0 w-full h-full object-cover blur-[60px] scale-125 opacity-20" />
-                    <div className="absolute inset-0 bg-[#060612]/80" />
-                  </div>
-
-                  <div className="text-center max-w-[380px] w-full">
-                    {/* Mini cover + title */}
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.15, duration: 0.6, ease }}
-                      className="flex flex-col items-center mb-6"
-                    >
-                      <div
-                        className="w-[72px] h-[100px] rounded-lg overflow-hidden mb-4 shadow-lg"
-                        style={{ boxShadow: `0 4px 24px ${demoBook.color}30` }}
-                      >
-                        <img src={doneCover} alt="" className="w-full h-full object-cover" />
-                      </div>
-                      <h1 className={`${serif} text-[26px] sm:text-[34px] font-normal tracking-tight text-white/90 mb-2 leading-[1.3] whitespace-pre-line`}>
-                        {t("demo.completeTitle")}
-                      </h1>
-                    </motion.div>
-
-                    {/* cliffhanger */}
-                    {lesson && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.45, duration: 0.6, ease }}
-                        className="mb-10 px-2"
-                      >
-                        <p className="text-[11px] text-white/20 uppercase tracking-[0.15em] mb-3">
-                          {t("demo.nextLabel")} — {isKo ? lesson.nextTitle : lesson.nextTitleEn}
-                        </p>
-                        <p className={`${serif} text-[15px] text-white/40 leading-[1.8] italic`}>
-                          {isKo ? lesson.cliffhanger : lesson.cliffhangerEn}
-                        </p>
-                      </motion.div>
-                    )}
-
-                    {/* primary CTA */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.65, duration: 0.5, ease }}
-                      className="mb-6"
-                    >
-                      <button
-                        onClick={() => {
-                          localStorage.setItem("cosmii-demo-book", demoBook.id);
-                          localStorage.setItem("cosmii-demo-score", String(demoScore));
-                          navigateTo("/login");
+                  {demoPhase === "quiz" && demoLessonMap.get(demoBook.id) && (
+                    <div className="h-full">
+                      <QuizView
+                        quizzes={demoLessonMap.get(demoBook.id)!.quizzes}
+                        progressPercent={100}
+                        onBack={() => setDemoPhase("pick")}
+                        onComplete={(score) => {
+                          setDemoScore(score);
+                          setDemoPhase("done");
                         }}
-                        className="group w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-[#060612] text-[14px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02]"
-                      >
-                        {t("demo.signupCta")}
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300" />
-                      </button>
-                    </motion.div>
+                      />
+                    </div>
+                  )}
 
-                    {/* app download */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.85, duration: 0.5 }}
-                      className="flex flex-col items-center gap-3 text-[12px]"
-                    >
-                      <a
-                        href="https://apps.apple.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-white/25 hover:text-white/45 transition-colors"
+                  {demoPhase === "done" && (() => {
+                    const lesson = demoLessonMap.get(demoBook.id);
+                    const doneCover = demoBook.coverUrl || `/covers/${demoBook.id}.jpg`;
+                    return (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="h-full relative flex flex-col items-center justify-center px-6 overflow-hidden"
                       >
-                        <Smartphone size={13} />
-                        <span>{t("demo.appTitle")} — {t("demo.appDesc")}</span>
-                      </a>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              );
-            })()}
+                        <div className="absolute inset-0 -z-10">
+                          <img src={doneCover} alt="" className="absolute inset-0 w-full h-full object-cover blur-[60px] scale-125 opacity-20" />
+                          <div className="absolute inset-0 bg-[#060612]/80" />
+                        </div>
+
+                        <div className="text-center max-w-[380px] w-full">
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.15, duration: 0.6, ease }}
+                            className="flex flex-col items-center mb-6"
+                          >
+                            <div
+                              className="w-[72px] h-[100px] rounded-lg overflow-hidden mb-4 shadow-lg"
+                              style={{ boxShadow: `0 4px 24px ${demoBook.color}30` }}
+                            >
+                              <img src={doneCover} alt="" className="w-full h-full object-cover" />
+                            </div>
+                            <h1 className={`${serif} text-[26px] font-normal tracking-tight text-white/90 mb-2 leading-[1.3] whitespace-pre-line`}>
+                              {t("demo.completeTitle")}
+                            </h1>
+                          </motion.div>
+
+                          {lesson && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.45, duration: 0.6, ease }}
+                              className="mb-10 px-2"
+                            >
+                              <p className="text-[11px] text-white/20 uppercase tracking-[0.15em] mb-3">
+                                {t("demo.nextLabel")} — {lesson.nextTitle}
+                              </p>
+                              <p className={`${serif} text-[15px] text-white/40 leading-[1.8] italic`}>
+                                {lesson.cliffhanger}
+                              </p>
+                            </motion.div>
+                          )}
+
+                          <motion.div
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.65, duration: 0.5, ease }}
+                            className="mb-6"
+                          >
+                            <button
+                              onClick={() => {
+                                localStorage.setItem("cosmii-demo-book", demoBook.id);
+                                localStorage.setItem("cosmii-demo-score", String(demoScore));
+                                navigateTo("/login?mode=signup");
+                              }}
+                              className="group w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-[#060612] text-[14px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02]"
+                            >
+                              {t("demo.signupCta")}
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300" />
+                            </button>
+                          </motion.div>
+
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.85, duration: 0.5 }}
+                            className="flex flex-col items-center gap-3 text-[12px]"
+                          >
+                            <a
+                              href="https://apps.apple.com"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-white/25 hover:text-white/45 transition-colors"
+                            >
+                              <Smartphone size={13} />
+                              <span>{t("demo.appTitle")} — {t("demo.appDesc")}</span>
+                            </a>
+                          </motion.div>
+                        </div>
+                      </motion.div>
+                    );
+                  })()}
+
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

@@ -10,11 +10,11 @@ import { createClient } from "@/lib/supabase";
 const serif = "font-[var(--font-serif)]";
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const DAILY_GOALS: { value: DailyGoal; labelKey: string; descKey: string; minutes: string }[] = [
-  { value: 1, labelKey: "goal.light", descKey: "goal.lightDesc", minutes: "~5min" },
-  { value: 2, labelKey: "goal.steady", descKey: "goal.steadyDesc", minutes: "~10min" },
-  { value: 3, labelKey: "goal.hard", descKey: "goal.hardDesc", minutes: "~15min" },
-  { value: 5, labelKey: "goal.immerse", descKey: "goal.immerseDesc", minutes: "~25min" },
+const DAILY_GOALS: { value: DailyGoal; minutes: number; labelKey: string; descKey: string }[] = [
+  { value: 1, minutes: 3, labelKey: "goal.light", descKey: "goal.lightDesc" },
+  { value: 2, minutes: 6, labelKey: "goal.steady", descKey: "goal.steadyDesc" },
+  { value: 3, minutes: 10, labelKey: "goal.hard", descKey: "goal.hardDesc" },
+  { value: 5, minutes: 15, labelKey: "goal.immerse", descKey: "goal.immerseDesc" },
 ];
 
 interface OnboardingProps {
@@ -106,6 +106,23 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       animate={exiting ? { opacity: 0, scale: 1.08, filter: "blur(6px)" } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
       transition={{ duration: 0.7, ease }}
     >
+      {/* Stars background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 60 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: 1 + (i % 2),
+              height: 1 + (i % 2),
+              left: `${(i * 23 + 7) % 100}%`,
+              top: `${(i * 17 + 11) % 100}%`,
+              opacity: 0.08 + (i % 5) * 0.04,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Progress bar */}
       <div className="absolute top-0 left-0 right-0 z-30 px-8 pt-4">
         <div className="flex gap-2">
@@ -147,6 +164,40 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             className="absolute inset-0 flex flex-col items-center justify-center px-8"
           >
             <div className="flex flex-col items-center text-center">
+              {/* Cosmii character */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.8, ease }}
+                className="relative mb-8"
+              >
+                <motion.div
+                  className="absolute inset-0 rounded-full blur-[50px]"
+                  style={{ background: "radial-gradient(circle, rgba(110,220,180,0.15) 0%, transparent 70%)" }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.9, 0.5] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.div
+                  className="relative w-[110px] h-[110px]"
+                  style={{ WebkitMaskImage: "radial-gradient(circle, black 50%, transparent 75%)", maskImage: "radial-gradient(circle, black 50%, transparent 75%)" }}
+                  animate={{
+                    y: [0, -10, 0],
+                    rotate: [0, 3, 0, -3, 0],
+                  }}
+                  transition={{
+                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                  }}
+                >
+                  <img
+                    src="/avatars/cosmii/mint.png"
+                    alt="Cosmii"
+                    className="w-full h-full object-contain"
+                    draggable={false}
+                  />
+                </motion.div>
+              </motion.div>
+
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -169,7 +220,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 transition={{ delay: 1.8, duration: 0.6 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleNext}
-                className="mt-16 flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/[0.12] text-white/70 text-[15px] font-semibold hover:bg-white/[0.04] active:bg-white/[0.08] transition-colors select-none"
+                className="mt-14 flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/[0.12] text-white/70 text-[15px] font-semibold hover:bg-white/[0.04] active:bg-white/[0.08] transition-colors select-none"
               >
                 {t("onboarding.nextBtn")}
                 <ChevronRight size={16} className="text-white/40" />
@@ -306,17 +357,18 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                           : "bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04]"
                       }`}
                     >
+                      <div className={`flex-shrink-0 w-[52px] text-center ${active ? "text-white/90" : "text-white/40"}`}>
+                        <span className={`${serif} text-[22px] font-bold`}>{g.minutes}</span>
+                        <span className="text-[11px] ml-0.5">{language === "ko" ? "분" : "min"}</span>
+                      </div>
                       <div className="text-left flex-1">
                         <p className={`text-[15px] font-semibold ${active ? "text-white/90" : "text-white/55"}`}>
                           {t(g.labelKey as any)}
                         </p>
-                        <p className={`text-[13px] mt-0.5 ${active ? "text-white/40" : "text-white/20"}`}>
+                        <p className={`text-[12px] mt-0.5 ${active ? "text-white/35" : "text-white/18"}`}>
                           {t(g.descKey as any)}
                         </p>
                       </div>
-                      <span className={`text-[12px] font-medium ${active ? "text-white/40" : "text-white/15"}`}>
-                        {g.minutes}
-                      </span>
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                         active ? "border-white/50 bg-white/80" : "border-white/12"
                       }`}>

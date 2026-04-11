@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, Fragment } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { useT } from "@/lib/i18n";
@@ -16,10 +16,13 @@ export default function AuthPage() {
     return () => { document.body.classList.remove("no-scroll"); };
   }, []);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const t = useT();
   const language = useSettingsStore((s) => s.language);
   const setLanguage = useSettingsStore((s) => s.setLanguage);
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup">(
+    searchParams.get("mode") === "signup" ? "signup" : "login",
+  );
   const [loading, setLoading] = useState(false);
   const [leaving, setLeaving] = useState(false);
 

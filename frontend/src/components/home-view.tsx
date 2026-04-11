@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Download, Flame, Star, Search, X } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useAppStore, useSettingsStore } from "@/lib/store";
-import { BETA_CURATION_SECTIONS, BETA_RECOMMENDED_IDS, BOOK_TAGLINES } from "@/lib/curations";
+import { BETA_CURATION_SECTIONS, BETA_RECOMMENDED_IDS, BOOK_TAGLINES, type BetaCurationSection } from "@/lib/curations";
+import { createClient } from "@/lib/supabase";
 
 const serif = "font-[var(--font-serif)]";
 
@@ -58,6 +59,12 @@ function BookCover({ book, size = "md" }: { book: Book; size?: "sm" | "md" | "lg
   );
 }
 
+interface CurationPayload {
+  sections: BetaCurationSection[];
+  recommendedIds: string[];
+  taglines: Record<string, { ko: string; en: string }>;
+}
+
 export function HomeView({ books, onSelectBook, activeSession, readingBooks = [], onContinueLearning, freeBookId }: HomeViewProps) {
   const t = useT();
   const isKo = useSettingsStore((s) => s.language) === "ko";
@@ -66,6 +73,28 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
   const [searchQuery, setSearchQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [remoteCurations, setRemoteCurations] = useState<CurationPayload | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const sb = createClient();
+        const { data } = await sb
+          .from("app_config")
+          .select("value")
+          .eq("key", "curations")
+          .single();
+        if (!data) return;
+        const val = typeof data.value === "string" ? JSON.parse(data.value) : data.value;
+        setRemoteCurations(val as CurationPayload);
+      } catch { /* fallback to hardcoded */ }
+    })();
+  }, []);
+
+  const SECTIONS = remoteCurations?.sections ?? BETA_CURATION_SECTIONS;
+  const RECOMMENDED = remoteCurations?.recommendedIds ?? BETA_RECOMMENDED_IDS;
+  const TAGLINES = remoteCurations?.taglines ?? BOOK_TAGLINES;
+
   const bookMap = useMemo(() => {
     const m = new Map<string, Book>();
     books.forEach((b) => m.set(b.id, b));
@@ -73,16 +102,16 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
   }, [books]);
 
   const recommendedBooks = useMemo(
-    () => BETA_RECOMMENDED_IDS.map((id) => bookMap.get(id)).filter(Boolean) as Book[],
-    [bookMap],
+    () => RECOMMENDED.map((id) => bookMap.get(id)).filter(Boolean) as Book[],
+    [bookMap, RECOMMENDED],
   );
 
   const curationSections = useMemo(
-    () => BETA_CURATION_SECTIONS.slice(0, 12).map((s) => ({
+    () => SECTIONS.map((s) => ({
       ...s,
       books: s.bookIds.map((id) => bookMap.get(id)).filter(Boolean) as Book[],
     })).filter((s) => s.books.length > 0),
-    [bookMap],
+    [bookMap, SECTIONS],
   );
 
   const searchResults = useMemo(() => {
@@ -225,7 +254,7 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
             </p>
             <div className="flex gap-3 overflow-x-auto px-5 pb-1 scrollbar-hide">
               {recommendedBooks.map((book) => {
-                const tagline = BOOK_TAGLINES[book.id];
+                const tagline = TAGLINES[book.id];
                 return (
                   <motion.button
                     key={book.id}
@@ -266,7 +295,7 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
               </div>
               <div className="flex gap-3 overflow-x-auto px-5 pb-1 scrollbar-hide">
                 {section.books.map((book) => {
-                  const tagline = BOOK_TAGLINES[book.id];
+                  const tagline = TAGLINES[book.id];
                   return (
                     <motion.button
                       key={book.id}
@@ -361,7 +390,7 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
                   </p>
                   <div className="flex flex-col gap-3">
                     {recommendedBooks.map((book) => {
-                      const tagline = BOOK_TAGLINES[book.id];
+                      const tagline = TAGLINES[book.id];
                       return (
                         <motion.button
                           key={book.id}
@@ -391,7 +420,7 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
                   </p>
                   <div className="flex flex-col gap-3">
                     {searchResults.map((book) => {
-                      const tagline = BOOK_TAGLINES[book.id];
+                      const tagline = TAGLINES[book.id];
                       return (
                         <motion.button
                           key={book.id}

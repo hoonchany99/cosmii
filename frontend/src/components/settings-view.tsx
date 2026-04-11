@@ -29,11 +29,11 @@ const LANGUAGES: { code: Language; label: string; native: string; flag: string }
   { code: "en", label: "English", native: "English", flag: "🇺🇸" },
 ];
 
-const DAILY_GOALS: { value: DailyGoal; labelKey: string; descKey: string; emoji: string }[] = [
-  { value: 1, labelKey: "goal.light", descKey: "goal.lightDesc", emoji: "🌱" },
-  { value: 2, labelKey: "goal.steady", descKey: "goal.steadyDesc", emoji: "⭐" },
-  { value: 3, labelKey: "goal.hard", descKey: "goal.hardDesc", emoji: "🔥" },
-  { value: 5, labelKey: "goal.immerse", descKey: "goal.immerseDesc", emoji: "🚀" },
+const DAILY_GOALS: { value: DailyGoal; minutes: number; labelKey: string; descKey: string; emoji: string }[] = [
+  { value: 1, minutes: 3, labelKey: "goal.light", descKey: "goal.lightDesc", emoji: "🌱" },
+  { value: 2, minutes: 6, labelKey: "goal.steady", descKey: "goal.steadyDesc", emoji: "⭐" },
+  { value: 3, minutes: 10, labelKey: "goal.hard", descKey: "goal.hardDesc", emoji: "🔥" },
+  { value: 5, minutes: 15, labelKey: "goal.immerse", descKey: "goal.immerseDesc", emoji: "🚀" },
 ];
 
 function SettingRow({
@@ -156,7 +156,7 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
             <SettingRow
               icon={<Target size={17} className="text-white/60" />}
               label={t("settings.dailyGoal")}
-              value={t(DAILY_GOALS.find((g) => g.value === settings.dailyGoal)?.labelKey as any) ?? ""}
+              value={(() => { const g = DAILY_GOALS.find((g) => g.value === settings.dailyGoal); return g ? `${t(g.labelKey as any)} · ${g.minutes}${settings.language === "ko" ? "분" : "min"}` : ""; })()}
               onClick={() => setActiveSheet("dailyGoal")}
               delay={0.11}
             />
@@ -320,6 +320,7 @@ export function SettingsView({ onBack, onLogout, onResetProgress }: SettingsView
                         >
                           <span className="text-[28px]">{goal.emoji}</span>
                           <span className={`text-[15px] font-bold ${selected ? "text-white" : "text-white/70"}`}>{t(goal.labelKey as any)}</span>
+                          <span className={`text-[18px] font-bold ${selected ? "text-white/80" : "text-white/50"}`}>{goal.minutes}{settings.language === "ko" ? "분" : "min"}</span>
                           <span className="text-white/35 text-[12px]">{t(goal.descKey as any)}</span>
                           {selected && (
                             <motion.div

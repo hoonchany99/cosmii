@@ -92,6 +92,33 @@ export default function UniversePage() {
 
   const [readingBooks, setReadingBooks] = useState<ReadingBook[]>([]);
 
+  const mergedReadingBooks = useMemo(() => {
+    if (!selectedBook || lessons.length === 0) return readingBooks;
+    const completedCount = lessons.filter((l) => l.completed).length;
+    if (completedCount === 0) return readingBooks;
+
+    const exists = readingBooks.some((rb) => rb.id === selectedBook.id);
+    if (exists) {
+      return readingBooks.map((rb) =>
+        rb.id === selectedBook.id
+          ? { ...rb, completedLessons: Math.max(rb.completedLessons, completedCount), totalLessons: lessons.length }
+          : rb,
+      );
+    }
+    return [
+      {
+        id: selectedBook.id,
+        title: selectedBook.title,
+        author: selectedBook.author,
+        color: selectedBook.color,
+        cover_url: selectedBook.cover_url,
+        completedLessons: completedCount,
+        totalLessons: lessons.length,
+      },
+      ...readingBooks,
+    ];
+  }, [readingBooks, selectedBook, lessons]);
+
   const [showBookDetail, setShowBookDetail] = useState(false);
   const [detailBook, setDetailBook] = useState<Book | null>(null);
   const [detailLessons, setDetailLessons] = useState<LessonListItem[]>([]);
@@ -99,6 +126,7 @@ export default function UniversePage() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const onboardingDismissed = useRef(false);
   const [statsLoaded, setStatsLoaded] = useState(false);
+
 
   const t = useT();
   const language = useSettingsStore((s) => s.language);
@@ -524,7 +552,8 @@ export default function UniversePage() {
       <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] rounded-full bg-[#a78bfa]/[0.04] blur-[120px]" />
       </div>
-      <div className="phone-frame relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] md:border md:border-white/[0.06] md:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_80px_rgba(167,139,250,0.06)] overflow-hidden bg-[#050510]">
+      <div className="relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px]">
+      <div className="phone-frame relative w-full h-full md:rounded-[2.5rem] md:border md:border-white/[0.06] md:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_80px_rgba(167,139,250,0.06)] overflow-hidden bg-[#050510]">
       <WarpOverlay
         active={warpActive}
         onMidpoint={handleWarpMidpoint}
@@ -541,7 +570,7 @@ export default function UniversePage() {
               books={books}
               onSelectBook={handleSelectBook}
               freeBookId={freeBookId}
-              readingBooks={readingBooks}
+              readingBooks={mergedReadingBooks}
               activeSession={
                 selectedBook && lessons.length > 0
                   ? {
@@ -561,7 +590,7 @@ export default function UniversePage() {
             <LibraryView
               books={books}
               freeBookId={freeBookId}
-              readingBooks={readingBooks}
+              readingBooks={mergedReadingBooks}
               activeSession={
                 selectedBook && lessons.length > 0
                   ? {
@@ -679,7 +708,7 @@ export default function UniversePage() {
           <motion.div key="profile" {...slideRight} className="absolute inset-0">
             <ProfileView
               totalBooks={books.length}
-              readingBooks={readingBooks}
+              readingBooks={mergedReadingBooks}
               onOpenSettings={() => setView("settings")}
               isTab
             />
@@ -767,13 +796,14 @@ export default function UniversePage() {
       </AnimatePresence>
       </div>
 
-      {/* TabBar outside phone-frame to avoid overflow-hidden clipping */}
+      {/* TabBar inside wrapper but outside phone-frame overflow */}
       {(view === "home" || view === "universe" || view === "profile") && (
         <TabBar
           activeTab={view as "home" | "universe" | "profile"}
           onTabChange={(tab) => setView(tab)}
         />
       )}
+      </div>
     </div>
   );
 }
