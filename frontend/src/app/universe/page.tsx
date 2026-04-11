@@ -18,7 +18,6 @@ import { BookNotes } from "@/components/book-notes";
 import { LibraryView } from "@/components/library-view";
 import { WarpOverlay } from "@/components/warp-overlay";
 import { GoalToast, LevelUpToast, AppDownloadToast } from "@/components/goal-toast";
-import { Onboarding } from "@/components/onboarding";
 import { TabBar } from "@/components/tab-bar";
 const API = "";
 
@@ -96,8 +95,6 @@ export default function UniversePage() {
   const [detailBook, setDetailBook] = useState<Book | null>(null);
   const [detailLessons, setDetailLessons] = useState<LessonListItem[]>([]);
 
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const onboardingDismissed = useRef(false);
   const [statsLoaded, setStatsLoaded] = useState(false);
 
   const t = useT();
@@ -191,8 +188,9 @@ export default function UniversePage() {
           if (typeof data.spent_xp === "number") setSpentXP(data.spent_xp);
           if (Array.isArray(data.unlocked_items)) setUnlockedItems(data.unlocked_items);
 
-          if ((data.xp ?? 0) === 0 && !onboardingDismissed.current) {
-            setShowOnboarding(true);
+          if ((data.xp ?? 0) === 0 && !localStorage.getItem("cosmii-onboarded")) {
+            window.location.href = "/onboarding";
+            return;
           }
           setStatsLoaded(true);
         })
@@ -502,19 +500,6 @@ export default function UniversePage() {
     return (
       <div className="h-screen w-screen overflow-hidden bg-[#020208] relative md:flex md:items-center md:justify-center">
         <div className="phone-frame relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] overflow-hidden bg-[#060612]" />
-      </div>
-    );
-  }
-
-  if (showOnboarding) {
-    return (
-      <div className="h-screen w-screen overflow-hidden bg-[#020208] relative md:flex md:items-center md:justify-center">
-        <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] rounded-full bg-[#a78bfa]/[0.04] blur-[120px]" />
-        </div>
-        <div className="phone-frame relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] md:border md:border-white/[0.06] md:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_80px_rgba(167,139,250,0.06)] overflow-hidden bg-[#050510]">
-          <Onboarding onComplete={() => { onboardingDismissed.current = true; setShowOnboarding(false); }} />
-        </div>
       </div>
     );
   }

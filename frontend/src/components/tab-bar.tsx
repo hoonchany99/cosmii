@@ -18,26 +18,31 @@ const tabs: { id: TabId; icon: typeof Sparkles }[] = [
 
 export function TabBar({ activeTab, onTabChange }: TabBarProps) {
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-50 flex items-center justify-around bg-[#060612] border-t border-white/[0.06]" style={{ height: "calc(72px + env(safe-area-inset-bottom, 0px))", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
-      {tabs.map((tab) => {
-        const active = activeTab === tab.id;
-        const Icon = tab.icon;
-        return (
-          <motion.button
-            key={tab.id}
-            whileTap={{ scale: 0.88 }}
-            transition={{ type: "spring", damping: 28, stiffness: 520 }}
-            onClick={() => onTabChange(tab.id)}
-            className="flex items-center justify-center w-16 h-16"
-          >
-            <Icon
-              size={24}
-              strokeWidth={active ? 2.2 : 1.5}
-              className={`transition-colors duration-200 ${active ? "text-[#a78bfa]" : "text-white/35"}`}
-            />
-          </motion.button>
-        );
-      })}
+    <div
+      className="absolute bottom-0 left-0 right-0 z-50 pointer-events-none"
+      style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom, 12px))" }}
+    >
+      <div className="pointer-events-auto mx-4 flex items-center justify-around rounded-2xl bg-white/[0.06] border border-white/[0.08] py-2">
+        {tabs.map((tab) => {
+          const active = activeTab === tab.id;
+          const Icon = tab.icon;
+          return (
+            <motion.button
+              key={tab.id}
+              whileTap={{ scale: 0.88 }}
+              transition={{ type: "spring", damping: 28, stiffness: 520 }}
+              onClick={() => onTabChange(tab.id)}
+              className="flex items-center justify-center w-14 h-14"
+            >
+              <Icon
+                size={22}
+                strokeWidth={active ? 2.2 : 1.5}
+                className={`transition-colors duration-200 ${active ? "text-[#a78bfa]" : "text-white/35"}`}
+              />
+            </motion.button>
+          );
+        })}
+      </div>
     </div>
   );
 }

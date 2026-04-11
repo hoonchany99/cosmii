@@ -122,6 +122,7 @@ export default function OnboardingPage() {
       setDailyGoal(selectedGoal);
       setPhase("ready");
     } else {
+      localStorage.setItem("cosmii-onboarded", "1");
       setExiting(true);
       setTimeout(() => { window.location.href = "/universe"; }, 800);
     }
@@ -129,6 +130,7 @@ export default function OnboardingPage() {
 
   const skip = useCallback(() => {
     if (nickname.trim()) saveNickname(nickname.trim());
+    localStorage.setItem("cosmii-onboarded", "1");
     setExiting(true);
     setTimeout(() => { window.location.href = "/universe"; }, 800);
   }, [nickname, saveNickname]);
