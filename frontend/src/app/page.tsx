@@ -539,43 +539,41 @@ export default function LandingPage() {
   ];
 
   return (
-    <>
-      {/* Floating Nav */}
-      <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none" style={{ paddingTop: "max(12px, env(safe-area-inset-top, 12px))" }}>
-        <motion.nav
-          initial={{ opacity: 0, y: -12 }}
-          animate={leaving ? { opacity: 0 } : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease }}
-          className="pointer-events-auto mx-3 sm:mx-6 flex items-center justify-between px-5 sm:px-6 py-2.5 rounded-2xl bg-white/[0.06] border border-white/[0.08]"
-          style={{ backdropFilter: "none", WebkitBackdropFilter: "none" }}
-        >
-          <Link href="/" className="group flex items-center gap-2.5 flex-shrink-0">
-            <span className={`${serif} font-brand text-[20px] sm:text-[22px] font-bold tracking-tight text-white/70 group-hover:text-white/90 transition-colors duration-500`}>
+    <motion.div
+      className="min-h-screen bg-[#060612] text-white overflow-x-clip selection:bg-white/10 break-keep"
+      animate={leaving ? { opacity: 0, scale: 0.98 } : { opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, ease }}
+    >
+      {/* Nav */}
+      <motion.nav
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3, ease }}
+        className="fixed top-0 left-0 right-0 z-50 bg-[rgba(6,6,18,0.6)] backdrop-blur-md"
+      >
+        <div className="mx-auto flex items-center justify-between px-8 sm:px-12 py-4">
+          <Link href="/" className="group flex items-center gap-2.5">
+            <span className={`${serif} font-brand text-[22px] font-bold tracking-tight text-white/70 group-hover:text-white/90 transition-colors duration-500`}>
               Cosmii
             </span>
           </Link>
-          <div className="flex items-center gap-2.5 sm:gap-4">
+          <div className="flex items-center gap-4">
             <button
               onClick={() => navigateTo("/login")}
-              className="text-[13px] sm:text-[14px] tracking-wide text-white/50 hover:text-white/80 transition-colors duration-500 whitespace-nowrap"
+              className="text-[14px] tracking-wide text-white/50 hover:text-white/80 transition-colors duration-500"
             >
               {t("landing.signIn")}
             </button>
             <button
               onClick={openDemo}
-              className="text-[13px] sm:text-[14px] tracking-wide text-white/70 hover:text-white/95 px-4 sm:px-5 py-2 rounded-full border border-white/[0.12] hover:border-white/[0.25] bg-white/[0.06] hover:bg-white/[0.10] transition-all duration-500 whitespace-nowrap"
+              className="text-[14px] tracking-wide text-white/70 hover:text-white/95 px-5 py-2 rounded-full border border-white/[0.12] hover:border-white/[0.25] bg-white/[0.05] hover:bg-white/[0.08] backdrop-blur-sm transition-all duration-500"
             >
               {t("landing.getStarted")}
             </button>
           </div>
-        </motion.nav>
-      </div>
-
-      <motion.div
-        className="min-h-screen bg-[#060612] text-white selection:bg-white/10 break-keep"
-        animate={leaving ? { opacity: 0, scale: 0.98 } : { opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, ease }}
-      >
+        </div>
+        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
+      </motion.nav>
       <StarField lite />
 
       {/* Hero */}
@@ -1101,6 +1099,5 @@ export default function LandingPage() {
         )}
       </AnimatePresence>
     </motion.div>
-    </>
   );
 }

@@ -18,7 +18,7 @@ const tabs: { id: TabId; icon: typeof Sparkles }[] = [
 
 export function TabBar({ activeTab, onTabChange }: TabBarProps) {
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-50 flex items-center justify-around h-[72px] bg-[#060612] border-t border-white/[0.06]">
+    <div className="absolute bottom-0 left-0 right-0 z-50 flex items-center justify-around bg-[#060612] border-t border-white/[0.06]" style={{ height: "calc(72px + env(safe-area-inset-bottom, 0px))", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       {tabs.map((tab) => {
         const active = activeTab === tab.id;
         const Icon = tab.icon;
