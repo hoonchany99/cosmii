@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServiceClient, BOOK_I18N, pick } from "@/lib/supabase-server";
+import { BOOK_TAGLINES } from "@/lib/curations";
 
 const DEMO_BOOK_IDS = ["s_atomic", "s_money_psych", "45b77580"];
 
@@ -9,7 +10,7 @@ export async function GET(req: NextRequest) {
 
   const { data: books, error: bErr } = await sb
     .from("books")
-    .select("id, title, author, color, cover_url, tagline_ko, tagline_en")
+    .select("id, title, author, color, cover_url")
     .in("id", DEMO_BOOK_IDS);
 
   if (bErr) return NextResponse.json({ error: bErr.message }, { status: 500 });
@@ -85,7 +86,9 @@ export async function GET(req: NextRequest) {
       author: i18n[`author_${language}`] ?? book.author,
       color: book.color,
       coverUrl: book.cover_url ?? `/covers/${book.id}.jpg`,
-      tagline: language === "ko" ? (book.tagline_ko || "") : (book.tagline_en || ""),
+      tagline: BOOK_TAGLINES[book.id]
+        ? (language === "ko" ? BOOK_TAGLINES[book.id].ko : BOOK_TAGLINES[book.id].en)
+        : "",
       lesson,
     };
   }).filter(Boolean);
