@@ -26,7 +26,7 @@ const nanumGothic = Nanum_Gothic({
   weight: ["400", "700", "800"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.vercel.app";
 
 export const viewport: Viewport = {
   viewportFit: "cover",
