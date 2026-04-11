@@ -124,6 +124,68 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
     );
   }, [searchQuery, books]);
 
+  type DefaultSearchItem =
+    | { type: "header"; title: string; subtitle: string }
+    | { type: "wideBook"; book: Book };
+
+  const defaultSearchItems = useMemo(() => {
+    const items: DefaultSearchItem[] = [];
+    const picked = SECTIONS.filter(
+      (_, i) => i === 0 || i === 2 || i === 5 || i === 7 || i === 9,
+    );
+    for (const sec of picked) {
+      items.push({
+        type: "header",
+        title: isKo ? sec.title : sec.titleEn,
+        subtitle: isKo ? sec.subtitle : sec.subtitleEn,
+      });
+      const sBooks = sec.bookIds
+        .map((id) => bookMap.get(id))
+        .filter(Boolean) as Book[];
+      for (const b of sBooks.slice(0, 4)) {
+        items.push({ type: "wideBook", book: b });
+      }
+    }
+    return items;
+  }, [isKo, bookMap, SECTIONS]);
+
+  type SearchResultSection = {
+    title: string;
+    subtitle: string;
+    books: Book[];
+  };
+
+  const searchSections = useMemo((): SearchResultSection[] => {
+    if (!searchQuery.trim()) return [];
+    const result: SearchResultSection[] = [];
+
+    if (searchResults.length > 0) {
+      result.push({
+        title: isKo ? "검색 결과" : "Search Results",
+        subtitle: isKo
+          ? `${searchResults.length}권의 책을 찾았어`
+          : `${searchResults.length} book${searchResults.length > 1 ? "s" : ""} found`,
+        books: searchResults,
+      });
+    }
+
+    const extras = SECTIONS.filter((_, i) => i === 1 || i === 3 || i === 6);
+    for (const sec of extras) {
+      const sBooks = sec.bookIds
+        .map((id) => bookMap.get(id))
+        .filter(Boolean) as Book[];
+      if (sBooks.length > 0) {
+        result.push({
+          title: isKo ? sec.title : sec.titleEn,
+          subtitle: isKo ? sec.subtitle : sec.subtitleEn,
+          books: sBooks,
+        });
+      }
+    }
+
+    return result;
+  }, [searchQuery, searchResults, isKo, bookMap, SECTIONS]);
+
   const openSearch = useCallback(() => {
     setSearchVisible(true);
     setTimeout(() => inputRef.current?.focus(), 100);
@@ -381,77 +443,94 @@ export function HomeView({ books, onSelectBook, activeSession, readingBooks = []
               </motion.button>
             </div>
 
-            {/* Search Results */}
-            <div className="flex-1 overflow-y-auto px-5 pt-4 pb-[100px]">
+            {/* Search Content */}
+            <div className="flex-1 overflow-y-auto pt-4 pb-[100px]">
               {searchQuery.trim().length === 0 ? (
-                <div>
-                  <p className="text-[11px] text-white/25 uppercase tracking-[0.12em] font-semibold mb-3">
-                    {isKo ? "추천" : "Recommended"}
-                  </p>
-                  <div className="flex flex-col gap-3">
-                    {recommendedBooks.map((book) => {
-                      const tagline = TAGLINES[book.id];
+                <div className="flex flex-col">
+                  {defaultSearchItems.map((item, i) => {
+                    if (item.type === "header") {
                       return (
-                        <motion.button
-                          key={book.id}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => { onSelectBook(book); closeSearch(); }}
-                          className="flex items-center gap-3 text-left p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] active:bg-white/[0.06] transition-colors"
-                        >
-                          <BookCover book={book} size="sm" />
-                          <div className="flex-1 min-w-0">
-                            <p className={`${serif} text-white/80 text-[15px] font-bold truncate`}>{book.title}</p>
-                            <p className="text-white/35 text-[12px] mt-0.5">{book.author}</p>
-                            {tagline && (
-                              <p className="text-white/20 text-[11px] mt-1 line-clamp-1">
-                                {isKo ? tagline.ko : tagline.en}
-                              </p>
-                            )}
-                          </div>
-                        </motion.button>
+                        <div key={`sh-${i}`} className="px-5 mt-5 mb-2.5 first:mt-0">
+                          <p className={`${serif} text-white/80 text-[18px] font-semibold tracking-tight`}>
+                            {item.title}
+                          </p>
+                          <p className={`${serif} text-white/40 text-[13px] mt-1 leading-snug`}>
+                            {item.subtitle}
+                          </p>
+                        </div>
                       );
-                    })}
-                  </div>
-                </div>
-              ) : searchResults.length > 0 ? (
-                <div>
-                  <p className="text-[11px] text-white/25 uppercase tracking-[0.12em] font-semibold mb-3">
-                    {isKo ? `${searchResults.length}개 결과` : `${searchResults.length} results`}
-                  </p>
-                  <div className="flex flex-col gap-3">
-                    {searchResults.map((book) => {
-                      const tagline = TAGLINES[book.id];
-                      return (
-                        <motion.button
-                          key={book.id}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => { onSelectBook(book); closeSearch(); }}
-                          className="flex items-center gap-3 text-left p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] active:bg-white/[0.06] transition-colors"
-                        >
-                          <BookCover book={book} size="sm" />
-                          <div className="flex-1 min-w-0">
-                            <p className={`${serif} text-white/80 text-[15px] font-bold truncate`}>{book.title}</p>
-                            <p className="text-white/35 text-[12px] mt-0.5">{book.author}</p>
-                            {tagline && (
-                              <p className="text-white/20 text-[11px] mt-1 line-clamp-1">
-                                {isKo ? tagline.ko : tagline.en}
-                              </p>
-                            )}
-                          </div>
-                        </motion.button>
-                      );
-                    })}
-                  </div>
+                    }
+                    const tagline = TAGLINES[item.book.id];
+                    return (
+                      <motion.button
+                        key={`sb-${item.book.id}-${i}`}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => { onSelectBook(item.book); closeSearch(); }}
+                        className="flex items-center gap-3.5 text-left mx-5 mb-3 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06] active:bg-white/[0.06] transition-colors"
+                      >
+                        <BookCover book={item.book} size="sm" />
+                        <div className="flex-1 min-w-0">
+                          <p className={`${serif} text-white/80 text-[15px] font-semibold truncate`}>
+                            {item.book.title}
+                          </p>
+                          <p className="text-white/40 text-[12px] mt-0.5">{item.book.author}</p>
+                          {tagline && (
+                            <p className="text-white/20 text-[11px] mt-1 line-clamp-2 leading-snug">
+                              {isKo ? tagline.ko : tagline.en}
+                            </p>
+                          )}
+                        </div>
+                      </motion.button>
+                    );
+                  })}
                 </div>
               ) : (
-                <div className="flex flex-col items-center pt-20 text-center">
-                  <Search size={32} className="text-white/10 mb-3" />
-                  <p className={`${serif} text-white/30 text-[15px]`}>
-                    {isKo ? "검색 결과가 없어요" : "No results found"}
-                  </p>
-                  <p className="text-white/15 text-[13px] mt-1">
-                    {isKo ? "다른 키워드로 검색해보세요" : "Try a different keyword"}
-                  </p>
+                <div className="flex flex-col">
+                  {searchSections.map((section, i) => (
+                    <div key={`ss-${i}`} className="mb-7">
+                      <div className="px-5 mb-3">
+                        <p className={`${serif} text-white/80 text-[18px] font-semibold tracking-tight`}>
+                          {section.title}
+                        </p>
+                        <p className={`${serif} text-white/40 text-[13px] mt-1`}>
+                          {section.subtitle}
+                        </p>
+                      </div>
+                      <div className="flex gap-3 overflow-x-auto px-5 pb-1 scrollbar-hide">
+                        {section.books.map((book) => {
+                          const tagline = TAGLINES[book.id];
+                          return (
+                            <motion.button
+                              key={book.id}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => { onSelectBook(book); closeSearch(); }}
+                              className="flex-shrink-0 w-[110px] text-left"
+                            >
+                              <div
+                                className="w-[110px] h-[160px] rounded-xl relative overflow-hidden flex-shrink-0"
+                                style={{ background: `linear-gradient(135deg, ${book.color}40, ${book.color}15)` }}
+                              >
+                                <img
+                                  src={book.cover_url || `/covers/${book.id}.jpg`}
+                                  alt={book.title}
+                                  className="absolute inset-0 w-full h-full object-cover"
+                                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                                />
+                              </div>
+                              <p className={`${serif} text-white/60 text-[12px] mt-2 truncate font-medium`}>
+                                {book.title}
+                              </p>
+                              {tagline && (
+                                <p className="text-white/20 text-[10px] mt-0.5 line-clamp-2 leading-snug">
+                                  {isKo ? tagline.ko : tagline.en}
+                                </p>
+                              )}
+                            </motion.button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
