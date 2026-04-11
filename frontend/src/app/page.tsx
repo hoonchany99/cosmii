@@ -540,7 +540,7 @@ export default function LandingPage() {
 
   return (
     <motion.div
-      className="min-h-screen bg-[#060612] text-white overflow-x-clip selection:bg-white/10 break-keep"
+      className="min-h-screen bg-[#060612] text-white overflow-x-hidden selection:bg-white/10 break-keep"
       animate={leaving ? { opacity: 0, scale: 0.98 } : { opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease }}
     >

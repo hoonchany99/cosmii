@@ -4,16 +4,52 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, Download } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/glass-panel";
-import dynamic from "next/dynamic";
-
-const ImageConstellation = dynamic(
-  () => import("@/components/cosmii-constellation").then((m) => m.ImageConstellation),
-  { ssr: false },
-);
 import { useT } from "@/lib/i18n";
 
 const serif = "font-[var(--font-serif)]";
 const ease = [0.22, 1, 0.36, 1] as const;
+
+function StarBurst() {
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 30 }, () => {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 100 + Math.random() * 150;
+        return {
+          x: Math.cos(angle) * dist,
+          y: Math.sin(angle) * dist,
+          size: 3 + Math.random() * 5,
+          color: ["#FFFFFF", "#FFD700", "#34D399"][Math.floor(Math.random() * 3)],
+          delay: Math.random() * 0.2,
+          opacity: 0.6 + Math.random() * 0.4,
+        };
+      }),
+    [],
+  );
+
+  return (
+    <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+      {particles.map((p, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: p.size,
+            height: p.size,
+            backgroundColor: p.color,
+            left: "50%",
+            top: "50%",
+            marginLeft: -p.size / 2,
+            marginTop: -p.size / 2,
+          }}
+          initial={{ x: 0, y: 0, opacity: p.opacity }}
+          animate={{ x: p.x, y: p.y, opacity: 0 }}
+          transition={{ duration: 1.5, delay: p.delay, ease: "easeOut" }}
+        />
+      ))}
+    </div>
+  );
+}
 
 interface SessionCompleteProps {
   correctRate: number;
@@ -62,10 +98,8 @@ export function SessionComplete({
   }, [allWrong, correctRate, t]);
 
   return (
-    <div className="w-full h-full relative overflow-hidden text-white flex flex-col items-center justify-center">
-      <div className="absolute inset-0 z-0">
-        <ImageConstellation imageSrc="/cosmii-constellation.png" color="#6BC5A0" animate={false} dim dimOpacity={0.3} dimZoom={10} />
-      </div>
+    <div className="w-full h-full relative overflow-hidden text-white flex flex-col items-center justify-center bg-[#060612]">
+      <StarBurst />
 
       <div className="z-20 flex flex-col items-center px-10 w-full max-w-[400px] relative">
         {/* Title */}
