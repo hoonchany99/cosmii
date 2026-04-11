@@ -60,7 +60,7 @@ function CosmiiFloat() {
   );
 }
 
-const GOAL_OPTIONS = [1, 2, 3, 5];
+const GOAL_OPTIONS = [1, 2, 3, 5] as const;
 
 export default function OnboardingPage() {
   const t = useT();
