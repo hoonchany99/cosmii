@@ -1,12 +1,13 @@
 {
-  "name": "Cosmii — AI Reading Companion",
+  "name": "Cosmii — 좋아하는 책을 끝까지",
   "short_name": "Cosmii",
-  "description": "An AI reading companion that talks like someone who has actually read the books.",
+  "description": "하루 3분, 짧은 대화와 퀴즈로 읽고 싶었던 책을 가볍게 시작하세요.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#060612",
+  "theme_color": "#060612",
   "orientation": "portrait-primary",
+  "lang": "ko",
   "icons": [
     {
       "src": "/icon-192.png",

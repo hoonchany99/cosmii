@@ -31,9 +31,10 @@ function CosmiiSprite({ mobile }: { mobile: boolean }) {
       />
       <motion.div
         className={mobile
-          ? "relative w-[100px] h-[100px] rounded-full overflow-hidden"
-          : "relative w-[120px] h-[120px] lg:w-[160px] lg:h-[160px] rounded-full overflow-hidden"
+          ? "relative w-[100px] h-[100px]"
+          : "relative w-[120px] h-[120px] lg:w-[160px] lg:h-[160px]"
         }
+        style={{ WebkitMaskImage: "radial-gradient(circle, black 50%, transparent 75%)", maskImage: "radial-gradient(circle, black 50%, transparent 75%)" }}
         animate={{
           y: [0, -14, 0],
           rotate: [0, 3, 0, -3, 0],
@@ -543,13 +544,7 @@ export default function LandingPage() {
       animate={leaving ? { opacity: 0, scale: 0.98 } : { opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease }}
     >
-      <StarField lite={mobile} />
-      {!mobile && (
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-30%] left-[20%] w-[800px] h-[800px] rounded-full bg-indigo-900/[0.07] blur-[150px]" />
-          <div className="absolute bottom-[-20%] right-[10%] w-[600px] h-[600px] rounded-full bg-violet-900/[0.05] blur-[120px]" />
-        </div>
-      )}
+      <StarField lite />
 
       {/* Nav */}
       <motion.nav
