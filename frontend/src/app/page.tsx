@@ -545,7 +545,8 @@ export default function LandingPage() {
         initial={{ opacity: 0, y: -8 }}
         animate={leaving ? { opacity: 0 } : { opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.3, ease }}
-        className="fixed top-0 left-0 right-0 z-50 bg-[rgba(6,6,18,0.6)] backdrop-blur-md"
+        className="fixed top-0 left-0 right-0 z-50 bg-[rgba(6,6,18,0.85)] backdrop-blur-md"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
         <div className="mx-auto flex items-center justify-between px-4 sm:px-12 py-3 sm:py-4">
           <Link href="/" className="group flex items-center gap-2.5 flex-shrink-0">

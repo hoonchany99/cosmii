@@ -265,7 +265,6 @@ export function BookDetail({
               <Lock size={14} />
               <span className="text-[14px] font-medium">{t("bookDetail.lockedTitle")}</span>
             </div>
-            <p className="text-white/20 text-[13px] text-center mb-2">{t("bookDetail.lockedSub")}</p>
             <a
               href="https://apps.apple.com"
               target="_blank"
