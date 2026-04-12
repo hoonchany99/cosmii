@@ -770,16 +770,11 @@ export default function LandingPage() {
                 >
                   <img src={coverSrc} alt={book.title} className="w-full h-full object-cover" />
                 </div>
-                {book.pages ? (
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-white/[0.06] text-white/40 text-[11px] font-medium tracking-wide mb-2">
-                    {book.pages}p
-                  </span>
-                ) : null}
                 <h3 className={`${serif} text-[18px] font-semibold text-white/90 mb-1.5`}>
                   {book.title}
                 </h3>
                 <p className="text-[13px] text-white/35 mb-5 leading-snug max-w-[220px]">
-                  {book.tagline}
+                  {book.pages ? <>{book.pages}p, </> : null}{book.tagline}
                 </p>
                 <button
                   onClick={() => {
