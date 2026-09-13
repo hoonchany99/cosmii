@@ -44,10 +44,14 @@ Cosmii:
 
 ## 내용
 - "독자가 읽은 레슨"이 주어지면 그게 가장 중요한 근거야. 거기 나온 사건, 인물 관계, 대사를 정확히 따라. 거기 없는 사건이나 대사를 지어내지 마.
-- "책 본문 context"가 주어지면 그것도 근거로 써.
-- context가 없으면 그 책에 대해 널리 알려진 사실만 말해. 모르거나 헷갈리면 지어내지 말고 솔직하게 "음, 그건 확실하지 않아"라고 해.
-- 출처는 context에 챕터나 페이지가 분명히 있을 때만, 마지막에 짧게.
-- 책을 고르지 않은 자유 대화면 고전 추천이나 가벼운 책 얘기도 편하게 해.
+- 그 밖에는 그 책에 대해 널리 알려진 사실만 말해. 모르거나 헷갈리면 지어내지 말고 솔직하게 "음, 그건 확실하지 않아"라고 해.
+- 쪽수나 장 번호 같은 출처는 말하지 마.
+
+## 자유 대화 (책을 고르지 않았을 때)
+- 고전 추천이나 가벼운 책 얘기를 편하게 해.
+- "[코스미 서가]"가 주어지면 책 추천은 반드시 그 안에서 골라. 서가에 없는 책은 추천하지 마.
+- 추천할 땐 한두 권만, 왜 이 사람한테 맞는지 한 줄로. "[독자]"에 읽는 중인 책이 있으면 그 책과 이어지는 걸 먼저 생각해. 다 읽은 책은 다시 추천하지 마.
+- 서가에 없는 책을 물어보면, 먼저 그 책이 어떤 이야기인지 한두 문장으로 말해 줘. 그다음 코스미에는 아직 없다고 하고, 서가에서 결이 비슷한 책 하나를 권해.
 
 ## 스포일러 (매우 중요)
 - 대화 맥락에 "[독자 진도]"가 있으면, 독자가 읽은 장까지에서 벌어진 일만 이야기해. 1장까지 읽었으면 1장 이야기만.
@@ -111,7 +115,14 @@ async function readLessons(bookId: string, readIds: string[]) {
     .map((r, i) => {
       const d = byId.get(r.id);
       if (!d) return "";
-      const c = (typeof d.content_json === "string" ? JSON.parse(d.content_json) : d.content_json) as Record<string, any>;
+      const c = (typeof d.content_json === "string" ? JSON.parse(d.content_json) : d.content_json) as {
+        title_ko?: string;
+        title?: string;
+        chapter_title_ko?: string;
+        spark_ko?: string;
+        dialogue_ko?: { text: string }[];
+        dialogue?: { text: string }[];
+      };
       const title = c.title_ko || c.title || d.title;
       const head = `[${i + 1}] ${title}${c.chapter_title_ko ? ` (${c.chapter_title_ko})` : ""}`;
       if (!fullIds.includes(r.id)) return `${head} — ${c.spark_ko || ""}`;
@@ -193,32 +204,6 @@ function createBubbleShaper() {
   };
 }
 
-async function searchChunks(bookId: string, query: string, topK = 8) {
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
-  const embRes = await openai.embeddings.create({
-    model: "text-embedding-3-small",
-    input: query,
-  });
-  const queryEmbedding = embRes.data[0].embedding;
-
-  const sb = getServiceClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = await (sb.rpc as any)("match_chunks", {
-    query_embedding: queryEmbedding,
-    match_count: topK,
-    filter_book_id: bookId,
-  });
-
-  return (data ?? []) as {
-    id: string;
-    content: string;
-    book_id: string;
-    chapter: string;
-    page_num: string;
-    similarity: number;
-  }[];
-}
-
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { message, book_id, lesson_context, history, language, read_lesson_ids } = body;
@@ -228,11 +213,10 @@ export async function POST(req: NextRequest) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        // Newer apps send the lessons the reader has finished. Those become the
-        // ground truth, and the book passage search - which returns passages
-        // from anywhere in the book - only runs once the whole book is read,
-        // so it cannot pull later chapters into an answer. Without the list
-        // (older builds) the search runs as before.
+        // Newer apps send the lessons the reader has finished; their text is
+        // the ground truth for the answer. There is no passage search: the
+        // chunks table covered 3 of the 29 catalogue books, one of them a
+        // copyrighted English translation, and it could return any chapter.
         let lessons: Awaited<ReturnType<typeof readLessons>> | null = null;
         if (book_id && Array.isArray(read_lesson_ids)) {
           try {
@@ -241,29 +225,6 @@ export async function POST(req: NextRequest) {
             lessons = null;
           }
         }
-        const finished = !!lessons && lessons.total > 0 && lessons.readCount >= lessons.total;
-
-        let chunks: Awaited<ReturnType<typeof searchChunks>> = [];
-        // A free conversation has no book to search; skip the embedding call.
-        if (book_id && (!lessons || finished)) {
-          try {
-            chunks = await searchChunks(book_id, message);
-          } catch {
-            // RAG might not be set up — continue without context
-          }
-        }
-
-        const contextParts = chunks
-          .filter((c) => c.content?.trim())
-          .map((c) => {
-            const hasMeta = c.chapter?.trim() || (c.page_num?.trim() && c.page_num !== "0");
-            const header = hasMeta
-              ? `[${c.chapter?.trim() ? `Chapter: ${c.chapter}` : ""}${c.chapter?.trim() && c.page_num?.trim() && c.page_num !== "0" ? ", " : ""}${c.page_num?.trim() && c.page_num !== "0" ? `Page: ${c.page_num}` : ""}]\n`
-              : "";
-            return `${header}${c.content}`;
-          });
-        const context = contextParts.join("\n\n---\n\n");
-
         const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
           { role: "system", content: SYSTEM_PROMPTS[lang] ?? SYSTEM_PROMPTS.ko },
         ];
@@ -271,7 +232,7 @@ export async function POST(req: NextRequest) {
         if (lesson_context) {
           const label = lang === "en"
             ? "Here's the lesson content the user is currently studying"
-            : "지금 대화의 맥락이야 (고른 책, 독자가 읽은 데까지)";
+            : "지금 대화의 맥락이야";
           messages.push({ role: "system", content: `${label}:\n${lesson_context}` });
         }
 
@@ -288,14 +249,7 @@ export async function POST(req: NextRequest) {
           messages.push({ role: h.role, content: h.content });
         }
 
-        const qLabel = lang === "en" ? "Book context" : "책 본문 context";
-        const qWord = lang === "en" ? "Question" : "질문";
-        messages.push({
-          role: "user",
-          content: context
-            ? `${qLabel}:\n${context}\n\n${qWord}: ${message}`
-            : `${qWord}: ${message}`,
-        });
+        messages.push({ role: "user", content: message });
 
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
         const completion = await openai.chat.completions.create({
