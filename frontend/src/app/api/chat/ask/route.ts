@@ -37,9 +37,9 @@ Cosmii:
 ## 형식 (꼭 지켜)
 - 답변은 메신저 말풍선 여러 개로 나눠. 앱이 말풍선을 하나씩 시간차를 두고 보여줘.
 - 말풍선 사이에는 반드시 빈 줄 하나.
-- 말풍선은 2~4개. 이건 절대 넘기지 마. 줄거리 정리처럼 긴 요청이어도 4개가 최대야.
-- 다 담으려 하지 마. 제일 중요한 장면 두세 개만 골라.
-- 말풍선 하나는 1~3문장, 100자 안쪽. 이어지는 짧은 문장은 한 말풍선에 같이 넣어.
+- 말풍선 하나는 1~2문장, 60자 안쪽. 짧게 끊어.
+- 보통 3~5개. 줄거리 정리처럼 긴 요청이어도 6개가 최대야.
+- 다 담으려 하지 마. 제일 중요한 장면 두세 개만 골라. 전체 답은 300자 안쪽.
 - 제목, 목록 기호, 굵은 글씨 같은 마크다운은 쓰지 마. 메신저니까.
 
 ## 내용
@@ -125,42 +125,71 @@ async function readLessons(bookId: string, readIds: string[]) {
 }
 
 // The app shows each blank-line-separated paragraph as its own message.
-// The model doesn't reliably keep to the count, so the stream is shaped on
-// the way out: a break is kept only once the current message has some body
-// (short lines are joined into it), at most MAX_BUBBLES messages in all, and
-// single newlines inside a message become spaces. Decided break by break, so
-// tokens still flow as they arrive.
-const MAX_BUBBLES = 4;
-const MIN_BUBBLE_CHARS = 45;
+// The model's own paragraphs are unreliable - 8 thin ones, or 2 heavy ones -
+// so messages are rebuilt sentence by sentence on the way out: a sentence
+// joins the current message while it stays around TARGET characters, a new
+// message starts past that (or at the model's paragraph break, once the
+// current one has some body). Past MAX_BUBBLES the rest joins the last
+// message until it is LAST_LIMIT long, and anything beyond that is dropped
+// rather than piled on. Each sentence is sent once it ends.
+const TARGET = 70;
+const MIN_BODY = 25;
+const MAX_BUBBLES = 6;
+const LAST_LIMIT = 140;
+const SENTENCE_END = /[.?!…~][」』'"’”)]*$/;
 function createBubbleShaper() {
+  let sentence = "";
+  let bubbles = 0;
   let length = 0; // characters in the current message
-  let kept = 0; // breaks kept so far
-  let hold = ""; // whitespace after a newline, not yet decided
-  let last = ""; // last character sent, to avoid doubling a space
-  return (token: string): string => {
+  let newlines = 0;
+  let paragraphBreak = false; // the model broke a paragraph before this sentence
+  let closed = false; // the last message is full; drop the rest
+
+  const flush = (): string => {
+    const text = sentence.replace(/\s+/g, " ").trim();
+    sentence = "";
+    if (!text || closed) return "";
     let out = "";
-    for (const ch of token) {
-      if (ch === "\n" || (hold && /\s/.test(ch))) {
-        hold += ch;
-        continue;
-      }
-      if (hold) {
-        const isBreak = (hold.match(/\n/g) ?? []).length >= 2;
-        if (isBreak && kept < MAX_BUBBLES - 1 && length >= MIN_BUBBLE_CHARS) {
-          out += "\n\n";
-          kept += 1;
-          length = 0;
-        } else if (last && last !== " ") {
-          out += " ";
-        }
-        hold = "";
-      }
-      if (ch === " " && (last === " " || last === "" || out.endsWith("\n"))) continue;
-      out += ch;
-      last = ch;
-      length += 1;
+    if (bubbles === 0) {
+      bubbles = 1;
+    } else if (length >= MIN_BODY && (paragraphBreak || length + text.length > TARGET) && bubbles < MAX_BUBBLES) {
+      out += "\n\n";
+      bubbles += 1;
+      length = 0;
+    } else if (bubbles >= MAX_BUBBLES && length + text.length > LAST_LIMIT) {
+      closed = true;
+      return "";
+    } else {
+      out += " ";
     }
-    return out;
+    paragraphBreak = false;
+    length += text.length;
+    return out + text;
+  };
+
+  return {
+    push(token: string): string {
+      let out = "";
+      for (const ch of token) {
+        if (ch === "\n") {
+          out += flush();
+          newlines += 1;
+          if (newlines >= 2) paragraphBreak = true;
+          continue;
+        }
+        if (ch.trim() === "") {
+          if (SENTENCE_END.test(sentence)) out += flush();
+          else if (sentence) sentence += ch;
+          continue;
+        }
+        newlines = 0;
+        sentence += ch;
+      }
+      return out;
+    },
+    end(): string {
+      return flush();
+    },
   };
 }
 
@@ -277,16 +306,15 @@ export async function POST(req: NextRequest) {
           max_tokens: 600,
         });
 
-        const shape = createBubbleShaper();
+        const shaper = createBubbleShaper();
+        const send = (token: string) => {
+          if (token) controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token })}\n\n`));
+        };
         for await (const chunk of completion) {
           const raw = chunk.choices[0]?.delta?.content;
-          const token = raw ? shape(raw) : "";
-          if (token) {
-            controller.enqueue(
-              encoder.encode(`data: ${JSON.stringify({ token })}\n\n`),
-            );
-          }
+          if (raw) send(shaper.push(raw));
         }
+        send(shaper.end());
 
         controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true })}\n\n`));
       } catch (e) {
