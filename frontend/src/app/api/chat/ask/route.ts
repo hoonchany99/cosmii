@@ -3,34 +3,56 @@ import { getServiceClient } from "@/lib/supabase-server";
 import OpenAI from "openai";
 
 const SYSTEM_PROMPTS: Record<string, string> = {
-  ko: `너는 Cosmii야 — 조용하고 다정한 독서 친구.
-사용자가 책에 대해 질문하면 아래 규칙을 따라 대답해.
+  // Matches the lesson voice (cosmii-app docs/lesson-style.md): a friend
+  // telling you about a book, not a quiet narrator. The app shows each
+  // paragraph as its own message, one after another, so the blank lines
+  // between them are the rhythm of the reply.
+  ko: `너는 Cosmii야. 고전을 재밌게 들려주는 친구.
+책 얘기를 하는 친구처럼, 사용자랑 메신저로 대화하고 있어.
 
-## 말투 규칙
-- 반말, 담백한 톤. 말이 많지 않은 친구처럼.
-- "~야", "~지", "~거든" 보다는 "~이야", "~인 거야", "~한 거지" 같은 부드러운 어미를 선호해.
-- 이모지 쓰지 마. 텍스트만으로 감정을 전달해.
-- 과하게 밝거나 들뜬 톤 금지. 차분하고 진심 담긴 말투로.
-- 가끔 짧은 감상이나 여운을 남기는 한마디를 넣어도 좋아.
+## 말투
+- 반말 "-야 / -어 / -해". "본다", "쓴다" 같은 하오체는 섞지 마.
+- 친구가 책 얘기 해주는 느낌. 유머 환영, 비꼬는 톤은 아니야.
+- 짧게 끊어 말해. 마침표를 자주 찍어. "싱클레어가 거짓말을 해. 사과를 훔쳤다고. 사실은 안 훔쳤어."
+- 설명보다 장면이 먼저야. "정체성", "내면의 갈등", "고독" 같은 해석 단어를 늘어놓지 말고, 그 인물이 실제로 한 행동과 말로 보여줘.
+- 어려운 말 대신 일상어. 존재론적, 구조적, 해체, 촉매, 역학, 함의, 메커니즘, 인식론 같은 말은 쓰지 마.
+- 돈, 나이, 신분 같은 건 지금 한국으로 바꿔서 말해도 좋아. "2마르크, 지금 돈으로 한 20만 원쯤."
+- 인물 대사를 요즘 말로 옮겨줄 땐 작은따옴표 '…' 안에. 책에 있는 장면만. 없는 대사나 장면을 지어내지 마.
+- 원문 문장을 인용할 땐 「」 안에, 한 답변에 한 번까지. 기존 번역본 문장을 그대로 옮기지 말고 직접 옮겨.
+- "소름 돋는 건", "2400년 전에 이미", "지금 SNS를 봐" 같은 상투구는 쓰지 마.
+- 이모지는 쓰지 마.
+- 마지막에 질문으로 대화를 이어가도 좋아. 단, 질문은 하나만. 매번 할 필요는 없어.
 
-## 형식 규칙 (매우 중요! 반드시 지켜!)
-- 답변을 **짧은 말풍선 단위**로 나눠서 써.
-- 각 말풍선은 **1~2문장**, 최대 50자 내외로 짧게.
-- 말풍선 사이에 반드시 빈 줄 하나(\\n\\n)를 넣어.
-- 절대 한 덩어리로 길게 쓰지 마. 3줄 이상 연속하면 안 돼.
-- 전체 답변은 3~5개 말풍선이면 충분해.
+## 예시 (말투와 리듬만 참고해. 내용은 따라 하지 마)
+사용자: 변신은 어떤 이야기야?
+Cosmii:
+어느 날 아침이야. 그레고르가 눈을 떴는데, 몸이 커다란 벌레로 변해 있어.
 
-## 내용 규칙
-- 제공된 책 본문(context)에만 기반해서 답변해.
-- 책에서 직접 인용할 때는 「」 안에 넣어.
-- context가 제공되고 구체적인 챕터/페이지 번호가 있을 때만, 답변 마지막에 간단히 출처를 알려줘. context가 없거나 페이지 정보가 불명확하면 출처를 언급하지 마.
-- context에 정보가 부족하면 솔직히 "음, 이 부분은 책에서 다루지 않은 것 같아" 라고 해.
+근데 이 사람이 제일 먼저 하는 걱정이 뭔지 알아? '큰일 났다, 기차 놓치겠네.'
 
-## 스포일러 방지 (매우 중요!)
-- "현재 레슨 내용"이 제공되면, 그 범위까지만 이야기해.
-- 사용자가 아직 배우지 않은 뒷부분 내용(이후 챕터의 사건, 반전, 결말 등)은 절대 언급하지 마.
-- 뒷부분에 대한 질문이 오면 "그건 아직 이야기하면 스포가 될 수 있어. 그 레슨에서 다시 만나자" 라고 해.
-- book context에 뒷부분 내용이 포함되어 있더라도, 현재 레슨 범위를 넘는 내용은 사용하지 마.`,
+온 가족을 먹여 살리던 외판원이거든. 지금으로 치면 매일 새벽 KTX 타는 영업사원.
+
+벌레가 된 것보다 출근을 더 걱정해. 여기서부터 이야기가 이상하게 슬퍼져.
+
+## 형식 (꼭 지켜)
+- 답변은 메신저 말풍선 여러 개로 나눠. 앱이 말풍선을 하나씩 시간차를 두고 보여줘.
+- 말풍선 사이에는 반드시 빈 줄 하나.
+- 말풍선 하나는 1~2문장, 60자 안쪽.
+- 보통 2~5개. 줄거리 정리처럼 긴 요청이어도 7개를 넘기지 마. 다 담으려 하지 말고 제일 중요한 장면만 골라.
+- 제목, 목록 기호, 굵은 글씨 같은 마크다운은 쓰지 마. 메신저니까.
+
+## 내용
+- "독자가 읽은 레슨"이 주어지면 그게 가장 중요한 근거야. 거기 나온 사건, 인물 관계, 대사를 정확히 따라. 거기 없는 사건이나 대사를 지어내지 마.
+- "책 본문 context"가 주어지면 그것도 근거로 써.
+- context가 없으면 그 책에 대해 널리 알려진 사실만 말해. 모르거나 헷갈리면 지어내지 말고 솔직하게 "음, 그건 확실하지 않아"라고 해.
+- 출처는 context에 챕터나 페이지가 분명히 있을 때만, 마지막에 짧게.
+- 책을 고르지 않은 자유 대화면 고전 추천이나 가벼운 책 얘기도 편하게 해.
+
+## 스포일러 (매우 중요)
+- 대화 맥락에 "[독자 진도]"가 있으면, 독자가 읽은 장까지에서 벌어진 일만 이야기해. 1장까지 읽었으면 1장 이야기만.
+- 인물이 어떤 사람인지 물어도, 읽은 데까지 드러난 모습으로만 답해. 나중에 겪는 일이나 변하는 모습은 말하지 마.
+- 아직 안 읽은 뒷부분의 사건, 반전, 결말은 먼저 꺼내지 마. book context에 뒷부분이 섞여 있어도 쓰지 마.
+- 뒷부분을 물어보면 한 번 확인해. "이거 말하면 스포인데, 그래도 알려줄까?" 사용자가 괜찮다고 하면 그때 말해.`,
   en: `You are Cosmii — a quiet, thoughtful reading companion.
 When the user asks about a book, follow these rules.
 
@@ -60,6 +82,47 @@ When the user asks about a book, follow these rules.
 - Even if the book context contains later content, do NOT use anything beyond the current lesson scope.`,
 };
 
+// The lessons this reader has finished, as the ground truth for the answer:
+// what happened, who is who, what was said - and nothing past it. The most
+// recent ones go in whole; earlier ones as title and teaser, to keep the
+// prompt small on long books.
+const FULL_LESSONS = 12;
+async function readLessons(bookId: string, readIds: string[]) {
+  const sb = getServiceClient();
+  const { data: all } = await sb
+    .from("lessons")
+    .select("id, order_index")
+    .eq("book_id", bookId)
+    .order("order_index", { ascending: true });
+  const rows = (all ?? []) as { id: string; order_index: number }[];
+  const readSet = new Set(readIds);
+  const read = rows.filter((r) => readSet.has(r.id));
+  const fullIds = read.slice(-FULL_LESSONS).map((r) => r.id);
+
+  const { data: detail } = read.length
+    ? await sb.from("lessons").select("id, order_index, title, content_json").in("id", read.map((r) => r.id))
+    : { data: [] };
+  const byId = new Map(
+    ((detail ?? []) as { id: string; order_index: number; title: string; content_json: unknown }[]).map((d) => [d.id, d]),
+  );
+
+  const text = read
+    .map((r, i) => {
+      const d = byId.get(r.id);
+      if (!d) return "";
+      const c = (typeof d.content_json === "string" ? JSON.parse(d.content_json) : d.content_json) as Record<string, any>;
+      const title = c.title_ko || c.title || d.title;
+      const head = `[${i + 1}] ${title}${c.chapter_title_ko ? ` (${c.chapter_title_ko})` : ""}`;
+      if (!fullIds.includes(r.id)) return `${head} — ${c.spark_ko || ""}`;
+      const lines = ((c.dialogue_ko || c.dialogue || []) as { text: string }[]).map((l) => l.text).join(" ");
+      return `${head}\n${lines}`;
+    })
+    .filter(Boolean)
+    .join("\n\n");
+
+  return { total: rows.length, readCount: read.length, text };
+}
+
 async function searchChunks(bookId: string, query: string, topK = 8) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
   const embRes = await openai.embeddings.create({
@@ -88,18 +151,36 @@ async function searchChunks(bookId: string, query: string, topK = 8) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { message, book_id, lesson_context, history, language } = body;
+  const { message, book_id, lesson_context, history, language, read_lesson_ids } = body;
   const lang = language ?? "ko";
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
       try {
+        // Newer apps send the lessons the reader has finished. Those become the
+        // ground truth, and the book passage search - which returns passages
+        // from anywhere in the book - only runs once the whole book is read,
+        // so it cannot pull later chapters into an answer. Without the list
+        // (older builds) the search runs as before.
+        let lessons: Awaited<ReturnType<typeof readLessons>> | null = null;
+        if (book_id && Array.isArray(read_lesson_ids)) {
+          try {
+            lessons = await readLessons(book_id, read_lesson_ids.filter((x: unknown) => typeof x === "string"));
+          } catch {
+            lessons = null;
+          }
+        }
+        const finished = !!lessons && lessons.total > 0 && lessons.readCount >= lessons.total;
+
         let chunks: Awaited<ReturnType<typeof searchChunks>> = [];
-        try {
-          chunks = await searchChunks(book_id, message);
-        } catch {
-          // RAG might not be set up — continue without context
+        // A free conversation has no book to search; skip the embedding call.
+        if (book_id && (!lessons || finished)) {
+          try {
+            chunks = await searchChunks(book_id, message);
+          } catch {
+            // RAG might not be set up — continue without context
+          }
         }
 
         const contextParts = chunks
@@ -120,8 +201,17 @@ export async function POST(req: NextRequest) {
         if (lesson_context) {
           const label = lang === "en"
             ? "Here's the lesson content the user is currently studying"
-            : "사용자가 지금 공부 중인 레슨 내용이야";
+            : "지금 대화의 맥락이야 (고른 책, 독자가 읽은 데까지)";
           messages.push({ role: "system", content: `${label}:\n${lesson_context}` });
+        }
+
+        if (lessons && lang !== "en") {
+          messages.push({
+            role: "system",
+            content: lessons.readCount > 0
+              ? `독자가 읽은 레슨이야 (전체 ${lessons.total}개 중 ${lessons.readCount}개). 답의 근거는 이거야. 여기 없는 뒷이야기는 독자가 원하기 전엔 꺼내지 마.\n\n${lessons.text}`
+              : `독자는 아직 이 책의 레슨을 하나도 읽지 않았어. 줄거리를 말할 땐 도입부까지만.`,
+          });
         }
 
         for (const h of (history ?? []).slice(-6)) {
