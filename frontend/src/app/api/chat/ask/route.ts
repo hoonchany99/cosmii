@@ -21,7 +21,8 @@ const SYSTEM_PROMPTS: Record<string, string> = {
 - 원문 문장을 인용할 땐 「」 안에, 한 답변에 한 번까지. 기존 번역본 문장을 그대로 옮기지 말고 직접 옮겨.
 - "소름 돋는 건", "2400년 전에 이미", "지금 SNS를 봐" 같은 상투구는 쓰지 마.
 - 이모지는 쓰지 마.
-- 마지막에 질문으로 대화를 이어가도 좋아. 단, 질문은 하나만. 매번 할 필요는 없어.
+- 질문은 가끔만. 두세 번 답할 때 한 번 정도, 마지막에 하나만. 대부분은 질문 없이 여운을 남기며 끝내.
+- 책을 추천한 답에선 질문하지 마. 추천으로 끝내.
 
 ## 예시 (말투와 리듬만 참고해. 내용은 따라 하지 마)
 사용자: 변신은 어떤 이야기야?
@@ -149,8 +150,11 @@ const MIN_BODY = 25;
 const MAX_BUBBLES = 6;
 const LAST_LIMIT = 140;
 const SENTENCE_END = /[.?!…~][」』'"’”)]*$/;
-function createBubbleShaper() {
+function createBubbleShaper({ dropTrailingQuestion = false } = {}) {
   let sentence = "";
+  // Each sentence is held until the next one arrives, so the last can still be
+  // dropped when this reply shouldn't end on a question.
+  let held: { text: string; paragraphBreak: boolean } | null = null;
   let bubbles = 0;
   let length = 0; // characters in the current message
   let newlines = 0;
@@ -160,11 +164,19 @@ function createBubbleShaper() {
   const flush = (): string => {
     const text = sentence.replace(/\s+/g, " ").trim();
     sentence = "";
-    if (!text || closed) return "";
+    if (!text) return "";
+    const previous = held;
+    held = { text, paragraphBreak };
+    paragraphBreak = false;
+    return previous ? emit(previous.text, previous.paragraphBreak) : "";
+  };
+
+  const emit = (text: string, breakBefore: boolean): string => {
+    if (closed) return "";
     let out = "";
     if (bubbles === 0) {
       bubbles = 1;
-    } else if (length >= MIN_BODY && (paragraphBreak || length + text.length > TARGET) && bubbles < MAX_BUBBLES) {
+    } else if (length >= MIN_BODY && (breakBefore || length + text.length > TARGET) && bubbles < MAX_BUBBLES) {
       out += "\n\n";
       bubbles += 1;
       length = 0;
@@ -174,7 +186,6 @@ function createBubbleShaper() {
     } else {
       out += " ";
     }
-    paragraphBreak = false;
     length += text.length;
     return out + text;
   };
@@ -200,7 +211,13 @@ function createBubbleShaper() {
       return out;
     },
     end(): string {
-      return flush();
+      const out = flush();
+      const last = held;
+      held = null;
+      if (!last) return out;
+      const endsOnQuestion = /[?？][」』'"’”)]*$/.test(last.text);
+      if (dropTrailingQuestion && endsOnQuestion && bubbles > 0) return out;
+      return out + emit(last.text, last.paragraphBreak);
     },
   };
 }
@@ -250,6 +267,21 @@ export async function POST(req: NextRequest) {
           messages.push({ role: h.role, content: h.content });
         }
 
+        // Questions are rationed here rather than left to the model, which
+        // asked one nearly every time: never twice in a row.
+        const lastReply = [...(history ?? [])].reverse().find((h: { role: string }) => h.role === "assistant") as
+          | { content: string }
+          | undefined;
+        const askedLastTime = !!lastReply && /[?？][」』'"’”)]*\s*$/.test(lastReply.content.trim());
+        if (lang !== "en") {
+          messages.push({
+            role: "system",
+            content: askedLastTime
+              ? "방금 답에서 질문을 했으니, 이번 답은 질문 없이 끝내. 물음표로 끝나는 문장을 쓰지 마."
+              : "이번 답은 질문 없이 끝내는 게 기본이야. 사용자가 짧게 답해서 대화가 끊길 것 같을 때만 마지막에 질문 하나.",
+          });
+        }
+
         messages.push({ role: "user", content: message });
 
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
@@ -261,7 +293,7 @@ export async function POST(req: NextRequest) {
           max_tokens: 600,
         });
 
-        const shaper = createBubbleShaper();
+        const shaper = createBubbleShaper({ dropTrailingQuestion: askedLastTime });
         const send = (token: string) => {
           if (token) controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token })}\n\n`));
         };
