@@ -128,16 +128,24 @@ export async function POST(req: NextRequest) {
   const around = at >= 0 ? parts.slice(Math.max(0, at - 2), at + 2) : [];
   const performed = await direct(say, text, parts[at], around);
 
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_64`, {
-    method: "POST",
-    headers: { "xi-api-key": apiKey, "Content-Type": "application/json", Accept: "audio/mpeg" },
-    body: JSON.stringify({
-      text: performed,
-      model_id: MODEL,
-      // v3 takes 0 (creative), 0.5 (natural) or 1 (robust).
-      voice_settings: { stability: 0.5, similarity_boost: 0.75 },
-    }),
-  });
+  const speak = () =>
+    fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_64`, {
+      method: "POST",
+      headers: { "xi-api-key": apiKey, "Content-Type": "application/json", Accept: "audio/mpeg" },
+      body: JSON.stringify({
+        text: performed,
+        model_id: MODEL,
+        // v3 takes 0 (creative), 0.5 (natural) or 1 (robust).
+        voice_settings: { stability: 0.5, similarity_boost: 0.75 },
+      }),
+    });
+  // The plan allows only a few voices at once; the app asks for the next lines
+  // ahead, so a busy answer waits its turn.
+  let res = await speak();
+  for (let attempt = 0; res.status === 429 && attempt < 3; attempt++) {
+    await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
+    res = await speak();
+  }
   if (!res.ok) {
     console.error("tts: elevenlabs", res.status, (await res.text().catch(() => "")).slice(0, 200));
     return NextResponse.json({ error: "Voice failed" }, { status: 502 });
