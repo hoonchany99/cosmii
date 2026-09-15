@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getServiceClient } from "@/lib/supabase-server";
+import { encodeMp3, trimTrailingSilence } from "@/lib/voice-trim";
 
 // Cosmii's voice for the lesson reader's 듣기 mode. The app sends one line as
 // it shows on screen plus the lesson it came from; the line is checked against
@@ -22,7 +23,11 @@ export const maxDuration = 60;
 const BUCKET = "lesson-audio";
 const MODEL = "eleven_v3";
 // Bump to re-voice every line after changing how lines are directed.
-const DIRECTION = "d2";
+const DIRECTION = "d3";
+const RATE = 24000;
+// v3 clips a line's last word unless something follows it; a held pause does,
+// and trimTrailingSilence takes it back out.
+const HOLD = " [pause] … …";
 const MAX_CHARS = 400;
 
 type Part = { text: string; kind?: string; highlight?: string | null };
@@ -129,11 +134,11 @@ export async function POST(req: NextRequest) {
   const performed = await direct(say, text, parts[at], around);
 
   const speak = () =>
-    fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_64`, {
+    fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=pcm_${RATE}`, {
       method: "POST",
-      headers: { "xi-api-key": apiKey, "Content-Type": "application/json", Accept: "audio/mpeg" },
+      headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
       body: JSON.stringify({
-        text: performed,
+        text: performed + HOLD,
         model_id: MODEL,
         // v3 takes 0 (creative), 0.5 (natural) or 1 (robust).
         voice_settings: { stability: 0.5, similarity_boost: 0.75 },
@@ -150,7 +155,10 @@ export async function POST(req: NextRequest) {
     console.error("tts: elevenlabs", res.status, (await res.text().catch(() => "")).slice(0, 200));
     return NextResponse.json({ error: "Voice failed" }, { status: 502 });
   }
-  const audio = Buffer.from(await res.arrayBuffer());
+  // Raw 16-bit PCM, so the held pause can be trimmed before it's kept as mp3.
+  const raw = new Uint8Array(await res.arrayBuffer());
+  const pcm = new Int16Array(raw.buffer, raw.byteOffset, raw.byteLength >> 1);
+  const audio = encodeMp3(trimTrailingSilence(pcm, RATE), RATE);
 
   const { error: uploadError } = await sb.storage.from(BUCKET).upload(path, audio, {
     contentType: "audio/mpeg",
