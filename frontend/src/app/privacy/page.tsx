@@ -28,7 +28,7 @@ export default function PrivacyPage() {
                 <strong className={strong}>코스미와의 대화</strong> — 대화 기록은 기기에만 저장되며 저희 서버에 보관하지 않습니다. 답을 만들 때 전송되는 내용은 아래 3항에 적었습니다.
               </li>
               <li>
-                <strong className={strong}>기기에만 남는 정보</strong> — 읽기 알림 시간, 하루 목표 같은 설정은 기기에 저장됩니다. 로그인하지 않은 동안에는 봉인을 뜯은 책과 완독 날짜도 기기에만 저장됩니다. 알림은 기기에서 예약되며 서버로 전송되지 않습니다.
+                <strong className={strong}>기기에만 남는 정보</strong> — 읽기 알림 시간, 하루 목표, 음소거 같은 설정은 기기에 저장됩니다. 로그인하지 않은 동안에는 봉인을 뜯은 책과 완독 날짜도 기기에만 저장됩니다. 알림은 기기에서 예약되며 서버로 전송되지 않습니다.
               </li>
             </ul>
             <p className="mt-3">광고 식별자를 수집하지 않고, 광고나 사용자 추적 도구를 사용하지 않습니다.</p>
@@ -64,6 +64,7 @@ export default function PrivacyPage() {
               <li><strong className={strong}>Supabase</strong> — 계정 인증, 읽기 기록 저장</li>
               <li><strong className={strong}>Vercel</strong> — 앱 서버 운영 (대화 요청 전달)</li>
               <li><strong className={strong}>OpenAI</strong> — 대화 답변 생성 (3항)</li>
+              <li><strong className={strong}>ElevenLabs</strong> — 레슨 음성 생성 (레슨 문장만 전송하며, 이용자 정보는 보내지 않습니다)</li>
               <li><strong className={strong}>Apple, Google</strong> — 로그인</li>
             </ul>
             <p className="mt-3">위 목적 외에 정보를 판매하거나 제3자에게 제공하지 않습니다.</p>

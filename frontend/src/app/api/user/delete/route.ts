@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revokeAppleTokens } from "@/lib/apple-revoke";
 import { getServiceClient } from "@/lib/supabase-server";
 
 // Deletes the signed-in account and everything stored for it. The iOS app
@@ -16,6 +17,15 @@ export async function DELETE(req: NextRequest) {
   const { data, error } = await sb.auth.getUser(token);
   if (error || !data.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const userId = data.user.id;
+
+  // An Apple account also has the app's Apple tokens revoked. A failure is
+  // logged but doesn't stop the deletion the user asked for.
+  const body = (await req.json().catch(() => null)) as { apple_authorization_code?: unknown } | null;
+  const appleCode = typeof body?.apple_authorization_code === "string" ? body.apple_authorization_code : "";
+  if (appleCode) {
+    const revoked = await revokeAppleTokens(appleCode);
+    if (revoked !== "revoked") console.warn("account delete: apple tokens", revoked);
+  }
 
   for (const table of USER_TABLES) {
     const { error: deleteError } = await sb.from(table).delete().eq("user_id", userId);
