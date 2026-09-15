@@ -69,9 +69,31 @@ export function speechEnd(alignment: Alignment, line: string): number | null {
   return null;
 }
 
-// The line up to `seconds`, a breath after it, faded out so it doesn't click.
+// The line up to where its voice actually stops: the timing of the last letter
+// can come a little early, so the cut waits for the first real silence after
+// it (never more than a second), keeps a breath, and fades so it doesn't click.
+const SETTLE_MS = 160;
+const LOOK_AHEAD_MS = 1000;
+
 export function cutAt(pcm: Int16Array, rate: number, seconds: number): Int16Array {
-  const cut = Math.min(pcm.length, Math.round((seconds + KEEP_AFTER_MS / 1000) * rate));
+  const win = Math.round((rate * WINDOW_MS) / 1000);
+  const loud = (w: number) => {
+    let sum = 0;
+    for (let j = w * win; j < (w + 1) * win && j < pcm.length; j++) sum += pcm[j] * pcm[j];
+    return 20 * Math.log10(Math.sqrt(sum / win) / 32768 + 1e-9) > SILENT_DB;
+  };
+  const from = Math.floor((seconds * rate) / win);
+  const last = Math.min(Math.floor(pcm.length / win), from + LOOK_AHEAD_MS / WINDOW_MS);
+  const settle = SETTLE_MS / WINDOW_MS;
+  let stop = last;
+  for (let w = from, quiet = 0; w < last; w++) {
+    quiet = loud(w) ? 0 : quiet + 1;
+    if (quiet >= settle) {
+      stop = w - settle + 1;
+      break;
+    }
+  }
+  const cut = Math.min(pcm.length, stop * win + Math.round((rate * KEEP_AFTER_MS) / 1000));
   const out = pcm.slice(0, cut);
   const fade = Math.min(out.length, Math.round(rate * 0.06));
   for (let i = 0; i < fade; i++) out[out.length - fade + i] = Math.round(out[out.length - fade + i] * (1 - i / fade));

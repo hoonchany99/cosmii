@@ -23,7 +23,7 @@ export const maxDuration = 60;
 const BUCKET = "lesson-audio";
 const MODEL = "eleven_v3";
 // Bump to re-voice every line after changing how lines are directed.
-const DIRECTION = "d4";
+const DIRECTION = "d5";
 const RATE = 24000;
 // v3 clips a line's last word unless something follows it; a held pause does,
 // and trimTrailingSilence takes it back out.
