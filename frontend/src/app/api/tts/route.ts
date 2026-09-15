@@ -7,6 +7,9 @@ import { getServiceClient } from "@/lib/supabase-server";
 // that lesson's text, so this can only ever read the library aloud. Each line
 // is spoken once by ElevenLabs and kept in the public `lesson-audio` bucket,
 // keyed by voice, model and text, so every later listen is a plain file.
+// Nothing is made ahead: a line is kept only once someone has listened to it.
+// 64 kbps is plenty for one speaking voice and keeps the whole library under
+// the free storage tier.
 const BUCKET = "lesson-audio";
 const MODEL = "eleven_multilingual_v2";
 const MAX_CHARS = 400;
@@ -53,7 +56,7 @@ export async function POST(req: NextRequest) {
   const cached = await fetch(url, { method: "HEAD", cache: "no-store" }).catch(() => null);
   if (cached?.ok) return NextResponse.json({ url });
 
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`, {
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_64`, {
     method: "POST",
     headers: { "xi-api-key": apiKey, "Content-Type": "application/json", Accept: "audio/mpeg" },
     body: JSON.stringify({
