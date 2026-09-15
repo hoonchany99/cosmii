@@ -22,7 +22,7 @@ export const maxDuration = 60;
 const BUCKET = "lesson-audio";
 const MODEL = "eleven_v3";
 // Bump to re-voice every line after changing how lines are directed.
-const DIRECTION = "d1";
+const DIRECTION = "d2";
 const MAX_CHARS = 400;
 
 type Part = { text: string; kind?: string; highlight?: string | null };
@@ -39,8 +39,9 @@ function spoken(text: string) {
     .trim();
 }
 
-// The words alone: tags, pauses and spacing removed.
-const words = (s: string) => s.replace(/\[[^\]]*\]/g, "").replace(/(\.\.\.|[…,—\s])/g, "");
+// The words alone: tags, punctuation and spacing removed. A moved comma or
+// question mark is harmless; a changed word is not.
+const words = (s: string) => s.replace(/\[[^\]]*\]/g, "").replace(/[^가-힣A-Za-z0-9]/g, "");
 
 const DIRECTOR = `You direct a Korean audiobook narrator. The narrator is Cosmii, a being who has heard every story since the universe began, telling a classic to a friend in casual Korean (반말).
 
@@ -77,10 +78,16 @@ async function direct(line: string, shown: string, part: Part | undefined, aroun
         },
       ],
     });
-    const out = (completion.choices[0]?.message?.content ?? "").trim().replace(/^["'`]+|["'`]+$/g, "");
+    const out = (completion.choices[0]?.message?.content ?? "")
+      .trim()
+      .replace(/^["'`]+|["'`]+$/g, "")
+      .replace(/[「」『』《》]/g, "");
     const tagsOk = (out.match(/\[[^\]]*\]/g) ?? []).every((t) => /^\[[A-Za-z ,'-]{2,48}\]$/.test(t));
-    if (out && tagsOk && words(out) === words(line)) return out;
-    console.warn("tts: direction changed the words, voicing plain");
+    if (out && tagsOk && words(out) === words(line)) {
+      console.log("tts: performed", out);
+      return out;
+    }
+    console.warn("tts: direction changed the words, voicing plain:", out);
   } catch (e) {
     console.warn("tts: direction failed", e instanceof Error ? e.message : e);
   }
