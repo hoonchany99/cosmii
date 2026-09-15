@@ -1,14 +1,15 @@
 import { createHash } from "node:crypto";
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
 import { directLesson, MODEL, spoken, squash, voiceLesson, type Part } from "@/lib/lesson-voice";
 
 // 듣기 mode, a lesson at a time. The app sends the lesson's speech bubbles as
 // it shows them; every one is checked against the lesson, so this can only
-// read the library aloud. The first listener waits while the whole lesson is
-// voiced in one take (see lib/lesson-voice); the bubbles are kept in the
-// public `lesson-audio` bucket with a small manifest, so every later listen
-// is plain files.
+// read the library aloud. The first time, the whole lesson is voiced in one
+// take (see lib/lesson-voice), which takes a minute or more: the request
+// answers 202 at once and the voicing carries on after the response, and the
+// app asks again until the manifest is there. The bubbles are kept in the
+// public `lesson-audio` bucket, so every later listen is plain files.
 export const maxDuration = 300;
 
 const BUCKET = "lesson-audio";
@@ -16,6 +17,8 @@ const BUCKET = "lesson-audio";
 const DIRECTION = "L1";
 const MAX_LINES = 120;
 const MAX_TOTAL = 8000;
+// A lesson being voiced is marked, so a second request doesn't voice it twice.
+const PENDING_MS = 5 * 60 * 1000;
 
 export async function POST(req: NextRequest) {
   const voiceId = process.env.ELEVENLABS_VOICE_ID;
@@ -46,34 +49,47 @@ export async function POST(req: NextRequest) {
   const key = createHash("sha256").update(`${voiceId}:${MODEL}:${DIRECTION}:${lessonId}:${JSON.stringify(say)}`).digest("hex").slice(0, 32);
   const dir = `${voiceId}/lessons/${key}`;
   const storage = sb.storage.from(BUCKET);
-  const manifestUrl = storage.getPublicUrl(`${dir}/manifest.json`).data.publicUrl;
 
-  const cached = await fetch(manifestUrl, { cache: "no-store" }).catch(() => null);
-  if (cached?.ok) {
-    const manifest = (await cached.json().catch(() => null)) as { urls?: string[] } | null;
-    if (manifest?.urls?.length === lines.length) return NextResponse.json({ urls: manifest.urls });
+  // Read through the storage API, not the public CDN, so a lesson just voiced
+  // is seen at once.
+  const manifest = await storage.download(`${dir}/manifest.json`);
+  if (manifest.data) {
+    const saved = JSON.parse(await manifest.data.text()) as { urls?: string[] };
+    if (saved.urls?.length === lines.length) return NextResponse.json({ urls: saved.urls });
   }
 
-  try {
-    const owner = (l: string) => parts.find((p) => squash(p.text).includes(squash(l)));
-    const directed = await directLesson(say, lines.map(owner));
-    const audio = await voiceLesson(directed);
-    const urls: string[] = [];
-    for (let i = 0; i < audio.length; i++) {
-      const path = `${dir}/${String(i).padStart(3, "0")}.mp3`;
-      const { error } = await storage.upload(path, audio[i], { contentType: "audio/mpeg", cacheControl: "31536000", upsert: true });
-      if (error) throw new Error(`upload ${error.message}`);
-      urls.push(storage.getPublicUrl(path).data.publicUrl);
+  const pending = await storage.download(`${dir}/pending.json`);
+  if (pending.data) {
+    const { since } = JSON.parse(await pending.data.text()) as { since?: number };
+    if (since && Date.now() - since < PENDING_MS) return NextResponse.json({ status: "voicing" }, { status: 202 });
+  }
+  await storage.upload(`${dir}/pending.json`, JSON.stringify({ since: Date.now() }), {
+    contentType: "application/json",
+    upsert: true,
+  });
+
+  after(async () => {
+    try {
+      const owner = (l: string) => parts.find((p) => squash(p.text).includes(squash(l)));
+      const directed = await directLesson(say, lines.map(owner));
+      const audio = await voiceLesson(directed);
+      const urls: string[] = [];
+      for (let i = 0; i < audio.length; i++) {
+        const path = `${dir}/${String(i).padStart(3, "0")}.mp3`;
+        const { error } = await storage.upload(path, audio[i], { contentType: "audio/mpeg", cacheControl: "31536000", upsert: true });
+        if (error) throw new Error(`upload ${error.message}`);
+        urls.push(storage.getPublicUrl(path).data.publicUrl);
+      }
+      const { error } = await storage.upload(`${dir}/manifest.json`, JSON.stringify({ urls, directed }), {
+        contentType: "application/json",
+        upsert: true,
+      });
+      if (error) throw new Error(`manifest ${error.message}`);
+    } catch (e) {
+      console.error("tts lesson:", e instanceof Error ? e.message : e);
+    } finally {
+      await storage.remove([`${dir}/pending.json`]);
     }
-    const { error } = await storage.upload(`${dir}/manifest.json`, JSON.stringify({ urls, directed }), {
-      contentType: "application/json",
-      cacheControl: "60",
-      upsert: true,
-    });
-    if (error) throw new Error(`manifest ${error.message}`);
-    return NextResponse.json({ urls });
-  } catch (e) {
-    console.error("tts lesson:", e instanceof Error ? e.message : e);
-    return NextResponse.json({ error: "Voice failed" }, { status: 502 });
-  }
+  });
+  return NextResponse.json({ status: "voicing" }, { status: 202 });
 }
