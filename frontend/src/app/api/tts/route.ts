@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { getServiceClient } from "@/lib/supabase-server";
-import { encodeMp3, trimTrailingSilence } from "@/lib/voice-trim";
+import { cutAt, encodeMp3, speechEnd, trimTrailingSilence, type Alignment } from "@/lib/voice-trim";
 
 // Cosmii's voice for the lesson reader's 듣기 mode. The app sends one line as
 // it shows on screen plus the lesson it came from; the line is checked against
@@ -23,7 +23,7 @@ export const maxDuration = 60;
 const BUCKET = "lesson-audio";
 const MODEL = "eleven_v3";
 // Bump to re-voice every line after changing how lines are directed.
-const DIRECTION = "d3";
+const DIRECTION = "d4";
 const RATE = 24000;
 // v3 clips a line's last word unless something follows it; a held pause does,
 // and trimTrailingSilence takes it back out.
@@ -134,7 +134,7 @@ export async function POST(req: NextRequest) {
   const performed = await direct(say, text, parts[at], around);
 
   const speak = () =>
-    fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=pcm_${RATE}`, {
+    fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps?output_format=pcm_${RATE}`, {
       method: "POST",
       headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -155,10 +155,20 @@ export async function POST(req: NextRequest) {
     console.error("tts: elevenlabs", res.status, (await res.text().catch(() => "")).slice(0, 200));
     return NextResponse.json({ error: "Voice failed" }, { status: 502 });
   }
-  // Raw 16-bit PCM, so the held pause can be trimmed before it's kept as mp3.
-  const raw = new Uint8Array(await res.arrayBuffer());
-  const pcm = new Int16Array(raw.buffer, raw.byteOffset, raw.byteLength >> 1);
-  const audio = encodeMp3(trimTrailingSilence(pcm, RATE), RATE);
+  // Raw 16-bit PCM with each character's timing: the line is cut just after its
+  // last word, which drops the held pause and any stray sound v3 made in it.
+  const voiced = (await res.json()) as { audio_base64?: string; alignment?: Alignment | null };
+  if (!voiced.audio_base64) {
+    console.error("tts: elevenlabs returned no audio");
+    return NextResponse.json({ error: "Voice failed" }, { status: 502 });
+  }
+  const raw = Buffer.from(voiced.audio_base64, "base64");
+  const bytes = new Uint8Array(raw.byteLength & ~1);
+  bytes.set(raw.subarray(0, bytes.byteLength));
+  const pcm = new Int16Array(bytes.buffer);
+  const end = voiced.alignment ? speechEnd(voiced.alignment, performed) : null;
+  if (end === null) console.warn("tts: no timing for the line, trimming by level");
+  const audio = encodeMp3(end === null ? trimTrailingSilence(pcm, RATE) : cutAt(pcm, RATE, end), RATE);
 
   const { error: uploadError } = await sb.storage.from(BUCKET).upload(path, audio, {
     contentType: "audio/mpeg",
