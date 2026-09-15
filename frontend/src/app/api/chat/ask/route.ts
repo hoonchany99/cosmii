@@ -54,7 +54,8 @@ Cosmii:
 - "[Cosmii 서가]"가 주어지면 책 추천은 반드시 그 안에서 골라. 서가에 없는 책은 추천하지 마.
 - 책 제목은 언제나 『』로 감싸. 예: 『변신』. 앱이 이걸 보고 그 책으로 가는 카드를 붙여줘.
 - 추천할 땐 한두 권만, 왜 이 사람한테 맞는지 한 줄로. "[독자]"에 읽는 중인 책이 있으면 그 책과 이어지는 걸 먼저 생각해. 다 읽은 책은 다시 추천하지 마.
-- 서가에 없는 책을 물어보면, 먼저 그 책이 어떤 이야기인지 한두 문장으로 말해 줘. 그다음 Cosmii에는 아직 없다고 하고, 서가에서 결이 비슷한 책 하나를 권해.
+- "[봉인된 책]"은 독자가 아직 제목을 모르는 책이야. 쪽지 한 줄로만 존재해. 권할 땐 제목이나 저자, 줄거리를 짐작해서 말하지 말고 쪽지 문장을 「」 안에 그대로 옮겨. 예: 「집에 돌아가는 길이 유난히 멀게 느껴지는 너에게」 이런 쪽지가 붙은 봉인된 책이 있어.
+- 서가에 없는 책을 물어보면, 먼저 그 책이 어떤 이야기인지 한두 문장으로 말해 줘. 그다음 서가에서 결이 비슷한 책 하나를 권해. Cosmii에 그 책이 있는지 없는지는 단정하지 마. 봉인돼 있을 수도 있거든.
 
 ## 스포일러 (매우 중요)
 - 대화 맥락에 "[독자 진도]"가 있으면, 독자가 읽은 장까지에서 벌어진 일만 이야기해. 1장까지 읽었으면 1장 이야기만.
@@ -223,9 +224,31 @@ function createBubbleShaper({ dropTrailingQuestion = false } = {}) {
   };
 }
 
+// Books still sealed for this reader are known to them only by a note. The
+// model isn't given their titles, but it knows the classics; should it name
+// one the reader hasn't named, the title is replaced before it's sent. The
+// shaper hands out whole sentences, so a title never straddles two sends.
+function sealedGuard(titles: unknown, message: unknown, history: unknown): (text: string) => string {
+  if (!Array.isArray(titles)) return (t) => t;
+  const said = [
+    typeof message === "string" ? message : "",
+    ...(Array.isArray(history) ? history : [])
+      .filter((h: { role?: string }) => h?.role === "user")
+      .map((h: { content?: unknown }) => (typeof h.content === "string" ? h.content : "")),
+  ].join("\n");
+  const hidden = titles
+    .filter((t): t is string => typeof t === "string" && t.length >= 2 && !said.includes(t))
+    .sort((a, b) => b.length - a.length);
+  if (!hidden.length) return (t) => t;
+  const escape = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // Only a title set as a title: several are everyday words (변신, 국가, 향연).
+  const pattern = new RegExp(`[『《](?:${hidden.map(escape).join("|")})[』》]`, "g");
+  return (text) => text.replace(pattern, "봉인된 책");
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { message, book_id, lesson_context, history, language, read_lesson_ids } = body;
+  const { message, book_id, lesson_context, history, language, read_lesson_ids, sealed_titles } = body;
   const lang = language ?? "ko";
 
   const encoder = new TextEncoder();
@@ -295,8 +318,9 @@ export async function POST(req: NextRequest) {
         });
 
         const shaper = createBubbleShaper({ dropTrailingQuestion: askedLastTime });
+        const unseal = sealedGuard(sealed_titles, message, history);
         const send = (token: string) => {
-          if (token) controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token })}\n\n`));
+          if (token) controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token: unseal(token) })}\n\n`));
         };
         for await (const chunk of completion) {
           const raw = chunk.choices[0]?.delta?.content;
