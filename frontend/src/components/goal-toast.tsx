@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowUp, Download } from "lucide-react";
 import { useT } from "@/lib/i18n";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 function useAutoToast(show: boolean, onDone: () => void, duration = 3000) {
   const [visible, setVisible] = useState(false);

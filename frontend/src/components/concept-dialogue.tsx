@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronUp } from "lucide-react";
 import { useT } from "@/lib/i18n";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface DialoguePart {
   speaker: string;

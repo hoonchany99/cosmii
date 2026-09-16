@@ -6,7 +6,7 @@ import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useT } from "@/lib/i18n";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 /* ── Texture generators (singleton cached) ── */
 

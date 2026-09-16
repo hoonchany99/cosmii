@@ -7,7 +7,7 @@ import { useT } from "@/lib/i18n";
 import { useAppStore, useSettingsStore, generateCosmiiName } from "@/lib/store";
 import { createClient } from "@/lib/supabase";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 const ease = [0.22, 1, 0.36, 1] as const;
 const PHASES = ["welcome", "name", "goal", "ready"] as const;
 type Phase = (typeof PHASES)[number];

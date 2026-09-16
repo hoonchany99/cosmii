@@ -32,7 +32,7 @@ interface ApiDemoBook {
 import { ConceptDialogue } from "@/components/concept-dialogue";
 import { QuizView } from "@/components/quiz-view";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 /* ═══════════════════════════════════════════════════════════════════

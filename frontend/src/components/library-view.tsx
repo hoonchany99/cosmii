@@ -5,7 +5,7 @@ import { Globe2, BookOpen, Play, Download } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useSettingsStore } from "@/lib/store";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface Book {
   id: string;

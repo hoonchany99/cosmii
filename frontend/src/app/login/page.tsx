@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase";
 import { useT } from "@/lib/i18n";
 import { useSettingsStore } from "@/lib/store";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 export default function AuthPage() {
   useEffect(() => {

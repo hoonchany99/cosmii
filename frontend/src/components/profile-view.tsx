@@ -22,7 +22,7 @@ import { useAppStore, useSettingsStore, generateCosmiiName } from "@/lib/store";
 import { useT } from "@/lib/i18n";
 import { CosmiiAvatar } from "./cosmii-avatar";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface ReadingBook {
   id: string;

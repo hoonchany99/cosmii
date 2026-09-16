@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Flame, Star, User } from "lucide-react";
 import { useAppStore, PRESET_AVATARS } from "@/lib/store";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface HudOverlayProps {
   onOpenProfile?: () => void;
@@ -57,7 +57,7 @@ export function HudOverlay({ onOpenProfile }: HudOverlayProps) {
               unoptimized
             />
           ) : profile.presetAvatar === "initial" && profile.name ? (
-            <span className="text-white/40 text-[14px] font-bold font-[var(--font-serif)]">
+            <span className="text-white/40 text-[14px] font-bold font-[family-name:var(--font-serif)]">
               {profile.name.charAt(0).toUpperCase()}
             </span>
           ) : (

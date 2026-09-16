@@ -7,7 +7,7 @@ import { useAppStore, useSettingsStore, generateCosmiiName, type DailyGoal } fro
 import { useT } from "@/lib/i18n";
 import { createClient } from "@/lib/supabase";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const DAILY_GOALS: { value: DailyGoal; minutes: number; labelKey: string; descKey: string }[] = [

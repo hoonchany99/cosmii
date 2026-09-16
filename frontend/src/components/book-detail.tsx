@@ -17,7 +17,7 @@ import { PrimaryButton } from "@/components/ui/glass-panel";
 import { useT } from "@/lib/i18n";
 
 const API = "";
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface ChapterSummary {
   chapter: string;

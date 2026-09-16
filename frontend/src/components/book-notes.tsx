@@ -12,7 +12,7 @@ import {
 import { getBookConstellation } from "@/lib/book-constellations";
 import { useT } from "@/lib/i18n";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface NoteItem {
   lessonTitle: string;

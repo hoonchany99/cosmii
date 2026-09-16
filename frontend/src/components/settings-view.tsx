@@ -22,7 +22,7 @@ import {
 } from "@/lib/store";
 import { useT } from "@/lib/i18n";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 const LANGUAGES: { code: Language; label: string; native: string; flag: string }[] = [
   { code: "ko", label: "한국어", native: "한국어", flag: "🇰🇷" },

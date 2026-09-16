@@ -8,7 +8,7 @@ import { useAppStore, useSettingsStore } from "@/lib/store";
 import { BETA_CURATION_SECTIONS, BETA_RECOMMENDED_IDS, BOOK_TAGLINES, type BetaCurationSection } from "@/lib/curations";
 import { createClient } from "@/lib/supabase";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface Book {
   id: string;

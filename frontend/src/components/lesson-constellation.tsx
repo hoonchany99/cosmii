@@ -4,7 +4,7 @@ import { useMemo, useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Check, Lock, ChevronLeft, BookMarked } from "lucide-react";
 
-const serif = "font-[var(--font-serif)]";
+const serif = "font-[family-name:var(--font-serif)]";
 
 interface LessonNode {
   id: string;

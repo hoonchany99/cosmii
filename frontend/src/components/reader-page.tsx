@@ -29,11 +29,11 @@ export function ReaderPage({
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-[#060612] text-white font-[var(--font-app)]">
+    <div className="min-h-screen bg-[#060612] text-white font-[family-name:var(--font-app)]">
       <div className="mx-auto max-w-[42rem] px-6 sm:px-10 pt-16 pb-24">
         <Link href="/" className="inline-flex items-center gap-2.5 group">
           <Image src="/cosmii-mark.png" alt="" width={28} height={28} priority className="h-7 w-7" />
-          <span className="font-[var(--font-serif)] text-[22px] font-bold text-white/92 group-hover:text-white transition-colors duration-200">
+          <span className="font-[family-name:var(--font-serif)] text-[22px] font-bold text-white/92 group-hover:text-white transition-colors duration-200">
             Cosmii
           </span>
         </Link>
@@ -54,7 +54,7 @@ export function ReaderPage({
               {n.label}
             </Link>
           ))}
-          <span className="ml-auto text-white/25 font-[var(--font-serif)]">Cosmii</span>
+          <span className="ml-auto text-white/25 font-[family-name:var(--font-serif)] font-bold">Cosmii</span>
         </nav>
       </div>
     </div>
