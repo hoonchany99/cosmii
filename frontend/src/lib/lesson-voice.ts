@@ -174,6 +174,39 @@ function clip(pcm: Int16Array, from: number, to: number): Int16Array {
   return out;
 }
 
+// v3 reads one take louder than the next, so a lesson can rise and fall in
+// volume from bubble to bubble. Each take is brought to the same speaking
+// level (the average of its loud windows), leaving the quiet and loud moments
+// inside the take as they were.
+const TARGET_DB = -20;
+
+function level(pcm: Int16Array): number {
+  const win = Math.round((RATE * WINDOW_MS) / 1000);
+  let sum = 0;
+  let windows = 0;
+  for (let w = 0, n = Math.floor(pcm.length / win); w < n; w++) {
+    if (!loudAt(pcm, w, win)) continue;
+    let square = 0;
+    for (let j = w * win; j < (w + 1) * win; j++) square += pcm[j] * pcm[j];
+    sum += square / win;
+    windows++;
+  }
+  return windows ? Math.sqrt(sum / windows) / 32768 : 0;
+}
+
+function evenOut(pcm: Int16Array): Int16Array {
+  const rms = level(pcm);
+  if (!rms) return pcm;
+  let gain = Math.pow(10, TARGET_DB / 20) / rms;
+  gain = Math.max(0.35, Math.min(3.5, gain));
+  let peak = 0;
+  for (let i = 0; i < pcm.length; i++) peak = Math.max(peak, Math.abs(pcm[i]));
+  if (peak * gain > 32200) gain = 32200 / peak;
+  if (Math.abs(gain - 1) < 0.05) return pcm;
+  for (let i = 0; i < pcm.length; i++) pcm[i] = Math.round(pcm[i] * gain);
+  return pcm;
+}
+
 // Every stretch of silence in a take, as [from, to] in seconds.
 function silences(pcm: Int16Array): [number, number][] {
   const win = Math.round((RATE * WINDOW_MS) / 1000);
@@ -257,6 +290,7 @@ export async function voiceLesson(directed: string[]): Promise<Buffer[]> {
   for (const lines of takes) {
     // Lines of a take are read as paragraphs, so each gets its own breath.
     const take = await voiceTake(lines.join("\n\n"));
+    evenOut(take.pcm);
     out.push(...cutTake(take, lines));
   }
   return out;
