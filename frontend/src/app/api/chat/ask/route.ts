@@ -309,13 +309,24 @@ export async function POST(req: NextRequest) {
         messages.push({ role: "user", content: message });
 
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
-        const completion = await openai.chat.completions.create({
-          model: process.env.LLM_MODEL ?? "gpt-4o-mini",
-          messages,
-          stream: true,
-          temperature: 0.6,
-          max_tokens: 600,
-        });
+        // The lighter model answers sooner, which is what the reader feels
+        // first. If the account can't use it, the older one still can.
+        const ask = (model: string) =>
+          openai.chat.completions.create({
+            model,
+            messages,
+            stream: true,
+            temperature: 0.6,
+            max_tokens: 600,
+          });
+        const preferred = process.env.LLM_MODEL ?? "gpt-4.1-mini";
+        let completion;
+        try {
+          completion = await ask(preferred);
+        } catch (e) {
+          console.warn("chat: falling back from", preferred, e instanceof Error ? e.message : e);
+          completion = await ask("gpt-4o-mini");
+        }
 
         const shaper = createBubbleShaper({ dropTrailingQuestion: askedLastTime });
         const unseal = sealedGuard(sealed_titles, message, history);
