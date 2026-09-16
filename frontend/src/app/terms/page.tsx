@@ -34,8 +34,9 @@ export default function TermsPage() {
           <section>
             <h2 className={h2}>3. 무료 이용과 Premium</h2>
             <ul className="space-y-2 list-disc list-outside ml-5">
-              <li><strong className={strong}>무료</strong> — 매주 봉인된 책 세 권이 도착하고, 그중 일부를 열 수 있습니다. 한 번 연 책은 계속 읽을 수 있습니다. Cosmii와의 대화는 하루 정해진 횟수까지 가능합니다.</li>
-              <li><strong className={strong}>Premium</strong> — 서가의 모든 책을 읽고, 모든 장을 Cosmii의 목소리로 들으며, Cosmii와 횟수 제한 없이 대화할 수 있는 구독입니다. 무료로는 책마다 첫 장을 목소리로 들을 수 있습니다.</li>
+              <li><strong className={strong}>책을 여는 방법</strong> — 서가의 책은 봉인된 상태로 있으며, 제목 대신 한 줄의 쪽지만 보입니다. 봉인을 뜯으면 그 책을 끝까지 읽을 수 있습니다. 매주 월요일 봉인된 책 세 권이 도착합니다.</li>
+              <li><strong className={strong}>무료</strong> — 매주 도착한 세 권 중 한 권을 별빛 없이 뜯을 수 있고, 그 밖의 책은 별빛으로 엽니다. Cosmii와의 대화는 하루 정해진 횟수까지, 목소리는 책마다 첫 장까지 들을 수 있습니다.</li>
+              <li><strong className={strong}>Premium</strong> — 매주 도착한 세 권을 모두 별빛 없이 뜯고, 매달 별빛을 받으며, 모든 장을 Cosmii의 목소리로 듣고, 횟수 제한 없이 대화할 수 있는 구독입니다.</li>
               <li>무료로 제공되는 책의 수와 대화 횟수, Premium의 혜택은 서비스 운영에 따라 바뀔 수 있으며, 바뀌기 전에 앱에서 알립니다.</li>
             </ul>
           </section>
