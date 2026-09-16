@@ -63,6 +63,9 @@ export async function POST(req: NextRequest) {
     const { since } = JSON.parse(await pending.data.text()) as { since?: number };
     if (since && Date.now() - since < PENDING_MS) return NextResponse.json({ status: "voicing" }, { status: 202 });
   }
+  // What went wrong last time, if anything, rides along with the new attempt.
+  const failed = await storage.download(`${dir}/failed.json`);
+  const lastError = failed.data ? ((JSON.parse(await failed.data.text()) as { error?: string }).error ?? null) : null;
   await storage.upload(`${dir}/pending.json`, JSON.stringify({ since: Date.now() }), {
     contentType: "application/json",
     upsert: true,
@@ -86,10 +89,15 @@ export async function POST(req: NextRequest) {
       });
       if (error) throw new Error(`manifest ${error.message}`);
     } catch (e) {
-      console.error("tts lesson:", e instanceof Error ? e.message : e);
+      const message = e instanceof Error ? e.message : String(e);
+      console.error("tts lesson:", message);
+      await storage.upload(`${dir}/failed.json`, JSON.stringify({ error: message, at: Date.now() }), {
+        contentType: "application/json",
+        upsert: true,
+      });
     } finally {
       await storage.remove([`${dir}/pending.json`]);
     }
   });
-  return NextResponse.json({ status: "voicing" }, { status: 202 });
+  return NextResponse.json({ status: "voicing", lastError }, { status: 202 });
 }
