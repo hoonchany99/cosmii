@@ -1,7 +1,9 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/signup", "/auth/callback", "/privacy", "/terms", "/onboarding", "/opengraph-image", "/twitter-image"];
+// Anyone can read these without an account: the app links to them, and the
+// App Store asks for pages a reviewer can open.
+const PUBLIC_PATHS = ["/login", "/signup", "/auth/callback", "/privacy", "/terms", "/support", "/onboarding", "/opengraph-image", "/twitter-image"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
