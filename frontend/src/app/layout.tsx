@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
-import { Geist, Geist_Mono, EB_Garamond, Nanum_Gothic } from "next/font/google";
+import { Geist, Geist_Mono, EB_Garamond, IBM_Plex_Sans_KR, Nanum_Gothic } from "next/font/google";
 import { LanguageSync } from "@/components/language-sync";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -18,6 +18,13 @@ const geistMono = Geist_Mono({
 const ebGaramond = EB_Garamond({
   variable: "--font-serif",
   subsets: ["latin"],
+});
+
+// The app's own text face, for the pages a reader is sent to from inside it.
+const plexKR = IBM_Plex_Sans_KR({
+  variable: "--font-app",
+  subsets: ["latin"],
+  weight: ["400", "600"],
 });
 
 const nanumGothic = Nanum_Gothic({
@@ -164,7 +171,7 @@ export default async function RootLayout({
         <link rel="preload" as="image" type="image/png" href="/cosmii-constellation.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${nanumGothic.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${plexKR.variable} ${nanumGothic.variable} antialiased`}
       >
         <LanguageSync />
         <TooltipProvider>{children}</TooltipProvider>
