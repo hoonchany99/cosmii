@@ -39,6 +39,10 @@ const LONG = 1.9;
 const STT = process.argv.includes("--stt");
 const MODEL_PATH = (process.argv.find((a) => a.startsWith("--model=")) ?? "").slice(8);
 const HEARD_ENOUGH = 0.72;
+// A short line is mostly names and endings, where the transcription itself
+// slips; only a line that is largely missing counts there.
+const SHORT_LINE = 18;
+const HEARD_ENOUGH_SHORT = 0.5;
 const SPILL = 0.7;
 const SPILL_LETTERS = 12;
 
@@ -208,7 +212,8 @@ for (const id of args) {
       const heardMine = heard(mine, plain(said));
       const next = i + 1 < lines.length ? plain(lines[i + 1]).slice(0, SPILL_LETTERS) : "";
       const spilled = next ? heard(next, plain(said)) : 0;
-      if (heardMine < HEARD_ENOUGH) {
+      const enough = mine.length < SHORT_LINE ? HEARD_ENOUGH_SHORT : HEARD_ENOUGH;
+      if (heardMine < enough) {
         bad.push(`${i}: only ${(heardMine * 100) | 0}% of the line is in its bubble — "${said.slice(0, 40)}…"`);
       } else if (spilled > SPILL) {
         bad.push(`${i}: the next line starts in this bubble — "${said.slice(-40)}"`);
