@@ -174,19 +174,66 @@ function clip(pcm: Int16Array, from: number, to: number): Int16Array {
   return out;
 }
 
-// Cuts one take into its lines: each keeps a breath after its last word and
-// starts just before its first.
+// Every stretch of silence in a take, as [from, to] in seconds.
+function silences(pcm: Int16Array): [number, number][] {
+  const win = Math.round((RATE * WINDOW_MS) / 1000);
+  const runs: [number, number][] = [];
+  let from: number | null = null;
+  for (let w = 0, n = Math.floor(pcm.length / win); w < n; w++) {
+    if (loudAt(pcm, w, win)) {
+      if (from !== null && (w - from) * WINDOW_MS >= 100) runs.push([(from * win) / RATE, (w * win) / RATE]);
+      from = null;
+    } else if (from === null) {
+      from = w;
+    }
+  }
+  if (from !== null) runs.push([(from * win) / RATE, pcm.length / RATE]);
+  return runs;
+}
+
+// Cuts one take into its lines. The character timings say roughly where a line
+// ends, but they can drift (a number read as words, a tag), and a cut inside a
+// word sends the rest of it to the next bubble. So each cut is moved onto the
+// real silence nearest that point; only when there is none does the timing
+// itself decide.
 function cutTake(take: Take, lines: string[]): Buffer[] {
   const times = take.alignment ? lineTimes(take.alignment, lines) : null;
   if (!times) throw new Error("no timing for the take");
   const total = take.pcm.length / RATE;
+  const quiet = silences(take.pcm);
+
+  // Where one line hands over to the next: the gap of silence between them.
+  const breaks: { end: number; start: number }[] = [];
+  for (let i = 0; i + 1 < lines.length; i++) {
+    const after = times[i].end;
+    const before = times[i + 1].start;
+    const middle = (after + before) / 2;
+    let best: [number, number] | null = null;
+    let bestScore = Infinity;
+    for (const [from, to] of quiet) {
+      if (to < after - 1.5 || from > before + 1.5) continue;
+      const centre = (Math.max(from, after - 1.5) + Math.min(to, before + 1.5)) / 2;
+      const score = Math.abs(centre - middle) - Math.min(to - from, 1) * 0.5;
+      if (score < bestScore) {
+        bestScore = score;
+        best = [from, to];
+      }
+    }
+    if (best) {
+      breaks.push({ end: Math.min(best[1], best[0] + 0.35), start: Math.max(best[0], best[1] - 0.12) });
+    } else {
+      const stop = settleAfter(take.pcm, after, Math.max(after, before - 0.12));
+      breaks.push({ end: Math.min(stop + 0.3, before), start: Math.max(after, before - 0.12) });
+    }
+  }
+
   return lines.map((_, i) => {
-    const nextStart = i + 1 < lines.length ? times[i + 1].start : total;
-    const lead = i === 0 ? 0 : Math.max(times[i - 1].end, times[i].start - 0.12);
-    const limit = i + 1 < lines.length ? Math.max(times[i].end, nextStart - 0.12) : Math.min(total, times[i].end + 1);
-    const stop = settleAfter(take.pcm, times[i].end, limit);
-    const to = Math.min(limit, stop + 0.3);
-    return encodeMp3(clip(take.pcm, lead, Math.max(to, times[i].end)), RATE);
+    const from = i === 0 ? 0 : breaks[i - 1].start;
+    const to =
+      i + 1 < lines.length
+        ? breaks[i].end
+        : Math.min(total, settleAfter(take.pcm, times[i].end, Math.min(total, times[i].end + 1)) + 0.3);
+    return encodeMp3(clip(take.pcm, from, Math.max(to, from + 0.2)), RATE);
   });
 }
 
