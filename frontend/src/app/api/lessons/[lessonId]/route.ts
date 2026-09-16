@@ -22,36 +22,18 @@ export async function GET(
     ? JSON.parse(lesson.content_json)
     : (lesson.content_json ?? {});
 
+  // Quizzes live in the lesson itself; the separate table is gone.
   const contentQuizzes = pick(content, "quizzes", language);
-  let quizzes: unknown[];
-
-  if (Array.isArray(contentQuizzes) && contentQuizzes.length > 0) {
-    quizzes = contentQuizzes.map((q: Record<string, unknown>, i: number) => ({
+  const quizzes = (Array.isArray(contentQuizzes) ? contentQuizzes : []).map(
+    (q: Record<string, unknown>, i: number) => ({
       id: `${lessonId}-q${i}`,
       lesson_id: lessonId,
       question: q.question,
       options: q.options ?? [],
       correct_index: q.correct_index ?? 0,
       explanation: q.explanation ?? "",
-    }));
-  } else {
-    const { data: dbQuizzes } = await sb
-      .from("quizzes")
-      .select("*")
-      .eq("lesson_id", lessonId);
-
-    quizzes = (dbQuizzes ?? []).map((q) => ({
-      id: q.id,
-      lesson_id: q.lesson_id,
-      question: q.question,
-      options:
-        typeof q.options_json === "string"
-          ? JSON.parse(q.options_json)
-          : q.options_json,
-      correct_index: q.correct_index,
-      explanation: q.explanation ?? "",
-    }));
-  }
+    }),
+  );
 
   let dialogue = pick(content, "dialogue", language);
   if (!Array.isArray(dialogue)) dialogue = content.dialogue ?? [];
