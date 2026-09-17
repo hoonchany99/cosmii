@@ -26,7 +26,7 @@ export default function TermsPage() {
         <ul className="space-y-2 list-disc list-outside ml-5">
           <li><strong className={strong}>이번 주 도착</strong> — 매주 월요일 봉인된 책 세 권이 도착합니다. 도착한 책은 제목 대신 한 줄의 쪽지만 보이고, 봉인을 뜯으면 그 책을 끝까지 읽을 수 있습니다.</li>
           <li><strong className={strong}>별빛 책방</strong> — 그 밖의 책은 별빛 책방에서 고릅니다. 제목과 표지를 보고 고르면 별빛 600, 쪽지만 보고 고르면 별빛 300으로 엽니다. 쪽지로 고른 책의 제목은 봉인을 뜯어야 보입니다.</li>
-          <li><strong className={strong}>무료</strong> — 처음 여는 책 한 권은 별빛 책방에서든 도착한 책 중에서든 별빛 없이 엽니다. 매주 도착한 세 권 중 한 권도 별빛 없이 뜯을 수 있고, 그보다 더 뜯으면 한 권에 별빛 300이 듭니다. Cosmii와의 대화는 하루 정해진 횟수까지, 목소리는 책마다 첫 장까지 들을 수 있습니다.</li>
+          <li><strong className={strong}>무료</strong> — 매주 도착한 세 권 중 한 권을 별빛 없이 뜯을 수 있고, 그보다 더 뜯으면 한 권에 별빛 300이 듭니다. Cosmii와의 대화는 하루 정해진 횟수까지, 목소리는 책마다 첫 장까지 들을 수 있습니다.</li>
           <li><strong className={strong}>Premium</strong> — 매주 도착한 세 권을 모두 별빛 없이 뜯고, 매달 별빛을 받으며, 모든 장을 Cosmii의 목소리로 듣고, 횟수 제한 없이 대화할 수 있는 구독입니다.</li>
           <li>무료로 제공되는 책의 수와 대화 횟수, Premium의 혜택은 서비스 운영에 따라 바뀔 수 있으며, 바뀌기 전에 앱에서 알립니다.</li>
         </ul>

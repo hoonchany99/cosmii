@@ -118,7 +118,7 @@ export default function Home() {
           <p>
             책은 제목이 아니라 쪽지로 와요. 줄거리나 결말 대신, 이 책이 필요한 사람이 어떤 사람인지만 적혀 있어요. 뜯어야 비로소 어떤 책인지 알게 돼요.
           </p>
-          <p className="mt-4">처음 여는 책은 무료예요. 매주 도착한 세 권 중 한 권도 무료로 뜯어요.</p>
+          <p className="mt-4">매주 도착한 세 권 중 한 권은 늘 무료로 뜯어요.</p>
         </Section>
 
         <div className="h-px bg-white/10" />
