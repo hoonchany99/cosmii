@@ -228,9 +228,10 @@ function createBubbleShaper({ dropTrailingQuestion = false } = {}) {
 
 // Books this reader hasn't opened can be named by title (the shop) or by note
 // (a seal), but a note and its title must never meet: that would open the
-// seal for nothing. Across one answer, whichever of the two comes second is
-// replaced - and a note or title the reader already said counts as come. The
-// shaper hands out whole sentences, so neither straddles two sends.
+// seal for nothing. Across the whole conversation, whichever of the two comes
+// second is replaced: a title or note the reader said, or Cosmii said in an
+// earlier answer, counts as already come. The shaper hands out whole
+// sentences, so neither straddles two sends.
 type SealedPair = { title: string; note: string };
 function unlinkGuard(pairs: unknown, message: unknown, history: unknown): (text: string) => string {
   if (!Array.isArray(pairs)) return (t) => t;
@@ -239,23 +240,25 @@ function unlinkGuard(pairs: unknown, message: unknown, history: unknown): (text:
       !!p && typeof p.title === "string" && p.title.length >= 2 && typeof p.note === "string" && p.note.length >= 8,
   );
   if (!list.length) return (t) => t;
-  const said = [
-    typeof message === "string" ? message : "",
-    ...(Array.isArray(history) ? history : [])
-      .filter((h: { role?: string }) => h?.role === "user")
-      .map((h: { content?: unknown }) => (typeof h.content === "string" ? h.content : "")),
-  ].join("\n");
+  const turns = Array.isArray(history) ? (history as { role?: string; content?: unknown }[]) : [];
+  const text = (h: { content?: unknown }) => (typeof h.content === "string" ? h.content : "");
+  // The reader's words, and Cosmii's earlier answers.
+  const said = [typeof message === "string" ? message : "", ...turns.filter((h) => h?.role === "user").map(text)].join("\n");
+  const answered = turns.filter((h) => h?.role === "assistant").map(text).join("\n");
   const squash = (t: string) => t.replace(/\s+/g, "");
   const escape = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const saidFlat = squash(said);
-  const rules = list.map((p) => ({
+  const saidFlat = squash(`${said}\n${answered}`);
+  const rules = list.map((p) => {
     // Only a title set as a title: several are everyday words (변신, 국가, 향연).
-    title: new RegExp(`[『《]${escape(p.title)}[』》]`, "g"),
-    // A note however it is spaced, with its quotes if it has them.
-    note: new RegExp(`[「"“]?${[...squash(p.note)].map(escape).join("\\s*")}[」"”]?`, "g"),
-    titleSeen: said.includes(p.title),
-    noteSeen: saidFlat.includes(squash(p.note)),
-  }));
+    const title = new RegExp(`[『《]${escape(p.title)}[』》]`, "g");
+    return {
+      title,
+      // A note however it is spaced, with its quotes if it has them.
+      note: new RegExp(`[「"“]?${[...squash(p.note)].map(escape).join("\\s*")}[」"”]?`, "g"),
+      titleSeen: said.includes(p.title) || new RegExp(title.source).test(answered),
+      noteSeen: saidFlat.includes(squash(p.note)),
+    };
+  });
   return (text) => {
     let out = text;
     for (const r of rules) {
