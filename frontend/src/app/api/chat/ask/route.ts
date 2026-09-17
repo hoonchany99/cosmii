@@ -51,11 +51,13 @@ Cosmii:
 
 ## 자유 대화 (책을 고르지 않았을 때)
 - 고전 추천이나 가벼운 책 얘기를 편하게 해.
-- "[Cosmii 서가]"가 주어지면 책 추천은 반드시 그 안에서 골라. 서가에 없는 책은 추천하지 마.
+- "[Cosmii 서가]", "[서점]", "[쪽지]"가 주어지면 책 추천은 반드시 그 안에서 골라. 거기 없는 책은 추천하지 마.
 - 책 제목은 언제나 『』로 감싸. 예: 『변신』. 앱이 이걸 보고 그 책으로 가는 카드를 붙여줘.
 - 추천할 땐 한두 권만, 왜 이 사람한테 맞는지 한 줄로. "[독자]"에 읽는 중인 책이 있으면 그 책과 이어지는 걸 먼저 생각해. 다 읽은 책은 다시 추천하지 마.
-- "[봉인된 책]"은 독자가 아직 제목을 모르는 책이야. 쪽지 한 줄로만 존재해. 권할 땐 제목이나 저자, 줄거리를 짐작해서 말하지 말고 쪽지 문장을 「」 안에 그대로 옮겨. 예: 「집에 돌아가는 길이 유난히 멀게 느껴지는 너에게」 이런 쪽지가 붙은 봉인된 책이 있어.
-- 서가에 없는 책을 물어보면, 먼저 그 책이 어떤 이야기인지 한두 문장으로 말해 줘. 그다음 서가에서 결이 비슷한 책 하나를 권해. Cosmii에 그 책이 있는지 없는지는 단정하지 마. 봉인돼 있을 수도 있거든.
+- 네가 먼저 권할 땐 "[쪽지]"의 문장을 「」 안에 그대로 옮겨서 권해. 예: 「집에 돌아가는 길이 유난히 멀게 느껴지는 너에게」 이런 쪽지가 붙은 봉인이 있어. 독자가 제목으로 알려 달라고 하면 "[서점]"의 책을 『』로 권해도 돼.
+- 독자가 제목을 말하면 그 책 이야기를 자유롭게 해. "[서점]"에 있는 책이면 서점에서 열 수 있다고 말해 줘.
+- 쪽지와 제목은 절대 서로 잇지 마. 어떤 쪽지가 무슨 책인지, 어떤 책에 무슨 쪽지가 붙었는지 말하지 마. 물어보면 "그건 뜯어보면 알아"라고 해.
+- 목록에 없는 책을 물어보면, 먼저 그 책이 어떤 이야기인지 한두 문장으로 말해 줘. 그다음 결이 비슷한 책 하나를 권해.
 
 ## 스포일러 (매우 중요)
 - 대화 맥락에 "[독자 진도]"가 있으면, 독자가 읽은 장까지에서 벌어진 일만 이야기해. 1장까지 읽었으면 1장 이야기만.
@@ -224,10 +226,56 @@ function createBubbleShaper({ dropTrailingQuestion = false } = {}) {
   };
 }
 
-// Books still sealed for this reader are known to them only by a note. The
-// model isn't given their titles, but it knows the classics; should it name
-// one the reader hasn't named, the title is replaced before it's sent. The
-// shaper hands out whole sentences, so a title never straddles two sends.
+// Books this reader hasn't opened can be named by title (the shop) or by note
+// (a seal), but a note and its title must never meet: that would open the
+// seal for nothing. Across one answer, whichever of the two comes second is
+// replaced - and a note or title the reader already said counts as come. The
+// shaper hands out whole sentences, so neither straddles two sends.
+type SealedPair = { title: string; note: string };
+function unlinkGuard(pairs: unknown, message: unknown, history: unknown): (text: string) => string {
+  if (!Array.isArray(pairs)) return (t) => t;
+  const list = pairs.filter(
+    (p): p is SealedPair =>
+      !!p && typeof p.title === "string" && p.title.length >= 2 && typeof p.note === "string" && p.note.length >= 8,
+  );
+  if (!list.length) return (t) => t;
+  const said = [
+    typeof message === "string" ? message : "",
+    ...(Array.isArray(history) ? history : [])
+      .filter((h: { role?: string }) => h?.role === "user")
+      .map((h: { content?: unknown }) => (typeof h.content === "string" ? h.content : "")),
+  ].join("\n");
+  const squash = (t: string) => t.replace(/\s+/g, "");
+  const escape = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const saidFlat = squash(said);
+  const rules = list.map((p) => ({
+    // Only a title set as a title: several are everyday words (변신, 국가, 향연).
+    title: new RegExp(`[『《]${escape(p.title)}[』》]`, "g"),
+    // A note however it is spaced, with its quotes if it has them.
+    note: new RegExp(`[「"“]?${[...squash(p.note)].map(escape).join("\\s*")}[」"”]?`, "g"),
+    titleSeen: said.includes(p.title),
+    noteSeen: saidFlat.includes(squash(p.note)),
+  }));
+  return (text) => {
+    let out = text;
+    for (const r of rules) {
+      r.title.lastIndex = 0;
+      r.note.lastIndex = 0;
+      const hasTitle = r.title.test(out);
+      r.title.lastIndex = 0;
+      const hasNote = r.note.test(out);
+      r.note.lastIndex = 0;
+      // Both in one sentence: the note stays (a seal is how Cosmii recommends).
+      if (hasTitle && (r.noteSeen || hasNote)) out = out.replace(r.title, "그 책");
+      else if (hasTitle) r.titleSeen = true;
+      if (hasNote && r.titleSeen) out = out.replace(r.note, "그 쪽지");
+      else if (hasNote) r.noteSeen = true;
+    }
+    return out;
+  };
+}
+
+// Builds before the bookstore sent every sealed title to hide outright.
 function sealedGuard(titles: unknown, message: unknown, history: unknown): (text: string) => string {
   if (!Array.isArray(titles)) return (t) => t;
   const said = [
@@ -248,7 +296,7 @@ function sealedGuard(titles: unknown, message: unknown, history: unknown): (text
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { message, book_id, lesson_context, history, language, read_lesson_ids, sealed_titles } = body;
+  const { message, book_id, lesson_context, history, language, read_lesson_ids, sealed_titles, sealed_pairs } = body;
   const lang = language ?? "ko";
 
   const encoder = new TextEncoder();
@@ -329,7 +377,9 @@ export async function POST(req: NextRequest) {
         }
 
         const shaper = createBubbleShaper({ dropTrailingQuestion: askedLastTime });
-        const unseal = sealedGuard(sealed_titles, message, history);
+        const unseal = Array.isArray(sealed_pairs)
+          ? unlinkGuard(sealed_pairs, message, history)
+          : sealedGuard(sealed_titles, message, history);
         const send = (token: string) => {
           if (token) controller.enqueue(encoder.encode(`data: ${JSON.stringify({ token: unseal(token) })}\n\n`));
         };
