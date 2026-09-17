@@ -1,1161 +1,198 @@
-"use client";
-
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+// cosmii.vercel.app: an introduction to the iPhone app and the way to it.
+// The web app that used to live here is closed (middleware sends its routes
+// home); reading happens in the app. The page wears the app's ground, its
+// text face and its wordmark, and says what the app does in the app's words.
+//
+// The notes shown here belong to books whose covers are not shown, so the
+// page never sets a note beside its title.
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ArrowRight, Award, Check, ChevronLeft, ChevronUp, Flame, Lightbulb, RotateCcw, Smartphone, Sparkles } from "lucide-react";
-import { useIsMobile } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
-import { useSettingsStore } from "@/lib/store";
-import { DEMO_BOOKS as FALLBACK_DEMO_BOOKS, DEMO_LESSONS as FALLBACK_DEMO_LESSONS } from "@/lib/demo-data";
-import { BETA_BOOK_IDS, BOOK_COVER_MAP } from "@/lib/curations";
 
-interface ApiDemoBook {
-  id: string;
-  title: string;
-  author: string;
-  color: string;
-  coverUrl?: string;
-  tagline: string;
-  pages?: number;
-  lesson: {
-    title: string;
-    chapter: string;
-    dialogue: { speaker: string; text: string; highlight?: string | null }[];
-    quizzes: { id: string; question: string; options: string[]; correctIndex: number; explanation: string }[];
-    cliffhanger: string;
-    nextTitle: string;
-    totalLessons: number;
-  } | null;
-}
-import { ConceptDialogue } from "@/components/concept-dialogue";
-import { QuizView } from "@/components/quiz-view";
+const APP_STORE_URL = "https://apps.apple.com/kr/app/cosmii/id6812843004";
 
 const serif = "font-[family-name:var(--font-serif)]";
-const ease = [0.22, 1, 0.36, 1] as const;
+const link =
+  "text-white/64 underline underline-offset-4 decoration-white/25 hover:text-white/92 hover:decoration-white/50 transition-colors duration-200";
 
-/* ═══════════════════════════════════════════════════════════════════
-   Cosmii hero animation
-   ═══════════════════════════════════════════════════════════════════ */
+const NOTES = [
+  { wrap: "life", line: "사랑이 대체 뭔지\n밤새 이야기하고 싶은 너에게" },
+  { wrap: "thought", line: "어쩔 수 없는 일 때문에\n잠 못 드는 너에게" },
+  { wrap: "drama", line: "머릿속 생각이 너무 커져서\n무서웠던 적이 있는 너에게" },
+];
 
-function CosmiiSprite({ mobile }: { mobile: boolean }) {
+const COVERS = [
+  { id: "f_little_prince", title: "어린 왕자" },
+  { id: "cl_odyssey", title: "오디세이아" },
+  { id: "f_gatsby", title: "위대한 개츠비" },
+  { id: "c_metamorphosis", title: "변신" },
+  { id: "c_meditations", title: "명상록" },
+  { id: "f_1984", title: "1984" },
+];
+
+function AppStoreButton() {
   return (
-    <div className="relative">
-      <motion.div
-        className="absolute inset-0 rounded-full blur-[60px]"
-        style={{ background: "radial-gradient(circle, rgba(110,220,180,0.18) 0%, transparent 70%)" }}
-        animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className={mobile
-          ? "relative w-[100px] h-[100px]"
-          : "relative w-[120px] h-[120px] lg:w-[160px] lg:h-[160px]"
-        }
-        style={{ WebkitMaskImage: "radial-gradient(circle, black 50%, transparent 75%)", maskImage: "radial-gradient(circle, black 50%, transparent 75%)" }}
-        animate={{
-          y: [0, -14, 0],
-          rotate: [0, 3, 0, -3, 0],
-        }}
-        transition={{
-          y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-          rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-        }}
-      >
-        <img
-          src="/avatars/cosmii/mint.png"
-          alt="Cosmii"
-          className="w-full h-full object-contain"
-          draggable={false}
-        />
-      </motion.div>
-    </div>
+    <a
+      href={APP_STORE_URL}
+      className="inline-flex h-14 items-center gap-3 rounded-2xl bg-white px-6 text-[#060612] transition-opacity duration-200 hover:opacity-90"
+    >
+      <svg width="20" height="24" viewBox="0 0 17 21" aria-hidden="true" fill="currentColor">
+        <path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.8-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.8.9 7.4-1 10.7.4 15.6 2.2 18.2c.9 1.3 1.9 2.7 3.3 2.6 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1.1-2.8-4.5zM11.5 3c.7-.9 1.2-2.1 1.1-3.3-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.1.1 2.3-.6 3-1.5z" />
+      </svg>
+      <span className="flex flex-col text-left leading-none">
+        <span className="text-[11px] font-semibold opacity-70">App Store에서</span>
+        <span className="mt-1 text-[17px] font-semibold">받기</span>
+      </span>
+    </a>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   Star background
-   ═══════════════════════════════════════════════════════════════════ */
-
-function StarField({ lite = false }: { lite?: boolean }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let animId: number;
-    const starCount = lite ? 50 : 140;
-    const linkDist = lite ? 100 : 130;
-    const stars: { x: number; y: number; r: number; speed: number; opacity: number; baseOpacity: number }[] = [];
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    resize(); window.addEventListener("resize", resize);
-    for (let i = 0; i < starCount; i++) {
-      const o = Math.random() * 0.4 + 0.1;
-      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.3 + 0.3, speed: Math.random() * 0.12 + 0.02, opacity: o, baseOpacity: o });
-    }
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          const dx = stars[i].x - stars[j].x;
-          const dy = stars[i].y - stars[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < linkDist) {
-            const alpha = (1 - dist / linkDist) * 0.12 * Math.min(stars[i].opacity, stars[j].opacity);
-            ctx.beginPath();
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
-            ctx.strokeStyle = `rgba(180,200,240,${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      for (const s of stars) {
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(200,210,240,${s.opacity})`; ctx.fill();
-        s.y += s.speed; s.opacity += (Math.random() - 0.5) * 0.008;
-        s.opacity = Math.max(0.05, Math.min(0.5, s.opacity));
-        if (s.y > canvas.height + 5) { s.y = -5; s.x = Math.random() * canvas.width; }
-      }
-      animId = requestAnimationFrame(draw);
-    };
-    draw();
-    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
-  }, [lite]);
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none opacity-60" />;
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   Feature showcase mockups — faithful to actual app UI
-   ═══════════════════════════════════════════════════════════════════ */
-
-function LessonMockup() {
-  const t = useT();
+function Section({ eyebrow, title, children }: { eyebrow: string; title: string; children: React.ReactNode }) {
   return (
-    <div className="w-full max-w-[340px] mx-auto rounded-[2rem] border border-white/[0.08] bg-[#060612] overflow-hidden shadow-2xl shadow-black/40 relative">
-      {/* Header */}
-      <div className="bg-[rgba(6,6,18,0.6)]">
-        <div className="px-4 pt-4 pb-2.5 flex items-center justify-between">
-          <ChevronLeft size={20} className="text-white/40" />
-          <div className="flex flex-col items-center gap-0.5">
-            <span className="text-white/35 text-[10px] font-medium">{t("landing.mockLessonHeader")}</span>
-            <h2 className={`${serif} text-white/80 font-semibold text-[14px] tracking-wide`}>{t("landing.mockLessonTitle")}</h2>
-          </div>
-          <div className="w-5" />
-        </div>
-        <div className="w-full h-px bg-white/[0.06]">
-          <div className="h-full w-[60%] bg-white/40" />
-        </div>
-      </div>
-
-      {/* Dialogue bubbles with focus/dim */}
-      <div className="px-4 py-6 flex flex-col gap-3.5">
-        {/* Dim bubble */}
-        <div className="opacity-25">
-          <div className="w-fit max-w-full rounded-2xl px-4 py-3 bg-white/[0.04] border border-white/[0.06]">
-            <p className="text-[13px] leading-[1.7] font-medium text-white/90">
-              {t("landing.mockBubble1")}
-            </p>
-          </div>
-        </div>
-
-        {/* Focused bubble — glow */}
-        <div>
-          <div className="w-fit max-w-full rounded-2xl px-4 py-3 bg-white/[0.10] border border-white/[0.18] shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-            <p className="text-[13px] leading-[1.7] font-medium text-white/90">
-              {t("landing.mockBubble2")}
-            </p>
-          </div>
-        </div>
-
-        {/* Next dim bubble */}
-        <div className="opacity-15">
-          <div className="w-fit max-w-full rounded-2xl px-4 py-3 bg-white/[0.04] border border-white/[0.04]">
-            <p className="text-[13px] leading-[1.7] font-medium text-white/90">
-              {t("landing.mockBubble3")}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Tap indicator */}
-      <div className="flex flex-col items-center gap-0.5 pb-4">
-        <ChevronUp size={14} className="text-white/20" />
-        <span className="text-white/15 text-[10px] tracking-[0.2em] uppercase">{t("landing.mockTap")}</span>
-      </div>
-    </div>
-  );
-}
-
-function QuizMockup() {
-  const t = useT();
-  return (
-    <div className="w-full max-w-[340px] mx-auto rounded-[2rem] border border-white/[0.08] bg-[#060612] overflow-hidden shadow-2xl shadow-black/40 relative">
-      {/* Header */}
-      <div>
-        <div className="px-4 pt-4 pb-2.5 flex items-center">
-          <ChevronLeft size={20} className="text-white/40" />
-          <span className="text-white/40 text-[12px] font-semibold ml-auto">1/3</span>
-        </div>
-        <div className="w-full h-px bg-white/[0.06]">
-          <div className="h-full w-[33%] bg-white/40" />
-        </div>
-      </div>
-
-      {/* Question */}
-      <div className="px-5 pt-7 pb-4">
-        <h2 className={`${serif} text-white/95 font-bold text-[19px] leading-snug`}>
-          {t("landing.mockQuizQ")}
-        </h2>
-      </div>
-
-      {/* Options */}
-      <div className="px-4 flex flex-col gap-2.5">
-        {/* Dimmed option */}
-        <div className="min-h-[50px] rounded-2xl flex items-center px-3.5 gap-3 bg-white/[0.02] border border-white/[0.05] opacity-35">
-          <span className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold border bg-white/[0.04] text-white/20 border-white/[0.08] flex-shrink-0">A</span>
-          <span className="font-medium text-[13px] text-white/80">{t("landing.mockQuizA")}</span>
-        </div>
-        {/* Correct option — emerald */}
-        <div className="min-h-[50px] rounded-2xl flex items-center px-3.5 gap-3 bg-emerald-500/10 border-2 border-emerald-500/50">
-          <span className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold border bg-emerald-500 text-white border-emerald-400 flex-shrink-0">
-            <Check size={13} strokeWidth={3} />
-          </span>
-          <span className="font-medium text-[13px] text-emerald-200">{t("landing.mockQuizB")}</span>
-        </div>
-        {/* Dimmed option */}
-        <div className="min-h-[50px] rounded-2xl flex items-center px-3.5 gap-3 bg-white/[0.02] border border-white/[0.05] opacity-35">
-          <span className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold border bg-white/[0.04] text-white/20 border-white/[0.08] flex-shrink-0">C</span>
-          <span className="font-medium text-[13px] text-white/80">{t("landing.mockQuizC")}</span>
-        </div>
-      </div>
-
-      {/* Feedback panel — slide up from bottom */}
-      <div className="mt-4 p-5 pt-6 rounded-t-3xl border-t border-emerald-500/20">
-        <div className="flex justify-between items-start mb-3">
-          <h3 className="font-bold text-[17px] flex items-center gap-2 text-emerald-300">
-            <Sparkles size={20} className="text-emerald-400 fill-emerald-400" />
-            {t("landing.mockCorrect")}
-          </h3>
-          <div className="flex items-center gap-1.5 bg-white/[0.04] border border-white/[0.12] px-2.5 py-1 rounded-full">
-            <Award size={13} className="text-white/50" />
-            <span className="text-white/60 font-bold text-[11px]">+20 XP</span>
-          </div>
-        </div>
-        <p className="text-white/55 text-[12px] leading-relaxed font-medium">
-          {t("landing.mockQuizExplain")}
-        </p>
-        <div className="mt-5 w-full py-3 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-          <span className="text-white/90 font-bold text-[14px]">{t("landing.mockNext")}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StreakMockup() {
-  const t = useT();
-  const days = ["월", "화", "수", "목", "금", "토", "일"];
-  const todayIdx = 4;
-  const streakDays = 5;
-
-  return (
-    <div className="w-full max-w-[340px] mx-auto rounded-[2rem] border border-white/[0.08] bg-[#060612] overflow-hidden shadow-2xl shadow-black/40">
-      {/* Header */}
-      <div className="px-5 pt-5 pb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-white/70 text-[18px] font-bold" style={{ fontFamily: "'EB Garamond', Georgia, serif", letterSpacing: 0.4 }}>Cosmii</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <Flame size={14} className="text-white/30" />
-            <span className="text-white/60 text-[13px]" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>5</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Sparkles size={14} className="text-white/30" />
-            <span className="text-white/60 text-[13px]" style={{ fontFamily: "'EB Garamond', Georgia, serif" }}>420</span>
-          </div>
-        </div>
-      </div>
-      <div className="w-full h-px bg-white/[0.06]" />
-
-      {/* Reading progress card */}
-      <div className="px-5 pt-5 pb-4">
-        <button className="w-full bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 flex items-center gap-3.5 text-left">
-          <div className="w-[48px] h-[68px] rounded-lg overflow-hidden bg-white/[0.06] flex-shrink-0">
-            <img src="/covers/s_atomic.jpg" alt="" className="w-full h-full object-cover" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[10px] text-white/30 uppercase tracking-[0.12em] font-semibold mb-1">{t("landing.mockRecent")}</p>
-            <p className={`${serif} text-white/90 text-[15px] font-bold truncate`}>{t("landing.mockStreakBook")}</p>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex-1 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
-                <div className="h-full bg-white/25 rounded-full" style={{ width: "43%" }} />
-              </div>
-              <span className="text-white/25 text-[10px] flex-shrink-0">43%</span>
-            </div>
-          </div>
-        </button>
-      </div>
-
-      {/* Week streak card */}
-      <div className="px-5 pb-4">
-        <div className="bg-white/[0.05] border border-white/[0.10] rounded-2xl p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <Flame size={15} className="text-white/55 fill-white/55" />
-            <span className={`${serif} text-white/70 text-[13px] font-semibold`}>{t("landing.mockStreakWeek")}</span>
-          </div>
-          <div className="flex justify-between">
-            {days.map((day, i) => {
-              const isActive = i <= todayIdx && i > todayIdx - streakDays;
-              const isToday = i === todayIdx;
-              return (
-                <div key={i} className="flex flex-col items-center gap-1.5">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${
-                    isToday ? "bg-white/[0.15] border-white/30" : isActive ? "bg-white/[0.08] border-white/[0.15]" : "bg-white/[0.03] border-white/[0.07]"
-                  }`}>
-                    {isActive || isToday
-                      ? <Flame size={15} className={isToday ? "text-white/80 fill-white/80" : "text-white/45 fill-white/45"} />
-                      : <div className="w-1.5 h-1.5 rounded-full bg-white/15" />
-                    }
-                  </div>
-                  <span className={`${serif} text-[11px] font-semibold ${isToday ? "text-white/70" : "text-white/35"}`}>{day}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* Stats row */}
-      <div className="px-5 pb-5 flex gap-3">
-        <div className="flex-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 flex flex-col items-center gap-1">
-          <Sparkles size={16} className="text-white/55 fill-white/55" />
-          <span className="text-white/25 text-[10px]">총 XP</span>
-          <span className={`${serif} text-white/70 text-[16px] font-bold`}>420</span>
-        </div>
-        <div className="flex-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 flex flex-col items-center gap-1">
-          <Flame size={16} className="text-white/55 fill-white/55" />
-          <span className="text-white/25 text-[10px]">스트릭</span>
-          <span className={`${serif} text-white/70 text-[16px] font-bold`}>5일</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function NotesMockup() {
-  const t = useT();
-  return (
-    <div className="w-full max-w-[340px] mx-auto rounded-[2rem] border border-white/[0.08] bg-[#060612] overflow-hidden shadow-2xl shadow-black/40 relative">
-      {/* Header */}
-      <div className="px-5 pt-5 pb-3 flex items-center gap-3">
-        <ChevronLeft size={20} className="text-white/40" />
-        <div>
-          <h2 className={`${serif} text-white/80 font-semibold text-[16px]`}>{t("landing.mockNotesTitle")}</h2>
-          <span className="text-white/30 text-[11px]">{t("landing.mockNotesBook")}</span>
-        </div>
-      </div>
-      <div className="w-full h-px bg-white/[0.06]" />
-
-      {/* Keywords */}
-      <div className="px-5 pt-5 pb-3">
-        <span className="text-white/40 text-[11px] uppercase tracking-[0.14em] font-bold">{t("landing.mockNotesKeywords")}</span>
-        <div className="flex flex-wrap gap-2 mt-3">
-          {(["landing.mockKeyword1", "landing.mockKeyword2", "landing.mockKeyword3", "landing.mockKeyword4"] as const).map((key) => (
-            <span key={key} className="bg-white/[0.06] border border-white/[0.10] text-white/60 text-[12px] font-medium px-3 py-1 rounded-full">
-              {t(key)}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Spark insights */}
-      <div className="px-5 pt-3 pb-6">
-        <div className="flex items-center gap-2 mb-3">
-          <Lightbulb size={13} className="text-white/30" />
-          <span className="text-white/40 text-[11px] uppercase tracking-[0.14em] font-bold">{t("landing.mockNotesSparks")}</span>
-        </div>
-        <div className="space-y-3">
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-3.5">
-            <p className="text-white/30 text-[10px] font-semibold mb-1">{t("landing.mockSparkLesson1")}</p>
-            <p className="text-white/70 text-[13px] leading-[1.6] font-medium">{t("landing.mockSparkText1")}</p>
-          </div>
-          <div className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-3.5">
-            <p className="text-white/30 text-[10px] font-semibold mb-1">{t("landing.mockSparkLesson2")}</p>
-            <p className="text-white/70 text-[13px] leading-[1.6] font-medium">{t("landing.mockSparkText2")}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   Book Marquee
-   ═══════════════════════════════════════════════════════════════════ */
-
-function BookMarqueeRow({ books, direction, speed }: {
-  books: string[];
-  direction: "right" | "left";
-  speed: number;
-}) {
-  const doubled = [...books, ...books];
-  return (
-    <div className="overflow-hidden">
-      <div
-        className="flex gap-3 w-max"
-        style={{
-          animation: `marquee-${direction} ${speed}s linear infinite`,
-        }}
-      >
-        {doubled.map((id, i) => (
-          <div
-            key={`${id}-${i}`}
-            className="flex-shrink-0 w-[110px] h-[150px] sm:w-[120px] sm:h-[164px] rounded-lg overflow-hidden bg-cover bg-center"
-            style={{ backgroundImage: `url(${BOOK_COVER_MAP[id]})` }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function usePreloadCovers(ids: string[]) {
-  const [result, setResult] = useState<{ ready: boolean; rows: string[][] }>({ ready: false, rows: [[], [], []] });
-
-  useEffect(() => {
-    const entries = ids.map((id) => ({ id, url: BOOK_COVER_MAP[id] })).filter((e) => e.url);
-    if (entries.length === 0) { setResult({ ready: true, rows: [[], [], []] }); return; }
-
-    let done = 0;
-    const valid: string[] = [];
-
-    const finish = () => {
-      const rows: string[][] = [[], [], []];
-      valid.forEach((id, i) => rows[i % 3].push(id));
-      setResult({ ready: true, rows });
-    };
-
-    entries.forEach(({ id, url }) => {
-      const img = new window.Image();
-      img.onload = () => {
-        if (img.naturalWidth > 10 && img.naturalHeight > 10) valid.push(id);
-        if (++done >= entries.length) finish();
-      };
-      img.onerror = () => { if (++done >= entries.length) finish(); };
-      img.src = url;
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return result;
-}
-
-function BookMarquee() {
-  const t = useT();
-  const { ready, rows } = usePreloadCovers(BETA_BOOK_IDS as unknown as string[]);
-
-  return (
-    <section className="relative z-10 py-20 sm:py-28 overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, ease }}
-        className="text-center mb-12 sm:mb-16 px-6"
-      >
-        <h2 className={`${serif} text-[28px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-4 leading-[1.2]`}>
-          {t("landing.bookShowcaseTitle")}
-        </h2>
-        <p className="text-[15px] text-white/30 max-w-md mx-auto leading-relaxed">
-          {t("landing.bookShowcaseDesc")}
-        </p>
-      </motion.div>
-
-      <div
-        className="space-y-3 transition-opacity duration-1000"
-        style={{ opacity: ready ? 1 : 0 }}
-      >
-        {rows[0].length > 0 && <BookMarqueeRow books={rows[0]} direction="right" speed={45} />}
-        {rows[1].length > 0 && <BookMarqueeRow books={rows[1]} direction="left" speed={50} />}
-        {rows[2].length > 0 && <BookMarqueeRow books={rows[2]} direction="right" speed={42} />}
-      </div>
+    <section className="py-20 sm:py-24">
+      <p className="text-[13px] font-semibold tracking-wide text-[#e8c77b]">{eyebrow}</p>
+      <h2 className="mt-3 text-[26px] sm:text-[32px] font-semibold leading-snug tracking-tight text-white break-keep">
+        {title}
+      </h2>
+      <div className="mt-6 text-[16px] leading-[1.85] text-white/64 break-keep">{children}</div>
     </section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   Constants
-   ═══════════════════════════════════════════════════════════════════ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (d: number) => ({ opacity: 1, y: 0, transition: { delay: d, duration: 1, ease } }),
-};
-
-const MOCKUPS = [LessonMockup, QuizMockup, StreakMockup] as const;
-
-/* ═══════════════════════════════════════════════════════════════════
-   Landing page
-   ═══════════════════════════════════════════════════════════════════ */
-
-type DemoPhase = "pick" | "lesson" | "quiz" | "done";
-
-export default function LandingPage() {
-  const router = useRouter();
-  const { scrollYProgress } = useScroll();
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.12], [1, 0.97]);
-  const [leaving, setLeaving] = useState(false);
-  const mobile = useIsMobile();
-  const t = useT();
-  const language = useSettingsStore((s) => s.language);
-  const setLanguage = useSettingsStore((s) => s.setLanguage);
-  const isKo = language === "ko";
-
-  const [apiDemoBooks, setApiDemoBooks] = useState<ApiDemoBook[]>([]);
-
-  useEffect(() => {
-    fetch(`/api/demo?language=${language}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data) && data.length > 0) setApiDemoBooks(data);
-      })
-      .catch(() => {});
-  }, [language]);
-
-  const demoBooks = useMemo(() => {
-    if (apiDemoBooks.length > 0) return apiDemoBooks;
-    return FALLBACK_DEMO_BOOKS.map((b) => ({
-      id: b.id,
-      title: isKo ? b.title : b.titleEn,
-      author: isKo ? b.author : b.authorEn,
-      color: b.color,
-      coverUrl: b.coverUrl,
-      tagline: isKo ? b.tagline : b.taglineEn,
-      pages: b.pages,
-      lesson: FALLBACK_DEMO_LESSONS[b.id] ? {
-        title: isKo ? FALLBACK_DEMO_LESSONS[b.id].title : FALLBACK_DEMO_LESSONS[b.id].titleEn,
-        chapter: isKo ? FALLBACK_DEMO_LESSONS[b.id].chapter : FALLBACK_DEMO_LESSONS[b.id].chapterEn,
-        dialogue: isKo ? FALLBACK_DEMO_LESSONS[b.id].dialogue : FALLBACK_DEMO_LESSONS[b.id].dialogueEn,
-        quizzes: isKo ? FALLBACK_DEMO_LESSONS[b.id].quizzes : FALLBACK_DEMO_LESSONS[b.id].quizzesEn,
-        cliffhanger: isKo ? FALLBACK_DEMO_LESSONS[b.id].cliffhanger : FALLBACK_DEMO_LESSONS[b.id].cliffhangerEn,
-        nextTitle: isKo ? FALLBACK_DEMO_LESSONS[b.id].nextTitle : FALLBACK_DEMO_LESSONS[b.id].nextTitleEn,
-        totalLessons: FALLBACK_DEMO_LESSONS[b.id].totalLessons,
-      } : null,
-    }));
-  }, [apiDemoBooks, isKo]);
-
-  const demoLessonMap = useMemo(() => {
-    const m = new Map<string, ApiDemoBook["lesson"]>();
-    for (const b of demoBooks) {
-      if (b.lesson) m.set(b.id, b.lesson);
-    }
-    return m;
-  }, [demoBooks]);
-
-  const [demoOpen, setDemoOpen] = useState(false);
-  const [demoPhase, setDemoPhase] = useState<DemoPhase>("pick");
-  const [demoBook, setDemoBook] = useState<ApiDemoBook | null>(null);
-  const [demoScore, setDemoScore] = useState(0);
-
-  const openDemo = useCallback(() => {
-    setDemoOpen(true);
-    setDemoPhase("pick");
-    setDemoBook(null);
-    setDemoScore(0);
-  }, []);
-
-  const closeDemo = useCallback(() => {
-    setDemoOpen(false);
-  }, []);
-
-  const navigateTo = useCallback((path: string) => {
-    setLeaving(true);
-    setTimeout(() => router.push(path), 600);
-  }, [router]);
-
-  const showcases = [
-    { titleKey: "landing.showcase1Title" as const, descKey: "landing.showcase1Desc" as const, Mockup: MOCKUPS[0] },
-    { titleKey: "landing.showcase2Title" as const, descKey: "landing.showcase2Desc" as const, Mockup: MOCKUPS[1] },
-    { titleKey: "landing.showcase3Title" as const, descKey: "landing.showcase3Desc" as const, Mockup: MOCKUPS[2] },
-  ];
-
-  const steps = [
-    { num: "01", key: "landing.step1" as const },
-    { num: "02", key: "landing.step2" as const },
-    { num: "03", key: "landing.step3" as const },
-    { num: "04", key: "landing.step4" as const },
-  ];
-
-  const pillars = [
-    { bigKey: "landing.pillar1Big" as const, subKey: "landing.pillar1Sub" as const },
-    { bigKey: "landing.pillar2Big" as const, subKey: "landing.pillar2Sub" as const },
-    { bigKey: "landing.pillar3Big" as const, subKey: "landing.pillar3Sub" as const },
-  ];
-
+export default function Home() {
   return (
-    <motion.div
-      className="min-h-screen bg-[#060612] text-white overflow-x-clip selection:bg-white/10 break-keep"
-      animate={leaving ? { opacity: 0, scale: 0.98 } : { opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, ease }}
-    >
-      {/* Nav */}
-      <motion.nav
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3, ease }}
-        className="fixed top-0 left-0 right-0 z-50 bg-[rgba(6,6,18,0.6)] backdrop-blur-md"
-      >
-        <div className="mx-auto flex items-center justify-between px-8 sm:px-12 py-4">
-          <Link href="/" className="group flex items-center gap-2.5">
-            <span className={`${serif} font-brand text-[22px] font-bold tracking-tight text-white/70 group-hover:text-white/90 transition-colors duration-500`}>
-              Cosmii
-            </span>
+    <div className="min-h-screen bg-[#060612] text-white font-[family-name:var(--font-app)]">
+      <div className="mx-auto max-w-[44rem] px-6 sm:px-10">
+        <header className="flex items-center justify-between pt-8">
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <Image src="/cosmii-mark.png" alt="" width={28} height={28} priority className="h-7 w-7" />
+            <span className={`${serif} text-[22px] font-bold text-white/92`}>Cosmii</span>
           </Link>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigateTo("/login")}
-              className="text-[14px] tracking-wide text-white/50 hover:text-white/80 transition-colors duration-500"
-            >
-              {t("landing.signIn")}
-            </button>
-            <button
-              onClick={openDemo}
-              className="text-[14px] tracking-wide text-white/70 hover:text-white/95 px-5 py-2 rounded-full border border-white/[0.12] hover:border-white/[0.25] bg-white/[0.05] hover:bg-white/[0.08] backdrop-blur-sm transition-all duration-500"
-            >
-              {t("landing.getStarted")}
-            </button>
-          </div>
-        </div>
-        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.04] to-transparent" />
-      </motion.nav>
-      <StarField lite />
+          <a href={APP_STORE_URL} className="text-[14px] font-semibold text-white/80 transition-colors hover:text-white">
+            앱 받기
+          </a>
+        </header>
 
-      {/* Hero */}
-      <motion.section
-        style={{ opacity: heroOpacity, scale: heroScale }}
-        className="relative z-10 flex items-center justify-center h-[92vh] px-6 sm:px-12 pb-16 sm:pb-0"
-      >
-        {!mobile && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-            <div className="w-[600px] h-[600px] rounded-full bg-indigo-500/[0.04] blur-[120px]" />
-          </div>
-        )}
-
-        <div className="relative flex flex-col items-start gap-6 max-w-6xl mx-auto">
-          <motion.div
-            custom={0.2}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="flex-shrink-0 relative"
-          >
-            {!mobile && <div className="absolute inset-0 scale-150 rounded-full bg-emerald-400/[0.04] blur-[80px] pointer-events-none" />}
-            <CosmiiSprite mobile={mobile} />
-          </motion.div>
-
-          <div className="flex-1 flex flex-col items-start text-left">
-            <motion.h1 custom={0.35} variants={fadeUp} initial="hidden" animate="visible" className="max-w-2xl mb-6">
-              <span className={`${serif} text-[32px] sm:text-[48px] md:text-[60px] font-normal leading-[1.15] tracking-tight text-white whitespace-pre-line`}>
-                {t("landing.heroTitle")}
-              </span>
-            </motion.h1>
-            <motion.p custom={0.5} variants={fadeUp} initial="hidden" animate="visible"
-              className="text-[15px] sm:text-[17px] leading-[1.8] text-white/35 max-w-[480px] mb-10">
-              {t("landing.heroSub")}
-            </motion.p>
-            <motion.div custom={0.65} variants={fadeUp} initial="hidden" animate="visible">
-              <button
-                onClick={openDemo}
-                className="group inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-[#060612] text-[13px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02]">
-                {t("landing.cta")}
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
-              </button>
-            </motion.div>
-          </div>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        >
-          <span className="text-[11px] tracking-[0.15em] uppercase text-white/50">{t("landing.scroll")}</span>
-          <motion.div
-            className="w-[20px] h-[30px] rounded-full border border-white/30 flex items-start justify-center pt-1.5"
-            animate={{ y: [0, 4, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <motion.div
-              className="w-[3px] h-[6px] rounded-full bg-white/60"
-              animate={{ y: [0, 8], opacity: [1, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-            />
-          </motion.div>
-        </motion.div>
-      </motion.section>
-
-      {/* Emotional Hook + Pillars */}
-      <section className="relative z-10 py-24 sm:py-32 px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease }}
-          className="max-w-2xl mx-auto text-center mb-16"
-        >
-          <h2 className={`${serif} text-[28px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-6 leading-[1.3] whitespace-pre-line`}>
-            {t("landing.hookTitle")}
-          </h2>
-          <p className="text-[15px] text-white/35 max-w-lg mx-auto leading-[1.9]">
-            {t("landing.hookSub")}
+        <section className="pt-20 pb-16 text-center sm:pt-28">
+          <Image
+            src="/landing/mark-1024.png"
+            alt=""
+            width={96}
+            height={96}
+            priority
+            className="mx-auto h-20 w-20 sm:h-24 sm:w-24"
+          />
+          <h1 className="mt-8 text-[34px] font-semibold leading-[1.25] tracking-tight text-white break-keep sm:text-[46px]">
+            제목 대신 쪽지 한 줄로
+            <br />
+            만나는 고전
+          </h1>
+          <p className="mx-auto mt-6 max-w-[30rem] text-[17px] leading-[1.8] text-white/70 break-keep">
+            매주 봉인된 책 세 권이 도착해요. Cosmii가 붙여 둔 쪽지만 보고 마음 가는 책을 뜯고, 하루 한 장씩 끝까지 읽어요.
           </p>
-        </motion.div>
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <AppStoreButton />
+            <p className="text-[13px] text-white/40">iPhone · 무료로 시작</p>
+          </div>
 
-        <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-          {pillars.map((p, i) => (
-            <motion.div
-              key={p.bigKey}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ delay: i * 0.1, duration: 0.6, ease }}
-              className="text-center py-6 sm:py-8 sm:border-r sm:last:border-r-0 border-white/[0.04]"
-            >
-              <p className={`${serif} text-[17px] sm:text-[18px] font-semibold text-white/80 mb-2.5 leading-snug`}>{t(p.bigKey)}</p>
-              <p className="text-[13px] text-white/30 leading-relaxed max-w-[240px] mx-auto">{t(p.subKey)}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+          <div className="mt-16 grid grid-cols-3 gap-3 sm:gap-6">
+            {NOTES.map((n) => (
+              <figure key={n.wrap} className="flex flex-col items-center">
+                <Image
+                  src={`/landing/wrap-${n.wrap}.webp`}
+                  alt="봉인된 책"
+                  width={683}
+                  height={1024}
+                  className="w-full max-w-[160px] rounded-[4px] shadow-[0_12px_30px_rgba(0,0,0,0.55)]"
+                />
+                <figcaption className="mt-4 whitespace-pre-line text-[13px] leading-[1.6] text-white/80 break-keep sm:text-[15px]">
+                  {n.line}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
 
-      {/* Featured Demo Books */}
-      <section className="relative z-10 py-20 sm:py-28 px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease }}
-          className="text-center mb-12 sm:mb-16"
-        >
-          <h2 className={`${serif} text-[28px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-4 leading-[1.2] whitespace-pre-line`}>
-            {t("landing.featuredTitle")}
-          </h2>
-          <p className="text-[15px] text-white/30 max-w-md mx-auto leading-relaxed whitespace-pre-line">
-            {t("landing.featuredDesc")}
+        <div className="h-px bg-white/10" />
+
+        <Section eyebrow="이번 주 도착" title="쪽지를 보고 고르고, 봉인을 뜯어요">
+          <p>
+            책은 제목이 아니라 쪽지로 와요. 줄거리나 결말 대신, 이 책이 필요한 사람이 어떤 사람인지만 적혀 있어요. 뜯어야 비로소 어떤 책인지 알게 돼요.
           </p>
-        </motion.div>
+          <p className="mt-4">처음 여는 책은 무료예요. 매주 도착한 세 권 중 한 권도 무료로 뜯어요.</p>
+        </Section>
 
-        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-          {demoBooks.map((book, i) => {
-            const coverSrc = book.coverUrl || `/covers/${book.id}.jpg`;
-            return (
-              <motion.div
-                key={book.id}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ delay: i * 0.1, duration: 0.6, ease }}
-                className="flex flex-col items-center text-center"
-              >
-                <div
-                  className="w-full max-w-[200px] aspect-[3/4.3] rounded-xl overflow-hidden mb-5 shadow-lg"
-                  style={{ boxShadow: `0 8px 32px ${book.color}25, 0 2px 8px rgba(0,0,0,0.4)` }}
-                >
-                  <img src={coverSrc} alt={book.title} className="w-full h-full object-cover" />
-                </div>
-                <h3 className={`${serif} text-[18px] font-semibold text-white/90 mb-1.5`}>
-                  {book.title}
-                </h3>
-                <p className="text-[13px] text-white/35 mb-5 leading-snug max-w-[220px]">
-                  {book.pages ? <>{book.pages}p, </> : null}{book.tagline}
-                </p>
-                <button
-                  onClick={() => {
-                    setDemoOpen(true);
-                    setDemoBook(book);
-                    setDemoPhase("lesson");
-                    setDemoScore(0);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-white/[0.12] bg-white/[0.04] text-[13px] text-white/60 hover:text-white/90 hover:bg-white/[0.08] hover:border-white/[0.20] transition-all duration-300"
-                >
-                  {t("landing.featuredCta")}
-                  <ArrowRight className="w-3 h-3" />
-                </button>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
+        <div className="h-px bg-white/10" />
 
-      {/* Feature Showcase */}
-      {showcases.map((s, i) => {
-        const reversed = i % 2 === 1;
-        const MockupComponent = s.Mockup;
-        return (
-          <section key={s.titleKey} className="relative z-10 max-w-6xl mx-auto px-6 sm:px-12 py-20 sm:py-28">
-            <div className={`flex flex-col ${reversed ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-12 lg:gap-20`}>
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.7, ease }}
-                className="flex-1 max-w-md"
-              >
-                <h2 className={`${serif} text-[28px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-5 leading-[1.2] whitespace-pre-line`}>
-                  {t(s.titleKey)}
-                </h2>
-                <p className="text-[15px] text-white/35 leading-[1.8]">{t(s.descKey)}</p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.7, delay: 0.15, ease }}
-                className="flex-1 flex justify-center w-full"
-              >
-                <MockupComponent />
-              </motion.div>
-            </div>
-          </section>
-        );
-      })}
-
-      {/* Book Marquee */}
-      <BookMarquee />
-
-      {/* How it works */}
-      <section className="relative z-10 max-w-3xl mx-auto px-6 sm:px-12 py-20 sm:py-28">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.7 }} className="text-center mb-16">
-          <h2 className={`${serif} text-[26px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-5 leading-[1.3] whitespace-pre-line`}>{t("landing.howTitle")}</h2>
-          <p className="text-[14px] text-white/30 max-w-md mx-auto leading-[1.8] whitespace-pre-line">{t("landing.howSub")}</p>
-        </motion.div>
-        <div className="space-y-0">
-          {steps.map((s, i) => (
-            <motion.div key={s.num} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="flex items-center gap-6 py-5 border-b border-white/[0.04] last:border-0">
-              <span className="text-[12px] font-mono text-white/15 w-6 flex-shrink-0">{s.num}</span>
-              <p className="text-[15px] text-white/50">{t(s.key)}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Guarantee / Reassurance */}
-      <section className="relative z-10 py-24 sm:py-32 px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease }}
-          className="max-w-lg mx-auto text-center"
-        >
-          <h2 className={`${serif} text-[28px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-5 leading-[1.2] whitespace-pre-line`}>
-            {t("landing.guaranteeTitle")}
-          </h2>
-          <p className="text-[15px] text-white/35 leading-[1.9] max-w-sm mx-auto mb-10">
-            {t("landing.guaranteeSub")}
+        <Section eyebrow="하루 한 장" title="3분이면 한 장, 퀴즈 하나로 마무리">
+          <p>
+            고전을 짧은 장으로 나눠 두었어요. 한 장을 읽고 퀴즈 하나를 풀면 끝. 읽은 만큼 별빛이 쌓이고, 쌓인 별빛으로 다음 책을 열어요.
           </p>
-          <button
-            onClick={openDemo}
-            className="group inline-flex items-center gap-2 px-7 py-3 rounded-full border border-white/[0.12] bg-white/[0.05] text-white/70 text-[13px] font-medium transition-all duration-300 hover:bg-white/[0.10] hover:text-white/95 hover:border-white/[0.25]">
-            {t("landing.guaranteeCta")}
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
-          </button>
-        </motion.div>
-      </section>
+        </Section>
 
-      {/* Closing CTA */}
-      <section className="relative z-10 py-24 sm:py-32 px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8 }} className="max-w-3xl mx-auto text-center">
-          <h2 className={`${serif} text-3xl sm:text-4xl font-normal tracking-tight text-white/90 mb-5 whitespace-pre-line`}>{t("landing.closingTitle")}</h2>
-          <p className="text-[15px] text-white/30 max-w-md mx-auto leading-relaxed mb-10">{t("landing.closingSub")}</p>
-          <button
-            onClick={openDemo}
-            className="group inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white text-[#060612] text-[13px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02] active:scale-[0.98]">
-            {t("landing.cta")} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-300" />
-          </button>
-        </motion.div>
-      </section>
+        <div className="h-px bg-white/10" />
 
-      {/* Footer */}
-      <footer className="relative z-10 pt-20 pb-12 px-8 sm:px-12">
-        <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-14" />
-        <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-10">
-          <div>
-            <span className={`${serif} font-brand text-[18px] font-bold tracking-tight text-white/70`}>Cosmii</span>
-            <p className="text-[12px] text-white/25 mt-3 leading-relaxed whitespace-pre-line">{t("landing.footerTagline")}</p>
+        <Section eyebrow="Cosmii" title="읽다가 막히면, Cosmii에게 물어봐요">
+          <p>
+            인물이 왜 그랬는지, 이 장면이 무슨 뜻인지 편하게 물어보세요. 내가 읽은 곳까지만 이야기해서 결말을 먼저 말하지 않아요. Cosmii의 목소리로 장을 들을 수도 있어요.
+          </p>
+        </Section>
+
+        <div className="h-px bg-white/10" />
+
+        <Section eyebrow="다 읽으면" title="한 권을 끝내면 장서표가 남아요">
+          <p>
+            다 읽은 책마다 내 이름이 찍힌 장서표가 서재에 걸려요. 첫 장, 첫 봉인, 연속 읽기 같은 순간에는 인장이 찍혀요.
+          </p>
+        </Section>
+
+        <div className="h-px bg-white/10" />
+
+        <Section eyebrow="별빛 책방" title="읽고 싶은 책이 따로 있다면">
+          <p>제목과 표지를 보고 고르거나, 쪽지만 보고 골라요.</p>
+          <div className="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-6">
+            {COVERS.map((c) => (
+              <Image
+                key={c.id}
+                src={`/landing/cover-${c.id}.webp`}
+                alt={c.title}
+                width={400}
+                height={600}
+                className="w-full rounded-[3px] shadow-[0_8px_20px_rgba(0,0,0,0.5)]"
+              />
+            ))}
           </div>
-          <div>
-            <p className="text-[11px] uppercase tracking-widest text-white/30 mb-4">{t("landing.footerPages")}</p>
-            <div className="flex flex-col gap-2.5">
-              <Link href="/universe" className="text-[13px] text-white/40 hover:text-white/70 transition-colors duration-300">{t("landing.footerUniverse")}</Link>
-              <Link href="/login" className="text-[13px] text-white/40 hover:text-white/70 transition-colors duration-300">{t("landing.footerSignIn")}</Link>
-            </div>
+        </Section>
+
+        <div className="h-px bg-white/10" />
+
+        <Section eyebrow="Cosmii Premium" title="더 많이 읽는 사람에게">
+          <ul className="space-y-2">
+            <li>매주 도착한 봉인 세 권을 모두 무료로</li>
+            <li>모든 장을 Cosmii의 목소리로</li>
+            <li>Cosmii와 대화 무제한</li>
+            <li>매달 별빛 1,200</li>
+          </ul>
+          <p className="mt-4 text-[14px] text-white/40">구독 없이도 읽는 기능은 모두 쓸 수 있어요.</p>
+        </Section>
+
+        <section className="py-24 text-center">
+          <h2 className="text-[28px] font-semibold leading-snug tracking-tight text-white break-keep sm:text-[34px]">
+            이번 주 쪽지가 기다리고 있어요
+          </h2>
+          <div className="mt-8 flex justify-center">
+            <AppStoreButton />
           </div>
-          <div>
-            <p className="text-[11px] uppercase tracking-widest text-white/30 mb-4">{t("landing.footerSocial")}</p>
-            <div className="flex flex-col gap-2.5">
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="text-[13px] text-white/40 hover:text-white/70 transition-colors duration-300">X</a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[13px] text-white/40 hover:text-white/70 transition-colors duration-300">GitHub</a>
-            </div>
-          </div>
-          <div>
-            <p className="text-[11px] uppercase tracking-widest text-white/30 mb-4">{t("landing.footerTerms")}</p>
-            <div className="flex flex-col gap-2.5">
-              <Link href="/privacy" className="text-[13px] text-white/40 hover:text-white/70 transition-colors duration-300">{t("landing.footerPrivacy")}</Link>
-              <Link href="/terms" className="text-[13px] text-white/40 hover:text-white/70 transition-colors duration-300">{t("landing.footerTos")}</Link>
-              <button
-                onClick={() => setLanguage(language === "ko" ? "en" : "ko")}
-                className="text-[13px] text-white/40 hover:text-white/70 transition-colors duration-300 text-left"
-              >
-                {language === "ko" ? "English" : "한국어"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </footer>
+        </section>
 
-      {/* ═══ Demo Overlay ═══ */}
-      <AnimatePresence>
-        {demoOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease }}
-            className="fixed inset-0 z-[100] bg-[#060612]"
-          >
-            {demoPhase === "pick" && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="h-full flex flex-col items-center justify-center px-5 sm:px-8 py-16 overflow-y-auto"
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.6, ease }}
-                  className="text-center mb-10 sm:mb-14"
-                >
-                  <h1 className={`${serif} text-[26px] sm:text-[36px] font-normal tracking-tight text-white/90 mb-3`}>
-                    {t("demo.pickTitle")}
-                  </h1>
-                  <p className="text-[14px] sm:text-[15px] text-white/30">{t("demo.pickSub")}</p>
-                </motion.div>
-
-                <div className="w-full max-w-[720px] grid grid-cols-3 gap-3 sm:gap-5">
-                  {demoBooks.map((book, i) => {
-                    const coverSrc = book.coverUrl || `/covers/${book.id}.jpg`;
-                    return (
-                      <motion.button
-                        key={book.id}
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.15 + i * 0.1, duration: 0.6, ease }}
-                        whileHover={{ scale: 1.04, y: -4 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => {
-                          setDemoBook(book);
-                          setDemoPhase("lesson");
-                        }}
-                        className="group flex flex-col items-center text-center relative"
-                      >
-                        <div
-                          className="relative w-full aspect-[3/4.3] rounded-xl sm:rounded-2xl overflow-hidden mb-3 sm:mb-4 shadow-lg"
-                          style={{ boxShadow: `0 8px 32px ${book.color}25, 0 2px 8px rgba(0,0,0,0.4)` }}
-                        >
-                          <img
-                            src={coverSrc}
-                            alt={book.title}
-                            className="absolute inset-0 w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = "none";
-                            }}
-                          />
-                          <div
-                            className="absolute inset-0 -z-10"
-                            style={{
-                              background: `linear-gradient(160deg, ${book.color}90 0%, ${book.color}30 50%, #0a0a1a 100%)`,
-                            }}
-                          />
-                          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
-                          <div
-                            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                            style={{
-                              background: `radial-gradient(circle at 50% 80%, ${book.color}20, transparent 70%)`,
-                            }}
-                          />
-                        </div>
-
-                        <h3 className={`${serif} text-[13px] sm:text-[16px] font-semibold text-white/90 leading-tight mb-0.5 sm:mb-1`}>
-                          {book.title}
-                        </h3>
-                        <p className="text-[10px] sm:text-[12px] text-white/35 mb-1 sm:mb-1.5 leading-snug">
-                          {book.author}
-                        </p>
-                        <p className="text-[10px] sm:text-[12px] text-white/20 leading-snug hidden sm:block">
-                          {book.tagline}
-                        </p>
-                      </motion.button>
-                    );
-                  })}
-                </div>
-
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                  onClick={closeDemo}
-                  className="mt-8 sm:mt-10 flex items-center gap-1.5 text-[13px] text-white/25 hover:text-white/50 transition-colors"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                  뒤로
-                </motion.button>
-              </motion.div>
-            )}
-
-            {(demoPhase === "lesson" || demoPhase === "quiz" || demoPhase === "done") && demoBook && (
-              <div className="h-full w-full flex items-center justify-center bg-[#020208]">
-                <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] rounded-full bg-[#a78bfa]/[0.04] blur-[120px]" />
-                </div>
-                <div className="relative w-full h-full md:w-[430px] md:h-[90vh] md:max-h-[932px] md:rounded-[2.5rem] md:border md:border-white/[0.06] md:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_80px_rgba(167,139,250,0.06)] overflow-hidden bg-[#060612]">
-
-                  {demoPhase === "lesson" && demoLessonMap.get(demoBook.id) && (
-                    <div className="h-full">
-                      <ConceptDialogue
-                        bookId={demoBook.id}
-                        bookTitle={demoBook.title}
-                        chapter={demoLessonMap.get(demoBook.id)!.chapter}
-                        lessonTitle={demoLessonMap.get(demoBook.id)!.title}
-                        currentLesson={1}
-                        totalLessons={1}
-                        progressPercent={0}
-                        dialogue={demoLessonMap.get(demoBook.id)!.dialogue}
-                        spark=""
-                        isFirstInChapter
-                        onBack={() => setDemoPhase("pick")}
-                        onComplete={() => setDemoPhase("quiz")}
-                      />
-                    </div>
-                  )}
-
-                  {demoPhase === "quiz" && demoLessonMap.get(demoBook.id) && (
-                    <div className="h-full">
-                      <QuizView
-                        quizzes={demoLessonMap.get(demoBook.id)!.quizzes}
-                        progressPercent={100}
-                        onBack={() => setDemoPhase("pick")}
-                        onComplete={(score) => {
-                          setDemoScore(score);
-                          setDemoPhase("done");
-                        }}
-                      />
-                    </div>
-                  )}
-
-                  {demoPhase === "done" && (() => {
-                    const lesson = demoLessonMap.get(demoBook.id);
-                    const doneCover = demoBook.coverUrl || `/covers/${demoBook.id}.jpg`;
-                    return (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="h-full relative flex flex-col items-center justify-center px-6 overflow-hidden"
-                      >
-                        <div className="absolute inset-0 -z-10">
-                          <img src={doneCover} alt="" className="absolute inset-0 w-full h-full object-cover blur-[60px] scale-125 opacity-20" />
-                          <div className="absolute inset-0 bg-[#060612]/80" />
-                        </div>
-
-                        <div className="text-center max-w-[380px] w-full">
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.15, duration: 0.6, ease }}
-                            className="flex flex-col items-center mb-6"
-                          >
-                            <div
-                              className="w-[72px] h-[100px] rounded-lg overflow-hidden mb-4 shadow-lg"
-                              style={{ boxShadow: `0 4px 24px ${demoBook.color}30` }}
-                            >
-                              <img src={doneCover} alt="" className="w-full h-full object-cover" />
-                            </div>
-                            <h1 className={`${serif} text-[26px] font-normal tracking-tight text-white/90 mb-2 leading-[1.3] whitespace-pre-line`}>
-                              {t("demo.completeTitle")}
-                            </h1>
-                          </motion.div>
-
-                          {lesson && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: 0.45, duration: 0.6, ease }}
-                              className="mb-10 px-2"
-                            >
-                              <p className="text-[11px] text-white/20 uppercase tracking-[0.15em] mb-3">
-                                {t("demo.nextLabel")} — {lesson.nextTitle}
-                              </p>
-                              <p className={`${serif} text-[15px] text-white/40 leading-[1.8] italic`}>
-                                {lesson.cliffhanger}
-                              </p>
-                            </motion.div>
-                          )}
-
-                          <motion.div
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.65, duration: 0.5, ease }}
-                            className="mb-6"
-                          >
-                            <button
-                              onClick={() => {
-                                localStorage.setItem("cosmii-demo-book", demoBook.id);
-                                localStorage.setItem("cosmii-demo-score", String(demoScore));
-                                navigateTo("/login?mode=signup");
-                              }}
-                              className="group w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white text-[#060612] text-[14px] font-medium transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:scale-[1.02]"
-                            >
-                              {t("demo.signupCta")}
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300" />
-                            </button>
-                          </motion.div>
-
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.85, duration: 0.5 }}
-                            className="flex flex-col items-center gap-3 text-[12px]"
-                          >
-                            <a
-                              href="https://apps.apple.com"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-white/25 hover:text-white/45 transition-colors"
-                            >
-                              <Smartphone size={13} />
-                              <span>{t("demo.appTitle")} — {t("demo.appDesc")}</span>
-                            </a>
-                          </motion.div>
-                        </div>
-                      </motion.div>
-                    );
-                  })()}
-
-                </div>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+        <footer className="border-t border-white/10 py-10 text-[13px]">
+          <nav className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link href="/support" className={link}>고객 지원</Link>
+            <Link href="/terms" className={link}>이용약관</Link>
+            <Link href="/privacy" className={link}>개인정보처리방침</Link>
+            <span className={`ml-auto text-white/25 ${serif} font-bold`}>© 2026 Utopify</span>
+          </nav>
+        </footer>
+      </div>
+    </div>
   );
 }

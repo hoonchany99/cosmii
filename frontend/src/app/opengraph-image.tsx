@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export const runtime = "nodejs";
-export const alt = "Cosmii — 읽고 싶었던 책, 이번엔 끝까지";
+export const alt = "Cosmii — 제목 대신 쪽지 한 줄로 만나는 고전";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -22,7 +22,7 @@ async function loadSerifFont() {
 }
 
 async function loadImage() {
-  const buf = await readFile(join(process.cwd(), "public", "cosmii-logo.png"));
+  const buf = await readFile(join(process.cwd(), "public", "landing", "mark-1024.png"));
   return `data:image/png;base64,${buf.toString("base64")}`;
 }
 
@@ -96,11 +96,11 @@ export default async function OGImage() {
           ))}
         </div>
 
-        {/* Left: Cosmii character */}
+        {/* Left: the mark */}
         <img
           src={imageSrc}
-          width={300}
-          height={300}
+          width={240}
+          height={240}
           style={{ objectFit: "contain", flexShrink: 0 }}
         />
 
@@ -135,7 +135,7 @@ export default async function OGImage() {
               lineHeight: 1.4,
             }}
           >
-            읽고 싶었던 책, 이번엔 끝까지
+            제목 대신 쪽지 한 줄로 만나는 고전
           </div>
         </div>
       </div>

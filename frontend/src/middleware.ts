@@ -1,61 +1,26 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Anyone can read these without an account: the app links to them, and the
-// App Store asks for pages a reviewer can open.
-const PUBLIC_PATHS = ["/login", "/signup", "/auth/callback", "/privacy", "/terms", "/support", "/onboarding", "/opengraph-image", "/twitter-image"];
+// The site is an introduction to the iPhone app: the landing page, the pages
+// the app links to, and the API the app calls. The web app that used to live
+// here (login, universe, onboarding, admin...) is closed, and its routes go to
+// the landing page.
+const OPEN_PATHS = ["/support", "/terms", "/privacy", "/opengraph-image", "/twitter-image", "/robots.txt", "/sitemap.xml"];
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   if (
+    pathname === "/" ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
-    pathname.includes(".") // static files
+    pathname.includes(".") ||
+    OPEN_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`))
   ) {
     return NextResponse.next();
   }
-
-  const response = NextResponse.next();
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options);
-          });
-        },
-      },
-    },
-  );
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const isPublic = pathname === "/" || PUBLIC_PATHS.some((p) => pathname.startsWith(p));
-
-  if (user) {
-    if (pathname === "/login" || pathname === "/signup") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/universe";
-      return NextResponse.redirect(url);
-    }
-  } else {
-    if (!isPublic) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-  }
-
-  return response;
+  const url = request.nextUrl.clone();
+  url.pathname = "/";
+  url.search = "";
+  return NextResponse.redirect(url, 308);
 }
 
 export const config = {
