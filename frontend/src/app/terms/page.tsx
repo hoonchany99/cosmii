@@ -17,7 +17,7 @@ export default function TermsPage() {
         <ul className="space-y-2 list-disc list-outside ml-5">
           <li>로그인하지 않고도 앱을 쓸 수 있습니다. 이때 기록은 기기에만 저장됩니다.</li>
           <li>Apple 또는 Google로 로그인하면 읽은 기록, 봉인을 뜯은 책, 별빛 사용 내역이 계정에 저장됩니다.</li>
-          <li>설정 › 계정 삭제에서 언제든 계정과 기록을 지울 수 있습니다. 지운 기록은 되돌릴 수 없습니다.</li>
+          <li>설정 › 계정 삭제에서 언제든 계정과 서버에 백업된 기록을 지울 수 있습니다. 기기에 있는 기록은 그대로 남습니다. 지운 기록은 되돌릴 수 없습니다.</li>
         </ul>
       </section>
 
