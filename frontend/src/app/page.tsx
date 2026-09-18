@@ -114,7 +114,7 @@ export default function Home() {
 
         <div className="h-px bg-white/10" />
 
-        <Section eyebrow="이번 주 도착" title="쪽지를 보고 고르고, 봉인을 뜯어요">
+        <Section eyebrow="이번 주의 쪽지" title="쪽지를 보고 고르고, 봉인을 뜯어요">
           <p>
             책은 제목이 아니라 쪽지로 와요. 줄거리나 결말 대신, 이 책이 필요한 사람이 어떤 사람인지만 적혀 있어요. 뜯어야 비로소 어떤 책인지 알게 돼요.
           </p>
