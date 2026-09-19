@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { after, NextRequest, NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
+import { isSubscriber, lessonOpenBeforeSubscribing, readerId } from "@/lib/reader-access";
 import { directLesson, MODEL, spoken, squash, voiceLesson, type Part } from "@/lib/lesson-voice";
 
 // 듣기 mode, a lesson at a time. The app sends the lesson's speech bubbles as
@@ -34,8 +35,13 @@ export async function POST(req: NextRequest) {
   }
 
   const sb = getServiceClient();
-  const { data: row } = await sb.from("lessons").select("content_json").eq("id", lessonId).maybeSingle();
+  const { data: row } = await sb.from("lessons").select("content_json, book_id, order_index").eq("id", lessonId).maybeSingle();
   if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  // Before subscribing, only the first book's first chapters are voiced.
+  const subscriber = await isSubscriber(readerId(req));
+  if (subscriber === false && !(await lessonOpenBeforeSubscribing(row.book_id ?? null, row.order_index ?? null))) {
+    return NextResponse.json({ error: "subscribe" }, { status: 402 });
+  }
   const content = (typeof row.content_json === "string" ? JSON.parse(row.content_json) : row.content_json) ?? {};
   const parts: Part[] = ((content.dialogue_ko ?? content.dialogue ?? []) as unknown[]).filter(
     (p): p is Part => !!p && typeof p === "object" && typeof (p as { text?: unknown }).text === "string",

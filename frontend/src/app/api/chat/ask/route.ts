@@ -1,6 +1,7 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
 import OpenAI from "openai";
+import { isSubscriber, readerId, takeChat } from "@/lib/reader-access";
 
 const SYSTEM_PROMPTS: Record<string, string> = {
   // Matches the lesson voice (cosmii-app docs/lesson-style.md): a friend
@@ -298,6 +299,14 @@ function sealedGuard(titles: unknown, message: unknown, history: unknown): (text
 }
 
 export async function POST(req: NextRequest) {
+  // Before subscribing, a few questions in all; a subscriber, a quiet daily
+  // ceiling. Unenforced when RevenueCat can't be asked (see reader-access).
+  const reader = readerId(req);
+  const subscriber = await isSubscriber(reader);
+  if (subscriber !== null && !(await takeChat(reader, subscriber))) {
+    return NextResponse.json({ error: subscriber ? "daily_limit" : "subscribe" }, { status: 402 });
+  }
+
   const body = await req.json();
   const { message, book_id, lesson_context, history, language, read_lesson_ids, sealed_titles, sealed_pairs } = body;
   const lang = language ?? "ko";
