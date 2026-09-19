@@ -4,7 +4,7 @@ import { ReaderPage, h2, strong, link } from "@/components/reader-page";
 
 export default function TermsPage() {
   return (
-    <ReaderPage title="이용약관" note="시행일: 2026년 9월 17일" current="/terms">
+    <ReaderPage title="이용약관" note="시행일: 2026년 9월 20일" current="/terms">
       <section>
         <h2 className={h2}>1. 서비스</h2>
         <p>
@@ -22,13 +22,14 @@ export default function TermsPage() {
       </section>
 
       <section>
-        <h2 className={h2}>3. 무료 이용과 Premium</h2>
+        <h2 className={h2}>3. Premium과 구독 전 이용</h2>
         <ul className="space-y-2 list-disc list-outside ml-5">
-          <li><strong className={strong}>이번 주의 쪽지</strong> — 매주 월요일 봉인된 책 세 권이 도착합니다. 도착한 책은 제목 대신 한 줄의 쪽지만 보이고, 봉인을 뜯으면 그 책을 끝까지 읽을 수 있습니다.</li>
-          <li><strong className={strong}>별빛 책방</strong> — 그 밖의 책은 별빛 책방에서 고릅니다. 제목과 표지를 보고 고르면 별빛 600, 쪽지만 보고 고르면 별빛 300으로 엽니다. 쪽지로 고른 책의 제목은 봉인을 뜯어야 보입니다.</li>
-          <li><strong className={strong}>무료</strong> — 매주 도착한 세 권 중 한 권을 별빛 없이 뜯을 수 있고, 그보다 더 뜯으면 한 권에 별빛 300이 듭니다. Cosmii와의 대화는 하루 정해진 횟수까지, 목소리는 책마다 첫 장까지 들을 수 있습니다.</li>
-          <li><strong className={strong}>Premium</strong> — 매주 도착한 세 권을 모두 별빛 없이 뜯고, 매달 별빛을 받으며, 모든 장을 Cosmii의 목소리로 듣고, 횟수 제한 없이 대화할 수 있는 구독입니다.</li>
-          <li>무료로 제공되는 책의 수와 대화 횟수, Premium의 혜택은 서비스 운영에 따라 바뀔 수 있으며, 바뀌기 전에 앱에서 알립니다.</li>
+          <li><strong className={strong}>Premium</strong> — Cosmii는 구독 서비스입니다. Premium으로 모든 장의 레슨을 읽고, 모든 장을 Cosmii의 목소리로 듣고, Cosmii와 대화하며, 매달 별빛을 받습니다. 대화에는 서비스를 지키기 위한 하루 이용 한도가 있을 수 있습니다.</li>
+          <li><strong className={strong}>무료 체험</strong> — 처음 구독하는 Apple ID에는 무료 체험 기간이 제공될 수 있습니다. 체험이 끝나기 24시간 전까지 해지하지 않으면 선택한 요금제로 결제가 시작됩니다.</li>
+          <li><strong className={strong}>구독 전 이용</strong> — 구독하기 전에는 처음 고른 책 한 권의 앞 몇 장을 읽고 들을 수 있으며, Cosmii와 정해진 횟수까지 대화할 수 있습니다.</li>
+          <li><strong className={strong}>이번 주의 쪽지</strong> — 매주 월요일 봉인된 책 세 권이 도착합니다. 도착한 책은 제목 대신 한 줄의 쪽지만 보이고, Premium으로 세 권 모두 봉인을 뜯어 끝까지 읽을 수 있습니다.</li>
+          <li><strong className={strong}>별빛 책방</strong> — 그 밖의 책은 Premium 이용 중에 별빛 책방에서 별빛으로 엽니다. 제목과 표지를 보고 고르면 별빛 600, 쪽지만 보고 고르면 별빛 300입니다. 쪽지로 고른 책의 제목은 봉인을 뜯어야 보입니다.</li>
+          <li>구독 전에 이용할 수 있는 범위와 Premium의 혜택은 서비스 운영에 따라 바뀔 수 있으며, 바뀌기 전에 앱에서 알립니다.</li>
         </ul>
       </section>
 
@@ -36,6 +37,7 @@ export default function TermsPage() {
         <h2 className={h2}>4. 구독과 결제</h2>
         <ul className="space-y-2 list-disc list-outside ml-5">
           <li>Premium은 Apple App Store를 통해 결제되며, 결제와 환불에는 Apple의 정책이 적용됩니다.</li>
+          <li>Premium은 1개월과 1년 요금제가 있으며, 요금은 결제 화면과 App Store에 표시됩니다.</li>
           <li>구독은 기간이 끝나기 최소 24시간 전에 해지하지 않으면 같은 기간으로 자동 갱신되고, 갱신 요금은 기간 종료 전 24시간 안에 청구됩니다.</li>
           <li>구독 관리와 해지는 iPhone의 설정 › Apple ID › 구독에서 할 수 있습니다. 해지해도 이미 결제한 기간이 끝날 때까지 Premium을 쓸 수 있습니다.</li>
           <li>환불은 Apple에 요청해야 합니다. Cosmii가 직접 결제 금액을 돌려드릴 수는 없습니다.</li>
@@ -45,7 +47,7 @@ export default function TermsPage() {
       <section>
         <h2 className={h2}>5. 별빛</h2>
         <p>
-          별빛은 장을 읽고 퀴즈를 맞히거나, 인장을 받거나(계정에 기록을 남기는 것 포함), Premium으로 매달 받아 쌓이는 앱 안의 점수로, 책을 여는 데 쓸 수 있습니다. 별빛은 돈으로 사거나 현금으로 바꾸거나 다른 사람에게 넘길 수 없고, 계정을 삭제하면 함께 사라집니다. 별빛으로 얻을 수 있는 것은 운영에 따라 바뀔 수 있습니다.
+          별빛은 장을 읽고 퀴즈를 맞히거나, 인장을 받거나(계정에 기록을 남기는 것 포함), Premium으로 매달 받아 쌓이는 앱 안의 점수로, Premium 이용 중 별빛 책방에서 책을 여는 데 쓸 수 있습니다. 별빛은 돈으로 사거나 현금으로 바꾸거나 다른 사람에게 넘길 수 없고, 계정을 삭제하면 함께 사라집니다. 별빛으로 얻을 수 있는 것은 운영에 따라 바뀔 수 있습니다.
         </p>
       </section>
 

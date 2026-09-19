@@ -91,7 +91,7 @@ export default function Home() {
           </p>
           <div className="mt-10 flex flex-col items-center gap-3">
             <AppStoreButton />
-            <p className="text-[13px] text-white/40">iPhone · 무료로 시작</p>
+            <p className="text-[13px] text-white/40">iPhone · 첫 책은 결제 없이</p>
           </div>
 
           <div className="mt-16 grid grid-cols-3 gap-3 sm:gap-6">
@@ -118,7 +118,7 @@ export default function Home() {
           <p>
             책은 제목이 아니라 쪽지로 와요. 줄거리나 결말 대신, 이 책이 필요한 사람이 어떤 사람인지만 적혀 있어요. 뜯어야 비로소 어떤 책인지 알게 돼요.
           </p>
-          <p className="mt-4">매주 도착한 세 권 중 한 권은 늘 무료로 뜯어요.</p>
+          <p className="mt-4">처음 고른 한 권은 결제 없이 앞 몇 장을 읽어볼 수 있어요.</p>
         </Section>
 
         <div className="h-px bg-white/10" />
@@ -165,14 +165,14 @@ export default function Home() {
 
         <div className="h-px bg-white/10" />
 
-        <Section eyebrow="Cosmii Premium" title="더 많이 읽는 사람에게">
+        <Section eyebrow="Cosmii Premium" title="고전을 끝까지 읽게 해주는 구독">
           <ul className="space-y-2">
-            <li>매주 도착한 봉인 세 권을 모두 무료로</li>
+            <li>모든 장의 레슨, 하루 3분씩 끝까지</li>
             <li>모든 장을 Cosmii의 목소리로</li>
-            <li>Cosmii와 대화 무제한</li>
-            <li>매달 별빛 1,200</li>
+            <li>읽다가 궁금한 건 Cosmii와 언제든 대화</li>
+            <li>매주 봉인 세 권을 모두 뜯고, 매달 별빛 1,200</li>
           </ul>
-          <p className="mt-4 text-[14px] text-white/40">구독 없이도 읽는 기능은 모두 쓸 수 있어요.</p>
+          <p className="mt-4 text-[14px] text-white/40">처음이라면 7일 무료 체험으로 시작해요. 언제든 해지할 수 있어요.</p>
         </Section>
 
         <section className="py-24 text-center">
