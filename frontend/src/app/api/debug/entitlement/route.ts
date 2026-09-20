@@ -3,6 +3,7 @@
 // a key is set and the status code that came back. Delete once the setting is
 // confirmed.
 import { NextRequest, NextResponse } from "next/server";
+import { getServiceClient } from "@/lib/supabase-server";
 
 export async function GET(req: NextRequest) {
   const key = process.env.REVENUECAT_SECRET_KEY;
@@ -35,5 +36,17 @@ export async function GET(req: NextRequest) {
   } else {
     v2 = "no REVENUECAT_PROJECT_ID";
   }
-  return NextResponse.json({ hasKey: true, shape, v1, v2 });
+  // And whether the counter table can be read and written with the service key.
+  let table: unknown = "not tried";
+  try {
+    const sb = getServiceClient();
+    const read = await sb.from("pre_trial_chats").select("count").eq("app_user_id", "debug-reader").maybeSingle();
+    const write = await sb
+      .from("pre_trial_chats")
+      .upsert({ app_user_id: "debug-reader", count: 1, updated_at: new Date().toISOString() }, { onConflict: "app_user_id" });
+    table = { readError: read.error?.message ?? null, writeError: write.error?.message ?? null };
+  } catch (e) {
+    table = `error: ${(e as Error).message}`;
+  }
+  return NextResponse.json({ hasKey: true, shape, v1, v2, table });
 }
