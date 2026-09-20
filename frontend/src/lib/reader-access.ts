@@ -41,7 +41,7 @@ export async function isSubscriber(appUserId: string): Promise<boolean | null> {
   if (hit && Date.now() - hit.at < CACHE_MS) return hit.premium;
   try {
     const res = await fetch(`https://api.revenuecat.com/v1/subscribers/${encodeURIComponent(appUserId)}`, {
-      headers: { Authorization: `Bearer ${key}`, "X-Platform": "ios" },
+      headers: { Authorization: `Bearer ${key}` },
       cache: "no-store",
     });
     if (!res.ok) return null;

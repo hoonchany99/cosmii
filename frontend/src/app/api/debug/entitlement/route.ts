@@ -48,5 +48,9 @@ export async function GET(req: NextRequest) {
   } catch (e) {
     table = `error: ${(e as Error).message}`;
   }
-  return NextResponse.json({ hasKey: true, shape, v1, v2, table });
+  // The whole path the chat takes, as the chat takes it.
+  const { isSubscriber, takeChat } = await import("@/lib/reader-access");
+  const subscriber = await isSubscriber(id);
+  const allowed = subscriber === null ? null : await takeChat(id, subscriber);
+  return NextResponse.json({ hasKey: true, shape, v1, v2, table, subscriber, allowed });
 }
