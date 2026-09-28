@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/ads/sweep",
+      "schedule": "0 * * * *"
+    }
+  ]
+}
