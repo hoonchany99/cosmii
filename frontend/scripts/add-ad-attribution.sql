@@ -25,3 +25,18 @@ create index if not exists ad_attribution_token_expiry
 
 -- Only the server touches this table; no reader may read it.
 alter table public.ad_attribution enable row level security;
+
+-- The 24-hour promise, kept by the database itself. Vercel's free plan allows
+-- one scheduled run a day, which is not often enough, so the sweep lives here:
+-- every hour, any token past its day is cleared. The campaign numbers stay;
+-- they say nothing about anyone.
+create extension if not exists pg_cron;
+
+select cron.schedule(
+  'ad-attribution-token-sweep',
+  '0 * * * *',
+  $$update public.ad_attribution
+      set token = null
+    where token is not null
+      and token_expires_at < now()$$
+);

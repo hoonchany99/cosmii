@@ -68,6 +68,19 @@ async function ask(token: string): Promise<{ answer: Attribution | null; retry: 
   return { answer: null, retry: res.status === 404 || res.status === 429 || res.status >= 500 };
 }
 
+/**
+ * Clears tokens whose day is up. The database sweeps hourly on its own (see
+ * scripts/add-ad-attribution.sql); this is the same work done in passing,
+ * whenever anyone touches this route, so nothing waits on a schedule.
+ */
+async function clearExpired(db: ReturnType<typeof getServiceClient>) {
+  await db
+    .from("ad_attribution")
+    .update({ token: null })
+    .lt("token_expires_at", new Date().toISOString())
+    .not("token", "is", null);
+}
+
 function isId(v: unknown): v is string {
   return typeof v === "string" && v.length > 0 && v.length <= 64 && /^[A-Za-z0-9_-]+$/.test(v);
 }
@@ -80,6 +93,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "bad request" }, { status: 400 });
   }
   const db = getServiceClient();
+  void clearExpired(db);
   const { answer, retry } = await ask(token).catch(() => ({ answer: null, retry: true }));
   if (answer) {
     // Apple has answered: the token has done its work and is not stored at all.
@@ -109,6 +123,7 @@ export async function GET(req: NextRequest) {
   const installId = req.nextUrl.searchParams.get("install_id");
   if (!isId(installId)) return NextResponse.json({ error: "bad request" }, { status: 400 });
   const db = getServiceClient();
+  void clearExpired(db);
   const { data } = await db
     .from("ad_attribution")
     .select("attributed, campaign_id, ad_group_id, keyword_id, conversion_type, token, token_expires_at, resolved_at")

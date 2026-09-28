@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/ads/sweep",
-      "schedule": "0 * * * *"
+      "schedule": "17 3 * * *"
     }
   ]
 }
