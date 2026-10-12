@@ -37,8 +37,18 @@ export async function POST(req: NextRequest) {
   const sb = getServiceClient();
   const { data: row } = await sb.from("lessons").select("content_json, book_id, order_index").eq("id", lessonId).maybeSingle();
   if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  // Voicing a book ahead of time (scripts/warm-voice.mjs) asks for lessons that
+  // no reader has opened yet, so it cannot be a subscriber and is let through on
+  // the server's own secret instead - the same one the ads sweep uses, which
+  // lives only in the server's environment. Nothing it produces differs: same
+  // voice, same model, same direction, same cache key. Only the moment it is
+  // made, which is the whole point of warming. Every other check below still
+  // applies, including the one that refuses lines which are not in the lesson.
+  const warming =
+    !!process.env.CRON_SECRET &&
+    req.headers.get("authorization") === `Bearer ${process.env.CRON_SECRET}`;
   // Before subscribing, only the first book's first chapters are voiced.
-  const subscriber = await isSubscriber(readerId(req));
+  const subscriber = warming ? true : await isSubscriber(readerId(req));
   if (subscriber === false && !(await lessonOpenBeforeSubscribing(row.book_id ?? null, row.order_index ?? null))) {
     return NextResponse.json({ error: "subscribe" }, { status: 402 });
   }
