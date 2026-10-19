@@ -67,9 +67,8 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
       }}
     >
       <div style={{ width: "100%", maxWidth: 420, textAlign: "center" }}>
-        {/* The cover is bundled with the app for every book and published here
-            for only some, so the book's own colour stands behind it and shows
-            through when there is no file to load. */}
+        {/* Cosmii's own cover art, the same files the app carries. The book's
+            colour stands behind it for the case where one is missing. */}
         <div
           style={{
             width: 180,

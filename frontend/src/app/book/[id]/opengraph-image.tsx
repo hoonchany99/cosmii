@@ -2,10 +2,12 @@
 // it the link arrives as a title and a line of grey text, which is not what
 // anyone means by sharing a book.
 //
-// The cover is drawn here rather than loaded: only a handful of the cover
-// files are published to the web, while every book has a colour, so the card
-// is set on the book's own colour and carries its title.
+// The cover is Cosmii's own art, published here beside the app's copy of it.
+// `books.cover_url` is not used: those point at publishers' own cover images
+// on their own sites, which are theirs and not ours to put on a card.
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { getServiceClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
@@ -28,6 +30,16 @@ async function loadWordmarkFont() {
   return res.arrayBuffer();
 }
 
+/** The book's cover, or nothing - a book whose art is missing keeps its colour. */
+async function loadCover(id: string): Promise<string | null> {
+  try {
+    const buf = await readFile(join(process.cwd(), "public", "covers", `${id}.jpg`));
+    return `data:image/jpeg;base64,${buf.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
 export default async function BookOGImage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   let title = "Cosmii";
@@ -47,7 +59,7 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
   } catch {
     // The card is drawn either way; a book that cannot be read is still a link.
   }
-  const [fontData, wordmarkData] = await Promise.all([loadFont(), loadWordmarkFont()]);
+  const [fontData, wordmarkData, cover] = await Promise.all([loadFont(), loadWordmarkFont(), loadCover(id)]);
 
   return new ImageResponse(
     (
@@ -74,11 +86,17 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
             justifyContent: "center",
             padding: 28,
             flexShrink: 0,
+            overflow: "hidden",
           }}
         >
-          <div style={{ fontSize: 44, fontWeight: 700, color: "#0b0b18", textAlign: "center", lineHeight: 1.25 }}>
-            {title}
-          </div>
+          {cover ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={cover} width={300} height={450} style={{ objectFit: "cover" }} alt="" />
+          ) : (
+            <div style={{ fontSize: 44, fontWeight: 700, color: "#0b0b18", textAlign: "center", lineHeight: 1.25 }}>
+              {title}
+            </div>
+          )}
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 60, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{title}</div>
@@ -86,9 +104,9 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
           {/* The app signs the card: its name in the wordmark face it is
               always set in, and the line that stands beside that name on the
               App Store - the same line the shared message carries. */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 48 }}>
-            <div style={{ fontFamily: "Wordmark", fontSize: 40, color: "#e8c77b" }}>Cosmii</div>
-            <div style={{ fontSize: 26, color: "rgba(255,255,255,0.5)" }}>고전을 읽는 가장 쉬운 방법</div>
+          <div style={{ display: "flex", flexDirection: "column", marginTop: 52 }}>
+            <div style={{ fontFamily: "Wordmark", fontSize: 54, color: "#e8c77b", lineHeight: 1.1 }}>Cosmii</div>
+            <div style={{ fontSize: 26, color: "rgba(255,255,255,0.5)", marginTop: 6 }}>고전을 읽는 가장 쉬운 방법</div>
           </div>
         </div>
       </div>
