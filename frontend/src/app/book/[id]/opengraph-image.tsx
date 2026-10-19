@@ -20,6 +20,14 @@ async function loadFont() {
   return res.arrayBuffer();
 }
 
+/** The face the Cosmii wordmark is always set in, in the app and here. */
+async function loadWordmarkFont() {
+  const res = await fetch(
+    "https://fonts.gstatic.com/s/ebgaramond/v32/SlGDmQSNjdsmc35JDF1K5E55YMjF_7DPuGi-DPNUAw.ttf",
+  );
+  return res.arrayBuffer();
+}
+
 export default async function BookOGImage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   let title = "Cosmii";
@@ -39,7 +47,7 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
   } catch {
     // The card is drawn either way; a book that cannot be read is still a link.
   }
-  const fontData = await loadFont();
+  const [fontData, wordmarkData] = await Promise.all([loadFont(), loadWordmarkFont()]);
 
   return new ImageResponse(
     (
@@ -75,12 +83,21 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 60, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{title}</div>
           <div style={{ fontSize: 34, color: "rgba(255,255,255,0.64)", marginTop: 14 }}>{author}</div>
-          <div style={{ fontSize: 28, color: "rgba(255,255,255,0.45)", marginTop: 44 }}>
-            고전을 하루 3분의 레슨으로 · Cosmii
+          {/* The app signs the card: its name in the wordmark face it is
+              always set in, and the line the App Store carries under it. */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 48 }}>
+            <div style={{ fontFamily: "Wordmark", fontSize: 40, color: "#e8c77b" }}>Cosmii</div>
+            <div style={{ fontSize: 26, color: "rgba(255,255,255,0.5)" }}>하루 3분씩, 한 권을 끝까지</div>
           </div>
         </div>
       </div>
     ),
-    { ...size, fonts: [{ name: "Nanum", data: fontData, style: "normal", weight: 700 }] },
+    {
+      ...size,
+      fonts: [
+        { name: "Nanum", data: fontData, style: "normal", weight: 700 },
+        { name: "Wordmark", data: wordmarkData, style: "normal", weight: 700 },
+      ],
+    },
   );
 }
