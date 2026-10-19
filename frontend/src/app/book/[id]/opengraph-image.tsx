@@ -73,6 +73,7 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
           padding: "0 90px",
           background: "#060612",
           fontFamily: "Nanum",
+          position: "relative",
         }}
       >
         <div
@@ -101,13 +102,24 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 60, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{title}</div>
           <div style={{ fontSize: 34, color: "rgba(255,255,255,0.64)", marginTop: 14 }}>{author}</div>
-          {/* The app signs the card: its name in the wordmark face it is
-              always set in, and the line that stands beside that name on the
-              App Store - the same line the shared message carries. */}
-          <div style={{ display: "flex", flexDirection: "column", marginTop: 52 }}>
-            <div style={{ fontFamily: "Wordmark", fontSize: 54, color: "#e8c77b", lineHeight: 1.1 }}>Cosmii</div>
-            <div style={{ fontSize: 26, color: "rgba(255,255,255,0.5)", marginTop: 6 }}>고전을 읽는 가장 쉬운 방법</div>
-          </div>
+        </div>
+
+        {/* The app signs the card in its corner: its name in the wordmark
+            face it is always set in, and the line that stands beside that
+            name on the App Store. Out of the text column, so the book's own
+            title and author have that column to themselves. */}
+        <div
+          style={{
+            position: "absolute",
+            right: 90,
+            bottom: 64,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
+        >
+          <div style={{ fontFamily: "Wordmark", fontSize: 54, color: "#e8c77b", lineHeight: 1.1 }}>Cosmii</div>
+          <div style={{ fontSize: 26, color: "rgba(255,255,255,0.5)", marginTop: 6 }}>고전을 읽는 가장 쉬운 방법</div>
         </div>
       </div>
     ),
