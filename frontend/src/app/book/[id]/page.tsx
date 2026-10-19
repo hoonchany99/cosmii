@@ -49,15 +49,43 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
+/**
+ * A night sky behind the book, drawn with gradients rather than loaded as a
+ * picture. The positions come from the book's own id, so a book's sky is
+ * always the same sky, and no file has to be shipped for it.
+ */
+function starfield(seed: string): string {
+  let h = 0;
+  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) % 100000;
+  const next = () => {
+    h = (h * 1103515245 + 12345) % 2147483648;
+    return h / 2147483648;
+  };
+  const stars: string[] = [];
+  for (let i = 0; i < 90; i++) {
+    const x = (next() * 100).toFixed(2);
+    const y = (next() * 100).toFixed(2);
+    const r = (next() * 1.2 + 0.5).toFixed(2);
+    const a = (next() * 0.5 + 0.18).toFixed(2);
+    stars.push(`radial-gradient(${r}px ${r}px at ${x}% ${y}%, rgba(255,255,255,${a}) 50%, transparent 51%)`);
+  }
+  // Two faint clouds of colour, so the sky is not a flat black with dots in it.
+  stars.push("radial-gradient(900px 520px at 18% 12%, rgba(90,80,170,0.16), transparent 70%)");
+  stars.push("radial-gradient(760px 480px at 86% 88%, rgba(60,110,140,0.13), transparent 70%)");
+  return stars.join(", ");
+}
+
 export default async function BookPage({ params }: { params: Promise<{ id: string }> }) {
   const book = await readBook((await params).id);
   if (!book) notFound();
+  const sky = starfield(book.id);
 
   return (
     <main
       style={{
         minHeight: "100dvh",
         background: "#060612",
+        backgroundImage: sky,
         color: "#fff",
         display: "flex",
         alignItems: "center",
@@ -101,11 +129,9 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
             padding: "15px 24px",
           }}
         >
-          Cosmii에서 읽기
+          <span style={{ fontFamily: "var(--font-serif), 'EB Garamond', Georgia, serif", fontWeight: 700 }}>Cosmii</span>
+          에서 읽기
         </a>
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 16 }}>
-          고전을 읽는 가장 쉬운 방법 · 매일 세 장 무료
-        </p>
       </div>
     </main>
   );

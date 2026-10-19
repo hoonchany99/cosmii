@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 export const runtime = "nodejs";
-export const alt = "Cosmii — 제목 대신 쪽지 한 줄로 만나는 고전";
+export const alt = "Cosmii — 고전을 읽는 가장 쉬운 방법";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -135,7 +135,7 @@ export default async function OGImage() {
               lineHeight: 1.4,
             }}
           >
-            제목 대신 쪽지 한 줄로 만나는 고전
+            고전을 읽는 가장 쉬운 방법
           </div>
         </div>
       </div>
