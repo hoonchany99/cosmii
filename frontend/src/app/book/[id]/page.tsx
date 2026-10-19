@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!book) return { title: "Cosmii" };
   // What a messaging app shows when the link is pasted: the book, not the app.
   const title = `『${book.title}』 — ${book.author}`;
-  const description = book.description ?? "고전을 하루 3분의 레슨으로. Cosmii에서 읽어요.";
+  const description = book.description ?? "고전을 읽는 가장 쉬운 방법, Cosmii.";
   return {
     title,
     description,
@@ -105,7 +105,7 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
           Cosmii에서 읽기
         </a>
         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 16 }}>
-          고전을 하루 3분의 레슨으로. 매일 세 장 무료.
+          고전을 읽는 가장 쉬운 방법 · 매일 세 장 무료
         </p>
       </div>
     </main>

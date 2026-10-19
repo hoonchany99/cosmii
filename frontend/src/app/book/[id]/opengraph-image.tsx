@@ -84,10 +84,11 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
           <div style={{ fontSize: 60, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{title}</div>
           <div style={{ fontSize: 34, color: "rgba(255,255,255,0.64)", marginTop: 14 }}>{author}</div>
           {/* The app signs the card: its name in the wordmark face it is
-              always set in, and the line the App Store carries under it. */}
+              always set in, and the line that stands beside that name on the
+              App Store - the same line the shared message carries. */}
           <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 48 }}>
             <div style={{ fontFamily: "Wordmark", fontSize: 40, color: "#e8c77b" }}>Cosmii</div>
-            <div style={{ fontSize: 26, color: "rgba(255,255,255,0.5)" }}>하루 3분씩, 한 권을 끝까지</div>
+            <div style={{ fontSize: 26, color: "rgba(255,255,255,0.5)" }}>고전을 읽는 가장 쉬운 방법</div>
           </div>
         </div>
       </div>
