@@ -1,0 +1,10 @@
+# What the deploy does not need. The Vercel project's root is frontend/, but the
+# CLI uploads from here, and without this it carries the whole workspace - build
+# caches and the books archive among them, which are larger than Vercel accepts.
+.turbo
+node_modules
+backend
+cosmii-books
+supabase
+frontend/.next
+frontend/node_modules

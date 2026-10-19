@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["QKX64N475Y.com.utopify.cosmii"],
+        "components": [
+          { "/": "/book/*", "comment": "a book's page opens in the app" }
+        ]
+      }
+    ]
+  }
+}
