@@ -4,7 +4,20 @@ import { NextResponse, type NextRequest } from "next/server";
 // the app links to, and the API the app calls. The web app that used to live
 // here (login, universe, onboarding, admin...) is closed, and its routes go to
 // the landing page.
-const OPEN_PATHS = ["/support", "/terms", "/privacy", "/opengraph-image", "/twitter-image", "/robots.txt", "/sitemap.xml"];
+// `/book` is where a shared link lands, and `/.well-known` is where Apple
+// looks to see whether the app may open those links - a redirect there is the
+// same to Apple as the file not being present at all.
+const OPEN_PATHS = [
+  "/support",
+  "/terms",
+  "/privacy",
+  "/book",
+  "/.well-known",
+  "/opengraph-image",
+  "/twitter-image",
+  "/robots.txt",
+  "/sitemap.xml",
+];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
