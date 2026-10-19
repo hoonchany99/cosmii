@@ -154,7 +154,7 @@ export default function Home() {
               title="데미안"
               tint="#8A9FCF"
               number="02"
-              owner="훈찬"
+              owner="지우"
               date="2026. 10. 20"
               width={260}
             />
