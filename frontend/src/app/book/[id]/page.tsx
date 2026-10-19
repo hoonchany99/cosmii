@@ -11,6 +11,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServiceClient } from "@/lib/supabase-server";
+import { starfield } from "@/lib/cosmii-text";
 
 const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129389248&ct=share_book&mt=8";
 
@@ -47,32 +48,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     openGraph: { title, description, type: "book" },
     twitter: { card: "summary_large_image", title, description },
   };
-}
-
-/**
- * A night sky behind the book, drawn with gradients rather than loaded as a
- * picture. The positions come from the book's own id, so a book's sky is
- * always the same sky, and no file has to be shipped for it.
- */
-function starfield(seed: string): string {
-  let h = 0;
-  for (const ch of seed) h = (h * 31 + ch.charCodeAt(0)) % 100000;
-  const next = () => {
-    h = (h * 1103515245 + 12345) % 2147483648;
-    return h / 2147483648;
-  };
-  const stars: string[] = [];
-  for (let i = 0; i < 90; i++) {
-    const x = (next() * 100).toFixed(2);
-    const y = (next() * 100).toFixed(2);
-    const r = (next() * 1.2 + 0.5).toFixed(2);
-    const a = (next() * 0.5 + 0.18).toFixed(2);
-    stars.push(`radial-gradient(${r}px ${r}px at ${x}% ${y}%, rgba(255,255,255,${a}) 50%, transparent 51%)`);
-  }
-  // Two faint clouds of colour, so the sky is not a flat black with dots in it.
-  stars.push("radial-gradient(900px 520px at 18% 12%, rgba(90,80,170,0.16), transparent 70%)");
-  stars.push("radial-gradient(760px 480px at 86% 88%, rgba(60,110,140,0.13), transparent 70%)");
-  return stars.join(", ");
 }
 
 export default async function BookPage({ params }: { params: Promise<{ id: string }> }) {

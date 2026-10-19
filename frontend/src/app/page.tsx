@@ -7,6 +7,7 @@
 // page never sets a note beside its title.
 import Image from "next/image";
 import Link from "next/link";
+import { starfield, withCosmii } from "@/lib/cosmii-text";
 
 const APP_STORE_URL = "https://apps.apple.com/kr/app/cosmii/id6812843004";
 
@@ -46,7 +47,7 @@ function AppStoreButton() {
   );
 }
 
-function Section({ eyebrow, title, children }: { eyebrow: string; title: string; children: React.ReactNode }) {
+function Section({ eyebrow, title, children }: { eyebrow: React.ReactNode; title: React.ReactNode; children: React.ReactNode }) {
   return (
     <section className="py-20 sm:py-24">
       <p className="text-[13px] font-semibold tracking-wide text-[#e8c77b]">{eyebrow}</p>
@@ -60,7 +61,10 @@ function Section({ eyebrow, title, children }: { eyebrow: string; title: string;
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#060612] text-white font-[family-name:var(--font-app)]">
+    <div
+      className="min-h-screen bg-[#060612] text-white font-[family-name:var(--font-app)]"
+      style={{ backgroundImage: starfield("cosmii"), backgroundAttachment: "fixed" }}
+    >
       <div className="mx-auto max-w-[44rem] px-6 sm:px-10">
         <header className="flex items-center justify-between pt-8">
           <Link href="/" className="inline-flex items-center gap-2.5">
@@ -87,16 +91,16 @@ export default function Home() {
             가장 쉬운 방법
           </h1>
           <p className="mx-auto mt-6 max-w-[30rem] text-[17px] leading-[1.8] text-white/70 break-keep">
-            한 장은 3분. 매일 세 장씩 무료로 읽어요. Cosmii가 소리 내어 읽어 주고, 막히면 언제든 물어볼 수 있어요.
+            {withCosmii("어렵던 고전, 쉽게 설명해 주니 읽혀요. 한 장은 3분이고, Cosmii가 소리 내어 읽어 주고, 막히면 언제든 물어볼 수 있어요.")}
           </p>
           <div className="mt-10 flex flex-col items-center gap-3">
             <AppStoreButton />
-            <p className="text-[13px] text-white/40">iPhone · 매일 세 장 무료</p>
+            <p className="text-[13px] text-white/40">iPhone · 무료로 시작해요</p>
           </div>
 
           <div className="mt-16 grid grid-cols-3 gap-3 sm:gap-6">
             {OPENERS.map((b) => (
-              <figure key={b.id} className="flex flex-col items-center">
+              <Link key={b.id} href={`/book/${b.id}`} className="flex flex-col items-center transition-opacity hover:opacity-80">
                 <Image
                   src={`/covers/${b.id}.jpg`}
                   alt={b.title}
@@ -104,37 +108,36 @@ export default function Home() {
                   height={900}
                   className="w-full max-w-[160px] rounded-[4px] shadow-[0_12px_30px_rgba(0,0,0,0.55)]"
                 />
-                <figcaption className="mt-4 text-[13px] leading-[1.6] text-white/80 break-keep sm:text-[15px]">
+                <span className="mt-4 text-[13px] leading-[1.6] text-white/80 break-keep sm:text-[15px]">
                   {b.title}
                   <span className="block text-white/45">{b.author}</span>
-                </figcaption>
-              </figure>
+                </span>
+              </Link>
             ))}
           </div>
         </section>
 
         <div className="h-px bg-white/10" />
 
-        <Section eyebrow="매일 세 장" title="오늘 몫이 정해져 있어요">
+        <Section eyebrow="끝까지" title="읽다 만 책이 되지 않게">
           <p>
-            무료로 매일 세 장. 어떤 책이든 괜찮고, 한 권에 매일 필요도 없어요. 다 읽으면 내일 다시 세 장이 열려요.
-          </p>
-          <p className="mt-4">한 번 읽은 장은 다시 읽어도 오늘 몫에서 빠지지 않아요.</p>
-        </Section>
-
-        <div className="h-px bg-white/10" />
-
-        <Section eyebrow="한 장 3분" title="한 장을 읽고, 퀴즈 하나로 마무리">
-          <p>
-            고전을 짧은 장으로 나눠 두었어요. 한 장을 읽고 퀴즈 하나를 풀면 끝. 오래 앉아 있지 않아도 책이 끝까지 가요.
+            고전은 사두고 못 읽는 책이에요. 매일 조금씩이면 한 권이 끝나요. 한 권에만 매달릴 필요도, 하루를 통째로 비울 필요도 없어요.
           </p>
         </Section>
 
         <div className="h-px bg-white/10" />
 
-        <Section eyebrow="Cosmii" title="읽다가 막히면, Cosmii에게 물어봐요">
+        <Section eyebrow="한 장 3분" title="어려운 대목은 풀어서 들려줘요">
           <p>
-            인물이 왜 그랬는지, 이 장면이 무슨 뜻인지 편하게 물어보세요. 내가 읽은 곳까지만 이야기해서 결말을 먼저 말하지 않아요. 모든 장은 Cosmii의 목소리로 들을 수도 있어요.
+            고전이 어려운 건 머리가 나빠서가 아니라 설명해 주는 사람이 없어서예요. 짧은 장으로 나누고 어려운 대목은 풀어서 들려줘요. 한 장을 읽고 퀴즈 하나를 풀면 끝이에요.
+          </p>
+        </Section>
+
+        <div className="h-px bg-white/10" />
+
+        <Section eyebrow={withCosmii("Cosmii")} title={withCosmii("읽다가 막히면, Cosmii에게 물어봐요")}>
+          <p>
+            {withCosmii("인물이 왜 그랬는지, 이 장면이 무슨 뜻인지 편하게 물어보세요. 내가 읽은 곳까지만 이야기해서 결말을 먼저 말하지 않아요. 모든 장은 Cosmii의 목소리로 들을 수도 있어요.")}
           </p>
         </Section>
 
@@ -152,32 +155,33 @@ export default function Home() {
           <p>스물아홉 권이 주제별로 놓여 있어요. 어느 책이든 바로 펼칠 수 있어요.</p>
           <div className="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-6">
             {COVERS.map((c) => (
-              <Image
-                key={c.id}
-                src={`/landing/cover-${c.id}.webp`}
-                alt={c.title}
-                width={400}
-                height={600}
-                className="w-full rounded-[3px] shadow-[0_8px_20px_rgba(0,0,0,0.5)]"
-              />
+              <Link key={c.id} href={`/book/${c.id}`} className="transition-opacity hover:opacity-80">
+                <Image
+                  src={`/covers/${c.id}.jpg`}
+                  alt={c.title}
+                  width={600}
+                  height={900}
+                  className="w-full rounded-[3px] shadow-[0_8px_20px_rgba(0,0,0,0.5)]"
+                />
+              </Link>
             ))}
           </div>
         </Section>
 
         <div className="h-px bg-white/10" />
 
-        <Section eyebrow="Cosmii Premium" title="고전을 끝까지 읽게 해주는 구독">
+        <Section eyebrow={withCosmii("Cosmii Premium")} title="고전을 끝까지 읽게 해주는 구독">
           <ul className="space-y-2">
             <li>하루 제한 없이, 읽고 싶은 만큼</li>
             <li>모든 책의 모든 장</li>
-            <li>읽다가 궁금한 건 Cosmii와 제한 없이 대화</li>
+            <li>{withCosmii("읽다가 궁금한 건 Cosmii와 제한 없이 대화")}</li>
           </ul>
           <p className="mt-4 text-[14px] text-white/40">처음이라면 7일 무료 체험으로 시작해요. 언제든 해지할 수 있어요.</p>
         </Section>
 
         <section className="py-24 text-center">
           <h2 className="text-[28px] font-semibold leading-snug tracking-tight text-white break-keep sm:text-[34px]">
-            오늘 세 장이 기다리고 있어요
+            읽다 만 고전, 이번엔 끝까지
           </h2>
           <div className="mt-8 flex justify-center">
             <AppStoreButton />

@@ -46,9 +46,9 @@ export const viewport: Viewport = {
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Cosmii — 고전을 읽는 가장 쉬운 방법";
   const description =
-    "한 장은 3분, 매일 세 장 무료. Cosmii가 소리 내어 읽어 주고 막히면 물어볼 수 있는, 고전을 끝까지 읽게 해주는 iPhone 앱.";
+    "어렵던 고전, 쉽게 설명해 주니 읽혀요. 한 장은 3분. Cosmii가 소리 내어 읽어 주고 막히면 물어볼 수 있는 iPhone 앱.";
   const locale = "ko_KR";
-  const keywords = ["Cosmii", "고전", "독서 앱", "책 읽기", "하루 세 장", "독서 습관", "오디오북", "AI 독서"];
+  const keywords = ["Cosmii", "고전", "독서 앱", "책 읽기", "하루 한 장", "독서 습관", "오디오북", "AI 독서"];
 
   return {
     title: { default: title, template: "%s | Cosmii" },
@@ -110,7 +110,7 @@ export default async function RootLayout({
     url: SITE_URL,
     applicationCategory: "BookApplication",
     operatingSystem: "iOS",
-    description: "한 장은 3분, 매일 세 장 무료. Cosmii가 소리 내어 읽어 주고 막히면 물어볼 수 있는, 고전을 끝까지 읽게 해주는 iPhone 앱.",
+    description: "어렵던 고전, 쉽게 설명해 주니 읽혀요. 한 장은 3분. Cosmii가 소리 내어 읽어 주고 막히면 물어볼 수 있는 iPhone 앱.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
     creator: { "@type": "Organization", name: "Utopify" },
     inLanguage: "ko",
