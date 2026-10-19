@@ -8,6 +8,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { starfield, withCosmii } from "@/lib/cosmii-text";
+import { BookPlate } from "@/components/book-plate";
 
 const APP_STORE_URL = "https://apps.apple.com/kr/app/cosmii/id6812843004";
 
@@ -91,7 +92,7 @@ export default function Home() {
             가장 쉬운 방법
           </h1>
           <p className="mx-auto mt-6 max-w-[30rem] text-[17px] leading-[1.8] text-white/70 break-keep">
-            {withCosmii("어렵던 고전, 쉽게 설명해 주니 읽혀요. 한 장은 3분이고, Cosmii가 소리 내어 읽어 주고, 막히면 언제든 물어볼 수 있어요.")}
+            {withCosmii("한 장은 3분. 어려운 대목은 Cosmii가 풀어서 들려주고, 막히면 언제든 물어볼 수 있어요.")}
           </p>
           <div className="mt-10 flex flex-col items-center gap-3">
             <AppStoreButton />
@@ -145,8 +146,19 @@ export default function Home() {
 
         <Section eyebrow="다 읽으면" title="한 권을 끝내면 장서표가 남아요">
           <p>
-            다 읽은 책마다 내 이름이 찍힌 장서표가 서재에 걸려요. 첫 장, 두 번째 책, 연속 읽기 같은 순간에는 인장이 찍혀요.
+            다 읽은 책마다 내 이름이 찍힌 장서표가 서재에 걸려요. 읽는 동안에는 네 조각 중 읽은 만큼만 보이고, 다 읽어야 그림이 온전해져요.
           </p>
+          <div className="mt-10 flex justify-center">
+            <BookPlate
+              bookId="bc977bab"
+              title="데미안"
+              tint="#8A9FCF"
+              number="02"
+              owner="훈찬"
+              date="2026. 10. 20"
+              width={260}
+            />
+          </div>
         </Section>
 
         <div className="h-px bg-white/10" />
