@@ -299,12 +299,14 @@ function sealedGuard(titles: unknown, message: unknown, history: unknown): (text
 }
 
 export async function POST(req: NextRequest) {
-  // Before subscribing, a few questions in all; a subscriber, a quiet daily
+  // A few questions a day before subscribing; a subscriber, a quiet daily
   // ceiling. Unenforced when RevenueCat can't be asked (see reader-access).
+  // Both are the day's, so both say so - an app reading "subscribe" would
+  // tell a reader their questions are gone for good, and they are not.
   const reader = readerId(req);
   const subscriber = await isSubscriber(reader);
   if (subscriber !== null && !(await takeChat(reader, subscriber))) {
-    return NextResponse.json({ error: subscriber ? "daily_limit" : "subscribe" }, { status: 402 });
+    return NextResponse.json({ error: "daily_limit" }, { status: 402 });
   }
 
   const body = await req.json();

@@ -8,16 +8,27 @@
 // a missing setting never locks paying readers out; the app keeps its own
 // limits either way.
 //
-// Before subscribing: a few questions to Cosmii in all, and the voice of the
-// first book's first chapters. The numbers are the same ones the app reads,
-// from app_config "access".
+// Before subscribing: a few questions to Cosmii a day. The voice is no longer
+// one of the things held back - every chapter is read aloud for everyone. The
+// numbers are the same ones the app reads, from app_config "access", so the
+// two can be changed together without shipping either.
 import { createHash } from "node:crypto";
 import { type NextRequest } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
 
 const ENTITLEMENT = "premium";
 const CACHE_MS = 5 * 60 * 1000;
-const DEFAULTS = { freeChapters: 3, preTrialChats: 5 };
+const DEFAULTS = {
+  freeChapters: 3,
+  preTrialChats: 5,
+  /** Questions to Cosmii in one day, before subscribing. */
+  dailyFreeChats: 3,
+  /**
+   * Whether every chapter is read aloud for everyone. False puts the voice
+   * back behind a subscription, as it was, without shipping anything.
+   */
+  voiceForEveryone: true,
+};
 /** The first week's books: the only ones a reader can open before subscribing. */
 export const FIRST_WEEK_BOOKS = ["bc977bab", "cl_odyssey", "c_animal_farm"];
 /** A quiet ceiling on a subscriber's questions a day, against abuse only. */
@@ -60,48 +71,70 @@ export async function isSubscriber(appUserId: string): Promise<boolean | null> {
 export async function accessConfig(): Promise<typeof DEFAULTS> {
   try {
     const { data } = await getServiceClient().from("app_config").select("value").eq("key", "access").maybeSingle();
-    const v = (data?.value ?? {}) as { free_chapters?: unknown; pre_trial_chats?: unknown };
+    const v = (data?.value ?? {}) as Record<string, unknown>;
     const n = (x: unknown, d: number) => (typeof x === "number" && x >= 0 ? Math.floor(x) : d);
-    return { freeChapters: n(v.free_chapters, DEFAULTS.freeChapters), preTrialChats: n(v.pre_trial_chats, DEFAULTS.preTrialChats) };
+    const b = (x: unknown, d: boolean) => (typeof x === "boolean" ? x : d);
+    return {
+      freeChapters: n(v.free_chapters, DEFAULTS.freeChapters),
+      preTrialChats: n(v.pre_trial_chats, DEFAULTS.preTrialChats),
+      dailyFreeChats: n(v.daily_free_chats, DEFAULTS.dailyFreeChats),
+      voiceForEveryone: b(v.voice_for_everyone, DEFAULTS.voiceForEveryone),
+    };
   } catch {
     return DEFAULTS;
   }
 }
 
 /**
- * Counts one question and says whether it may be asked: before subscribing,
- * up to the pre-trial number in all; a subscriber, up to the daily ceiling.
+ * The day a reader is standing in, which is Seoul's: Cosmii is sold in Korea
+ * only, and the app counts the day on the reader's own clock. Counting UTC
+ * here would turn the day over at nine in the morning for them, and the app
+ * and the server would disagree about it for nine hours every day.
+ */
+function seoulDay(): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).format(new Date());
+}
+
+/**
+ * Counts one question and says whether it may be asked. Both a subscriber and
+ * a reader without one are counted by the day now - the difference is the
+ * number, three against a ceiling that exists only against abuse.
  * When the count can't be kept (table missing), the question passes.
+ *
+ * `pre_trial_chats`, which counted a reader's questions for all time, is left
+ * alone: an older app still in someone's hands reads nothing from it, and it
+ * is the record of what was asked before the day's allowance existed.
  */
 export async function takeChat(appUserId: string, subscriber: boolean): Promise<boolean> {
   const sb = getServiceClient();
   try {
-    if (subscriber) {
-      const day = new Date().toISOString().slice(0, 10);
-      const { data } = await sb.from("chat_daily").select("count").eq("app_user_id", appUserId).eq("day", day).maybeSingle();
-      const count = (data?.count as number | undefined) ?? 0;
-      if (count >= SUBSCRIBER_DAILY_CHATS) return false;
-      await sb.from("chat_daily").upsert({ app_user_id: appUserId, day, count: count + 1 }, { onConflict: "app_user_id,day" });
-      return true;
-    }
-    const { preTrialChats } = await accessConfig();
-    const { data, error } = await sb.from("pre_trial_chats").select("count").eq("app_user_id", appUserId).maybeSingle();
+    const { dailyFreeChats } = await accessConfig();
+    const limit = subscriber ? SUBSCRIBER_DAILY_CHATS : dailyFreeChats;
+    const day = seoulDay();
+    const { data, error } = await sb
+      .from("chat_daily")
+      .select("count")
+      .eq("app_user_id", appUserId)
+      .eq("day", day)
+      .maybeSingle();
     if (error) return true;
     const count = (data?.count as number | undefined) ?? 0;
-    if (count >= preTrialChats) return false;
-    await sb.from("pre_trial_chats").upsert(
-      { app_user_id: appUserId, count: count + 1, updated_at: new Date().toISOString() },
-      { onConflict: "app_user_id" },
-    );
+    if (count >= limit) return false;
+    await sb.from("chat_daily").upsert({ app_user_id: appUserId, day, count: count + 1 }, { onConflict: "app_user_id,day" });
     return true;
   } catch {
     return true;
   }
 }
 
-/** Whether a reader who hasn't subscribed may hear this lesson: the first book's first chapters. */
+/**
+ * Whether a reader who hasn't subscribed may hear this lesson. Every chapter
+ * of every book, unless `voice_for_everyone` is turned off in app_config, in
+ * which case it is the first book's first chapters as it used to be.
+ */
 export async function lessonOpenBeforeSubscribing(bookId: string | null, orderIndex: number | null): Promise<boolean> {
+  const { freeChapters, voiceForEveryone } = await accessConfig();
+  if (voiceForEveryone) return true;
   if (!bookId || orderIndex == null || !FIRST_WEEK_BOOKS.includes(bookId)) return false;
-  const { freeChapters } = await accessConfig();
   return orderIndex < freeChapters;
 }
