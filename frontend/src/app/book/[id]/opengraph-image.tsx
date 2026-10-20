@@ -9,6 +9,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { getServiceClient } from "@/lib/supabase-server";
+import { bookNote } from "@/lib/book-notes";
 
 export const runtime = "nodejs";
 export const alt = "Cosmii에서 읽고 있는 책";
@@ -59,6 +60,7 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
   } catch {
     // The card is drawn either way; a book that cannot be read is still a link.
   }
+  const note = bookNote(id);
   const [fontData, wordmarkData, cover] = await Promise.all([loadFont(), loadWordmarkFont(), loadCover(id)]);
 
   return new ImageResponse(
@@ -99,9 +101,17 @@ export default async function BookOGImage({ params }: { params: Promise<{ id: st
             </div>
           )}
         </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", flexDirection: "column", maxWidth: 560 }}>
           <div style={{ fontSize: 60, fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{title}</div>
           <div style={{ fontSize: 34, color: "rgba(255,255,255,0.64)", marginTop: 14 }}>{author}</div>
+          {/* Who the book is for, which is the part of a shared link that is
+              addressed to whoever received it. Held short of the wordmark in
+              the corner so the two never run into each other. */}
+          {note ? (
+            <div style={{ fontSize: 30, lineHeight: 1.45, color: "rgba(255,255,255,0.82)", marginTop: 30 }}>
+              {note}
+            </div>
+          ) : null}
         </div>
 
         {/* The app signs the card in its corner: its name in the wordmark

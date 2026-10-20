@@ -12,6 +12,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServiceClient } from "@/lib/supabase-server";
 import { starfield } from "@/lib/cosmii-text";
+import { bookNote } from "@/lib/book-notes";
 
 const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129389248&ct=share_book&mt=8";
 
@@ -41,7 +42,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!book) return { title: "Cosmii" };
   // What a messaging app shows when the link is pasted: the book, not the app.
   const title = `『${book.title}』 — ${book.author}`;
-  const description = book.description ?? "고전을 읽는 가장 쉬운 방법, Cosmii.";
+  // The line Cosmii wrote for whoever needs this book, where the blurb used
+  // to be. A card that says "슬퍼해야 할 때 슬프지 않아서 당황한 너에게" is
+  // read by the person it is addressed to; a plot summary is skipped.
+  const description = bookNote(book.id) ?? book.description ?? "고전을 읽는 가장 쉬운 방법, Cosmii.";
   return {
     title,
     description,
@@ -54,6 +58,7 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
   const book = await readBook((await params).id);
   if (!book) notFound();
   const sky = starfield(book.id);
+  const note = bookNote(book.id);
 
   return (
     <main
@@ -86,6 +91,19 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
         />
         <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 6px", lineHeight: 1.3 }}>{book.title}</h1>
         <p style={{ fontSize: 15, color: "rgba(255,255,255,0.64)", margin: "0 0 22px" }}>{book.author}</p>
+        {note && (
+          <p
+            style={{
+              fontFamily: "var(--font-ko-serif), Georgia, serif",
+              fontSize: 19,
+              lineHeight: 1.6,
+              color: "#fff",
+              margin: "0 0 26px",
+            }}
+          >
+            {note}
+          </p>
+        )}
         {book.description && (
           <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgba(255,255,255,0.7)", margin: "0 0 32px" }}>
             {book.description}
