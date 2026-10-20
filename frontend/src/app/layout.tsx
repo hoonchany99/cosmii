@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, EB_Garamond, IBM_Plex_Sans_KR, Nanum_Gothic } from "next/font/google";
+import localFont from "next/font/local";
 import { LanguageSync } from "@/components/language-sync";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -20,16 +21,39 @@ const ebGaramond = EB_Garamond({
 });
 
 // The app's own text face, for the pages a reader is sent to from inside it.
+//
+// `preload: false` on the two Korean faces. next/font preloads every slice a
+// family is cut into, and a Korean family is cut into hundreds: the book page
+// was fetching 248 files and 2.5MB of them before a reader saw a word, which
+// is seven times what the page's own text weighs. Without the preload a slice
+// is fetched when a character in its range is actually drawn. Nothing about
+// how any page is set changes - the same faces apply at the same sizes.
 const plexKR = IBM_Plex_Sans_KR({
   variable: "--font-app",
   subsets: ["latin"],
   weight: ["400", "600"],
+  preload: false,
+});
+
+// MaruBuri, which is what a reader reads inside the app: lesson lines, book
+// titles and descriptions, and Cosmii's own line. Self-hosted rather than
+// pulled from a CDN at render time, and the same face the app embeds, so a
+// book's page on the web is set the way the book's page in the app is.
+// Naver's MaruBuri is OFL-1.1, which allows hosting the file on a site.
+const maruBuri = localFont({
+  src: [
+    { path: "../../public/fonts/MaruBuri-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/MaruBuri-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-reading",
+  display: "swap",
 });
 
 const nanumGothic = Nanum_Gothic({
   variable: "--font-ko-serif",
   subsets: ["latin"],
   weight: ["400", "700", "800"],
+  preload: false,
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.vercel.app";
@@ -125,7 +149,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${plexKR.variable} ${nanumGothic.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${plexKR.variable} ${nanumGothic.variable} ${maruBuri.variable} antialiased`}
       >
         <LanguageSync />
         <TooltipProvider>{children}</TooltipProvider>

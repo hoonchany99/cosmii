@@ -14,6 +14,23 @@ import { getServiceClient } from "@/lib/supabase-server";
 import { starfield } from "@/lib/cosmii-text";
 import { bookNote } from "@/lib/book-notes";
 
+// The app's four faces, named the way src/lib/theme.ts names them, so a line
+// changed on one side can be matched on the other. IBM Plex Sans KR is what
+// the reader operates; MaruBuri is what the reader reads; EB Garamond Bold is
+// the wordmark and nothing else.
+// Korean breaks at word boundaries, not between any two syllables: without
+// this the browser wraps 「…낯설어진 너에게」 as 「너 / 에게」, which the app never
+// does (its text sets lineBreakStrategyIOS="hangul-word"). `anywhere` is the
+// escape hatch for a token with no break in it - a long URL or title - so
+// keep-all cannot push one past the edge of the page.
+const HANGUL = { wordBreak: "keep-all", overflowWrap: "anywhere" } as const;
+
+const SANS = { fontFamily: "var(--font-app), 'IBM Plex Sans KR', sans-serif", fontWeight: 400 } as const;
+const SANS_BOLD = { fontFamily: "var(--font-app), 'IBM Plex Sans KR', sans-serif", fontWeight: 600 } as const;
+const READING = { fontFamily: "var(--font-reading), 'MaruBuri', Georgia, serif", fontWeight: 400 } as const;
+const READING_BOLD = { fontFamily: "var(--font-reading), 'MaruBuri', Georgia, serif", fontWeight: 700 } as const;
+const WORDMARK = { fontFamily: "var(--font-serif), 'EB Garamond', Georgia, serif", fontWeight: 700 } as const;
+
 const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129389248&ct=share_book&mt=8";
 
 type Book = {
@@ -74,38 +91,46 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
         boxSizing: "border-box",
       }}
     >
-      <div style={{ width: "100%", maxWidth: 420, textAlign: "center" }}>
-        {/* Cosmii's own cover art, the same files the app carries. The book's
-            colour stands behind it for the case where one is missing. */}
-        <div
-          style={{
-            width: 180,
-            height: 270,
-            margin: "0 auto 28px",
-            borderRadius: 4,
-            background: book.color ?? "#2A2433",
-            backgroundImage: `url(/covers/${book.id}.jpg)`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 6px", lineHeight: 1.3 }}>{book.title}</h1>
-        <p style={{ fontSize: 15, color: "rgba(255,255,255,0.64)", margin: "0 0 22px" }}>{book.author}</p>
-        {note && (
-          <p
+      {/* Set like the book's page in the app: everything starts at the same
+          left margin, so the eye goes down one edge instead of hunting the
+          middle of each line. Centred, the cover floated and the note and the
+          blurb were ragged on both sides. */}
+      <div style={{ width: "100%", maxWidth: 420, textAlign: "left" }}>
+        {/* The head of the page, set the way the app sets it: a small cover
+            with the title and author standing beside it, not a poster with
+            the title underneath. Cosmii's own cover art, the same files the
+            app carries; the book's colour stands behind it for the case
+            where one is missing. */}
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 18, margin: "0 0 22px" }}>
+          <div
             style={{
-              fontFamily: "var(--font-ko-serif), Georgia, serif",
-              fontSize: 19,
-              lineHeight: 1.6,
-              color: "#fff",
-              margin: "0 0 26px",
+              width: 96,
+              height: 140,
+              flexShrink: 0,
+              borderRadius: 4,
+              background: book.color ?? "#2A2433",
+              backgroundImage: `url(/covers/${book.id}.jpg)`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
-          >
-            {note}
-          </p>
+          />
+          <div style={{ minWidth: 0 }}>
+            <h1 style={{ ...SANS_BOLD, ...HANGUL, fontSize: 26, lineHeight: "34px", color: "#fff", margin: "0 0 6px" }}>{book.title}</h1>
+            <p style={{ ...SANS, ...HANGUL, fontSize: 15, color: "rgba(255,255,255,0.6)", margin: 0 }}>{book.author}</p>
+          </div>
+        </div>
+        {/* The rule the app draws under the head, before what the book is. */}
+        <div style={{ height: 1, background: "rgba(255,255,255,0.12)", margin: "0 0 26px" }} />
+        {note && (
+          <>
+            <p style={{ ...SANS, ...HANGUL, fontSize: 13, letterSpacing: "0.3px", color: "rgba(255,255,255,0.64)", margin: "0 0 10px" }}>
+              <span style={WORDMARK}>Cosmii</span>의 한 줄
+            </p>
+            <p style={{ ...READING_BOLD, ...HANGUL, fontSize: 19, lineHeight: "30px", color: "#fff", margin: "0 0 26px" }}>{note}</p>
+          </>
         )}
         {book.description && (
-          <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgba(255,255,255,0.7)", margin: "0 0 32px" }}>
+          <p style={{ ...READING, ...HANGUL, fontSize: 16, lineHeight: "27px", color: "rgba(255,255,255,0.7)", margin: "0 0 32px" }}>
             {book.description}
           </p>
         )}
@@ -120,10 +145,11 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
             textDecoration: "none",
             borderRadius: 14,
             padding: "15px 24px",
+            textAlign: "center",
           }}
         >
-          <span style={{ fontFamily: "var(--font-serif), 'EB Garamond', Georgia, serif", fontWeight: 700 }}>Cosmii</span>
-          에서 읽기
+          <span style={WORDMARK}>Cosmii</span>
+          <span style={SANS_BOLD}>에서 읽기</span>
         </a>
       </div>
     </main>
