@@ -382,12 +382,18 @@ export async function POST(req: NextRequest) {
             max_tokens: 600,
           });
         const preferred = process.env.LLM_MODEL ?? "gpt-4.1-mini";
+        // Both names are settable, because both have to move before the
+        // snapshots behind them are withdrawn. With the second one written
+        // into the code, changing the model it falls back to would need a
+        // deploy, and a fallback that names a model the API no longer serves
+        // turns a recoverable first failure into no answer at all.
+        const fallback = process.env.LLM_FALLBACK_MODEL ?? "gpt-4o-mini";
         let completion;
         try {
           completion = await ask(preferred);
         } catch (e) {
-          console.warn("chat: falling back from", preferred, e instanceof Error ? e.message : e);
-          completion = await ask("gpt-4o-mini");
+          console.warn("chat: falling back from", preferred, "to", fallback, e instanceof Error ? e.message : e);
+          completion = await ask(fallback);
         }
 
         const shaper = createBubbleShaper({ dropTrailingQuestion: askedLastTime });
