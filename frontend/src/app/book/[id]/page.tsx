@@ -33,6 +33,10 @@ const WORDMARK = { fontFamily: "var(--font-serif), 'EB Garamond', Georgia, serif
 
 const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129389248&ct=share_book&mt=8";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.vercel.app";
+
+const bookUrl = (id: string) => `${SITE_URL}/book/${id}`;
+
 type Book = {
   id: string;
   title: string;
@@ -63,10 +67,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   // to be. A card that says "슬퍼해야 할 때 슬프지 않아서 당황한 너에게" is
   // read by the person it is addressed to; a plot summary is skipped.
   const description = bookNote(book.id) ?? book.description ?? "고전을 읽는 가장 쉬운 방법, Cosmii.";
+  // Without this the page inherits the root layout's canonical, which points
+  // at the front door, so every book page declares itself a copy of the home
+  // page and none of them is indexed. These are the only pages Cosmii has
+  // that answer a search for a particular book.
+  const url = bookUrl(book.id);
   return {
     title,
     description,
-    openGraph: { title, description, type: "book" },
+    alternates: { canonical: url },
+    openGraph: { title, description, type: "book", url },
     twitter: { card: "summary_large_image", title, description },
   };
 }
@@ -76,6 +86,21 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
   if (!book) notFound();
   const sky = starfield(book.id);
   const note = bookNote(book.id);
+
+  // The page's own schema. The root layout describes Cosmii the application,
+  // which is true of every page and tells a search engine nothing about this
+  // one. Only the original work is described here - its title, who wrote it,
+  // the language it is read in - all of it long out of copyright. Cosmii's
+  // own writing about the book is not part of the record.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    name: book.title,
+    author: { "@type": "Person", name: book.author },
+    inLanguage: "ko",
+    url: bookUrl(book.id),
+    isPartOf: { "@type": "MobileApplication", name: "Cosmii", url: SITE_URL },
+  };
 
   return (
     <main
@@ -91,6 +116,10 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
         boxSizing: "border-box",
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Set like the book's page in the app: everything starts at the same
           left margin, so the eye goes down one edge instead of hunting the
           middle of each line. Centred, the cover floated and the note and the
