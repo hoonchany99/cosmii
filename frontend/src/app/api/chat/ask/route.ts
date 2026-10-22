@@ -298,6 +298,27 @@ function sealedGuard(titles: unknown, message: unknown, history: unknown): (text
   return (text) => text.replace(pattern, "봉인된 책");
 }
 
+// Reasoning stays off. A reader watches the answer arrive, so what matters
+// is the first word, not the last: with effort at "none" the first token
+// came in 723ms against the old model's 683ms, and at the default "medium"
+// it took 1,987ms - three times the wait, for an answer about a novel.
+// Settable, so the choice can be revisited without a deploy.
+const REASONING_EFFORT = process.env.LLM_REASONING_EFFORT ?? "none";
+
+// The 4-series is the exception, not the rule: it is the one that wants
+// max_tokens. Everything newer - the 5.x models as much as the 6.x ones -
+// reasons, and refuses that parameter. Written the other way round, naming
+// gpt-5.6-luna as the fallback would have failed the moment it was reached,
+// which is the one moment it exists for.
+function tuning(model: string) {
+  if (model.startsWith("gpt-4")) return { temperature: 0.6, max_tokens: 600 };
+  return {
+    reasoning_effort: REASONING_EFFORT as "none" | "low" | "medium" | "high",
+    max_completion_tokens: 600,
+    ...(REASONING_EFFORT === "none" ? { temperature: 0.6 } : {}),
+  };
+}
+
 export async function POST(req: NextRequest) {
   // A few questions a day before subscribing; a subscriber, a quiet daily
   // ceiling. Unenforced when RevenueCat can't be asked (see reader-access).
@@ -372,22 +393,28 @@ export async function POST(req: NextRequest) {
 
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
         // The lighter model answers sooner, which is what the reader feels
-        // first. If the account can't use it, the older one still can.
+        // first. If the account can't use it, the other one still can.
+        //
+        // The two families want different parameters, and both names stay
+        // settable until the 4-series snapshots go in January, so the call
+        // is built per model rather than once. Measured against the API:
+        // gpt-6 rejects max_tokens and asks for max_completion_tokens, and
+        // it takes a temperature only while its reasoning is off - turn
+        // reasoning on and only the default 1 is allowed.
         const ask = (model: string) =>
           openai.chat.completions.create({
             model,
             messages,
             stream: true,
-            temperature: 0.6,
-            max_tokens: 600,
+            ...tuning(model),
           });
-        const preferred = process.env.LLM_MODEL ?? "gpt-4.1-mini";
+        const preferred = process.env.LLM_MODEL ?? "gpt-6-luna";
         // Both names are settable, because both have to move before the
         // snapshots behind them are withdrawn. With the second one written
         // into the code, changing the model it falls back to would need a
         // deploy, and a fallback that names a model the API no longer serves
         // turns a recoverable first failure into no answer at all.
-        const fallback = process.env.LLM_FALLBACK_MODEL ?? "gpt-4o-mini";
+        const fallback = process.env.LLM_FALLBACK_MODEL ?? "gpt-5.6-luna";
         let completion;
         try {
           completion = await ask(preferred);
