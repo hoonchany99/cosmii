@@ -58,13 +58,15 @@ const nanumGothic = Nanum_Gothic({
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.vercel.app";
 
+// No maximumScale or userScalable here: locking the scale stops a reader
+// pinching to enlarge the text, which is the first thing someone who needs
+// larger type does, and it is the one adjustment a reading site must not
+// take away.
 export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: "#0f172a",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export async function generateMetadata(): Promise<Metadata> {
