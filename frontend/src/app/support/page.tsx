@@ -48,7 +48,7 @@ export default function SupportPage() {
           <li>
             <strong className={strong}>목소리가 나오지 않아요</strong>
             <p className="mt-1">
-              처음 듣는 장은 목소리를 만드는 데 1분쯤 걸립니다. 화면 위 헤드폰 버튼이 꺼져 있지 않은지, iPhone의 무음 모드와 음량도 확인해 주세요. 목소리는 모든 장에서 무료로 들을 수 있어요.
+              처음 듣는 장은 목소리를 만드는 데 1분쯤 걸립니다. 화면 위 헤드폰 버튼이 꺼져 있지 않은지, iPhone 음량이 줄어 있지 않은지 확인해 주세요. 목소리는 모든 장에서 무료로 들을 수 있어요.
             </p>
           </li>
           <li>
