@@ -22,7 +22,8 @@ export const FAMILY_COLORS = {
 } as const;
 
 const WORDMARK = "var(--font-serif), 'EB Garamond', Georgia, serif";
-const READING = "var(--font-ko-serif), 'Nanum Gothic', serif";
+// MaruBuri, the face the app sets a book's title in (design system: book-title).
+const READING = "var(--font-reading), 'MaruBuri', serif";
 
 export function BookPlate({
   bookId,

@@ -16,7 +16,7 @@ export default function SupportPage() {
             hoonchany99@gmail.com
           </a>
         </p>
-        <p className="mt-3 text-white/40">
+        <p className="type-small mt-3 text-ink-muted">
           쓰시는 iPhone 기종과 앱 버전(설정 화면 맨 아래)을 함께 적어 주시면 더 빨리 찾아드릴 수 있어요.
         </p>
       </section>
