@@ -17,15 +17,6 @@ const OPENERS = [
   { id: "f_stranger", title: "이방인", author: "알베르 카뮈" },
 ];
 
-const COVERS = [
-  { id: "f_little_prince", title: "어린 왕자" },
-  { id: "cl_odyssey", title: "오디세이아" },
-  { id: "f_gatsby", title: "위대한 개츠비" },
-  { id: "c_metamorphosis", title: "변신" },
-  { id: "c_meditations", title: "명상록" },
-  { id: "f_1984", title: "1984" },
-];
-
 // A section of the page set the way a screen of the app is: a Label, a
 // screen title, then the app speaking in the body face. The words keep the
 // column (460px); only rows of covers may run wider.
@@ -137,31 +128,6 @@ export default function Home() {
             />
           </div>
         </Section>
-
-        <Hairline />
-
-        <section className="py-20 sm:py-24">
-          <div className="mx-auto max-w-column">
-            <Label>29권</Label>
-            <h2 className="type-screen-title mt-3 text-ink break-keep">읽고 싶은 책이 따로 있다면</h2>
-            <p className="type-body mt-5 text-ink-muted break-keep">스물아홉 권이 주제별로 놓여 있어요. 어느 책이든 바로 펼칠 수 있어요.</p>
-          </div>
-          {/* A row of covers is "several things", the one kind of content the
-              system lets run wider than the column. */}
-          <div className="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-6">
-            {COVERS.map((c) => (
-              <Link key={c.id} href={`/book/${c.id}`} className="transition-opacity hover:opacity-80">
-                <Image
-                  src={`/covers/${c.id}.jpg`}
-                  alt={c.title}
-                  width={600}
-                  height={900}
-                  className="w-full rounded-[3px]"
-                />
-              </Link>
-            ))}
-          </div>
-        </section>
 
         <Hairline />
 
