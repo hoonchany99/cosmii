@@ -16,7 +16,7 @@ export default function SupportPage() {
             hoonchany99@gmail.com
           </a>
         </p>
-        <p className="mt-3 text-white/40">
+        <p className="type-small mt-3 text-ink-muted">
           쓰시는 iPhone 기종과 앱 버전(설정 화면 맨 아래)을 함께 적어 주시면 더 빨리 찾아드릴 수 있어요.
         </p>
       </section>
@@ -48,7 +48,7 @@ export default function SupportPage() {
           <li>
             <strong className={strong}>목소리가 나오지 않아요</strong>
             <p className="mt-1">
-              처음 듣는 장은 목소리를 만드는 데 1분쯤 걸립니다. 화면 위 헤드폰 버튼이 꺼져 있지 않은지, 무료로는 책마다 첫 장까지 들을 수 있다는 점도 확인해 주세요.
+              처음 듣는 장은 목소리를 만드는 데 1분쯤 걸립니다. 화면 위 헤드폰 버튼이 꺼져 있지 않은지, iPhone 음량이 줄어 있지 않은지 확인해 주세요. 목소리는 모든 장에서 무료로 들을 수 있어요.
             </p>
           </li>
           <li>

@@ -48,6 +48,127 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* Cosmii design system (claude.ai artifact "Cosmii", tokens.json v2, built
+   from cosmii-app@fd58d11). The pages a reader reaches from the app wear
+   these and nothing else: one night ground, white at four alphas, hairlines
+   for hierarchy, gold for numbers and stars, mint for "now". The shadcn
+   variables below belong to the closed web app and are left alone. */
+@theme {
+  --color-night: #060612;
+  --color-ink: rgba(255, 255, 255, 0.92);
+  --color-ink-70: rgba(255, 255, 255, 0.7);
+  --color-ink-muted: rgba(255, 255, 255, 0.64);
+  --color-ink-faint: rgba(255, 255, 255, 0.45);
+  --color-gold: #e8c77b;
+  --color-mint: #6bc5a0;
+  --color-hairline: rgba(255, 255, 255, 0.1);
+  --color-hairline-strong: rgba(255, 255, 255, 0.14);
+  --color-outline: rgba(255, 255, 255, 0.4);
+  --color-pressed: rgba(255, 255, 255, 0.06);
+
+  --font-ui: var(--font-app), "IBM Plex Sans KR", system-ui, sans-serif;
+  --font-read: var(--font-reading), "MaruBuri", "IBM Plex Sans KR", serif;
+  --font-wordmark: var(--font-serif), "EB Garamond", Georgia, serif;
+
+  --spacing-gutter: 24px;
+  --container-column: 460px;
+  --container-page: 1400px;
+  --container-action: 360px;
+  --radius-ds: 12px;
+}
+
+/* Text styles, named as tokens.json names them. Korean gets no wide
+   tracking: it splits a word into syllables. */
+@utility type-wordmark {
+  font-family: var(--font-wordmark);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+@utility type-large-title {
+  font-family: var(--font-ui);
+  font-size: 34px;
+  line-height: 41px;
+  font-weight: 700;
+}
+@utility type-screen-title {
+  font-family: var(--font-ui);
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+}
+@utility type-heading {
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+@utility type-button {
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 600;
+}
+@utility type-label {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+@utility type-item {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+}
+@utility type-meta {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 23px;
+  font-weight: 400;
+}
+@utility type-small {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+@utility type-caption {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 19px;
+  font-weight: 400;
+}
+@utility type-book-title {
+  font-family: var(--font-read);
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 700;
+}
+@utility type-note {
+  font-family: var(--font-read);
+  font-size: 19px;
+  line-height: 29px;
+  font-weight: 700;
+}
+@utility type-description {
+  font-family: var(--font-read);
+  font-size: 16px;
+  line-height: 27px;
+  font-weight: 400;
+}
+/* The description's measure in the interface face, for prose that is the
+   app speaking (the landing page, support, the legal pages) rather than a
+   book being described. */
+@utility type-body {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 27px;
+  font-weight: 400;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(0.985 0.002 270);

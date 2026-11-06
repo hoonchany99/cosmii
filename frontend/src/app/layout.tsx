@@ -31,7 +31,7 @@ const ebGaramond = EB_Garamond({
 const plexKR = IBM_Plex_Sans_KR({
   variable: "--font-app",
   subsets: ["latin"],
-  weight: ["400", "600"],
+  weight: ["400", "600", "700"],
   preload: false,
 });
 
@@ -64,7 +64,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://cosmii.vercel.app"
 // take away.
 export const viewport: Viewport = {
   viewportFit: "cover",
-  themeColor: "#0f172a",
+  themeColor: "#060612",
   width: "device-width",
   initialScale: 1,
 };
@@ -143,7 +143,13 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="ko" className="dark">
+    // The font variables sit on <html>, not <body>: the design system's
+    // --font-ui and friends are declared on :root and refer to them, and a
+    // custom property only resolves var() against the element it is set on.
+    <html
+      lang="ko"
+      className={`dark ${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${plexKR.variable} ${nanumGothic.variable} ${maruBuri.variable}`}
+    >
       <head>
         <script
           type="application/ld+json"
@@ -151,7 +157,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${ebGaramond.variable} ${plexKR.variable} ${nanumGothic.variable} ${maruBuri.variable} antialiased`}
+        className="antialiased"
       >
         <LanguageSync />
         <TooltipProvider>{children}</TooltipProvider>
