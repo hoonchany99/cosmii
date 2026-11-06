@@ -142,9 +142,9 @@ export default function Home() {
 
         <section className="py-20 sm:py-24">
           <div className="mx-auto max-w-column">
-            <Label>29권</Label>
+            <Label>서재</Label>
             <h2 className="type-screen-title mt-3 text-ink break-keep">읽고 싶은 책이 따로 있다면</h2>
-            <p className="type-body mt-5 text-ink-muted break-keep">스물아홉 권이 주제별로 놓여 있어요. 어느 책이든 바로 펼칠 수 있어요.</p>
+            <p className="type-body mt-5 text-ink-muted break-keep">고전이 주제별로 놓여 있어요. 어느 책이든 바로 펼칠 수 있어요.</p>
           </div>
           {/* A row of covers is "several things", the one kind of content the
               system lets run wider than the column. */}
