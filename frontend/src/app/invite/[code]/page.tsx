@@ -50,7 +50,7 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
 
         <p className={`type-label mt-8 mb-1 text-ink-70 ${HANGUL}`}>어떻게 받나요</p>
         <ol className="m-0 list-none p-0">
-          {["위에서 코드를 복사해요", "앱을 받아 「친구한테 받은 코드 있어?」에서 붙여넣어요", "로그인하면 하루 무료 쿠폰이 들어와요", "읽고 싶은 날 프로필 → 쿠폰 보관함에서 「오늘 쓰기」를 누르면 그때부터 하루 동안 Premium이 열려요"].map((t, i, all) => (
+          {["위에서 코드를 복사해요", "앱을 받아 「친구한테 받은 코드 있어?」에서 붙여넣어요", "로그인하면 하루 무료 쿠폰이 들어와요"].map((t, i, all) => (
             <li key={t} className={`flex items-center gap-[14px] py-4 ${i < all.length - 1 ? "border-b border-hairline" : ""}`}>
               <span className="w-7 shrink-0 type-meta text-ink-muted">{i + 1}</span>
               <span className={`type-item text-white ${HANGUL}`}>{t}</span>
