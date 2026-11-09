@@ -12,6 +12,8 @@ const OPEN_PATHS = [
   "/terms",
   "/privacy",
   "/book",
+  // Where an invitation link lands (1.1.3).
+  "/invite",
   "/.well-known",
   "/opengraph-image",
   "/twitter-image",
