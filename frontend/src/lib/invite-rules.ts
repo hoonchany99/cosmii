@@ -19,7 +19,9 @@ export type InviteConfig = {
 export const DEFAULT_CONFIG: InviteConfig = {
   cap: 10,
   daily_max: 5,
-  new_account_days: 7,
+  // 0: any account can enter a code, once (대표 TG 93·94). A number turns
+  // the age limit back on.
+  new_account_days: 0,
   coupon_days: 1,
   valid_days: 30,
   milestones: { "3": 3, "5": 7 },
@@ -108,7 +110,7 @@ export function decideRedeem(i: RedeemInput): RedeemDecision {
   if (!i.inviter) return { ok: false, reason: "not_found" };
   if (i.inviter.id === i.inviteeId || i.inviterDevice) return { ok: false, reason: "self" };
   if (i.inviteeAlreadyRedeemed) return { ok: false, reason: "already" };
-  if (i.now - i.inviteeCreatedAt > i.config.new_account_days * DAY) return { ok: false, reason: "too_old" };
+  if (i.config.new_account_days > 0 && i.now - i.inviteeCreatedAt > i.config.new_account_days * DAY) return { ok: false, reason: "too_old" };
   if (i.deviceUsed) return { ok: false, reason: "device_used" };
 
   const friendsAfter = i.inviter.friendsBefore + 1;

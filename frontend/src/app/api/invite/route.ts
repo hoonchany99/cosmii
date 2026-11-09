@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     sb.from("invite_redemptions").select("invitee_id").eq("invitee_id", me.id).maybeSingle(),
   ]);
   const given = coupons?.length ?? 0;
-  const canEnterCode = !redeemed && Date.now() - me.createdAt <= config.new_account_days * 86_400_000;
+  const canEnterCode = !redeemed && (config.new_account_days === 0 || Date.now() - me.createdAt <= config.new_account_days * 86_400_000);
 
   return NextResponse.json({
     code,

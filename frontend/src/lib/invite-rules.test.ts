@@ -1,6 +1,7 @@
 // node --test src/lib/invite-rules.test.ts  (대표 6680·6693 초대 규칙)
 import { test } from "node:test";
 import assert from "node:assert/strict";
+// @ts-ignore -- node --test needs the .ts extension; the Next build does not read this file.
 import { DEFAULT_CONFIG, decideRedeem, decideUse, makeCode, normalizeCode, readConfig, type RedeemInput } from "./invite-rules.ts";
 
 const NOW = Date.parse("2026-11-10T12:00:00Z");
@@ -43,7 +44,12 @@ test("refusals: no code, oneself, twice, old account, used phone", () => {
   assert.deepEqual(decideRedeem(base({ inviteeId: "a" })), { ok: false, reason: "self" });
   assert.deepEqual(decideRedeem(base({ inviterDevice: true })), { ok: false, reason: "self" });
   assert.deepEqual(decideRedeem(base({ inviteeAlreadyRedeemed: true })), { ok: false, reason: "already" });
-  assert.deepEqual(decideRedeem(base({ inviteeCreatedAt: NOW - 8 * 86_400_000 })), { ok: false, reason: "too_old" });
+  // The age limit is off by default (대표 TG 93·94) and can be turned on.
+  assert.equal(decideRedeem(base({ inviteeCreatedAt: NOW - 400 * 86_400_000 })).ok, true);
+  assert.deepEqual(
+    decideRedeem(base({ inviteeCreatedAt: NOW - 8 * 86_400_000, config: { ...DEFAULT_CONFIG, new_account_days: 7 } })),
+    { ok: false, reason: "too_old" },
+  );
   assert.deepEqual(decideRedeem(base({ deviceUsed: true })), { ok: false, reason: "device_used" });
 });
 
