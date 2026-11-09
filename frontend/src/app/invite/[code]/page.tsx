@@ -18,7 +18,7 @@ const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129
 
 export const metadata: Metadata = {
   title: "친구가 Cosmii에 초대했어요",
-  description: "코드를 앱에 넣으면 둘 다 하루 무료 Premium을 받아요.",
+  description: "코드를 앱에 넣으면 하루 무료 Premium을 받아요.",
   // A personal code is not for search engines.
   robots: { index: false, follow: false },
 };
@@ -41,7 +41,7 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
           친구가 <span className="font-wordmark font-bold">Cosmii</span>에 초대했어요
         </h1>
         <p className={`type-description mb-8 text-ink-70 ${HANGUL}`}>
-          고전 한 권을 하루 3분씩, 친구가 들려주듯 읽는 앱이에요. 아래 코드를 앱에 넣으면 둘 다 하루 무료 Premium을 받아요.
+          고전 한 권을 하루 3분씩, 친구가 들려주듯 읽는 앱이에요. 아래 코드를 앱에 넣으면 하루 무료 Premium을 받아요.
         </p>
 
         <CopyCode code={code} shown={shown} />
