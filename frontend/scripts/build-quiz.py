@@ -68,7 +68,7 @@ sub("document.getElementById('bk').onclick=back;\nstart();",
 sub("app.innerHTML=head(NT(),NT())+`<article class=\"slide res rep\"><p class=\"kick\">분석 리포트</p>",
     "app.innerHTML=head(direct?0:NT(),direct?0:NT())+`<article class=\"slide res rep\"><p class=\"kick\">${direct?'고전 속 인물':'분석 리포트'}</p>")
 sub('<button class="btn sec" id="again">다시 하기</button>', '<button class="btn sec" id="again">${direct?\'나도 해 보기\':\'다시 하기\'}</button>')
-sub('<p class="note">같은 내용을 이메일로도 보내 드려요(시안은 발송하지 않아요). ', '<p class="note">${direct?\'\':\'같은 내용을 이메일로도 보내 드려요(시안은 발송하지 않아요). \'}')
+sub("<p class=\"note\">${st.noMail?", "<p class=\"note\">${(st.noMail||direct)?")
 sub("document.getElementById('again').onclick=", "if(direct)document.getElementById('bk').hidden=true;\n document.getElementById('again').onclick=")
 s = s.replace("</script>\n", "</script>\n</body></html>\n") if s.rstrip().endswith("</script>") else s
 open(f"{OUT}/app.html", "w", encoding="utf-8").write(s)
