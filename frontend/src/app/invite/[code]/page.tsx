@@ -55,7 +55,7 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
 
         <CopyCode code={code} shown={shown} />
 
-        <OutlineLink href={APP_STORE}>App Store에서 받기</OutlineLink>
+        <OutlineLink href={APP_STORE} className="mx-auto">App Store에서 받기</OutlineLink>
 
         <p className={`type-label mt-8 mb-1 text-ink-70 ${HANGUL}`}>어떻게 받나요</p>
         <ol className="m-0 list-none p-0">
