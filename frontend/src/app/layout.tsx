@@ -70,10 +70,10 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  // 앱스토어 이름과 같은 말 (대표 5977, 문구 Marissa 11/11). 「어렵던 고전」은 쓰지 않아요(대표 245).
-  const title = "코스미(Cosmii) - 고전을 읽는 가장 쉬운 방법";
+  // 앱스토어 이름·부제 그대로 (대표 5977, TG 372). 「어렵던 고전」은 쓰지 않아요(대표 245).
+  const title = "코스미(Cosmii) - 쉽게 읽는 고전";
   const description =
-    "고전 속 이야기를 쉬운 말로 이어 읽는 앱, 코스미(Cosmii)예요.";
+    "고전을 읽는 가장 쉬운 방법.";
   const locale = "ko_KR";
   const keywords = ["Cosmii", "고전", "독서 앱", "책 읽기", "하루 한 장", "독서 습관", "오디오북", "AI 독서"];
 
@@ -138,7 +138,7 @@ export default async function RootLayout({
     url: SITE_URL,
     applicationCategory: "BookApplication",
     operatingSystem: "iOS",
-    description: "고전 속 이야기를 쉬운 말로 이어 읽는 앱, 코스미(Cosmii)예요.",
+    description: "고전을 읽는 가장 쉬운 방법.",
     offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
     creator: { "@type": "Organization", name: "Utopify" },
     inLanguage: "ko",
