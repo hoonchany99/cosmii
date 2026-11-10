@@ -50,7 +50,7 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
           친구가 <span className="font-wordmark font-bold">Cosmii</span>에 초대했어요
         </h1>
         <p className={`type-description mb-8 text-ink-70 ${HANGUL}`}>
-          고전, 늘 읽고 싶다고 생각은 해도 막상 읽으려 하면 끝까지 읽기 어렵죠. Cosmii는 고전을 재밌는 이야기로 풀어 들려드립니다. 이제 Cosmii와 함께 끝까지 읽어 보세요. 아래 코드를 앱에 넣으면 하루 무료 Premium을 받아요.
+          끝까지 읽기 어려웠던 고전, Cosmii가 재밌는 이야기로 풀어 들려드려요. 아래 코드를 앱에 넣으면 하루 무료 Premium을 받아요.
         </p>
 
         <CopyCode code={code} shown={shown} />
