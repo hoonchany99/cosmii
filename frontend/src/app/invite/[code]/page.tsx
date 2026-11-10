@@ -19,6 +19,14 @@ const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129
 export const metadata: Metadata = {
   title: "친구가 Cosmii에 초대했어요",
   description: "코드를 앱에 넣으면 하루 무료 Premium을 받아요.",
+  // The shared link is the whole message (대표 TG 164), so the card it
+  // unfolds into says what was given; the picture is opengraph-image.tsx.
+  openGraph: {
+    title: "Cosmii Premium 하루 이용권을 선물 받았어요",
+    description: "링크를 열어 코드를 복사하고, 앱에서 넣으면 받아요.",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image", title: "Cosmii Premium 하루 이용권을 선물 받았어요" },
   // A personal code is not for search engines.
   robots: { index: false, follow: false },
 };
