@@ -7,9 +7,6 @@ import { caller, grantPremium } from "@/lib/invite-server";
 // A coupon used: Premium opens for its days, through RevenueCat. The coupon is
 // marked used before RevenueCat is asked, so two taps can't use it twice; if
 // RevenueCat refuses, it is put back.
-// Next to the database in Tokyo, like GET /api/invite.
-export const preferredRegion = "hnd1";
-
 export async function POST(req: NextRequest) {
   const me = await caller(req);
   if (!me) return NextResponse.json({ error: "sign_in" }, { status: 401 });

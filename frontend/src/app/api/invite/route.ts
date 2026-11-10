@@ -5,10 +5,9 @@ import { caller, inviteConfig } from "@/lib/invite-server";
 
 // The signed-in reader's invitation: their code (made on first ask), how many
 // friends have come in with it, and their coupons. 대표 6680·6693.
-// Next to the database (Supabase cosmii is in Tokyo). From Washington every
-// question to it crossed the Pacific, and the screen waited on four in a row
-// (대표 TG 212: 친구초대·쿠폰 보관함이 오래 걸림).
-export const preferredRegion = "hnd1";
+// The screen waited on four questions to the database in a row (대표 TG 212:
+// 친구초대·쿠폰 보관함이 오래 걸림); now two. The functions run in Tokyo beside
+// it (vercel.json regions).
 
 export async function GET(req: NextRequest) {
   const sb = getServiceClient();

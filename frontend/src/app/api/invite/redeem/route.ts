@@ -8,9 +8,6 @@ import { caller, inviteConfig } from "@/lib/invite-server";
 // Body: { code, device_token?, install_id, development? }. device_token is the
 // phone's DeviceCheck token; install_id the app's own id for this install,
 // kept as a hash so the same phone can be recognised without DeviceCheck.
-// Next to the database in Tokyo, like GET /api/invite.
-export const preferredRegion = "hnd1";
-
 export async function POST(req: NextRequest) {
   const me = await caller(req);
   if (!me) return NextResponse.json({ error: "sign_in" }, { status: 401 });
