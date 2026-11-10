@@ -19,13 +19,13 @@ const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129
 
 export const metadata: Metadata = {
   title: "친구가 Cosmii에 초대했어요",
-  description: "어렵기만 하던 고전, 이제는 Cosmii와 함께 쉽게 읽어보세요.",
+  description: "어렵기만 하던 고전, 이제는 코스미와 함께 쉽게 읽어보세요.",
   // The shared link is the whole message (대표 TG 164), so the card it
   // unfolds into says what was given; the picture is opengraph-image.tsx.
   openGraph: {
-    // 그림이 「선물 받았어요」를 말하니 제목·설명은 이게 뭔지만. 문구는 대표 TG 369 그대로.
+    // 그림이 「선물 받았어요」를 말하니 제목·설명은 이게 뭔지만. 문구는 대표 TG 369·370 그대로.
     title: "코스미(Cosmii) 초대장",
-    description: "어렵기만 하던 고전, 이제는 Cosmii와 함께 쉽게 읽어보세요.",
+    description: "어렵기만 하던 고전, 이제는 코스미와 함께 쉽게 읽어보세요.",
     type: "website",
   },
   twitter: { card: "summary_large_image", title: "코스미(Cosmii) 초대장" },
