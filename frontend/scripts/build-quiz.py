@@ -2,9 +2,13 @@
 import re, json, base64, shutil, sys, os
 SRC = os.path.expanduser("~/team/marketing/outputs/2026-11-06-quiz/v27-trait")
 OUT = os.path.expanduser("~/Desktop/Utopify/cosmii/.claude/worktrees/quiz/frontend/public/quiz")
-SLUG = {"엘리자베스":"elizabeth","오디세우스":"odysseus","햄릿":"hamlet","파우스트":"faust","단테":"dante","그레고르 잠자":"gregor",
-        "아킬레우스":"achilles","헥토르":"hector","코딜리아":"cordelia","페넬로페":"penelope","에픽테토스":"epictetus","마르쿠스 아우렐리우스":"marcus"}
-OG = ["엘리자베스","오디세우스","햄릿","파우스트","단테","그레고르잠자","아킬레우스","헥토르","코딜리아","페넬로페","에픽테토스","마르쿠스아우렐리우스"]
+# The handoff table (Marissa) is the one list: slug, name, og title/description/image.
+ROWS = []
+for line in open(f"{SRC}/handoff-vercel.md", encoding="utf-8"):
+    c = [x.strip() for x in line.strip().strip("|").split("|")]
+    if len(c) == 5 and re.fullmatch(r"[a-z]+", c[0]) and c[0] != "slug":
+        ROWS.append(dict(slug=c[0], name=c[1], title=c[2], line=c[3], og=c[4]))
+SLUG = {r["name"]: r["slug"] for r in ROWS}
 s = open(f"{SRC}/quiz.html", encoding="utf-8").read()
 os.makedirs(f"{OUT}/p", exist_ok=True); os.makedirs(f"{OUT}/og", exist_ok=True)
 
@@ -20,9 +24,14 @@ for name, slug in SLUG.items():
     keep[name] = {**p, "src": f"/quiz/p/{slug}.jpg"}
 s = s[:m.start()] + "const PORT=" + json.dumps(keep, ensure_ascii=False) + ";" + s[m.end():]
 
-# 2. og images with ascii names
-for i, (name, slug) in enumerate(SLUG.items()):
-    shutil.copy(f"{SRC}/og/og-{i:02d}-{OG[i]}.png", f"{OUT}/og/{slug}.png")
+# 2. og images with ascii names, and the server's table
+for r in ROWS:
+    shutil.copy(f"{SRC}/og/{r['og']}", f"{OUT}/og/{r['slug']}.png")
+LIB = OUT.replace("/public/quiz", "/src/lib/quiz-results.ts")
+open(LIB, "w", encoding="utf-8").write(
+    "// Made by scripts/build-quiz.py from Marissa's handoff table; edit there, not here.\n"
+    "export const QUIZ_RESULTS: Record<string, { name: string; title: string; line: string }> = "
+    + json.dumps({r["slug"]: {"name": r["name"], "title": r["title"], "line": r["line"]} for r in ROWS}, ensure_ascii=False, indent=2) + ";\n")
 
 # 3. head: the server fills <!--HEAD--> per address
 s = s.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "", 1)

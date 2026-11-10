@@ -4,30 +4,18 @@
 // its own title and picture in the HTML itself.
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { QUIZ_RESULTS } from "./quiz-results";
+
+export { QUIZ_RESULTS };
 
 export const QUIZ_TITLE = "나는 고전 속 누구와 닮았을까?";
-
-export const QUIZ_RESULTS: Record<string, { name: string; book: string; line: string }> = {
-  elizabeth: { name: "엘리자베스", book: "오만과 편견", line: "싫은 건 싫다고 말하는 사람" },
-  odysseus: { name: "오디세우스", book: "오디세이아", line: "위기에서 머리가 먼저 도는 사람" },
-  hamlet: { name: "햄릿", book: "햄릿", line: "한 번 더 생각하고 움직이는 사람" },
-  faust: { name: "파우스트", book: "파우스트 1부", line: "다 알아도 더 궁금한 사람" },
-  dante: { name: "단테", book: "신곡", line: "길을 잃어도 일단 걷는 사람" },
-  gregor: { name: "그레고르 잠자", book: "변신", line: "말없이 책임지는 사람" },
-  achilles: { name: "아킬레우스", book: "일리아스", line: "자존심이 먼저 반응하는 사람" },
-  hector: { name: "헥토르", book: "일리아스", line: "가까운 사람부터 챙기는 사람" },
-  cordelia: { name: "코딜리아", book: "리어 왕", line: "듣기 좋은 말보다 진심을 말하는 사람" },
-  penelope: { name: "페넬로페", book: "오디세이아", line: "서두르지 않고 수를 두는 사람" },
-  epictetus: { name: "에픽테토스", book: "엥케이리디온", line: "스스로 정할 수 있는 것만 붙드는 사람" },
-  marcus: { name: "마르쿠스 아우렐리우스", book: "명상록", line: "아침마다 마음부터 정리하는 사람" },
-};
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
 /** The <head> lines for the start page (slug null) or one result. */
 export function quizHead(origin: string, slug: string | null): string {
   const r = slug ? QUIZ_RESULTS[slug] : null;
-  const title = r ? `${r.name} — 『${r.book}』 속 인물` : QUIZ_TITLE;
+  const title = r ? r.title : QUIZ_TITLE;
   const url = `${origin}/quiz${r ? `/r/${slug}` : ""}`;
   const lines = [
     `<title>${esc(r ? `${title} · ${QUIZ_TITLE}` : QUIZ_TITLE)}</title>`,
