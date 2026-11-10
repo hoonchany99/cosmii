@@ -390,18 +390,19 @@ function result(direct){st.view='result';st.direct=!!direct;const a=st.a;const n
  st.res={name,book,sc};
  const pt=PORT[name];const por=`<div class="prof"><div class="avatar" aria-hidden="true">${pt?`<img src="${pt.src}" alt="" style="object-position:${pt.pos||'50% 22%'}">`:`<span>${esc(name.trim().charAt(0))}</span>`}</div><div class="pwho"><h1 class="rt">${esc(name)}</h1><p class="rbook">『${esc(book)}』 속 인물</p></div></div>${pt&&pt.cap?`<p class="pcap">${esc(pt.cap)}</p>`:''}`;
  const card=`<section class="shcard" aria-label="공유 카드"><div class="shrow"><div class="avatar sm" aria-hidden="true">${pt?`<img src="${pt.src}" alt="" style="object-position:${pt.pos||'50% 22%'}">`:''}</div><div><p class="shn">${esc(name)}</p><p class="shb">『${esc(book)}』 속 인물</p></div></div><p class="shl">${esc(r.nick)}</p><p class="shf">코스미(Cosmii)</p></section><p class="shprev"><b>공유 문구</b><br>${esc(name)} — 『${esc(book)}』 속 인물<br>${esc(r.nick)}<br><br>고전 속에서 나와 닮은 사람 찾기<br>${esc(location.origin)}/quiz/r/${SLUG[name]}</p><button class="btn sec" id="share">공유하기</button>`;
- app.innerHTML=head(NT(),NT())+`<article class="slide res rep"><p class="kick">분석 리포트</p>${por}
+ app.innerHTML=head(direct?0:NT(),direct?0:NT())+`<article class="slide res rep"><p class="kick">${direct?'고전 속 인물':'분석 리포트'}</p>${por}
  <p class="rsum">${esc(sumLine)}</p>
  ${meta.length?`<section class="rmeta" aria-label="분석 기준"><h3>이 답이 크게 닮았어</h3><dl>${meta.map(m=>`<div><dt>${esc(m[0])}</dt><dd>${esc(m[1])}</dd></div>`).join('')}</dl></section>`:''}
  ${secs.filter(x=>x[1].length).map((x,i)=>`<section class="rsec"><span class="part">PART ${i+1}</span><h3>${esc(x[0])}</h3>${x[1].map(t=>`<p>${esc(t)}</p>`).join('')}</section>`).join('')}
  <section class="rsec last"><span class="part">PART ${secs.filter(x=>x[1].length).length+1}</span><h3>직접 읽어 보면 더 와닿아</h3><p>이 사람이 어떤 말을 했고 어떻게 움직였는지, 쉬운 말로 이어 읽으면 훨씬 잘 보여. 장면은 「${esc(sc)}」야.</p></section>
  ${card}
  <button class="btn" id="open">이 장면 무료로 읽어 보기</button><p class="scn">${esc(sc)}</p>
- <button class="btn sec" id="again">다시 하기</button>
- <p class="note">같은 내용을 이메일로도 보내 드려요(시안은 발송하지 않아요). 재미로 보는 퀴즈야. 심리검사는 아니야. Cosmii는 고전을 읽는 가장 쉬운 방법이야.</p>
+ <button class="btn sec" id="again">${direct?'나도 해 보기':'다시 하기'}</button>
+ <p class="note">${direct?'':'같은 내용을 이메일로도 보내 드려요(시안은 발송하지 않아요). '}재미로 보는 퀴즈야. 심리검사는 아니야. Cosmii는 고전을 읽는 가장 쉬운 방법이야.</p>
  <p class="proto">시안 화면이에요. 수집 안내 문구는 법 검토 전 초안이고, 이메일은 저장·발송하지 않아요.</p></article>`;
  document.getElementById('open').onclick=()=>toast("실제 화면에서는 「"+sc+"」 읽기 링크로 이어져요");
  document.getElementById('share').onclick=async()=>{const url=location.origin+'/quiz/r/'+SLUG[name]+'?ct=quiz_share';const text=name+' — 『'+book+'』 속 인물\n'+r.nick+'\n\n고전 속에서 나와 닮은 사람 찾기';try{if(navigator.share){await navigator.share({text,url});return}}catch(e){if(e&&e.name==='AbortError')return}try{await navigator.clipboard.writeText(text+'\n'+url);toast('링크를 복사했어')}catch(e){toast(url)}};
+ if(direct)document.getElementById('bk').hidden=true;
  document.getElementById('again').onclick=()=>{if(st.direct){location.href='/quiz';return}start()};window.scrollTo(0,0)}
 
 let tt;function toast(m){document.querySelectorAll('.toast').forEach(x=>x.remove());const d=document.createElement('div');d.className='toast';d.setAttribute('role','status');d.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 0 C12.6 7 17 11.4 24 12 C17 12.6 12.6 17 12 24 C11.4 17 7 12.6 0 12 C7 11.4 11.4 7 12 0 Z"/></svg><span></span>';d.lastChild.textContent=m;document.body.appendChild(d);clearTimeout(tt);tt=setTimeout(()=>d.remove(),3200)}
