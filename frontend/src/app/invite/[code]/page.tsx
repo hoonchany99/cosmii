@@ -7,6 +7,7 @@
 // in, and both get their coupon then. ct=invite on the App Store link counts
 // these installs in App Store Connect.
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { starfield } from "@/lib/cosmii-text";
 import { OutlineLink } from "@/components/editorial";
@@ -65,6 +66,14 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
             </li>
           ))}
         </ol>
+
+        {/* What Cosmii is, for a friend meeting it here first (대표 TG 178).
+            Small and last, so it does not compete with getting the app, and
+            in the same tab: the code lives only on this page now (the shared
+            message is the link alone), so Back must bring it back. */}
+        <Link href="/" className={`type-meta mt-6 inline-block text-ink-70 underline underline-offset-4 hover:text-white ${HANGUL}`}>
+          Cosmii 알아보기 →
+        </Link>
       </div>
     </main>
   );
