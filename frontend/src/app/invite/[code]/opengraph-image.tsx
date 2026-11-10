@@ -1,11 +1,10 @@
 // The card a messaging app draws when someone shares their invitation
 // (대표 TG 164: 「책 공유할때처럼」 - the link alone, the card says the rest).
-// The app sends only the address now, so the gift and the code are on the
-// card: a friend sees what they were given before they tap.
+// The app sends only the address now, so the gift is on the card. The code
+// stays on the page itself (대표 TG 168: 카드에 코드는 없어도 돼, 글씨는 크게).
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { normalizeCode } from "@/lib/invite-rules";
 
 export const runtime = "nodejs";
 export const alt = "Cosmii Premium 하루 이용권 선물";
@@ -32,10 +31,7 @@ async function loadMark() {
   return `data:image/png;base64,${buf.toString("base64")}`;
 }
 
-export default async function InviteCard({ params }: { params: Promise<{ code: string }> }) {
-  const code = normalizeCode(decodeURIComponent((await params).code));
-  // A malformed address still gets a card, just without a code on it.
-  const shown = code ? `${code.slice(0, 3)}-${code.slice(3)}` : null;
+export default async function InviteCard() {
   const [fontData, wordmarkData, mark] = await Promise.all([loadFont(), loadWordmarkFont(), loadMark()]);
 
   return new ImageResponse(
@@ -51,8 +47,8 @@ export default async function InviteCard({ params }: { params: Promise<{ code: s
           fontFamily: "NanumGothic, sans-serif",
           position: "relative",
           overflow: "hidden",
-          padding: "0 90px",
-          gap: 72,
+          padding: "0 80px",
+          gap: 64,
         }}
       >
         <div
@@ -85,12 +81,12 @@ export default async function InviteCard({ params }: { params: Promise<{ code: s
           ))}
         </div>
 
-        <img src={mark} alt="" width={200} height={200} style={{ objectFit: "contain", flexShrink: 0 }} />
+        <img src={mark} alt="" width={220} height={220} style={{ objectFit: "contain", flexShrink: 0 }} />
 
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <div
             style={{
-              fontSize: 40,
+              fontSize: 52,
               fontWeight: 700,
               fontFamily: "EBGaramond, serif",
               color: "rgba(255,255,255,0.6)",
@@ -100,20 +96,12 @@ export default async function InviteCard({ params }: { params: Promise<{ code: s
           >
             Cosmii
           </div>
-          <div style={{ fontSize: 50, fontWeight: 700, color: "#ffffff", lineHeight: 1.3, display: "flex" }}>
+          <div style={{ fontSize: 72, fontWeight: 700, color: "#ffffff", lineHeight: 1.3, display: "flex" }}>
             Premium 하루 이용권을
           </div>
-          <div style={{ fontSize: 50, fontWeight: 700, color: "#ffffff", lineHeight: 1.3, display: "flex" }}>
+          <div style={{ fontSize: 72, fontWeight: 700, color: "#ffffff", lineHeight: 1.3, display: "flex" }}>
             선물 받았어요
           </div>
-          {shown ? (
-            <div style={{ display: "flex", alignItems: "baseline", marginTop: 34, gap: 20 }}>
-              <div style={{ fontSize: 28, fontWeight: 700, color: "rgba(255,255,255,0.45)", display: "flex" }}>초대 코드</div>
-              <div style={{ fontSize: 56, fontWeight: 700, color: "#F2C86E", letterSpacing: "0.12em", display: "flex" }}>
-                {shown}
-              </div>
-            </div>
-          ) : null}
         </div>
       </div>
     ),
