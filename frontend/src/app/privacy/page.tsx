@@ -4,7 +4,7 @@ import { ReaderPage, h2, strong, link } from "@/components/reader-page";
 
 export default function PrivacyPage() {
   return (
-    <ReaderPage title="개인정보처리방침" note="시행일: 2026년 9월 26일" current="/privacy">
+    <ReaderPage title="개인정보처리방침" note="시행일: 2026년 9월 26일 · 변경: 2026년 11월 12일 (웹 페이지 통계)" current="/privacy">
       <section>
         <h2 className={h2}>1. 수집하는 정보</h2>
         <ul className="space-y-2 list-disc list-outside ml-5">
@@ -19,6 +19,9 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong className={strong}>사용 통계</strong> — 앱을 고치기 위해 앱 안에서 일어난 일을 기록합니다. 온보딩의 어느 단계까지 왔는지, 어떤 책의 장을 시작하고 마쳤는지와 퀴즈를 몇 개 맞혔는지, 구독 화면을 보거나 구매를 시작했는지, 로그인 안내를 보고 로그인했는지 같은 것들입니다. 여기에 앱 버전, 기기 모델과 OS 버전, IP 주소로 추정한 대략적인 위치(국가·지역·도시)가 함께 기록됩니다. 로그인하면 계정 식별자, 이메일, 로그인 방식(Apple 또는 Google)이 이 기록에 연결됩니다. 책의 문장, 코스미와의 대화, 이용자가 쓴 글은 보내지 않습니다.
+          </li>
+          <li>
+            <strong className={strong}>웹 페이지 통계</strong> — 공유받은 책 링크와 초대 링크의 웹 페이지(cosmii.vercel.app/book/…, /invite/…)가 열렸는지, 그 페이지에서 App Store 버튼을 눌렀는지, 초대 코드를 복사했는지를 기록합니다. 책 페이지는 어떤 책인지, 그리고 어느 앱 안에서 열었는지(카카오톡·인스타그램 같은 앱 이름만, 브라우저 정보에서 읽음)가 함께 기록됩니다. 초대 코드, IP 주소와 위치는 기록하지 않습니다. 쿠키나 기기에 남는 식별자를 쓰지 않아서, 같은 사람이 여러 번 연 것을 서로 잇지 않습니다.
           </li>
           <li>
             <strong className={strong}>광고 성과 측정</strong> — 광고를 보고 앱을 설치한 것인지 확인하기 위해, 처음 실행할 때 Apple이 주는 기여 토큰을 받아 Apple에 문의하고 그 결과(캠페인·광고그룹·검색어 식별자)를 사용 통계에 함께 기록합니다. 또한 Meta(Facebook·Instagram) 광고의 성과를 확인하기 위해 앱 설치와 실행, 구독 시작 같은 사건을 Meta에 보냅니다. 광고 식별자(IDFA)는 앱에서 추적을 허용한 경우에만 Meta에 전달됩니다. 자세한 내용은 아래 4항에 적었습니다.
@@ -82,7 +85,7 @@ export default function PrivacyPage() {
           <li><strong className={strong}>Vercel</strong> — 앱 서버 운영 (대화 요청 전달)</li>
           <li><strong className={strong}>OpenAI</strong> — 대화 답변 생성 (3항)</li>
           <li><strong className={strong}>ElevenLabs</strong> — 레슨 음성 생성 (레슨 문장만 전송하며, 이용자 정보는 보내지 않습니다)</li>
-          <li><strong className={strong}>Mixpanel</strong> — 사용 통계 분석 (1항의 사용 통계)</li>
+          <li><strong className={strong}>Mixpanel</strong> — 사용 통계와 웹 페이지 통계 분석 (1항)</li>
           <li><strong className={strong}>RevenueCat</strong> — 구독 상태 확인 (계정 식별자와 App Store 구매 내역)</li>
           <li><strong className={strong}>Meta Platforms</strong> — 광고 성과 측정 (4항)</li>
           <li><strong className={strong}>Apple, Google</strong> — 로그인, Apple은 결제, Apple은 검색 광고 기여 확인 (4항)</li>
@@ -91,7 +94,7 @@ export default function PrivacyPage() {
           국외로 이전되는 정보는 다음과 같습니다. 이전받는 자와 이전 국가, 이전 항목, 목적, 보유 기간 순으로 적었습니다. 이전은 해당 기능을 쓰는 시점에 정보통신망을 통해 이루어집니다.
         </p>
         <ul className="mt-3 space-y-2 list-disc list-outside ml-5">
-          <li><strong className={strong}>Mixpanel (미국)</strong> — 사용 통계(1항), 광고 캠페인 식별자, 로그인한 경우 계정 식별자와 이메일 · 앱 개선과 광고 성과 확인 · 앱을 고치는 데 필요한 동안</li>
+          <li><strong className={strong}>Mixpanel (미국)</strong> — 사용 통계와 웹 페이지 통계(1항), 광고 캠페인 식별자, 로그인한 경우 계정 식별자와 이메일 · 앱 개선과 광고 성과 확인 · 앱을 고치는 데 필요한 동안</li>
           <li><strong className={strong}>Meta Platforms (미국)</strong> — 앱 설치·실행·구독 사건, 추적을 허용한 경우 광고 식별자(IDFA) · 광고 성과 측정 · Meta의 보관 정책에 따름</li>
           <li><strong className={strong}>Apple (미국)</strong> — 검색 광고 기여 토큰을 Apple에 전달 · 광고를 통한 설치인지 확인 · 확인이 끝나면 곧바로, 늦어도 24시간 안에 폐기</li>
           <li><strong className={strong}>OpenAI, ElevenLabs, Supabase, Vercel, RevenueCat (미국 등)</strong> — 3항과 위 목록에 적은 항목 · 각 항에 적은 목적 · 각 업체의 정책과 저희 보관 기간(6항)에 따름</li>
@@ -112,7 +115,7 @@ export default function PrivacyPage() {
           광고 성과 측정을 위해 기록한 캠페인 정보는 사용 통계와 함께 보관하며, Meta에 전달된 정보는 Meta의 정책에 따라 보관됩니다. Apple의 기여 토큰은 확인이 끝나면 곧바로 폐기하며, 확인이 늦어지는 경우에도 24시간 안에 폐기합니다.
         </p>
         <p className="mt-3">
-          사용 통계는 앱을 고치는 데 필요한 동안 보관합니다. 계정을 삭제한 뒤에는 새 기록이 그 계정에 연결되지 않으며, 이미 쌓인 사용 통계의 삭제를 원하면 아래 연락처로 요청해 주세요.
+          사용 통계와 웹 페이지 통계는 앱을 고치는 데 필요한 동안 보관합니다. 계정을 삭제한 뒤에는 새 기록이 그 계정에 연결되지 않으며, 이미 쌓인 사용 통계의 삭제를 원하면 아래 연락처로 요청해 주세요.
         </p>
       </section>
 
