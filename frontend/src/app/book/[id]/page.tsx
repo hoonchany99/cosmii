@@ -14,6 +14,7 @@ import { getServiceClient } from "@/lib/supabase-server";
 import { starfield } from "@/lib/cosmii-text";
 import { bookNote } from "@/lib/book-notes";
 import { OutlineLink } from "@/components/editorial";
+import { TrackView } from "@/components/track-view";
 
 // Set from the Cosmii design system (globals.css @theme and type-* styles):
 // the book's title, its note and its description are what a reader reads,
@@ -106,6 +107,8 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* That the link was opened, and the App Store tap (src/lib/web-events.ts). */}
+      <TrackView page="book" bookId={book.id} />
       {/* Set like the book's page in the app: everything starts at the same
           left margin, so the eye goes down one edge instead of hunting the
           middle of each line. Centred, the cover floated and the note and the

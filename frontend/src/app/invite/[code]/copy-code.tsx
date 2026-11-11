@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackWeb } from "@/components/track-view";
 
 // The code, large, and a way to copy it: Apple does not carry a link through
 // an install, so the code is what the friend takes into the app.
@@ -10,6 +11,7 @@ export function CopyCode({ code, shown }: { code: string; shown: string }) {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
+      trackWeb("web_invite_code_copied");
       setTimeout(() => setCopied(false), 2000);
     } catch {}
   };

@@ -13,6 +13,7 @@ import { starfield } from "@/lib/cosmii-text";
 import { OutlineLink } from "@/components/editorial";
 import { normalizeCode } from "@/lib/invite-rules";
 import { CopyCode } from "./copy-code";
+import { TrackView } from "@/components/track-view";
 
 const HANGUL = "break-keep [overflow-wrap:anywhere]";
 const APP_STORE = "https://apps.apple.com/kr/app/apple-store/id6812843004?pt=129389248&ct=invite&mt=8";
@@ -45,6 +46,8 @@ export default async function InvitePage({ params }: { params: Promise<{ code: s
       className="box-border flex min-h-dvh items-center justify-center bg-night px-gutter py-8 font-ui text-ink"
       style={{ backgroundImage: starfield(code) }}
     >
+      {/* That the invitation was opened - never the code (src/lib/web-events.ts). */}
+      <TrackView page="invite" />
       <div className="w-full max-w-column text-left">
         <p className="mb-4 font-wordmark text-[20px] font-bold text-ink-70">Cosmii</p>
         <h1 className={`type-screen-title mb-2 text-white ${HANGUL}`}>
