@@ -1,5 +1,8 @@
 import OpenAI from "openai";
 import { encodeMp3, type Alignment } from "@/lib/voice-trim";
+import { type Part } from "@/lib/lesson-tags";
+
+export { sentences, spoken, squash, taggedLine, type Part } from "@/lib/lesson-tags";
 
 // A whole lesson read in one take. Voicing each speech bubble on its own gave
 // every bubble a slightly different voice (v3 performs anew each time and
@@ -7,10 +10,15 @@ import { encodeMp3, type Alignment } from "@/lib/voice-trim";
 // voiced in as few takes as the model allows, and cut back into the app's
 // bubbles with ElevenLabs' character timings.
 
-export type Part = { text: string; kind?: string; highlight?: string | null };
 
 export const RATE = 24000;
 export const MODEL = "eleven_v3";
+// Lessons rewritten to the style guide (cosmii-app docs/lesson-style.md) carry
+// their own direction: one v4 tag per sentence, written after the words were
+// final and with the cards around them in view (대표 TG 799·847). Those are
+// voiced with v4 as they are; every other lesson stays on v3 and its cached
+// files, so nothing already voiced is made again.
+export const TAGGED_MODEL = "eleven_v4";
 // v3 clips the last word of a take unless something follows it; a held pause
 // does, and the cut after the last line takes it back out.
 const HOLD = " [pause] … …";
@@ -20,17 +28,7 @@ const TAKE_CHARS = 1800;
 const WINDOW_MS = 20;
 const SILENT_DB = -50;
 
-export const squash = (s: string) => s.replace(/\s+/g, "");
 
-// What the reader sees is set with 「」 for the book's words and '…' for a
-// character speaking; the voice needs neither mark.
-export function spoken(text: string) {
-  return text
-    .replace(/[「」『』《》]/g, "")
-    .replace(/(^|[\s(])'([^']+)'/g, "$1$2")
-    .replace(/\s+/g, " ")
-    .trim();
-}
 
 const spokenChar = /[가-힣A-Za-z0-9]/;
 // The words alone: tags, punctuation and spacing removed.
@@ -86,7 +84,7 @@ export async function directLesson(lines: string[], parts: (Part | undefined)[])
 
 type Take = { pcm: Int16Array; alignment: Alignment | null };
 
-async function voiceTake(text: string): Promise<Take> {
+async function voiceTake(text: string, model: string): Promise<Take> {
   const apiKey = process.env.ELEVENLABS_API_KEY!;
   const voiceId = process.env.ELEVENLABS_VOICE_ID!;
   const speak = () =>
@@ -95,8 +93,8 @@ async function voiceTake(text: string): Promise<Take> {
       headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
       body: JSON.stringify({
         text: text + HOLD,
-        model_id: MODEL,
-        // v3 takes 0 (creative), 0.5 (natural) or 1 (robust).
+        model_id: model,
+        // v3 takes 0 (creative), 0.5 (natural) or 1 (robust). Kept for v4 until it is heard.
         voice_settings: { stability: 0.5, similarity_boost: 0.75 },
       }),
     });
@@ -271,7 +269,7 @@ function cutTake(take: Take, lines: string[]): Buffer[] {
 }
 
 // The lesson's lines, voiced: one mp3 per line, in order.
-export async function voiceLesson(directed: string[]): Promise<Buffer[]> {
+export async function voiceLesson(directed: string[], model: string = MODEL): Promise<Buffer[]> {
   const takes: string[][] = [];
   let current: string[] = [];
   let size = 0;
@@ -289,7 +287,7 @@ export async function voiceLesson(directed: string[]): Promise<Buffer[]> {
   const out: Buffer[] = [];
   for (const lines of takes) {
     // Lines of a take are read as paragraphs, so each gets its own breath.
-    const take = await voiceTake(lines.join("\n\n"));
+    const take = await voiceTake(lines.join("\n\n"), model);
     evenOut(take.pcm);
     out.push(...cutTake(take, lines));
   }

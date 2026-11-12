@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { after, NextRequest, NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
 import { isSubscriber, lessonOpenBeforeSubscribing, readerId } from "@/lib/reader-access";
-import { directLesson, MODEL, spoken, squash, voiceLesson, type Part } from "@/lib/lesson-voice";
+import { directLesson, MODEL, spoken, squash, TAGGED_MODEL, taggedLine, voiceLesson, type Part } from "@/lib/lesson-voice";
 
 // 듣기 mode, a lesson at a time. The app sends the lesson's speech bubbles as
 // it shows them; every one is checked against the lesson, so this can only
@@ -62,7 +62,15 @@ export async function POST(req: NextRequest) {
   }
 
   const say = lines.map(spoken);
-  const key = createHash("sha256").update(`${voiceId}:${MODEL}:${DIRECTION}:${lessonId}:${JSON.stringify(say)}`).digest("hex").slice(0, 32);
+  // A rewritten lesson brings a tag for every sentence; then it is voiced with
+  // v4 as written and nothing else directs it. Any card without fitting tags
+  // sends the whole lesson down the old v3 way, so one lesson is one voice.
+  const owner = (l: string) => parts.find((p) => squash(p.text) === squash(l)) ?? parts.find((p) => squash(p.text).includes(squash(l)));
+  const tagged = lines.map((l) => taggedLine(l, owner(l)));
+  const ownTags = tagged.every((t): t is string => t !== null);
+  const model = ownTags ? TAGGED_MODEL : MODEL;
+  const keyText = ownTags ? tagged : say;
+  const key = createHash("sha256").update(`${voiceId}:${model}:${DIRECTION}:${lessonId}:${JSON.stringify(keyText)}`).digest("hex").slice(0, 32);
   const dir = `${voiceId}/lessons/${key}`;
   const storage = sb.storage.from(BUCKET);
 
@@ -89,9 +97,8 @@ export async function POST(req: NextRequest) {
 
   after(async () => {
     try {
-      const owner = (l: string) => parts.find((p) => squash(p.text).includes(squash(l)));
-      const directed = await directLesson(say, lines.map(owner));
-      const audio = await voiceLesson(directed);
+      const directed = ownTags ? (tagged as string[]) : await directLesson(say, lines.map(owner));
+      const audio = await voiceLesson(directed, model);
       const urls: string[] = [];
       for (let i = 0; i < audio.length; i++) {
         const path = `${dir}/${String(i).padStart(3, "0")}.mp3`;
