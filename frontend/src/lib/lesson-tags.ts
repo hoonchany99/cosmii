@@ -70,3 +70,21 @@ export function taggedLine(line: string, part: Part | undefined): string | null 
   }
   return null;
 }
+
+/**
+ * A tag the same as the one just before it in the same take is dropped: v4 keeps
+ * a tag's direction until the next tag, so the repeat only costs letters (대표
+ * TG 1093·1095, about 15% of a rewritten card). Each line is voiced on its own,
+ * so a line's first tag always stays - without it the take would start undirected.
+ */
+export function dropRepeatedTags(line: string): string {
+  let prev: string | null = null;
+  return line
+    .replace(/\[([^\[\]]+)\]\s*/g, (m, cue: string) => {
+      const c = cue.trim();
+      if (c === prev) return "";
+      prev = c;
+      return m;
+    })
+    .trim();
+}

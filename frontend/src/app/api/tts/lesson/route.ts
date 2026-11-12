@@ -3,6 +3,7 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
 import { isSubscriber, lessonOpenBeforeSubscribing, readerId } from "@/lib/reader-access";
 import { directLesson, MODEL, spoken, squash, TAGGED_MODEL, taggedLine, voiceLesson, type Part } from "@/lib/lesson-voice";
+import { dropRepeatedTags } from "@/lib/lesson-tags";
 
 // 듣기 mode, a lesson at a time. The app sends the lesson's speech bubbles as
 // it shows them; every one is checked against the lesson, so this can only
@@ -66,7 +67,8 @@ export async function POST(req: NextRequest) {
   // v4 as written and nothing else directs it. Any card without fitting tags
   // sends the whole lesson down the old v3 way, so one lesson is one voice.
   const owner = (l: string) => parts.find((p) => squash(p.text) === squash(l)) ?? parts.find((p) => squash(p.text).includes(squash(l)));
-  const tagged = lines.map((l) => taggedLine(l, owner(l)));
+  // A tag repeated within one line is sent once (대표 TG 1095); v4 keeps it until the next.
+  const tagged = lines.map((l) => { const t = taggedLine(l, owner(l)); return t === null ? null : dropRepeatedTags(t); });
   const ownTags = tagged.every((t): t is string => t !== null);
   const model = ownTags ? TAGGED_MODEL : MODEL;
   const keyText = ownTags ? tagged : say;

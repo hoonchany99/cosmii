@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 // @ts-expect-error -- node --test needs the .ts extension; the Next build does not read this file.
-import { sentences, taggedLine } from "./lesson-tags.ts";
+import { dropRepeatedTags, sentences, taggedLine } from "./lesson-tags.ts";
 
 const card = (text: string, voice?: unknown) => ({ kind: "beat", text, voice });
 
@@ -43,4 +43,13 @@ test("a long card the app cuts into bubbles: each bubble takes its own sentences
   assert.equal(taggedLine("하나야. 둘이야.", c), "[a] 하나야. [b] 둘이야.");
   assert.equal(taggedLine("셋이야.", c), "[c] 셋이야.");
   assert.equal(taggedLine("하나야. 둘이야. 셋이야.", c), "[a] 하나야. [b] 둘이야. [c] 셋이야.");
+});
+
+test("dropRepeatedTags: a repeat in the same take goes, the first stays (TG 1095)", () => {
+  assert.equal(
+    dropRepeatedTags("[warm, gentle storytelling] 저녁이면 모여. [warm, gentle storytelling] 다정해."),
+    "[warm, gentle storytelling] 저녁이면 모여. 다정해.",
+  );
+  assert.equal(dropRepeatedTags("[a] 하나. [b] 둘. [a] 셋."), "[a] 하나. [b] 둘. [a] 셋.");
+  assert.equal(dropRepeatedTags("[calm] 하나."), "[calm] 하나.");
 });
