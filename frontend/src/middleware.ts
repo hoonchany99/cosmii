@@ -14,6 +14,8 @@ const OPEN_PATHS = [
   "/book",
   // Where an invitation link lands (1.1.3).
   "/invite",
+  // The personality quiz (마케팅, 대표 2416): /quiz and /quiz/r/<slug>.
+  "/quiz",
   "/.well-known",
   "/opengraph-image",
   "/twitter-image",
