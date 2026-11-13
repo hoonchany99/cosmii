@@ -3,6 +3,7 @@ import { after, NextRequest, NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
 import { isSubscriber, lessonOpenBeforeSubscribing, readerId } from "@/lib/reader-access";
 import { directLesson, MODEL, spoken, squash, TAGGED_MODEL, taggedLine, voiceLesson, type Part } from "@/lib/lesson-voice";
+import { reusePlan, runs, worthReusing, type Latest } from "@/lib/voice-reuse";
 
 // 듣기 mode, a lesson at a time. The app sends the lesson's speech bubbles as
 // it shows them; every one is checked against the lesson, so this can only
@@ -76,10 +77,29 @@ export async function POST(req: NextRequest) {
 
   // Read through the storage API, not the public CDN, so a lesson just voiced
   // is seen at once.
+  // The lesson's last voicing, by lesson id, so a later edit can keep the
+  // lines that did not change (lib/voice-reuse).
+  const latestPath = `${voiceId}/lesson-latest/${lessonId}.json`;
+  const readLatest = async (): Promise<Latest | null> => {
+    const got = await storage.download(latestPath);
+    if (!got.data) return null;
+    try { return JSON.parse(await got.data.text()) as Latest; } catch { return null; }
+  };
+  const writeLatest = (urls: string[], directed: string[]) =>
+    storage.upload(latestPath, JSON.stringify({ key, model, direction: DIRECTION, lines: keyText, directed, urls } satisfies Latest), {
+      contentType: "application/json",
+      upsert: true,
+    });
+
   const manifest = await storage.download(`${dir}/manifest.json`);
   if (manifest.data) {
-    const saved = JSON.parse(await manifest.data.text()) as { urls?: string[] };
-    if (saved.urls?.length === lines.length) return NextResponse.json({ urls: saved.urls });
+    const saved = JSON.parse(await manifest.data.text()) as { urls?: string[]; directed?: string[] };
+    if (saved.urls?.length === lines.length) {
+      // A lesson voiced before this existed gets its record on its next listen.
+      // (Older manifests have no direction saved; kept lines only carry it along, so the words stand in.)
+      if ((await readLatest())?.key !== key) await writeLatest(saved.urls, saved.directed?.length === lines.length ? saved.directed : keyText);
+      return NextResponse.json({ urls: saved.urls });
+    }
   }
 
   const pending = await storage.download(`${dir}/pending.json`);
@@ -97,20 +117,42 @@ export async function POST(req: NextRequest) {
 
   after(async () => {
     try {
-      const directed = ownTags ? (tagged as string[]) : await directLesson(say, lines.map(owner));
-      const audio = await voiceLesson(directed, model);
-      const urls: string[] = [];
-      for (let i = 0; i < audio.length; i++) {
+      const latest = await readLatest();
+      const plan = latest ? reusePlan(latest.lines, keyText) : keyText.map(() => null);
+      const reuse = worthReusing(latest, model, DIRECTION, plan);
+      // Lines kept from the last voicing keep its direction too, so they and
+      // their files stay exactly as heard; v3 direction is asked for the whole
+      // lesson, so a new line is directed with its neighbours in view.
+      let directed: string[];
+      if (ownTags) directed = tagged as string[];
+      else {
+        const fresh = await directLesson(say, lines.map(owner));
+        directed = reuse ? fresh.map((d, i) => (plan[i] !== null ? latest!.directed[plan[i]!] : d)) : fresh;
+      }
+      const urls: string[] = new Array(lines.length);
+      const save = async (i: number, mp3: Buffer) => {
         const path = `${dir}/${String(i).padStart(3, "0")}.mp3`;
-        const { error } = await storage.upload(path, audio[i], { contentType: "audio/mpeg", cacheControl: "31536000", upsert: true });
+        const { error } = await storage.upload(path, mp3, { contentType: "audio/mpeg", cacheControl: "31536000", upsert: true });
         if (error) throw new Error(`upload ${error.message}`);
-        urls.push(storage.getPublicUrl(path).data.publicUrl);
+        urls[i] = storage.getPublicUrl(path).data.publicUrl;
+      };
+      if (reuse) {
+        plan.forEach((p, i) => { if (p !== null) urls[i] = latest!.urls[p]; });
+        for (const [a, b] of runs(plan)) {
+          const audio = await voiceLesson(directed.slice(a, b), model);
+          for (let i = a; i < b; i++) await save(i, audio[i - a]);
+        }
+        console.log(`tts lesson ${lessonId}: kept ${plan.filter((p) => p !== null).length}/${lines.length} lines, voiced ${runs(plan).length} run(s)`);
+      } else {
+        const audio = await voiceLesson(directed, model);
+        for (let i = 0; i < audio.length; i++) await save(i, audio[i]);
       }
       const { error } = await storage.upload(`${dir}/manifest.json`, JSON.stringify({ urls, directed }), {
         contentType: "application/json",
         upsert: true,
       });
       if (error) throw new Error(`manifest ${error.message}`);
+      await writeLatest(urls, directed);
     } catch (e) {
       const message = e instanceof Error ? e.message : String(e);
       console.error("tts lesson:", message);
