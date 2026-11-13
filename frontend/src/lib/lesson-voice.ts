@@ -1,4 +1,5 @@
-import OpenAI from "openai";
+import OpenAI, { toFile } from "openai";
+import { heardShare, lineStarts, stumbles, type Word } from "@/lib/voice-check";
 import { encodeMp3, type Alignment } from "@/lib/voice-trim";
 import { type Part } from "@/lib/lesson-tags";
 
@@ -222,14 +223,80 @@ function silences(pcm: Int16Array): [number, number][] {
   return runs;
 }
 
+// What a listener hears in a take, word by word with times (대표 TG 1123·1130).
+// OpenAI's transcription, about a cent a lesson; without a key, or if it fails,
+// the take is cut by the letter timings alone, as before.
+async function transcribeTake(pcm: Int16Array): Promise<Word[] | null> {
+  if (!process.env.OPENAI_API_KEY) return null;
+  try {
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const res = await openai.audio.transcriptions.create({
+      file: await toFile(wav(pcm), "take.wav", { type: "audio/wav" }),
+      model: "whisper-1",
+      language: "ko",
+      response_format: "verbose_json",
+      timestamp_granularities: ["word"],
+    });
+    const words = (res as unknown as { words?: { word: string; start: number; end: number }[] }).words ?? [];
+    return words.map((x) => ({ text: x.word, start: x.start, end: x.end }));
+  } catch (e) {
+    console.warn("lesson voice: transcription failed", e instanceof Error ? e.message : e);
+    return null;
+  }
+}
+
+function wav(pcm: Int16Array): Buffer {
+  const data = Buffer.from(pcm.buffer, pcm.byteOffset, pcm.byteLength);
+  const head = Buffer.alloc(44);
+  head.write("RIFF", 0); head.writeUInt32LE(36 + data.length, 4); head.write("WAVE", 8);
+  head.write("fmt ", 12); head.writeUInt32LE(16, 16); head.writeUInt16LE(1, 20); head.writeUInt16LE(1, 22);
+  head.writeUInt32LE(RATE, 24); head.writeUInt32LE(RATE * 2, 28); head.writeUInt16LE(2, 32); head.writeUInt16LE(16, 34);
+  head.write("data", 36); head.writeUInt32LE(data.length, 40);
+  return Buffer.concat([head, data]);
+}
+
+// A clip of the take with any broken-off reading inside it taken out.
+function clipWithout(pcm: Int16Array, from: number, to: number, drops: [number, number][]): Int16Array {
+  const keep: [number, number][] = [];
+  let at = from;
+  for (const [a, b] of drops) {
+    if (b <= at || a >= to) continue;
+    if (a > at) keep.push([at, a]);
+    at = Math.max(at, b);
+  }
+  if (at < to) keep.push([at, to]);
+  if (keep.length === 1) return clip(pcm, keep[0][0], keep[0][1]);
+  const parts = keep.map(([a, b]) => clip(pcm, a, b));
+  const out = new Int16Array(parts.reduce((n, p) => n + p.length, 0));
+  let o = 0;
+  for (const p of parts) { out.set(p, o); o += p.length; }
+  return out;
+}
+
 // Cuts one take into its lines. The character timings say roughly where a line
 // ends, but they can drift (a number read as words, a tag), and a cut inside a
 // word sends the rest of it to the next bubble. So each cut is moved onto the
 // real silence nearest that point; only when there is none does the timing
 // itself decide.
-function cutTake(take: Take, lines: string[]): Buffer[] {
+function cutTake(take: Take, lines: string[], heard: Word[] | null = null): Buffer[] {
   const times = take.alignment ? lineTimes(take.alignment, lines) : null;
   if (!times) throw new Error("no timing for the take");
+  // Where the transcription heard a line begin, it outranks the letter timing:
+  // after a stumble the timing slides and a bubble takes the next one's first
+  // sentence (이방인 1장, 2026-11-13). The broken-off reading itself is cut out.
+  let drops: [number, number][] = [];
+  if (heard && heard.length) {
+    const starts = lineStarts(heard, lines);
+    for (let i = 1; i < lines.length; i++) {
+      const at = starts[i];
+      if (at === null || Math.abs(at - times[i].start) < 0.4) continue;
+      times[i].start = at;
+      times[i - 1].end = Math.min(times[i - 1].end, Math.max(times[i - 1].start, at - 0.05));
+    }
+    drops = stumbles(heard, lines.join(" "));
+    const share = heardShare(heard, lines.join(" "));
+    if (share < 0.85) console.warn(`lesson voice: take heard only ${Math.round(share * 100)}% of its script`);
+  }
   const total = take.pcm.length / RATE;
   const quiet = silences(take.pcm);
 
@@ -264,7 +331,7 @@ function cutTake(take: Take, lines: string[]): Buffer[] {
       i + 1 < lines.length
         ? breaks[i].end
         : Math.min(total, settleAfter(take.pcm, times[i].end, Math.min(total, times[i].end + 1)) + 0.3);
-    return encodeMp3(clip(take.pcm, from, Math.max(to, from + 0.2)), RATE);
+    return encodeMp3(clipWithout(take.pcm, from, Math.max(to, from + 0.2), drops), RATE);
   });
 }
 
@@ -289,7 +356,7 @@ export async function voiceLesson(directed: string[], model: string = MODEL): Pr
     // Lines of a take are read as paragraphs, so each gets its own breath.
     const take = await voiceTake(lines.join("\n\n"), model);
     evenOut(take.pcm);
-    out.push(...cutTake(take, lines));
+    out.push(...cutTake(take, lines, await transcribeTake(take.pcm)));
   }
   return out;
 }

@@ -70,7 +70,10 @@ export async function POST(req: NextRequest) {
   const ownTags = tagged.every((t): t is string => t !== null);
   const model = ownTags ? TAGGED_MODEL : MODEL;
   const keyText = ownTags ? tagged : say;
-  const key = createHash("sha256").update(`${voiceId}:${model}:${DIRECTION}:${lessonId}:${JSON.stringify(keyText)}`).digest("hex").slice(0, 32);
+  // Tagged (v4) lessons are cut with the transcription check since 2026-11-13
+  // (대표 TG 1130); the mark makes those voiced before it be made again, checked.
+  const checked = ownTags ? ":heard1" : "";
+  const key = createHash("sha256").update(`${voiceId}:${model}:${DIRECTION}${checked}:${lessonId}:${JSON.stringify(keyText)}`).digest("hex").slice(0, 32);
   const dir = `${voiceId}/lessons/${key}`;
   const storage = sb.storage.from(BUCKET);
 
