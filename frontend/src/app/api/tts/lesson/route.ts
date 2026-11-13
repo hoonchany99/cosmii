@@ -102,6 +102,14 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // A hidden test lesson (preview-…) is a script the 대표 has not approved
+  // yet. What it already has is served above, but nothing new is voiced for
+  // it, so pressing 듣기 on a draft spends no credits (대표 TG 1185·1187).
+  // 403 makes the app stop asking at once.
+  if (lessonId.startsWith("preview-") && !warming) {
+    return NextResponse.json({ error: "Draft lesson is not voiced" }, { status: 403 });
+  }
+
   const pending = await storage.download(`${dir}/pending.json`);
   if (pending.data) {
     const { since } = JSON.parse(await pending.data.text()) as { since?: number };
